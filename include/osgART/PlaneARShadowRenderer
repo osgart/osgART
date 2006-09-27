@@ -1,0 +1,63 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+#ifndef OSGART_PLANEARSHADOWRENDERER
+#define OSGART_PLANEARSHADOWRENDERER
+
+// graphics include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericVideoObject"
+#include "osgART/GenericVideo"
+#include "osgART/ShadowRenderer"
+
+namespace osgART {
+
+	/**
+	* \class PlaneARShadowRenderer.
+	* Implement the depth shadow rendering based on depth shadow with GLSL shaders support.
+	* This class support V -> R by the way of a virtual plane positioned to the virtual scene.
+	* it can be use for doing AR on the table or on tangible Marker.
+	*/
+	class OSGART_EXPORT PlaneARShadowRenderer : public ShadowRenderer
+	{
+	public:        
+		/** 
+		 * \brief default constructor.
+		 * \param model defined the model
+		 * \param lightTransform defined the light position 
+		 * \param markerId is the marker id 	
+		 */
+		PlaneARShadowRenderer(osg::Node*,osg::MatrixTransform*,osg::Vec2f size,int markerId = 0);
+		
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~PlaneARShadowRenderer();
+
+		/**
+		 * Initialize
+		 */    
+		virtual void init();
+	
+	protected:
+		
+	private:
+		osg::Vec2f m_planeSize;
+	
+	};
+};
+#endif
+

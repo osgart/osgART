@@ -1,0 +1,135 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+#ifndef OSGART_GENERICVIDEOOBJECT
+#define OSGART_GENERICVIDEOOBJECT 1
+
+//standard include
+#include <iostream>
+#include <string>
+
+//graphics include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+//personnal include
+#include "osgART/Export"
+#include "osgART/VideoTexture"
+#include "osgART/GenericVideoShader"
+
+namespace osgART {
+
+	/**
+	 * A generic interface for video sources. It implements the very
+	 * basic video functionality been used in osgART. 
+	 */
+
+	class OSGART_EXPORT GenericVideoObject : public osg::Group
+	{
+	public:
+	
+	
+		/**
+		 * Calculate power of two for OpenGL textures
+		 * \param x dimension to be calculated
+		 * \return power of two which is above or equal to the value given
+		 */	
+		static unsigned int mathNextPowerOf2(unsigned int x);
+		        
+	    
+	    /** 
+	     * Modes how the video is being rendered.
+	     */
+		enum TextureMode {
+			USE_TEXTURE_AUTO = 0,	/**< Automatically determine best texture mode */
+			USE_TEXTURE_2D,			/**< Video is being pasted into a 2D texture */
+			USE_TEXTURE_RECTANGLE,	/**< Video is being attached to a 2D rectangle */
+			USE_TEXTURE_VIDEO		/**< different way to construct a video */
+		};
+
+		/**
+		 * Mode used to correct camera distortion.
+		 */
+		enum DistortionCorrectionMode {
+			NO_CORRECTION,			/**< No correction is applied to the Texture */
+			CAMERA_PARAM_CORRECTION	/**< The texture is being corrected from camera parameters */
+		};
+		
+		
+		/** 
+		* \brief default constructor.
+		* @param videoId the number of the video used for the background
+		*/    
+		GenericVideoObject(int videoId = 0);
+
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~GenericVideoObject();
+
+
+		/** 
+		 * All initialisation needs to be done within here.
+		 * 
+		 */
+		virtual void init() = 0;
+	    
+	    
+		inline void setTexture(osg::Texture* vt) {
+			m_vTexture=vt;
+		};
+
+		inline osg::Texture* getTexture() const {
+			return m_vTexture;
+		};
+	    
+		inline void setShader(GenericVideoShader* vs) { 
+			m_vShader=vs;
+		};
+	    
+		inline GenericVideoShader* getShader() const {
+			return m_vShader;
+		};    
+	    
+		inline void setTextureMode(TextureMode tm) {
+			m_textureMode=tm;
+		};
+
+		inline TextureMode getTextureMode() const {
+			return m_textureMode;
+		};
+
+		inline void setDistortionCorrectionMode(DistortionCorrectionMode dcm) {
+			m_distortionMode=dcm;
+		};
+
+		inline DistortionCorrectionMode getDistorsionCorrectionMode() const {
+			return m_distortionMode;
+		};
+	    
+	    
+	protected: 
+
+		int m_videoId;
+		GenericVideoShader* m_vShader;
+		osg::Texture* m_vTexture;
+		
+		DistortionCorrectionMode m_distortionMode;
+		TextureMode m_textureMode;
+		
+		osg::ref_ptr<osg::Image> m_videoimage;
+
+	};
+};
+
+
+/*----------------------------------------------------------------------------*/
+#endif // !defined GenericVideoObject_h

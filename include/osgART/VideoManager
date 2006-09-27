@@ -1,0 +1,104 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+#ifndef OSGART_VIDEOMANAGER
+#define OSGART_VIDEOMANAGER 1
+
+// STL
+#include <map>
+
+// graphics include
+#include <osgART/Export>
+
+// local include
+#include "osgART/GenericVideo"
+#include "osgART/VideoConfig"
+
+
+namespace osgART {
+
+	/**
+	* \class VideoManager.
+	*
+	*/
+	 
+	class OSGART_EXPORT VideoManager
+	{
+	public:
+
+		/** function signature for creating a video instance */
+		typedef GenericVideo* (*p_VideoCreateFunc)(const VideoConfiguration& cfg);        
+	    
+		/** 
+		* \brief singleton constructor.
+		* Based on a singleton pattern, user can get the instance of the video manager
+		* actually used by the program.
+		* @return an instance of a video manager
+		*/
+		static VideoManager* getInstance();
+	   
+		/**
+		* \brief destructor.
+		*/
+		~VideoManager();    
+
+		/**
+		* \brief add a video stream.
+		* Register in the video manager a video stream.
+		* \param video the video stream to add.
+		* \return the id of the video stream
+		*/
+		int addVideoStream(GenericVideo* video);
+		
+		/**
+		* \brief remove a video stream.
+		* Remove a video stream from the VideoManager
+		* \param video the video stream to register.
+		*/
+		void removeVideoStream(GenericVideo* video);
+		
+		/**
+		* \brief obtain a video stream.
+		* Return instance of a video stream identified by his id.
+		* \return an instance of a video manager
+		*/
+		GenericVideo* getVideo(int idVideo);
+		
+		
+		/**
+		* 
+		*
+		*/
+		static void registerVideo(unsigned int guid, p_VideoCreateFunc);
+		
+		GenericVideo* createVideo(unsigned int guid, const VideoConfiguration& fg);
+
+		
+		static
+		GenericVideo* VideoManager::createVideoFromPlugin(const std::string& plugin,
+			const VideoConfiguration& config);
+
+	    
+	protected: 
+	    
+		// default constructor
+		VideoManager();
+		
+	private:
+
+		int numVideoStream;
+		std::map<int,GenericVideo*> videoMap;	
+		
+		static std::map<unsigned int, p_VideoCreateFunc> gs_videocreate;
+	};
+
+}
+
+#endif
+
+

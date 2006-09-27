@@ -1,0 +1,107 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  ReflectionVideoFunctor
+*  \brief support video texture.
+*
+* 
+*  Functor that replace texture of an object with a reflection video texture.
+* 
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 01/12/07
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+
+#ifndef OSGART_REFLECTIONVIDEOFUNCTOR
+#define OSGART_REFLECTIONVIDEOFUNCTOR
+
+/* --------------------------------------------------------------------------
+* include file
+*----------------------------------------------------------------------------*/
+
+//standard include
+
+#include <string>
+#include <vector>
+
+//graphics include
+#include <osg/ShapeDrawable>
+#include <osg/Geometry>
+#include <osg/TextureRectangle>
+#include <osg/Texture2D>
+
+#include <osgNV/StateMatrixParameterValue>
+#include <osgNV/Version>
+#include <osgNV/VectorParameterValue>
+#include <osgNV/StateMatrixParameterValue>
+#include <osgNV/MatrixParameterValue>
+#include <osgNV/VectorParameterValue>
+#include <osgNV/LightPicker>
+#include <osgNV/EyePointPicker>
+#include <osgNV/MatrixPicker>
+#include <osgNV/ViewMatrixPicker>
+#include <osgNV/ModelMatrixPicker>
+#include <osgNVCg/Context>
+#include <osgNVCg/Program>
+#include <osgNVCg/CgGeometry>
+
+// local include
+#include "osgART/Export"
+
+namespace osgART {
+
+	/**
+	 * ReflectionVideoFunctor.
+	 *
+	 */
+	class OSGART_EXPORT ReflectionVideoFunctor : public osg::Texture2D
+	{
+	public:
+	 
+	// Standard Services
+	    
+		/** 
+		* \brief default constructor.
+		*
+		*/
+		ReflectionVideoFunctor(int video);
+	    
+		
+		/**
+		* \brief destructor.
+		*/
+		virtual ~ReflectionVideoFunctor();    
+
+	    
+	protected: 
+	    
+
+		int m_texWidth;
+		int m_texHeight;
+		int m_vidWidth;
+		int m_vidHeight;
+		int videoId;
+
+	};
+
+};
+
+#endif // !defined ReflectionVideoFunctor_h
+
+
+

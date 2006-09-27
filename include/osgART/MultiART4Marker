@@ -1,0 +1,68 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_MULTIART4MARKER
+#define OSGART_MULTIART4MARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+//graphics include
+#include "osgART/Export"
+#include "osgART/Marker"
+
+// ARToolKit 4 include
+#include <AR4/AR/AR.h>
+#include <AR4/AR/arMulti.h>
+
+
+namespace osgART {
+
+	/**
+	* \class MultiART4Marker
+	*/
+	class OSGART_EXPORT MultiART4Marker: public Marker
+	{
+	public:       
+
+	// Standard Services
+	    
+		/** 
+		* \brief default constructor.
+		*
+		*/
+		MultiART4Marker();
+		/**
+		* \brief destructor.
+		*/
+		~MultiART4Marker();    
+
+		bool initialise(char* multiFile);
+		
+		void update(AR3DHandle *ar3DHandle,ARMarkerInfo* markerInfo, int markerCount);
+
+		virtual void setActive(bool a);
+	 
+		/**
+		* \brief return the type of the maker.
+		* return if the marker is a single or multi-pattern marker.
+		* \return the type of the marker
+		*/
+		MarkerType getType() const;
+
+	    
+	protected: 
+
+		ARMultiMarkerInfoT* m_multi;
+		
+	};
+};
+
+#endif

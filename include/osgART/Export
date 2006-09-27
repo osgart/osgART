@@ -1,0 +1,31 @@
+// OSGART for OpenSceneGraph
+// C++ header file - Copyright (C) 2004 by Marco Jez
+// Distributed under the terms of the GNU Lesser General Public License (LGPL)
+// as published by the Free Software Foundation.
+
+#ifndef OSGART_EXPORT_
+#define OSGART_EXPORT_
+
+#if defined(_MSC_VER)
+#	pragma warning ( disable : 4251 )
+#endif
+
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)  || defined( __MWERKS__)
+	# if defined(OSG_LIBRARY_STATIC)
+	#    define OSGART_EXPORT
+	# elif defined(OSGART_LIBRARY)
+    #    define OSGART_EXPORT   __declspec(dllexport)
+    # else
+    #    define OSGART_EXPORT   __declspec(dllimport)
+    # endif /* OSGART_LIBRARY */
+#else
+    #  define OSGART_EXPORT
+#endif
+
+#ifdef __GNUC__
+#  if (__GNUC__ < 3)
+#    define OSGART_NO_LOCALES
+#  endif
+#endif
+
+#endif

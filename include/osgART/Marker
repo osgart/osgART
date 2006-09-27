@@ -1,0 +1,149 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+#ifndef OSGART_MARKER
+#define OSGART_MARKER 1
+
+// standard include
+#include <string>
+#include <vector>
+
+// graphics include
+#include "osgART/Export"
+#include "osg/Matrix"
+#include "osg/Vec3"
+
+namespace osgART {
+
+	/**
+	* class Marker.
+	*/
+	class OSGART_EXPORT Marker
+	{
+	public:
+
+		enum MarkerType 
+		{
+			ART_UNKOWN = 0,	//<! unknown marker type
+			ART_SINGLE,		//<! a single marker
+			ART_MULTI,		//<! a multimarker
+			ART_NFT			//<! a natural feature
+		};
+	    
+		/** 
+		* \brief default constructor.
+		*
+		*/
+		Marker();
+	  
+		/**
+		* \brief destructor.
+		*/
+		virtual ~Marker();    
+
+		/**
+		* Return the type of the Marker. 
+		* \return type of marker
+		*/
+		virtual MarkerType getType() const = 0;
+		
+		/**
+		* Determine if the marker is visible.
+		* Return the validity of the marker, mainly valid with no occlusion,
+		* no loss of tracking, in the FOV of the camera, correct recognition, etc.
+		* \return the validity of the marker (true if valid).
+		*/
+		bool isValid() const;
+
+		/**
+		* Obtain the transformation of the marker.
+		* Return return a 4x4 transformation of the marker (european order).
+		* \return a 4x4 matrix
+		*/
+		const osg::Matrix& getTransform() const;
+
+
+		/**
+		 * Set smoothing factor for rotations.
+		 * \param r 		 
+		 */
+		void setRotationalSmoothing(float r);
+		
+		/** Get smooting factor for rotations.
+		 * \return smoothing factor
+		 */		 
+		float getRotationalSmoothing() const;
+		 			 	
+		/**
+		 * Set smoothing factor for translations.
+		 * \param t 		 
+		 */	
+		void setTranslationalSmoothing(float t);
+		
+		/** Get smooting factor for translation.
+		 * \return smoothing factor
+		 */		 
+		float getTranslationalSmoothing() const;
+
+		/**
+		* \brief set name of the marker
+		* \param name identifier name for the marker
+		*/
+		void setName(const std::string& name);
+		
+		/** 
+		* \brief retrieve name of the marker
+		* \return marker name 
+		*/
+		const std::string& getName() const;
+
+		/**
+		* \brief set the respective marker active 
+		* \param active set to TRUE if the marker should be tracked
+		*/
+		virtual void setActive(bool active) = 0;	
+
+		/**
+		* \brief retrieve activity status from the marker
+		* \return TRUE if the marker is active
+		*/
+		bool isActive() const;
+		
+		/**
+		* Factory method for creating instances of a Marker
+		* \param type type of the required marker
+		* \return an instance of a marker
+		*/
+		//static Marker* Marker::create(MarkerType type);
+	    
+	protected: 
+		
+		void updateTransform(double trans[3][4]);
+		
+		bool m_valid;
+		
+		bool m_active;
+		
+		osg::Matrix m_transform;
+
+		osg::Vec3 m_storedPosition;
+		osg::Quat m_storedRotation;
+
+		// hse25: should move outside of the Marker
+		float m_positionSmoothFactor;
+		float m_rotationSmoothFactor;
+		bool m_seen;
+
+		std::string m_name;
+		
+
+	};
+
+};
+
+#endif

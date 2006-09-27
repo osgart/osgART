@@ -1,0 +1,130 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  VideoLayer
+*  \brief Defined a Video Background Node usable for AR.
+*
+* 
+* Defined an OpenSceneGraph geode for creating a VideoLayer Object.
+* This object is combined with the VideoManager for displaying a video background
+* using in AR Application (video see-through approach).
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 01/12/07
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+#ifndef OSGART_VIDEOLAYER
+#define OSGART_VIDEOLAYER
+
+/* --------------------------------------------------------------------------
+* include file
+*----------------------------------------------------------------------------*/
+
+// OSG include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericVideoObject"
+
+namespace osgART {
+
+	/** 
+	 * class VideoLayer.
+	 *
+	 */
+	class OSGART_EXPORT VideoLayer : public GenericVideoObject
+	{
+	public:        
+	    
+		/** 
+		 * \brief default constructor.
+		 * \param videoId the number of the video used for the background
+		 * \param layerDepth
+		 */
+		VideoLayer(int videoId = 0 , int layerDepth = 0);
+	    
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~VideoLayer();
+
+		/**
+		 * Initialize the video layer
+		 */
+		virtual void init();	
+		
+		
+		/**
+		 * Set transparency for this layer
+		 */
+		void setTransparency(float alpha);
+		
+		
+		/**
+		 * Get transparency for this layer.
+		 */
+		inline float getTransparency() const { 
+			return m_alpha;
+		};
+
+
+		/**
+		 * Set the layer depth for this layer
+		 */
+		void setLayerDepth(int _depth);
+		
+		/**
+		 * Set the layer depth for this layer.
+		 */
+		inline int getLayerDepth() const {
+			return m_layerDepth;
+		};
+		
+	    
+	protected: 
+	    
+		float m_width;
+		float m_height;
+		int m_layerDepth;
+		float m_alpha;
+	
+	private:
+
+		/**
+		 * Helper method to create a video layer
+		 */
+				
+		osg::Node* buildLayer();
+		osg::Geode* buildLayerGeometry();
+
+
+		osg::MatrixTransform*	m_layerModelViewMatrix;
+		osg::Projection*		m_layerProjectionMatrix;
+		osg::Geometry*			m_geometry;
+		osg::Geode*				m_layerGeode;
+		osg::StateSet*          m_layerStateSet;
+
+	};
+
+
+}
+
+#endif 

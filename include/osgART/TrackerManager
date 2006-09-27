@@ -1,0 +1,80 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_TRACKERMANAGER
+#define OSGART_TRACKERMANAGER 1
+
+// STL include
+#include <map>
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericTracker"
+
+namespace osgART {
+
+/**
+ * class TrackerManager.
+ *
+ */
+
+class OSGART_EXPORT TrackerManager
+{
+	public:        
+    
+		/** 
+		* \brief singleton constructor.
+		* Based on a singleton pattern, user can get the instance of the tracker manager
+		* actually used by the program.
+		* \return an instance of a tracker manager
+		*/
+		static TrackerManager* getInstance();
+	    
+		/**
+		* \brief destructor.
+		*/
+		~TrackerManager();    
+
+		/**
+		* \brief register a tracker.
+		* Register in the tracker manager a tracker.
+		* \param tracker the tracker to register
+		* \return the id of the tracker
+		*/
+		int addTracker(GenericTracker* tracker);
+		
+		
+		/**
+		 * \brief unregister a tracker.
+		 * Unregister a tracker from the tracker manager.
+		 * \param tracker the tracker to unregister
+		 */
+		void removeTracker(GenericTracker* tracker);
+
+		
+		/**
+		* \brief obtain a tracker.
+		* Return instance of a tracker identified by his id.
+		* \return an instance of a tracker
+		*/
+		GenericTracker* getTracker(int idTracker);
+	    
+	protected:
+		    
+		TrackerManager();	
+		
+		
+		int numTracker;
+		std::map<int,GenericTracker*> trackerMap;
+	};
+
+};
+
+#endif
+

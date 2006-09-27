@@ -1,0 +1,158 @@
+///////////////////////////////////////////////////////////////////////////////
+// File name : VideoWrapperVideo.C
+//
+// Creation : YYY
+//
+// Version : YYY
+//
+// Author : Raphael Grasset
+//
+// email : Raphael.Grasset@imag.fr
+//
+// Purpose : ??
+//
+// Distribution :
+//
+// Use :
+//	??
+//
+// Todo :
+//	O add more video formats
+// 
+//	/
+//	X
+//
+// History :
+//	YYY : Mr Grasset : Creation of the file
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// include file
+///////////////////////////////////////////////////////////////////////////////
+
+#include "VideoWrapperVideo"
+#include <OpenThreads/Thread>
+
+#include <process.h>
+
+using namespace std;
+using namespace osgART;
+
+///////////////////////////////////////////////////////////////////////////////
+// Macro 
+///////////////////////////////////////////////////////////////////////////////
+
+#if defined(NO_DEBUG)
+#define ASSERT(x)
+#else //defined(NO_DEBUG)
+#define ASSERT(x) if(!(x)) \
+    { cerr << "Assertion failed : (" << #x << ')' << endl \
+    << "In file : " << __FILE__ << "at line #" << __LINE__ << endl \
+    << "Compiled the " << __DATE__ << " at " << __TIME__ << endl; abort();}
+#endif // else defined(NO_DEBUG)
+
+const char* const Video_RCS_ID = "@(#)class Video definition.";
+
+///////////////////////////////////////////////////////////////////////////////
+// class Video
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Static variable
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// PUBLIC: Standard services 
+///////////////////////////////////////////////////////////////////////////////
+
+VideoWrapperVideo::VideoWrapperVideo(const char* config):videoConfig(config)
+{
+	g_hVideo= 0;
+	xsize=-1;
+	ysize=-1;
+}
+
+/*
+VideoWrapperVideo::VideoWrapperVideo(const VideoWrapperVideo &)
+{
+    
+}*/
+
+VideoWrapperVideo::~VideoWrapperVideo(void)
+{
+    
+}
+
+VideoWrapperVideo& 
+VideoWrapperVideo::operator=(const VideoWrapperVideo &)
+{
+    return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// PUBLIC : Interface 
+///////////////////////////////////////////////////////////////////////////////
+
+void
+VideoWrapperVideo::open()
+{
+	CoInitialize(NULL);
+
+	VIDEO_openVideo((char*)videoConfig.c_str(), &g_hVideo);
+	VIDEO_getWidth(g_hVideo, &xsize);
+	VIDEO_getHeight(g_hVideo, &ysize);
+}
+
+void
+VideoWrapperVideo::close()
+{
+	VIDEO_close(g_hVideo);
+	CoUninitialize();
+}
+
+void
+VideoWrapperVideo::start()
+{
+   VIDEO_startVideo(g_hVideo);
+}
+
+void
+VideoWrapperVideo::stop()
+{
+	// Always disconnect from the device when you're done
+   VIDEO_stopVideo(g_hVideo);  
+}
+
+void
+VideoWrapperVideo::update()
+{
+	timeval timestamp;
+
+	unsigned char* newImage = NULL;
+
+	if (g_hVideo) {
+		
+		VIDEO_getFrame(g_hVideo, &newImage, &timestamp);
+		
+		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
+
+		if (!newImage) {
+			image = NULL;
+		} else {
+			image = newImage;
+		}
+	}
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// PROTECTED : Services
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// PRIVATE : Services
+///////////////////////////////////////////////////////////////////////////////

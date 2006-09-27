@@ -1,0 +1,24 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef __OSGART_FOUNDATION__
+#define __OSGART_FOUNDATION__
+
+// Keep a C interface for now.
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+void osgARTInit(int *argcp, char **argv);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
+#endif // !__OSGART_FOUNDATION__

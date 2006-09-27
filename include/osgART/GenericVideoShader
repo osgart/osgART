@@ -1,0 +1,73 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  GenericVideoShader
+*  \brief Defined a Video Shader effect.
+* 
+* 
+* class for creating video effect on the GPU with hardware shader technology.
+* our system HLSL shader (OpenGL 2.0) with the intrinsic implementation on OSG.
+*
+*
+*   History :
+*
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 01/12/07
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_GENERICVIDEOSHADER
+#define OSGART_GENERICVIDEOSHADER
+
+// OSG include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+// local include
+#include "osgART/Export"
+
+namespace osgART {
+
+	/**
+	* class GenericVideoShader.
+	*
+	*/
+	class OSGART_EXPORT GenericVideoShader
+	{
+	public:        
+		/** 
+		* \brief default constructor.
+		*/    
+		GenericVideoShader();
+
+		/**
+		* \brief destructor.
+		*/
+		virtual ~GenericVideoShader();
+
+		/**
+		* \brief friend method for changing virtual state of a video object.
+		*/
+		virtual void Apply(osg::StateSet&) = 0;
+		
+		osg::Program* program;
+		osg::Shader* m_vp;
+		osg::Shader* m_fp;
+	};
+}
+/*----------------------------------------------------------------------------*/
+#endif // !defined GenericVideoShader_h
+

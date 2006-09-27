@@ -1,0 +1,172 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_ARTOOLKIT4NFTTRACKER
+#define OSGART_ARTOOLKIT4NFTTRACKER 1
+
+// graphics include
+#include <osgART/Export>
+
+
+#include <AR4/AR/config.h>
+#include <AR4/AR/param.h>
+#include <AR4/AR/ar.h>
+
+#include <AR2/marker.h>    
+#include <AR2/featureSet.h>    
+#include <AR2/imageSet.h>    
+#include <AR2/tracking.h>    
+#include <AR2/coord.h>    
+#include <AR2/template.h>    
+#include <AR2/util.h>    
+
+#include <osgART/Marker>
+#include <osgART/GenericTracker>
+
+namespace osgART {
+
+	/**
+	* \class ARToolKit4NFTTracker.
+	* \brief
+	*/
+	class OSGART_EXPORT ARToolKit4NFTTracker : public GenericTracker
+	{
+	public:        
+	   
+		/** 
+		* \brief default constructor
+		*/
+		ARToolKit4NFTTracker(void);
+		/** 
+		* \brief destructor.
+		*
+		*/
+		~ARToolKit4NFTTracker();
+	    
+
+		/** 
+		* \brief set the openGL parameters for the projeciton matrix.
+		* 
+		* Initialize internal parameters computation for delivers an openGL Matrix (modify
+		* nothing to openGL state machine). 
+		* @param n near field of view
+		* @param f far field of view
+		*/
+		void setProjection(const double n, const double f);
+		
+		/** 
+		* \brief set the threshhold value for the algorithm.
+		* 
+		* define the threshold use for the lighting condition in artoolkit.
+		* @param thresh integer value between 0 (dark) and 100 (bright) 
+		*/
+		void setThreshhold(int thresh);
+		
+		// services
+		
+		/** 
+		* \brief initialize ARToolKit.
+		* 
+		* This core function initialize different parameters of ARToolKit: load tracked markers, initialize
+		* camera parameters.
+		* @param xsize width of the image to analyze
+		* @param ysize height of the image to analyze
+		* @param pattlist_name a file structure of the marker
+		* @param camera_name description file of the camera used (pinhole model)
+		*/
+		void init(int xsize,int ysize,char* pattlist_name="Data/markers_list.dat",char*camera_name="Data/camera_para.dat");
+		
+		/** 
+		* \brief XXX.
+		* 
+		* XXX.
+		*/
+		int addSingleMarker(std::string pattFile, double width, double centerX, double centerY);
+		
+		/** 
+		* \brief XXX.
+		* 
+		* XXX.
+		*/
+		int addMultiMarker(std::string multiFile);
+		
+		/** 
+		* \brief XXX.
+		* 
+		* XXX.
+		*/	
+		int addNFTMarker(std::string nftFile);
+		
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function apply the ARToolKit algorithm on the last image defined by setImage.
+		*/
+		void update();
+		
+		/** 
+		* \brief get the position of a marker.
+		* 
+		* Get the state of a marker since the last call of Update. User can access the 
+		* actual visibility of the marker, and if yes, the actual transformation.
+		*
+		* @param markerId integer defining the marker to get position
+		* @param visible boolean of the state of the marker: detected in last picture
+		* @param trans an euclidian matrix of the transformation.
+		* \rem trans is undefined if visible=false
+		*/
+		//void getTransform(int markerId,bool& visible, double trans[3][4]);
+		
+		/** 
+		* \brief conversion function.
+		* 
+		* utility function to transform matrix from ARToolKit representation to GL representation.
+		* @param para the input ARToolKit Matrix
+		* @param gl the computed GL Matrix
+		*/
+		void ARTransToGL(double para[3][4], double gl[16]);
+		
+		int square_tracking( ARUint8 *dataPtr, double patt_trans1[3][4] );
+	// Public Type
+	    
+	// Public Datas
+	    
+	    
+	protected: 
+	    
+	//Protected Services
+
+	//Protected Type
+
+	//Protected Data
+		
+	private:
+
+	//Private Services
+		void SetupMarkers();
+	//Private Type
+
+	//Private Data
+	std::string cparamName;
+	std::string pattListName;
+
+	int threshhold;// = 100;
+	ARParam  cparam;
+
+	ARHandle           *arHandle;
+	ARPattHandle       *arPattHandle;
+	AR3DHandle         *ar3DHandle;
+	  
+	AR2HandleT			*ar2Handle;
+	AR2SurfaceSetT		*surfaceSet;
+	  
+	};
+};
+
+#endif

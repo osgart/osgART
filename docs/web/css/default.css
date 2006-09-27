@@ -1,0 +1,343 @@
+/* CSS Document */
+@charset "utf-8";
+
+/******************************************************************************
+	technotecture labs - CSS3 style for 2005
+******************************************************************************/
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+html {
+	/* cf. http://www.hicksdesign.co.uk/journal/535/ */
+	height: 100%;
+	margin-bottom: 1px;
+}
+
+a img {
+	border:0;
+}
+
+p {
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+}
+
+body {
+	color: #333;
+	background: #eee url(background.gif) repeat-y center;
+	font-size: 100.01%;
+	font: 11px/1.6em "Lucida Grande", LucidaGrande, Lucida, Helvetica, Arial, sans-serif;
+	margin:0;
+	padding: 0;
+	text-align: left;
+}
+
+h1, h2, h3 {
+	padding: 0.5em;
+	font: bold 10pt/normal Arial, Helvetica, sans-serif;
+}
+
+a {
+	color: #333;
+}			
+
+#sidebar a:hover,
+#content a:hover {
+	background-color: #333;
+	color: #fff;
+}
+#container {			
+	width: 622px;
+	margin: 0px auto;
+	padding-left: 2px;
+	text-align: left;
+}			
+
+#content {
+	margin: 0;
+	padding: 0.5em;
+}
+
+#header {
+	text-align: center;
+	margin:0;
+}
+#footer {
+	font: normal 8pt "Lucida Grande", Arial, Helvetica, sans-serif;
+	padding: 0.5em;
+	border-top: 1px solid #ddd;
+}		
+#footer a {
+	text-decoration: none;
+}
+
+/* sidebar */
+#sidebar {
+	margin: 0;
+	float: right;
+	width: 200px;
+	height: auto;	
+	padding: 0.5em;
+	margin: 0.5em;
+	text-align: left;
+	border-left: 1px solid #ccc;
+}
+
+#sidebar h2 {
+	background-color: #ddd;
+
+}
+
+#menu {
+	font: bold 9pt "Lucida Grande", Arial, Helvetica, sans-serif;
+	height: 30px;
+	background: url(menu.gif) repeat-x top;
+	margin-bottom: 20px;
+}
+
+#menu a {
+	color: white;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+#menu a:hover {
+}
+
+#menu a.selected {
+	color: black;
+}
+
+
+/* Forms and Inputs */
+input.file, 
+#content .editor, 
+#content .forms, 
+#content .button {
+	border: 1px solid #ddd;
+	background-color: #ffe;
+}
+#content .editor {
+	width: 550px;
+}
+fieldset {
+	border: 1px dotted #ddd;
+}
+#content button {
+	background-color: white;
+	border-bottom: 1px solid #aaa;
+	border-right: 1px solid #aaa;
+}
+
+#sidebar a,
+#content a {
+	text-decoration: none;
+	background: url(dotted.gif) bottom left repeat-x;
+}
+
+#preview {
+	border: 1px dotted #666;
+}
+/* for page folding */
+.hidden {
+	display:none;
+}
+.visible {
+	display: block;
+}
+/* Error reporting */
+.error {
+	border: 1px dotted #333;
+	background-color: white;
+}
+
+
+
+#sidebar li,
+#content li {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: 2em;
+	list-style-position: outside;
+}
+
+/* Forms */
+#content input, #content textarea, #content label {
+	display: block;	
+	float: left;
+	margin-bottom: 10px;
+}
+#content label {
+	text-align: right;
+	width: 75px;
+	padding-right: 20px;
+}
+
+#content textarea {
+	height: 8em;
+}
+
+input.text {
+	border: 1px solid #aaa;
+}
+
+
+form br {
+	clear: left;
+}
+
+#sidebar ul,
+#content ul {
+	list-style-image:url(bullet-small.gif);
+}
+.even {
+	background: #eef;
+}
+.odd {
+	background: #fee;
+}
+.even:hover {
+	background: #dde;
+}			
+.odd:hover {
+	background: #edd;
+}
+th {
+	background: white;
+	border-bottom: 1px solid #999;
+}
+
+.link {
+	cursor:pointer;
+}
+
+/* Submenu */						
+#submenu {
+	font-size: 90%;
+	margin: 0;
+	height: 30px;
+	padding: 0;
+}
+
+#submenu li {
+	float: left;
+	list-style-type:none;
+	list-style-image:none;	
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;	
+}
+
+#submenu ul {
+	margin: 0;
+	padding: 0;
+}
+
+#submenu a {
+	display: block;
+	width: 80px;
+	padding: 0.25em;
+	border: 1px solid #eee;
+	background-image: none;
+}
+
+#submenu a:link, #submenu a:visited {
+	color: #aaa;
+	text-align: center;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#submenu a.selected,
+#submenu a:hover, #submenu a:active {
+  color: black;
+  text-decoration: none;
+  background-color: #eee;
+  border: 1px solid #ddd;
+}
+
+
+/* Thumbnails */
+.thumbnail {
+	float: left;
+	padding: 0.5em;
+}
+
+.thumbspacer {
+	clear: both;
+}
+
+.thumbcontainer {
+	padding: 1em;			
+	border: 1px solid #ddd;
+}
+
+/* floater */
+.right-floater {
+	float:right;
+	font-size: 90%;
+	border: 1px solid #ddd;
+	padding: 0.25em;
+	margin: 0.25em;
+}
+
+.right-floater h1 {
+	background-color: #ddd;
+	padding: 0.5em;
+}
+
+.right-floater h2 {
+	background-color: #ddd;
+	padding: 0.5em;
+}
+
+/* breadcrumb */
+#breadcrumb {
+	padding: 0.5em;
+	height: 20px;
+	font: normal 8pt "Lucida Grande", Arial, Helvetica, sans-serif;
+	color: #333;
+}
+#breadcrumb a {
+	text-decoration:none;
+	color: #999;
+}
+
+#breadcrumb a:hover {
+	background: transparent;
+	color: #999;
+}
+
+/* Article Rendering */
+.article_title {
+	margin-bottom: 0.1em;
+	border-top: 1px solid #ddd;
+	background-color: #eee;	
+	padding-top: 0.25em;
+}
+
+.article_body {
+	margin: 0;
+	padding: 0;
+}
+
+.article_footer {
+	font-size: 75%;
+	color: #aaa;
+	
+}
+
+/* Download */
+.download {
+	background: url(download.gif) left center no-repeat; 
+	padding: 1em;
+	padding-left: 20px;
+}
+
+/* clearing container */
+.cc {
+	/*clear: both;*/
+}

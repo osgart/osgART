@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<makefile>
+	<include file="presets/simple.bkl"/>
+	<dll id="osgART" template="simple">
+
+		<cxx-rtti>on</cxx-rtti>
+		<warnings>max</warnings>
+		<include>../include</include>
+		<include>/home/seichter/Projects/artoolkit/include</include>
+
+		<sources> $(addPrefixToList('../src/osgART/','Foundation.cpp Marker.cpp VideoBillboard.cpp ARToolKitTracker.cpp MultiMarker.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp PhantomModel.cpp VideoPlane.cpp VideoTexCallback.cpp VideoTexture.cpp GenericTracker.cpp SingleMarker.cpp VideoTextureRectangle.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp VideoTexRectCallback.cpp ARTTransformCallback.cpp'))</sources>
+
+		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
+		<sys-lib>ARgsub_lite</sys-lib>
+		<sys-lib>AR</sys-lib>
+		<sys-lib>ARMulti</sys-lib>
+
+	</dll>
+
+	<exe id="osgART_Example">
+
+		<cxx-rtti>on</cxx-rtti>
+		<app-type>console</app-type>
+
+		<library>osgART</library>
+		
+		<sys-lib>osg</sys-lib>
+		<sys-lib>osgDB</sys-lib>
+		<sys-lib>osgProducer</sys-lib>
+		<sys-lib>Producer</sys-lib>
+		<include>../include</include>
+		<sources>$(addPrefixToList('../src/osgARTTest/','osgARTTest.cpp'))</sources>
+	</exe>
+
+	<module id="osgart_artoolkit">
+		<cxx-rtti>on</cxx-rtti>
+		<sources>$(addPrefixToList('../src/osgART/Video/ARToolKit/','ARToolKitVideo.cpp  Main.cpp'))</sources>
+		<include>/home/seichter/Projects/artoolkit/include</include>
+
+		<include>../include</include>
+		<include>.</include>
+		
+		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
+
+		<library>osgART</library>
+
+		<sys-lib>ARvideo</sys-lib>	
+		<sys-lib>osg</sys-lib>
+		<sys-lib>gstreamer-0.10</sys-lib>
+		<sys-lib>gobject-2.0</sys-lib>		
+	</module>
+
+
+	<module id="osgart_dummyimage">
+		<cxx-rtti>on</cxx-rtti>
+		<sources>$(addPrefixToList('../src/osgART/Video/DummyImage/','DummyImageVideo.cpp  Main.cpp'))</sources>
+
+		<include>../include</include>
+		<include>.</include>
+		
+		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
+
+		<library>osgART</library>
+
+		<sys-lib>osg</sys-lib>
+		<sys-lib>osgDB</sys-lib>
+	</module>
+
+</makefile>

@@ -1,0 +1,173 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  VidCaptureVideo
+*  \brief A Video class for VidCapture input.
+*
+* 
+* A wrapper of the VidCapture library:
+* http://codevis.com/vidcapture/index.html
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 01/12/07
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_VIDCAPTUREVIDEO
+#define OSGART_VIDCAPTUREVIDEO
+
+/* --------------------------------------------------------------------------
+* include file
+*----------------------------------------------------------------------------*/
+
+//standard include
+
+#include <iostream>
+#include <string>
+
+//graphics include
+#include <osgART/Export>
+#include <OpenThreads/Mutex>
+
+//personnal include
+#include <osgART/GenericVideo>
+#include "VidCapture.h"
+
+
+/** --------------------------------------------------------------------------
+* class VidCaptureVideo.
+*----------------------------------------------------------------------------*/
+
+class VidCaptureVideo: public osgART::GenericVideo
+{
+public:        
+// Standard Services
+    
+    /** 
+    * \brief default constructor.
+    * The default constructor.
+    * @param VideoName a string definition of the Video background. See documentation
+    * of ARToolKit for further details.
+    */
+    VidCaptureVideo(int id_cam,int _xsize=640,int _ysize=480,osgART::PixelFormatType pft=osgART::VIDEOFORMAT_RGB24,osgART::FrameRateType frt=osgART::VIDEOFRAMERATE_30);
+
+    /** 
+    * \brief copy constructor.
+    *
+    // VidCaptureVideo(const VidCaptureVideo &);
+    
+    /** 
+    * \brief destructor.
+    *
+    */
+    ~VidCaptureVideo();   
+    
+    /** 
+    * \brief affectation operator.
+    *
+    */
+    VidCaptureVideo& operator=(const VidCaptureVideo &);
+    
+// Interface
+   
+    // mutator
+
+    // services
+    
+    /**
+    * \brief open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	void open();
+	
+	/**
+    * \brief close the Video stream.
+    * Terminate the connection with the Video stream and clean handle.
+    */
+	void close();
+	
+	/**
+    * \brief start the Video stream grabbing.
+    * Start to get image from the Video stream. In function of the implementation on different
+    * platform, this function can run a thread, signal or real-time function. 
+    */
+	void start();
+	
+	/**
+    * \brief stop the Video stream grabbing.
+    * Stop to get image from the Video stream. In function of the implementation on different
+    * platform, this function can stop a thread, signal or real-time function. 
+    */
+	void stop();
+	
+	/**
+    * \brief update the Video stream grabbing.
+    * Try to get an image of the Video instance, usable by your application.
+    */
+	void update();
+	
+	inline virtual void releaseImage() {};
+	
+	bool IsRunning() {return isRunning;};
+	
+	unsigned char** getRefImage() {return &newImage;};
+	
+	bool haveNewImage;
+	CVImage* lastCVImage;
+	CVImage* lastCVImage2;
+	
+// Public Type
+    
+// Public Datas
+    
+    
+protected: 
+    
+//Protected Services
+
+//Protected Type
+
+//Protected Data
+	
+private:
+
+//Private Services
+
+
+//Private Type
+
+//Private Data
+
+	CVVidCapture* vidCap;
+	int vidFormat;
+	int vidFrameRate;
+	
+	int camIndex;
+	bool isRunning;
+	unsigned char* newImage;
+	OpenThreads::Mutex internalMutex;
+	
+	// Global test device name
+	char gDeviceName[256];
+
+	// Global frame count
+	int gFrameNum;   // Offset
+
+	// Global device number
+	int gDevNum; 
+};
+
+#endif

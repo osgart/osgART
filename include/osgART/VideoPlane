@@ -1,0 +1,74 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+#ifndef OSGART_VIDEOPLANE
+#define OSGART_VIDEOPLANE
+
+// graphics include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericVideoObject"
+#include "osgART/GenericVideo"
+
+namespace osgART {
+
+	/**
+	* \class VideoPlane.
+	*
+	*/
+	class OSGART_EXPORT VideoPlane : public GenericVideoObject
+	{
+	public:        
+		/** 
+		 * \brief default constructor.
+		 * \param videoId the number of the video used for the background
+		 */
+		VideoPlane(int videoId = 0);
+		
+		
+		VideoPlane(const GenericVideo& video);
+	    
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~VideoPlane();
+
+		/**
+		 * Initialize
+		 */    
+		virtual void init();
+
+	protected:
+		
+		osg::Node* buildPlane();
+		osg::Geode* buildGeometry();
+		
+		void setTransparency(float alpha);
+
+	private:
+	
+		osg::Group*	m_root;
+		
+		osg::MatrixTransform*	m_ModelMatrix;
+		osg::Geometry*			m_geometry;
+		osg::Geode*				m_backGeode;
+		
+		float m_width;
+		float m_height;
+		
+	};
+};
+#endif
+

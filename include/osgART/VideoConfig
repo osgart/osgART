@@ -1,0 +1,83 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_VIDEOCONFIG
+#define OSGART_VIDEOCONFIG 1
+
+#include "osgART/Export"
+
+namespace osgART {
+
+	/** 
+	* \brief Pixel Format type 
+	*
+	*/
+	typedef enum {
+		VIDEOFORMAT_RGB555 = 0,
+		VIDEOFORMAT_RGB565,
+		VIDEOFORMAT_RGB24,
+		VIDEOFORMAT_RGB32,
+		VIDEOFORMAT_BGR24,
+		VIDEOFORMAT_BGRA32,
+		VIDEOFORMAT_ARGB32,
+		VIDEOFORMAT_ABGR32,
+		VIDEOFORMAT_Y8,
+		VIDEOFORMAT_Y16,
+		VIDEOFORMAT_YUV444,
+		VIDEOFORMAT_YUV422,
+		VIDEOFORMAT_YUV422P,
+		VIDEOFORMAT_YUV411,
+		VIDEOFORMAT_YUV411P,
+		VIDEOFORMAT_YUV420P,
+		VIDEOFORMAT_YUV410P,
+		VIDEOFORMAT_GREY8,
+		VIDEOFORMAT_MJPEG,
+		VIDEOFORMAT_ANY 
+	} PixelFormatType;
+	
+	
+	/** 
+		* \brief Framerate type - define frame rate of the video flux
+		*
+		*/
+	typedef enum {
+		VIDEOFRAMERATE_1_875,
+		VIDEOFRAMERATE_3_75,
+		VIDEOFRAMERATE_5,
+		VIDEOFRAMERATE_7_5,
+		VIDEOFRAMERATE_10,
+		VIDEOFRAMERATE_15,
+		VIDEOFRAMERATE_30,
+		VIDEOFRAMERATE_PAL,
+		VIDEOFRAMERATE_NTSC,
+		VIDEOFRAMERATE_50,	
+		VIDEOFRAMERATE_60,
+		VIDEOFRAMERATE_120,
+		VIDEOFRAMERATE_240,
+		VIDEOFRAMERATE_ANY,
+		VIDEOFRAMERATE_MAX
+	} FrameRateType;
+	
+	
+	typedef struct {
+
+		int id;
+		int	width, height;
+		FrameRateType framerate;
+		PixelFormatType type;
+
+		char* deviceconfig;
+	
+	} VideoConfiguration;
+	
+
+};
+
+
+#endif

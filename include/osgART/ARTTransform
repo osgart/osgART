@@ -1,0 +1,64 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_ARTTRANSFORM
+#define OSGART_ARTTRANSFORM 1
+
+#include "osgART/Export"
+#include "osgART/Marker"
+
+#include <osg/MatrixTransform>
+
+namespace osgART {
+
+	/**
+	 * Wrapper for AR Toolkit transformation. This class exposes the 
+	 * model matrix of AR Toolkit as a transform node for OpenSceneGraph.
+	 */
+	class OSGART_EXPORT ARTTransform : public osg::MatrixTransform
+	{
+	public:
+
+		/** 
+		 * \brief default constructor.
+		 * The default constructor. This transformation is automatically updated by
+		 * the actual position of the marker choosed in argument.
+		 * \param markerID the Marker identification.
+		 * \param trackerId the Tracker identification.
+		 */
+		ARTTransform(int markerID = 0, int trackerId = 0);
+		
+		/** 
+		 * Destructor.
+		 */
+		~ARTTransform();
+	    
+		/** 
+		 * Assignemnt operator.
+		 *
+		 */
+		ARTTransform& operator=(const ARTTransform &);
+	    
+
+		/**
+		 * Returns the associated marker.
+		 * \return instance of the marker associated with this Transform
+		 */
+		Marker* getMarker();
+		
+
+	private:
+
+		Marker* m_marker;
+
+	};
+
+};
+
+#endif // !defined ARTTransform_h

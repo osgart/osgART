@@ -1,0 +1,84 @@
+/*  --------------------------------------------------------------------------
+ *   Copyright (C) 2004 Hitlab NZ.
+ *   The distribution policy is describe on the Copyright.txt furnish 
+ *    with this library.
+ *   -------------------------------------------------------------------------*/
+/**
+*  \file  VideoBillboard
+*  \brief Defined a Video Background Node usable for AR.
+*
+* 
+* Defined an OpenSceneGraph geode for creating a VideoBillboard Object.
+* support a billboard object with dynamic texture.
+* By default the object has a size of 1x1 in the XY plane.
+*	
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*
+*/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_VIDEOBILLBOARD
+#define OSGART_VIDEOBILLBOARD
+
+//graphics include
+
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osgART/Export>
+
+// local include
+#include "osgART/GenericVideoObject"
+
+namespace osgART {
+
+	/**
+	 * \class VideoBillboard.
+	 *
+	 */
+	class OSGART_EXPORT VideoBillboard : public GenericVideoObject
+	{
+	public:            
+		/** 
+		* \brief default constructor.
+		* \param videoId
+		*/
+		VideoBillboard(int videoId=0);
+	    
+		/**
+		* \brief destructor.
+		*/
+		virtual ~VideoBillboard();
+
+		/**
+		* Internal initialisation
+		*/
+		virtual void init();
+	    
+	protected:
+
+		osg::Node* buildBillboard();
+		osg::Geode* buildGeometry();
+		
+		void setTransparency(float alpha);
+
+		osg::Group*	m_root;
+		
+		osg::MatrixTransform*	m_ModelMatrix;
+		osg::Geometry*			m_geometry;
+		osg::Geode*				m_backGeode;
+		
+		float m_width;
+		float m_height;
+	};
+
+};
+#endif 

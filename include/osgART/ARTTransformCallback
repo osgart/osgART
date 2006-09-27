@@ -1,0 +1,39 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_ARTTRANSFORMCALLBACK
+#define OSGART_ARTTRANSFORMCALLBACK 1
+
+// graphics include
+#include <osg/MatrixTransform>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Marker"
+
+namespace osgART {
+
+	/**
+	 * \class ARTTransformCallback
+	 */
+	class ARTTransformCallback : public osg::NodeCallback {
+	public:
+
+		ARTTransformCallback(Marker* marker);
+	
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+	protected:
+		Marker* m_marker;
+		
+	};
+
+};
+#endif
+

@@ -1,0 +1,56 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_VIDEOTEXTURE
+#define OSGART_VIDEOTEXTURE 1
+
+// OpenSceneGraph include
+#include <osg/ShapeDrawable>
+#include <osg/Geometry>
+#include <osg/TextureRectangle>
+#include <osg/Texture2D>
+
+// local include
+#include "osgART/Export"
+
+namespace osgART {
+
+	/**
+	 * class VideoTexture.
+	 *
+	 */
+	class OSGART_EXPORT VideoTexture : public osg::Texture2D
+	{
+	public:
+	 
+	    /** 
+	     * Default constructor.
+	     * \param video video ID of the video attached to this texture.
+	     */
+	    VideoTexture(int video);
+	    
+	    
+	    /**
+	     * Destructor.
+	     */
+	    virtual ~VideoTexture();
+
+	protected:
+
+		int m_texWidth;
+		int m_texHeight;
+		int m_vidWidth;
+		int m_vidHeight;
+		int videoId;
+	};
+
+}
+
+
+#endif

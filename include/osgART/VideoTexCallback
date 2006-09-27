@@ -1,0 +1,36 @@
+#ifndef OSGART_VIDEOTEXCALLBACK
+#define OSGART_VIDEOTEXCALLBACK 1
+
+// OSG include
+#include <osg/Texture2D>
+
+// local include
+#include "osgART/Export"
+
+namespace osgART {
+
+	class OSGART_EXPORT VideoTexCallback : public osg::Texture2D::SubloadCallback {
+	public:
+
+		VideoTexCallback(int video,int vw, int vh, int tw, int th);
+		
+		void setAlphaBias(float alphabias);
+		float getAlphaBias() const;
+		
+
+		virtual void load(const osg::Texture2D& texture, osg::State& state) const;	
+		virtual void subload(const osg::Texture2D& texture, osg::State& state) const;
+
+	protected:
+
+		float m_alphabias;
+
+		int m_vidWidth;
+		int m_vidHeight;
+		int m_texWidth;
+		int m_texHeight;
+		int videoId;
+	};
+};
+
+#endif

@@ -1,0 +1,204 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_GENERICVIDEO
+#define OSGART_GENERICVIDEO 1
+
+
+// OSG include
+#include <osg/ref_ptr>
+#include <osg/Image>
+#include <osg/Referenced>
+
+// Local include
+#include "osgART/Export"
+#include "osgART/VideoConfig"
+
+
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
+
+namespace osgART {
+
+	/**
+	 * GenericVideo encapsulates different capturing devices and sources. 
+	 * 
+	 */	
+	class OSGART_EXPORT GenericVideo : public osg::Referenced
+	{
+	public:       
+
+		    
+		/** 
+		* \brief default constructor.
+		* The default constructor.
+		*/
+		GenericVideo();
+	    
+		/** 
+		* \brief copy constructor.
+		*
+		*/
+		GenericVideo(const GenericVideo &);
+	    
+	    
+		/** 
+		* \brief affectation operator.
+		*
+		*/
+		GenericVideo& operator = (const GenericVideo &);
+	   
+		/**
+		* \brief x size of the GenericVideo.
+		* @return the width of the GenericVideo stream.
+		*/
+		inline int getWidth() const {
+			return xsize;
+		}
+		
+		/**
+		* \brief y size of the GenericVideo.
+		* @return the height of the GenericVideo stream.
+		*/
+		inline int getHeight() const {
+			return ysize;
+		}
+
+		/**
+		* \brief pixel size of the GenericVideo.
+		* @return the pixel size of the GenericVideo stream in number of components.
+		*/
+		inline int pixelSize() const {
+			return pixelsize;
+		}
+
+		/**
+		* \brief return the type of the pixel format
+		* @return pixel format of the video image returned: from RGB to YUV format. 
+		*/
+		inline PixelFormatType pixelFormat() const {
+			return pixelformat;
+		}
+		
+		/**
+		* \brief return the type of the internal pixel format
+		* @return pixel format use internally, grabbed from camera: from RGB to YUV format.
+		*/
+		inline PixelFormatType pixelInternalFormat() const {
+			return internalpixelformat;
+		}
+
+		/**
+		* \brief return the frame rate
+		* @return actual frame rate used by the camera
+		*/
+		inline FrameRateType frameRate() const {
+			return framerate;
+		}
+		
+		/**
+		* \brief get GenericVideo id.
+		* @return a GenericVideo identifier.
+		*/
+		virtual int getId() const;
+
+		// services
+	    
+		/**
+		* \brief open the GenericVideo stream.
+		* Access the GenericVideo stream (hardware or file) and get an handle on it.
+		*/
+		virtual void open() = 0;
+		
+		/**
+		* \brief close the  video stream.
+		* Terminate the connection with the video stream and clean handle.
+		*/
+		virtual void close() = 0;
+		
+		/**
+		* \brief start the  video stream grabbing.
+		* Start to get image from the  video stream. In function of the implementation on different
+		* platform, this function can run a thread, signal or real-time function. 
+		*/
+		virtual void start() = 0;
+		
+		/**
+		* \brief stop the  video stream grabbing.
+		* Stop to get image from the  video stream. In function of the implementation on different
+		* platform, this function can stop a thread, signal or real-time function. 
+		*/
+		virtual void stop() = 0;
+		
+		/**
+		* \brief update the  video stream grabbing.
+		* Try to get an image of the  video instance, usable by your application.
+		*/
+		virtual void update() = 0;
+		
+		/**
+		 * \brief get an image.
+		 * Get the last image retrieved since call of update.
+		 */
+		unsigned char* getImageRaw();
+		
+		/**
+		 * \brief get an image.
+		 * Get the last image retrieved since call of update.
+		 */
+		osg::Image* getImage();
+		
+		
+		/**
+		* \brief force a release of the frame.
+		* Use when user explicitly want to release the memory area of the grabbed GenericVideo. Otherwise
+		* generally release at the next call of update.
+		*/
+		virtual void releaseImage() = 0;
+		
+		inline OpenThreads::Mutex& getMutex() {
+			return m_mutex;		
+		}
+		
+	   
+	protected:
+	
+		/** 
+		* \brief destructor.
+		*
+		*/
+		virtual ~GenericVideo();   
+ 
+
+		//Protected Data		
+		unsigned char* image;
+		
+		
+		osg::ref_ptr<osg::Image> m_image;
+		
+		int xsize;
+		int ysize;	
+		int pixelsize;
+		PixelFormatType pixelformat;
+		PixelFormatType internalpixelformat;
+		FrameRateType framerate;
+		
+		int videoId;
+			
+		static int videoNum;
+		
+		// used for locking
+		OpenThreads::Mutex m_mutex;
+
+	};
+
+};
+
+#endif

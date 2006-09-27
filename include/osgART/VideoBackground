@@ -1,0 +1,75 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  VideoBackground
+*  \brief Defined a Video Background Node usable for AR.
+*
+* 
+* Defined an OpenSceneGraph geode for creating a VideoBackground Object.
+* This class derived from VideoLayer, just created for commodity aspect.
+*	
+*   \remark the layer value is fixed to a RenderBin of 0.
+*
+*   History :
+*
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 01/12/07
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+
+#ifndef OSGART_VIDEOBACKGROUND
+#define OSGART_VIDEOBACKGROUND
+
+
+//local include
+#include "osgART/Export"
+#include "osgART/VideoLayer"
+
+namespace osgART {
+
+	/**
+	 * VideoBackground for video based AR applications. This node
+	 * can be used to render video as a background image.
+	 */
+
+	class OSGART_EXPORT VideoBackground : public VideoLayer
+	{
+	public:        
+	   
+		/** 
+		* Default constructor. 
+		* \param videoId the number of the video used for the background
+		*/    
+		VideoBackground(int videoId = 0);
+
+		/**
+		 * Destructor.
+		 */
+		virtual ~VideoBackground();
+
+	};
+	
+	// Implementation
+	inline VideoBackground::VideoBackground(int videoId) 
+		: VideoLayer(videoId, 1)
+	{
+	}
+
+	inline VideoBackground::~VideoBackground() 
+	{
+	} 
+
+
+};
+
+#endif

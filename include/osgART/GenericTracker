@@ -1,0 +1,139 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+
+#ifndef OSGART_GENERICTRACKER
+#define OSGART_GENERICTRACKER
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericVideo"
+#include "osgART/Marker"
+
+
+namespace osgART {
+
+	
+	typedef struct {
+	    int      width, height;
+    	double   mat[3][4];
+	    double   dist_factor[4];
+	} CameraParameter;
+
+	/**
+	 * \class GenericTracker.
+	 * 
+	 * Base class for a tracker which in the context of AR is an entity 
+	 * that connects video streams, markers and their representation in
+	 * the virtual environment.
+	 */
+	class OSGART_EXPORT GenericTracker
+	{
+	public:        
+		/**
+		 * \brief Constructor.
+		 *
+		 */
+		GenericTracker();
+	    
+		/** 
+		 * \brief destructor.
+		 *
+		 */
+		virtual ~GenericTracker();
+
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function apply the Generic algorithm on the last image defined by setImage.
+		*/
+		virtual void update() = 0;		
+		
+		
+		/**
+		 *
+		 */
+		virtual bool init(int xsize, int ysize, 
+			const std::string& pattlist_name="Data/markers_list.dat",
+			const std::string& camera_name="Data/camera_para.dat") = 0;
+	  
+
+		/**
+		* \brief get GenericVideo id.
+		* @return a GenericVideo identifier.
+		*/
+		int getId();
+
+
+		/**
+ 		 * Return the camera model parameters.
+		 * \return cameraparameter model identical to that of AR Toolkit
+		 */
+		const CameraParameter& getIntrinsicParameters() const;
+		
+		/** 
+		* \brief Aet the image to analyzed.
+		* 
+		* \param image the new image for the tracking 
+		*/
+		void setImageRaw(unsigned char* image);
+	    
+		/** 
+		* \brief set the image to analyzed.
+		* 
+		* @param video the video object to use
+		*/
+		void setImage(GenericVideo* video);
+	    
+		/** 
+		* \brief XXX.
+		* 
+		* XXX.
+		*/
+		Marker* getMarker(int markerId);
+		
+		unsigned int getMarkerCount();
+		
+		/** 
+		* \brief get the openGL projection matrix.
+		* 
+		* delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
+		* @param proj the openGL projection matrix computed
+		*/
+		virtual const double* getProjectionMatrix() const;
+		
+	// Public Type
+	    
+	// Public Datas
+	    
+	    
+	protected:
+
+		CameraParameter  	cparam;
+ 
+	    
+
+		//Protected Data
+		std::vector<Marker*> pattList;
+		int patternNum;
+
+		unsigned char *image;
+		double m_projectionMatrix[16];
+	  
+	private:
+
+		int trackerId;
+		static int trackerNum;
+	};
+
+};
+
+#endif
+
+
