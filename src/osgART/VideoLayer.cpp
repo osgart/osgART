@@ -69,7 +69,7 @@ public:
 		_video(video)
     {
 		if (video->getImage()) {
-			std::cout << (long)video->getImage()->data() << std::endl;
+			// std::cout << (long)video->getImage()->data() << std::endl;
 		}
     }
 

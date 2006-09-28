@@ -36,11 +36,6 @@ namespace osgART {
 		*/
 		MultiMarker();
 	    
-		/**
-		* \brief destructor.
-		*/
-		virtual ~MultiMarker();    
-
 		bool initialise(const std::string& multiFile);
 		
 		virtual void setActive(bool a);
@@ -56,6 +51,12 @@ namespace osgART {
 		
 	    
 	protected: 
+	
+		/**
+		* \brief destructor.
+		*/
+		virtual ~MultiMarker();    
+
 
 		ARMultiMarkerInfoT* m_multi;
 			

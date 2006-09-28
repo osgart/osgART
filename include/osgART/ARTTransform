@@ -35,11 +35,6 @@ namespace osgART {
 		ARTTransform(int markerID = 0, int trackerId = 0);
 		
 		/** 
-		 * Destructor.
-		 */
-		~ARTTransform();
-	    
-		/** 
 		 * Assignemnt operator.
 		 *
 		 */
@@ -52,10 +47,17 @@ namespace osgART {
 		 */
 		Marker* getMarker();
 		
+	protected:
+	
+		/** 
+		 * Destructor.
+		 */
+		virtual ~ARTTransform();
+		
 
 	private:
 
-		Marker* m_marker;
+		osg::ref_ptr<Marker> m_marker;
 
 	};
 

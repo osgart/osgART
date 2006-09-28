@@ -18,7 +18,7 @@
 
 namespace osgART {
 
-	ARToolKitTracker::ARToolKitTracker():
+	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
 		threshold(100)
 	{
 	}
@@ -142,13 +142,13 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		Marker* singleMarker = new SingleMarker();
 		if (!static_cast<SingleMarker*>(singleMarker)->initialise(pattFile, width, center))
 		{
-			delete singleMarker;
+			// delete singleMarker;
 			return -1;
 		}
 
-		pattList.push_back(singleMarker);
+		m_markerlist.push_back(singleMarker);
 
-		return pattList.size() - 1;
+		return m_markerlist.size() - 1;
 
 	}
 
@@ -158,22 +158,19 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		
 		if (!static_cast<MultiMarker*>(multiMarker)->initialise(multiFile))
 		{
-			delete multiMarker;
+			// delete multiMarker;
 			return -1;
 		}
 
-		pattList.push_back(multiMarker);
+		m_markerlist.push_back(multiMarker);
 
-		return pattList.size() - 1;
+		return m_markerlist.size() - 1;
 
 	}
 
-	void ARToolKitTracker::setThreshold(int thresh)
-	{
-		// jcl64: Clamp to 0-255
-		if (thresh < 0) threshold = 0;
-		else if (thresh > 255) threshold = 255;
-		else threshold = thresh;
+	void ARToolKitTracker::setThreshold(int thresh)	{
+		// jcl64: Clamp to 0-255, hse25: use osg func
+		threshold = osg::clampBetween(thresh,0,255);		
 	}
 
 	int ARToolKitTracker::getThreshold() {
@@ -198,10 +195,6 @@ std::string trim(std::string& s,const std::string& drop = " ")
 	}
 
 
-	unsigned int ARToolKitTracker::getMarkerCount() {
-		return pattList.size();
-	}
-
 	void ARToolKitTracker::update()
 	{	
 
@@ -222,11 +215,12 @@ std::string trim(std::string& s,const std::string& drop = " ")
 			
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
-
-		for (std::vector<Marker*>::const_iterator iter = pattList.begin(); iter != pattList.end(); iter++)		
+		for (MarkerList::const_iterator iter = m_markerlist.begin(); 
+			iter != m_markerlist.end(); 
+			iter++)		
 		{
 			
-			Marker* currentMarker = (*iter);
+			Marker* currentMarker = (*iter).get();
 
 			if (currentMarker->getType() == Marker::ART_SINGLE)
 			{

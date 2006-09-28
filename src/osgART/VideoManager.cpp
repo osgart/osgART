@@ -111,7 +111,9 @@ namespace osgART {
 			_ret = (_createfunc) ? _createfunc(config) : 0L; 
 
 			if (_ret) {
+				
 				VideoManager::getInstance()->addVideoStream(_ret);
+
 			} else {
 				std::cerr << "Could not create VideoPlugin " << std::endl;
 			}

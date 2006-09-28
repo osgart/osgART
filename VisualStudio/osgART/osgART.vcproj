@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libARd.lib glu32.lib libARgsub_lited.lib libARMultid.lib libARvideod.lib"
+				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libARd.lib glu32.lib libARgsub_lited.lib libARMultid.lib"
 				OutputFile="../../bin/osgARTd.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
@@ -124,9 +124,6 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
-			<File
-				RelativePath="..\..\src\osgART\Foundation.cpp">
-			</File>
 			<Filter
 				Name="Video"
 				Filter="">
@@ -143,6 +140,12 @@
 				<File
 					RelativePath="..\..\src\osgART\ARToolKit4NFTTracker.cpp">
 					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
@@ -151,6 +154,12 @@
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\ARToolKit4Tracker.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
@@ -176,6 +185,12 @@
 				<File
 					RelativePath="..\..\src\osgART\MultiART4Marker.cpp">
 					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
@@ -188,6 +203,12 @@
 				<File
 					RelativePath="..\..\src\osgART\NFTART4Marker.cpp">
 					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
@@ -196,6 +217,12 @@
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\SingleART4Marker.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
@@ -230,11 +257,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\VideoLoadModel.cpp">
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\VideoPlane.cpp">
@@ -265,17 +287,18 @@
 					RelativePath="..\..\src\osgART\ShadowRenderer.cpp">
 				</File>
 			</Filter>
+			<Filter
+				Name="Core"
+				Filter="">
+				<File
+					RelativePath="..\..\src\osgART\Foundation.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\..\include\osgART\Export">
-			</File>
-			<File
-				RelativePath="..\..\include\osgART\Foundation">
-			</File>
 			<Filter
 				Name="Video"
 				Filter="">
@@ -461,6 +484,19 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoTextureRectangle">
+				</File>
+			</Filter>
+			<Filter
+				Name="Core"
+				Filter="">
+				<File
+					RelativePath="..\..\include\osgART\Export">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\Foundation">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\PluginBase">
 				</File>
 			</Filter>
 		</Filter>

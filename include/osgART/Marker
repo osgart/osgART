@@ -9,21 +9,24 @@
 #ifndef OSGART_MARKER
 #define OSGART_MARKER 1
 
-// standard include
+// STL headers
 #include <string>
 #include <vector>
 
-// graphics include
+// local headers
 #include "osgART/Export"
-#include "osg/Matrix"
-#include "osg/Vec3"
+
+// OSG headers
+#include <osg/Matrix>
+#include <osg/Vec3>
+#include <osg/Referenced>
 
 namespace osgART {
 
 	/**
 	* class Marker.
 	*/
-	class OSGART_EXPORT Marker
+	class OSGART_EXPORT Marker : public osg::Referenced
 	{
 	public:
 
@@ -40,11 +43,6 @@ namespace osgART {
 		*
 		*/
 		Marker();
-	  
-		/**
-		* \brief destructor.
-		*/
-		virtual ~Marker();    
 
 		/**
 		* Return the type of the Marker. 
@@ -120,8 +118,17 @@ namespace osgART {
 		* \return an instance of a marker
 		*/
 		//static Marker* Marker::create(MarkerType type);
-	    
+		
+		
+
 	protected: 
+	
+		/**
+		* \brief destructor.
+		*/
+		virtual ~Marker(); 
+		
+	protected:
 		
 		void updateTransform(double trans[3][4]);
 		

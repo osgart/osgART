@@ -4,10 +4,8 @@
 
 using namespace osgART;
 
-#include <iostream>
 
-
-ARToolKitVideo::ARToolKitVideo(const char *name) : 
+ARToolKitVideo::ARToolKitVideo(const char *name) : osgART::GenericVideo(),
 	videoName(name),
 	video(0L)
 {
@@ -46,9 +44,9 @@ ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &)
 {	    
 }
 
-ARToolKitVideo::~ARToolKitVideo(void)
+ARToolKitVideo::~ARToolKitVideo() 
 {
-	
+    this->close();
 }
 
 ARToolKitVideo& 
@@ -70,8 +68,12 @@ ARToolKitVideo::open()
 void
 ARToolKitVideo::close()
 {
-	if (video) {
-		ar2VideoClose(video);
+	if (NULL != video) {
+		int _ret = ar2VideoClose(video);
+		
+		if (0 == _ret) {
+			video = NULL;
+		}
 	}
 }
 

@@ -64,11 +64,7 @@ public:
     */
   //  DSVLVideo(const DSVLVideo &);
     
-    /** 
-    * \brief destructor.
-    *
-    */
-    virtual ~DSVLVideo();   
+  
     
     /** 
     * \brief affectation operator.
@@ -110,6 +106,14 @@ public:
 	virtual void update();
 	
 	inline virtual void releaseImage() {};
+	
+protected:
+
+    /** 
+    * \brief destructor.
+    *
+    */
+    virtual ~DSVLVideo(); 
 	
 	
 private:	

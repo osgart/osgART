@@ -30,7 +30,7 @@ namespace osgART {
 		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
 	protected:
-		Marker* m_marker;
+		osg::ref_ptr<Marker> m_marker;
 		
 	};
 

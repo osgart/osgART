@@ -37,10 +37,6 @@ namespace osgART {
 		 */
 		SingleMarker();
 		
-		/**
-		 * \brief destructor.
-		 */
-		virtual ~SingleMarker();	    
 	    
 		bool initialise(const std::string& pattFile, double width, double center[2]);
 
@@ -56,7 +52,14 @@ namespace osgART {
 		MarkerType getType() const;
 	
 	    
-	protected: 
+	protected:
+	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~SingleMarker();	    
+
+	 
 	    int             patt_id;
 		double          patt_width;
 		double          patt_center[2];

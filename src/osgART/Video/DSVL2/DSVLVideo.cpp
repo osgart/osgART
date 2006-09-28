@@ -1,5 +1,3 @@
-
-
 #include "DSVLVideo"
 
 #include <iostream>
@@ -7,9 +5,11 @@
 using namespace osgART;
 
 
-DSVLVideo::DSVLVideo(const char *name) 
-	: videoName(name)
+DSVLVideo::DSVLVideo(const char *name) : 
+	GenericVideo(),
+	videoName(name)
 {
+	CoInitialize(NULL);
 	pixelsize=4;
 	pixelformat=VIDEOFORMAT_BGRA32;
 }
@@ -20,8 +20,8 @@ DSVLVideo::DSVLVideo(const char *name)
 }*/
 
 DSVLVideo::~DSVLVideo(void)
-{
-    
+{	
+	this->close();    
 }
 
 DSVLVideo& 
@@ -30,12 +30,9 @@ DSVLVideo::operator=(const DSVLVideo &)
     return *this;
 }
 
-
 void
 DSVLVideo::open()
-{
-	CoInitialize(NULL);
-	
+{	
 	graphManager = new DSVL_VideoSource();
 	
 	if(FAILED(graphManager->BuildGraphFromXMLFile((char*)videoName.c_str())))
@@ -58,7 +55,9 @@ DSVLVideo::open()
 	xsize = (int) frame_width;
 	ysize = (int) frame_height;
 
+	/* 
 	m_image->allocateImage(xsize, ysize, 1, GL_BGRA, GL_UNSIGNED_BYTE, 1);
+	*/
 
 }
 
@@ -67,9 +66,14 @@ void
 DSVLVideo::close()
 {
 	this->stop();
+	if (graphManager) {
+		
+		delete graphManager;
+		graphManager = 0L;
+	}
 
-	delete graphManager;
 }
+
 void
 DSVLVideo::start()
 {	
@@ -85,7 +89,6 @@ DSVLVideo::start()
 	// not using the timeout
 	wait_result = graphManager->WaitForNextSample();
 	
-	// 
 	graphManager->CheckoutMemoryBuffer(&(m_Handle), &newImage, NULL, NULL, NULL, &(m_Handle.t));
 }
 
@@ -125,19 +128,11 @@ DSVLVideo::update()
 	}
 	
 	image = newImage;
-
-	if (image) 
+#if 0
+	if (image && m_image.valid()) 
 		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, image, osg::Image::NO_DELETE, 1);	
+#endif
+
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////////
-// PROTECTED : Services
-///////////////////////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////////////////////
-// PRIVATE : Services
-///////////////////////////////////////////////////////////////////////////////

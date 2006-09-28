@@ -8,7 +8,7 @@
  */
  
 #ifndef OSGART_SINGLEART4MARKER
-#define OSGART_SINGLEART4MARKER
+#define OSGART_SINGLEART4MARKER 1
 
 // STL include
 #include <string>

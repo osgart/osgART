@@ -36,7 +36,6 @@ namespace osgART {
 	* ARToolKitTracker
 	*
 	*/
-
 	class OSGART_EXPORT ARToolKitTracker : public GenericTracker
 	{
 
@@ -46,12 +45,6 @@ namespace osgART {
 		* \brief constructor.
 		*/
 		ARToolKitTracker(void);
-
-		/** 
-		* \brief destructor.
-		*/
-		~ARToolKitTracker();
-	       
 
 		/** 
 		* \brief set the openGL parameters for the projection matrix.
@@ -120,10 +113,17 @@ namespace osgART {
 		*/
 		void update();
 		
-		unsigned int getMarkerCount();
+	protected:
+	
+		/** 
+		 * \brief destructor.
+		 */
+		~ARToolKitTracker();
 		
 	private:
-
+	
+	
+		
 		bool setupMarkers(const std::string& patternListFile);
 
 

@@ -6,16 +6,18 @@
 
 namespace osgART {
 
-	ARTTransform::ARTTransform(int markerID,int trackerId): osg::MatrixTransform()
+	ARTTransform::ARTTransform(int markerID,int trackerId) : 
+		osg::MatrixTransform()
 	{
 		m_marker = TrackerManager::getInstance()->getTracker(trackerId)->getMarker(markerID);
-		if (m_marker) {
-			this->setUpdateCallback(new ARTTransformCallback(m_marker));
+		if (m_marker.valid()) {
+			this->setUpdateCallback(new ARTTransformCallback(m_marker.get()));
 		}
 	}
 
+	/* virtual */
 	ARTTransform::~ARTTransform() {
-	    
+		this->setUpdateCallback(NULL);
 	}
 
 	ARTTransform& 
@@ -26,7 +28,7 @@ namespace osgART {
 
 
 	Marker* ARTTransform::getMarker() {
-		return m_marker;
+		return m_marker.get();
 	}
 
 };

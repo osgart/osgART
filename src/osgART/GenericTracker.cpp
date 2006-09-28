@@ -10,17 +10,20 @@ namespace osgART {
 	int GenericTracker::trackerNum = 0;
 
 
-	GenericTracker::GenericTracker() : 
+	GenericTracker::GenericTracker() : osg::Referenced(),
 		trackerId(GenericTracker::trackerNum++),
 		patternNum(0),
 		image(0)
 	{
 	}
 
-	GenericTracker::~GenericTracker(void)
+	GenericTracker::~GenericTracker() 
 	{
+		m_markerlist.clear();
 		// Should delete list of markers...
 	}
+
+
 	int
 	GenericTracker::getId()
 	{
@@ -34,7 +37,7 @@ namespace osgART {
 
 		try {
 			// get the marker with id (removed .at() method - not defined in STL
-			 _m = pattList[id];
+			 _m = m_markerlist[id].get();
 
 		} catch(...) {
 
@@ -52,8 +55,8 @@ namespace osgART {
 		return cparam;
 	}
 
-	unsigned int GenericTracker::getMarkerCount() {
-		return pattList.size();
+	unsigned int GenericTracker::getMarkerCount() const {
+		return (unsigned int)m_markerlist.size();
 	}
 
 

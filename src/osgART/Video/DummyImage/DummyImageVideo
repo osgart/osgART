@@ -62,11 +62,7 @@ public:
     */
     // DummyImageVideo(const DummyImageVideo &);
     
-    /** 
-    * \brief destructor.
-    *
-    */
-    ~DummyImageVideo();   
+
     
     /** 
     * \brief affectation operator.
@@ -107,6 +103,15 @@ public:
 	void update();
     
     inline virtual void releaseImage() {};
+protected:
+
+	/** 
+    * \brief destructor.
+    *
+    */
+    virtual ~DummyImageVideo();       
+    
+
 private:
 
 

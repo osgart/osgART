@@ -77,11 +77,7 @@ public:
     */
     IntranelStreamVideo(const IntranelStreamVideo &);
     
-    /** 
-    * \brief destructor.
-    *
-    */
-    ~IntranelStreamVideo();   
+
     
     /** 
     * \brief affectation operator.
@@ -173,6 +169,14 @@ private:
     CComPtr<IPin>					m_pFSrcPinOut;	// Source Filter Output Pin   
 	CComPtr<IMediaControl>			m_pMC;
     CComPtr<IMediaEvent>			m_pME;			// Media Event
+    
+    protected:
+    
+    /** 
+	* \brief destructor.
+	*
+    */
+    virtual ~IntranelStreamVideo();   
 
 
 };

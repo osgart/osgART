@@ -304,7 +304,8 @@ IntranelStreamVideo::IntranelStreamVideo(const IntranelStreamVideo &)
 
 IntranelStreamVideo::~IntranelStreamVideo(void)
 {
-    
+	this->stop();
+	this->close();
 }
 
 IntranelStreamVideo& 

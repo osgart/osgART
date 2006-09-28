@@ -8,11 +8,11 @@
  */
 #include "osgART/Marker"
 
+
 namespace osgART {
 
 
-	Marker::Marker() 
-	{
+	Marker::Marker() : osg::Referenced() {
 		m_transform.makeIdentity();
 		m_valid = false;
 
@@ -22,14 +22,13 @@ namespace osgART {
 		m_name = "marker";
 
 		m_seen = false;
-
 	}
 
 	Marker::~Marker() {	    
 	}
 
 	const 
-	osg::Matrix &Marker::getTransform() const {
+	osg::Matrix& Marker::getTransform() const {
 		return m_transform;
 	}
 
@@ -66,7 +65,7 @@ namespace osgART {
 	void 
 	Marker::updateTransform(double trans[3][4]) {
 		
-		// hse25: this needs optimisation! (jcl64: removed loops) done?
+		// jcl64: removed loops
 		if (m_valid) {
 
 			// Copy ARToolKit matrix into OSG matrix

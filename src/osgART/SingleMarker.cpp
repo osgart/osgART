@@ -6,11 +6,10 @@ namespace osgART {
 	}
 
 	SingleMarker::~SingleMarker() {
-		
 		// jcl64: Free the pattern
 		if (patt_id > 0) arFreePatt(patt_id);
-
 	}
+
 	Marker::MarkerType SingleMarker::getType() const {
 		return Marker::ART_SINGLE;
 	}

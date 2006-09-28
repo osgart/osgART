@@ -17,6 +17,7 @@
 #include "osgART/Marker"
 
 
+
 namespace osgART {
 
 	
@@ -33,7 +34,7 @@ namespace osgART {
 	 * that connects video streams, markers and their representation in
 	 * the virtual environment.
 	 */
-	class OSGART_EXPORT GenericTracker
+	class OSGART_EXPORT GenericTracker : public osg::Referenced
 	{
 	public:        
 		/**
@@ -41,12 +42,7 @@ namespace osgART {
 		 *
 		 */
 		GenericTracker();
-	    
-		/** 
-		 * \brief destructor.
-		 *
-		 */
-		virtual ~GenericTracker();
+
 
 		/** 
 		* \brief update the tracking.
@@ -98,7 +94,7 @@ namespace osgART {
 		*/
 		Marker* getMarker(int markerId);
 		
-		unsigned int getMarkerCount();
+		unsigned int getMarkerCount() const;
 		
 		/** 
 		* \brief get the openGL projection matrix.
@@ -114,13 +110,25 @@ namespace osgART {
 	    
 	    
 	protected:
+	
+		    
+		/** 
+		 * \brief destructor.
+		 *
+		 */
+		virtual ~GenericTracker();
+	
+		/**
+		 * Use a vector of reference counted markers.
+		 */
+		typedef std::vector< osg::ref_ptr<Marker> > MarkerList;
+		
+		
 
-		CameraParameter  	cparam;
- 
+		CameraParameter  	cparam; 		
+		
+		MarkerList m_markerlist;
 	    
-
-		//Protected Data
-		std::vector<Marker*> pattList;
 		int patternNum;
 
 		unsigned char *image;

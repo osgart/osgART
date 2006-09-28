@@ -132,7 +132,9 @@ PtGreyVideoThread::~PtGreyVideoThread()
 // PUBLIC: Standard services 
 ///////////////////////////////////////////////////////////////////////////////
 
-PtGreyVideo::PtGreyVideo(int id_cam,PixelFormatType pf,int _xsize,int _ysize,FrameRateType fr):camIndex(id_cam)
+PtGreyVideo::PtGreyVideo(int id_cam,PixelFormatType pf,int _xsize,int _ysize,FrameRateType fr) : 
+	GenericVideo(),
+	camIndex(id_cam)
 {
 	xsize=_xsize;
 	ysize=_ysize;

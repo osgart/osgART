@@ -1,6 +1,6 @@
 /*
  *
- * Simple Example to Demonstrate OSGART
+ * Simple Example to demonstrate OSGART
  *
  * Copyright (c) 2005-2006
  * Julian Looser, Philip Lamb, Rapha‘l Grasset, Hartmut Seichter.
@@ -54,44 +54,37 @@ int main(int argc, char* argv[]) {
 	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
 #endif
 
-
 	osgART::VideoConfiguration cfg;
 	cfg.deviceconfig = MY_VCONF;
 
-
 	/* load a video plugin */
-
-	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);	
+	osg::ref_ptr<osgART::GenericVideo> video = osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
 
 	/* 
 	cfg.deviceconfig = "imagewithmarker.png";
 	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_dummyimage", cfg);
 	*/
 
-	// osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_dsvl2", cfg);	
-
-
 	//osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_intranel",
 	//	cfg);
-	
-	/* 
+	/*
 	cfg.id = 0;
 	cfg.type = osgART::VIDEOFORMAT_YUV411;
 	cfg.width = 640;
 	cfg.height = 480;
 	cfg.framerate = osgART::VIDEOFRAMERATE_30;
 	
-	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_ptgrey", cfg);
+	osg::ref_ptr<osgART::GenericVideo> video = osgART::VideoManager::createVideoFromPlugin("osgart_ptgrey", cfg);
 	*/
 
 	/* open the video */
 	video->open();
 
 	//creating an instance of a marker-based tracking
-	osgART::GenericTracker* tracker = new osgART::ARToolKitTracker;
+	osg::ref_ptr<osgART::GenericTracker> tracker = new osgART::ARToolKitTracker;
 	
 	// add the tracker to the tracker manager
-	osgART::TrackerManager::getInstance()->addTracker(tracker);
+	osgART::TrackerManager::getInstance()->addTracker(tracker.get());
 
 	tracker->init(video->getWidth(), video->getHeight());
 
@@ -111,13 +104,14 @@ int main(int argc, char* argv[]) {
 
 	osg::Projection* projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	
-	osgART::ARTTransform* markerTrans = new osgART::ARTTransform(0);
+	osg::ref_ptr<osgART::ARTTransform> markerTrans = new osgART::ARTTransform(0);
+
 
 	// never assume the Marker really exists
-	osgART::Marker *marker = markerTrans->getMarker();
+	osg::ref_ptr<osgART::Marker> marker = markerTrans->getMarker();
 
 	// check before accessing the linked marker
-	if (marker) marker->setActive(true);
+	if (marker.valid()) marker->setActive(true);
 
 	float boxSize = 40.0f;
 	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, boxSize / 2.0f), boxSize));
@@ -127,20 +121,19 @@ int main(int argc, char* argv[]) {
 	geode->addDrawable(sd);
 	markerTrans->addChild(geode);
 
-
 	osg::Group* sceneGroup = new osg::Group();
 	sceneGroup->getOrCreateStateSet()->setRenderBinDetails(5, "RenderBin");
-	sceneGroup->addChild(markerTrans);
+	sceneGroup->addChild(markerTrans.get());
 	foregroundGroup->addChild(sceneGroup);
 	
 	osg::MatrixTransform* modelViewMatrix = new osg::MatrixTransform();
 	modelViewMatrix->addChild(foregroundGroup);
 	projectionMatrix->addChild(modelViewMatrix);
 	
-	osg::Group* root = new osg::Group();
+	osg::ref_ptr<osg::Group> root = new osg::Group;
 	root->addChild(projectionMatrix);
 
-	viewer.setSceneData(root);
+	viewer.setSceneData(root.get());
 
 	viewer.realize();
 	
@@ -152,7 +145,7 @@ int main(int argc, char* argv[]) {
 		
 		video->update();
 
-		tracker->setImage(video);
+		tracker->setImage(video.get());
 		tracker->update();
 		
         viewer.update();

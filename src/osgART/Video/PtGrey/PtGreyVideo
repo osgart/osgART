@@ -64,11 +64,7 @@ public:
     *
     // PtGreyVideo(const PtGreyVideo &);
     
-    /** 
-    * \brief destructor.
-    *
-    */
-    ~PtGreyVideo();   
+ 
     
     /** 
     * \brief affectation operator.
@@ -144,12 +140,15 @@ public:
 	unsigned char** getRefImage() {return &newImage;};
 	
 	bool haveNewImage;
-// Public Type
     
-// Public Datas
-    
-    
-protected: 
+protected:
+
+
+    /** 
+    * \brief destructor.
+    *
+    */
+    virtual ~PtGreyVideo();   
     
 //Protected Services
 

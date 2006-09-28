@@ -20,10 +20,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OSGART_DSVL_EXPORTS"
+				AdditionalIncludeDirectories="..\..\include"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OSGART_DSVL_EXPORTS;OSGART_PLUGIN_EXPORT"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -32,8 +34,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/osgart_artoolkit.dll"
+				AdditionalDependencies="osgARTd.lib libARvideod.lib"
+				OutputFile="..\..\bin\osgart_artoolkitd.dll"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_artoolkit.pdb"
 				SubSystem="2"
