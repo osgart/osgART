@@ -10,12 +10,14 @@
 #ifndef __OSGART_FOUNDATION__
 #define __OSGART_FOUNDATION__
 
+#include <osgART/Export>
+
 // Keep a C interface for now.
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-void osgARTInit(int *argcp, char **argv);
+OSGART_EXPORT void osgARTInit(int *argcp, char **argv);
 
 #ifdef __cplusplus
 }
