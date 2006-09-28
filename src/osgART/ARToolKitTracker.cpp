@@ -215,7 +215,7 @@ std::string trim(std::string& s,const std::string& drop = " ")
 			
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
-		for (MarkerList::const_iterator iter = m_markerlist.begin(); 
+		for (MarkerList::iterator iter = m_markerlist.begin(); 
 			iter != m_markerlist.end(); 
 			iter++)		
 		{

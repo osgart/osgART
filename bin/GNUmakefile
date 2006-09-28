@@ -38,6 +38,7 @@ OSGART_CXXFLAGS = $(____DEBUG_1_p) $(____DEBUG_2_3) $(____DEBUG_4) -W -Wall \
 	-I../include -I/home/seichter/Projects/artoolkit/include -fPIC -DPIC \
 	$(CPPFLAGS) $(CXXFLAGS)
 OSGART_OBJECTS =  \
+	osgART_Foundation.o \
 	osgART_Marker.o \
 	osgART_VideoBillboard.o \
 	osgART_ARToolKitTracker.o \
@@ -121,6 +122,9 @@ osgart_artoolkit.so: $(OSGART_ARTOOLKIT_OBJECTS) libosgART.so
 
 osgart_dummyimage.so: $(OSGART_DUMMYIMAGE_OBJECTS) libosgART.so
 	$(CXX) -shared -fPIC -o $@ $(OSGART_DUMMYIMAGE_OBJECTS) $(LDFLAGS) -L/home/seichter/Projects/artoolkit/lib/  libosgART.so -losg -losgDB
+
+osgART_Foundation.o: ./../src/osgART/Foundation.cpp
+	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_Marker.o: ./../src/osgART/Marker.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<

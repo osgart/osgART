@@ -25,7 +25,7 @@
 //
 #ifdef __APPLE__
 static char g_cwd[MAXPATHLEN] = "";
-#endif __APPLE__
+#endif
 
 //
 // Private functions.
@@ -39,7 +39,7 @@ extern "C" void osgARTFinal(void)
 		chdir(g_cwd);
 		g_cwd[0] = '\0';
 	}
-#endif __APPLE__
+#endif
 }
 
 //
@@ -66,7 +66,7 @@ void osgARTInit(int *argcp, char **argv)
 			free(path);
 			CFRelease(pathCFURLRef);
 		}
-#endif __APPLE__
+#endif
 
 }
 
