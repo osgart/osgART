@@ -67,5 +67,6 @@ void osgARTInit(int *argcp, char **argv)
 			CFRelease(pathCFURLRef);
 		}
 #endif __APPLE__
+
 }
 

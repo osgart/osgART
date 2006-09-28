@@ -103,33 +103,33 @@ ARToolKit4NFTTracker::init(int xsize,int ysize,char* pattlist_name,char* camera_
     // Set the initial camera parameters.
 	cparamName=camera_name;
     if(arParamLoad((char*)cparamName.c_str(), 1, &wparam) < 0) {
-        fprintf(stderr, "ERROR: Camera parameter load error !!\n");
+		std::cerr << "ERROR: Camera parameter load error." << std::endl;
 		//exit
     }
     arParamChangeSize(&wparam, xsize, ysize,&cparam);
-    printf("*** Camera Parameter ***\n");
+	std::cout << "*** Camera Parameter ***" << std::endl;
     arParamDisp( &cparam );
 
 	if( (arHandle=arCreateHandle(&cparam)) == NULL ) 
 	{
-        printf("Error: arCreateHandle.\n");
+		std::cerr << "Error: arCreateHandle." < std::endl;
         exit(0);
     }
 	int pixFormat;
 	pixFormat=AR_PIXEL_FORMAT_BGRA;
     if( arSetPixelFormat(arHandle, pixFormat) < 0 ) 
 	{
-        printf("Error: arSetPixelFormat.\n");
+        std::cerr << "Error: arSetPixelFormat." < std::endl;
         exit(0);
     }
 	if( arSetDebugMode(arHandle, AR_DEBUG_ENABLE) < 0 ) 
 	{
-        printf("Error: arSetDebugMode.\n");
+        std::cerr << "Error: arSetDebugMode." < std::endl;
         exit(0);
     }
 	if( arSetLabelingThresh(arHandle,threshhold) < 0 ) 
 	{
-        printf("Error: arSetDebugMode.\n");
+        std::cerr << "Error: arSetDebugMode." < std::endl;
         exit(0);
     }
 
@@ -137,12 +137,12 @@ ARToolKit4NFTTracker::init(int xsize,int ysize,char* pattlist_name,char* camera_
 
     if( (ar3DHandle=ar3DCreateHandle(&cparam)) == NULL ) 
 	{
-        printf("Error: ar3DCreateHandle.\n");
+         std::cerr << "Error: ar3DCreateHandle." < std::endl;
         exit(0);
     }
     if( (arPattHandle=arPattCreateHandle()) == NULL ) 
 	{
-        printf("Error: arPattCreateHandle.\n");
+         std::cerr << "Error: arPattCreateHandle." < std::endl;
         exit(0);
     }
 	setProjection(10.0f, 10000.0f);

@@ -38,7 +38,7 @@ namespace osgART {
 	    // Set the initial camera parameters.
 		cparamName = camera_name;
 	    if(arParamLoad((char*)cparamName.c_str(), 1, &wparam) < 0) {
-	        fprintf(stderr, "ERROR: Camera parameter load error !!\n");
+			std::cerr << "ERROR: Camera parameter load error." << std::endl;
 			return false;
 	    }
 
@@ -54,7 +54,7 @@ namespace osgART {
 		setThreshold(100);
 
 		if (!setupMarkers(pattlist_name)) {
-			fprintf(stderr, "ERROR: Marker setup failed.\n");
+			std::cerr << "ERROR: Marker setup failed." << std::endl;
 			return false;
 		}
 
@@ -63,10 +63,18 @@ namespace osgART {
 	}
 
 
+std::string trim(std::string& s,const std::string& drop = " ")
+{
+	std::string r=s.erase(s.find_last_not_of(drop)+1);
+	return r.erase(0,r.find_first_not_of(drop));
+}
+
 
 	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
 	{
 		std::ifstream markerFile;
+
+		// Need to check whether the passed file even exists
 
 		markerFile.open(patternListFile.c_str());
 
@@ -80,9 +88,20 @@ namespace osgART {
 
 		std::string patternName, patternType;
 
+		// Need EOF checking in here... atm it assumes there are really as many markers as the number says
+
 		for (int i = 0; i < patternNum; i++)
 		{
-			markerFile >> patternName >> patternType;
+			// jcl64: Get the whole line for the marker file (will handle spaces in filename)
+			patternName = "";
+			while (trim(patternName) == "" && !markerFile.eof()) {
+				getline(markerFile, patternName);
+			}
+			
+			
+			// Check whether markerFile exists?
+
+			markerFile >> patternType;
 
 			if (patternType == "SINGLE")
 			{
@@ -90,7 +109,7 @@ namespace osgART {
 				double width, center[2];
 				markerFile >> width >> center[0] >> center[1];
 				if (addSingleMarker(patternName, width, center) == -1) {
-					fprintf(stderr, "Error adding single pattern: %s\n", patternName.c_str());
+					std::cerr << "Error adding single pattern: " << patternName << std::endl;
 					ret = false;
 					break;
 				}
@@ -99,7 +118,7 @@ namespace osgART {
 			else if (patternType == "MULTI")
 			{
 				if (addMultiMarker(patternName) == -1) {
-					fprintf(stderr, "Error adding multi-marker pattern: %s\n", patternName.c_str());
+					std::cerr << "Error adding multi-marker pattern: " << patternName << std::endl;
 					ret = false;
 					break;
 				}
@@ -107,7 +126,7 @@ namespace osgART {
 			} 
 			else 
 			{
-				fprintf(stderr, "Unrecognized pattern type: %s.\n", patternType.c_str());
+				std::cerr << "Unrecognized pattern type: " << patternType << std::endl;
 				ret = false;
 				break;
 			}
@@ -121,7 +140,7 @@ namespace osgART {
 	int ARToolKitTracker::addSingleMarker(const std::string& pattFile, double width, double center[2]) {
 
 		Marker* singleMarker = new SingleMarker();
-		if (!static_cast<SingleMarker*>(singleMarker)->initialise((char*)pattFile.c_str(), width, center))
+		if (!static_cast<SingleMarker*>(singleMarker)->initialise(pattFile, width, center))
 		{
 			delete singleMarker;
 			return -1;
@@ -137,7 +156,7 @@ namespace osgART {
 	{
 		Marker* multiMarker = new MultiMarker();
 		
-		if (!static_cast<MultiMarker*>(multiMarker)->initialise((char*)multiFile.c_str()))
+		if (!static_cast<MultiMarker*>(multiMarker)->initialise(multiFile))
 		{
 			delete multiMarker;
 			return -1;
@@ -151,8 +170,10 @@ namespace osgART {
 
 	void ARToolKitTracker::setThreshold(int thresh)
 	{
-		// Clamp to 0-255
-		threshold = thresh;
+		// jcl64: Clamp to 0-255
+		if (thresh < 0) threshold = 0;
+		else if (thresh > 255) threshold = 255;
+		else threshold = thresh;
 	}
 
 	int ARToolKitTracker::getThreshold() {
@@ -194,7 +215,7 @@ namespace osgART {
 		// Detect the markers in the video frame.
 		if(arDetectMarker(image, threshold, &marker_info, &marker_num) < 0) 
 		{
-			fprintf(stderr, "Error detecting markers in image.\n");
+			std::cerr << "Error detecting markers in image." << std::endl;
 			return;
 		}
 			

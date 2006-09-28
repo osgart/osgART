@@ -5,7 +5,9 @@ namespace osgART {
 	MultiMarker::MultiMarker() : Marker() {
 	}
 
-	MultiMarker::~MultiMarker() {    
+	MultiMarker::~MultiMarker() {   
+		// jcl64: Free the multimarker
+		if (m_multi) arMultiFreeConfig(m_multi);
 	}
 
 	/* virtual */
