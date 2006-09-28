@@ -418,7 +418,7 @@
 		7842DEB40918502F00414BD5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		7842DEB50918502F00414BD5 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		7842DFB60918505900414BD5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BDBDDE091B00CA00D9D0B9 /* osgARTTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgARTTest-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
 		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
@@ -1406,7 +1406,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 114;
-				DYLIB_CURRENT_VERSION = 114;
+				DYLIB_CURRENT_VERSION = 120;
 				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
@@ -1432,7 +1432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 114;
-				DYLIB_CURRENT_VERSION = 114;
+				DYLIB_CURRENT_VERSION = 120;
 				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
