@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
 
 	//osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_intranel",
 	//	cfg);
+
 	/*
 	cfg.id = 0;
 	cfg.type = osgART::VIDEOFORMAT_YUV411;
@@ -159,7 +160,5 @@ int main(int argc, char* argv[]) {
 
 	video->stop();
 	video->close();
-
-	osgART::VideoManager::destroy();
 	
 }

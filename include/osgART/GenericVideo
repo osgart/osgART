@@ -167,9 +167,8 @@ namespace osgART {
 		inline OpenThreads::Mutex& getMutex() {
 			return m_mutex;		
 		}
-		
 	   
-	protected:
+	protected:		
 	
 		/** 
 		* \brief destructor.
@@ -198,7 +197,7 @@ namespace osgART {
 		
 		// used for locking
 		OpenThreads::Mutex m_mutex;
-
+		
 	};
 
 };

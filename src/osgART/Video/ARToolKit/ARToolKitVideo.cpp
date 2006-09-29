@@ -100,10 +100,10 @@ ARToolKitVideo::update()
 	unsigned char* newImage = NULL;
 
 	if (video) {
+
+		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 		
 		ar2VideoCapNext(video);
-
-		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
 		newImage = (unsigned char*)ar2VideoGetImage(video);
 

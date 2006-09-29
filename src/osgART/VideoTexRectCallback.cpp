@@ -1,5 +1,6 @@
 #include "osgART/VideoTexRectCallback"
 
+#include <osg/Version>
 
 #include <iostream>
 
@@ -20,7 +21,10 @@ namespace osgART {
 	/* virtual*/
 	void VideoTexRectCallback::load(const osg::TextureRectangle& texture, 
 		osg::State& state) const {
-			
+
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
+#endif
 
 		switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat()) {
 		case VIDEOFORMAT_RGB24:
@@ -62,6 +66,11 @@ namespace osgART {
 		default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
 				break;
 		}
+
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
+#endif
+
 	}
 	
 	/* virtual */ 
@@ -71,6 +80,11 @@ namespace osgART {
 		unsigned char* frame = VideoManager::getInstance()->getVideo(videoId)->getImageRaw();
 
 		if (frame == NULL) return;
+
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
+#endif
+
 
 	switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
 	{
@@ -124,6 +138,11 @@ namespace osgART {
 			break;
 
 	}
+
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
+#endif
+
 
 };
 

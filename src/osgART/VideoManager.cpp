@@ -19,7 +19,11 @@ namespace osgART {
 	}
 
 	VideoManager::~VideoManager() {
+
+		// remove all videos 
 		m_videomap.clear();
+
+		// remove all video plugins
 		VideoManager::s_plugins.clear();
 	}
 
@@ -93,7 +97,7 @@ namespace osgART {
 
 		PluginMap::iterator _plug = s_plugins.find(filename);
 
-		if (/*_plug == s_plugins.end()*/1) {
+		if (_plug == s_plugins.end()) {
 		
 			_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
 
