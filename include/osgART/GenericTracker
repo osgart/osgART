@@ -103,11 +103,7 @@ namespace osgART {
 		* @param proj the openGL projection matrix computed
 		*/
 		virtual const double* getProjectionMatrix() const;
-		
-	// Public Type
-	    
-	// Public Datas
-	    
+		 
 	    
 	protected:
 	
@@ -128,8 +124,6 @@ namespace osgART {
 		CameraParameter  	cparam; 		
 		
 		MarkerList m_markerlist;
-	    
-		int patternNum;
 
 		unsigned char *image;
 		double m_projectionMatrix[16];

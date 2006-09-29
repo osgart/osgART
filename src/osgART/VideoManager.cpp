@@ -1,28 +1,32 @@
 #include "osgART/VideoManager"
-#include "osgDB/DynamicLibrary"
+
+#include <OpenThreads/ScopedLock>
 
 #include <iostream>
 
 namespace osgART {
 
-	std::map<unsigned int, VideoManager::p_VideoCreateFunc> VideoManager::gs_videocreate;
+	VideoManager* VideoManager::_instance = NULL;
+	
+	VideoManager::PluginMap VideoManager::s_plugins;
 
 	VideoManager* VideoManager::getInstance() {
-		static VideoManager* instance = NULL;
-		if (instance == NULL) {
-			instance = new VideoManager();
+		
+		if (_instance == NULL) {
+			_instance = new VideoManager();
 		}
-		return instance;
+		return _instance;
 	}
 
-	VideoManager::~VideoManager(void)
-	{	    
+	VideoManager::~VideoManager() {
+		m_videomap.clear();
+		VideoManager::s_plugins.clear();
 	}
 
 	int 
 	VideoManager::addVideoStream(GenericVideo* video)
 	{
-		videoMap[video->getId()] = video;
+		m_videomap[video->getId()] = video;
 		return numVideoStream++;
 	}
 
@@ -33,7 +37,7 @@ namespace osgART {
 		{
 			try {
 			
-				videoMap[video->getId()] = 0L;
+				m_videomap[video->getId()] = 0L;
 		
 			} catch (...) {
 
@@ -46,13 +50,20 @@ namespace osgART {
 		}
 	}
 
+	/*static*/
+	void
+	VideoManager::destroy() {
+		delete VideoManager::_instance;
+		VideoManager::_instance = NULL;
+	}
+
 	GenericVideo* 
 	VideoManager::getVideo(int id)
 	{
 		/* \TODO: fix this in order to take advantage of the std::map :) */
 		if (id<=numVideoStream)
 		{
-			return videoMap[id];
+			return m_videomap[id].get();
 		}
 		else
 		{
@@ -64,24 +75,13 @@ namespace osgART {
 		}
 	}	
 
-	/* static */
-	void 
-	VideoManager::registerVideo(unsigned int guid, p_VideoCreateFunc func)
-	{
-		VideoManager::gs_videocreate[guid] = func;
-	}
-
-	GenericVideo*
-	VideoManager::createVideo(unsigned int guid, const VideoConfiguration& cfg) 
-	{
-		return VideoManager::gs_videocreate[guid](cfg);
-	}
 
 	VideoManager::VideoManager() : numVideoStream(0) 
 	{
 	}
 
-	VideoManager::p_VideoCreateFunc createFunc(const std::string& filename)
+	VideoManager::p_VideoCreateFunc 
+	VideoManager::createFunc(const std::string& filename)
 	{
 		std::string localLibraryName;
 #ifdef _WIN32
@@ -89,16 +89,32 @@ namespace osgART {
 #else
 		localLibraryName = filename + ".so";
 #endif
-		osgDB::DynamicLibrary *_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
+		osgDB::DynamicLibrary* _lib = 0L;
 
-		if (_lib) {
+		PluginMap::iterator _plug = s_plugins.find(filename);
 
-			return (VideoManager::p_VideoCreateFunc)(_lib->getProcAddress("osgart_createvideo"));
+		if (/*_plug == s_plugins.end()*/1) {
+		
+			_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
+
+			if (_lib) {
+
+				s_plugins[filename] = _lib;				
+
+			} else {
+				
+				std::cerr << "osgART::VideoManager could not open " << filename << std::endl;
+
+				return 0L;
+			}
+		} else {
+
+			_lib = (*_plug).second.get();
+
 		}
 
-		std::cerr << "osgART::VideoManager could not open " << filename << std::endl;
-
-		return 0L;
+		return (VideoManager::p_VideoCreateFunc)(_lib->getProcAddress("osgart_createvideo"));
+		
 	}
 
 	GenericVideo* VideoManager::createVideoFromPlugin(const std::string& plugin,
@@ -121,5 +137,7 @@ namespace osgART {
 			return _ret;
 
 	}
+
+
 	
 };

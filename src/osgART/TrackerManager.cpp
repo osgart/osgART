@@ -1,58 +1,28 @@
-///////////////////////////////////////////////////////////////////////////////
-// File name : TrackerManager.C
-//
-// Creation : YYY
-//
-// Version : YYY
-//
-// Author : Raphael Grasset
-//
-// email : Raphael.Grasset@imag.fr
-//
-// Purpose : ??
-//
-// Distribution :
-//
-// Use :
-//	??
-//
-// Todo :
-//	O ??
-//	/
-//	X
-//
-// History :
-//	YYY : Mr Grasset : Creation of the file
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// include file
-///////////////////////////////////////////////////////////////////////////////
-
 #include <osgART/TrackerManager>
 
 #include <iostream>
 
 namespace osgART {
 
+	TrackerManager* TrackerManager::s_instance = NULL;
 
 	TrackerManager* TrackerManager::getInstance() {
-		static TrackerManager* instance = NULL;
-		if (instance == NULL) {
-			instance = new TrackerManager();
+		if (TrackerManager::s_instance == NULL) {
+			TrackerManager::s_instance = new TrackerManager();
 		}
-		return instance;
+		return s_instance;
 	}
 
-	TrackerManager::~TrackerManager(void)
-	{
-	    
+	TrackerManager::~TrackerManager()
+	{	    
+		// hse25: remove all Tracker
+		this->m_trackermap.clear();
 	}
 
 	int 
 	TrackerManager::addTracker(GenericTracker* tracker)
 	{
-		trackerMap[tracker->getId()] = tracker;
+		m_trackermap[tracker->getId()] = tracker;
 		return numTracker++;
 	}
 
@@ -61,7 +31,7 @@ namespace osgART {
 	{
 		if (tracker) {
 			try {
-				trackerMap[tracker->getId()] = 0L;
+				m_trackermap[tracker->getId()] = 0L;
 			} catch(...) {
 
 				std::cerr << "osgART::TrackerManager: could not unregister tracker" << std::endl;
@@ -80,7 +50,7 @@ namespace osgART {
 	{
 		if (id<=numTracker)
 		{
-			return trackerMap[id];
+			return m_trackermap[id].get();
 		}
 		else
 		{
@@ -88,6 +58,14 @@ namespace osgART {
 
 			return 0L;
 		}
+	}
+
+	/*static*/
+	void
+	TrackerManager::destroy()
+	{
+		delete s_instance;
+		s_instance = NULL;
 	}
 
 

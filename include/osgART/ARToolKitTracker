@@ -118,7 +118,7 @@ namespace osgART {
 		/** 
 		 * \brief destructor.
 		 */
-		~ARToolKitTracker();
+		virtual ~ARToolKitTracker();
 		
 	private:
 	

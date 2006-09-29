@@ -10,7 +10,6 @@
 #ifndef OSGART_GENERICVIDEO
 #define OSGART_GENERICVIDEO 1
 
-
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
@@ -163,6 +162,8 @@ namespace osgART {
 		*/
 		virtual void releaseImage() = 0;
 		
+		
+		
 		inline OpenThreads::Mutex& getMutex() {
 			return m_mutex;		
 		}
@@ -182,6 +183,7 @@ namespace osgART {
 		
 		
 		osg::ref_ptr<osg::Image> m_image;
+		
 		
 		int xsize;
 		int ysize;	

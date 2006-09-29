@@ -11,6 +11,8 @@
 // Includes.
 //
 #include "osgART/Foundation"
+#include "osgART/VideoManager"
+#include "osgART/TrackerManager"
 
 #include <stdlib.h>
 
@@ -21,6 +23,22 @@
 #  include <OpenGL/OpenGL.h>
 #  include <osgText/Version>
 #endif
+
+void osgARTGeneralFinaliser();
+
+
+static 
+void osgARTGeneralFinaliser() 
+{
+	// TrackerManager Singleton needs an explicit D'tor
+	osgART::TrackerManager::destroy();
+	
+	
+	// VideoManager Singleton needs an explicit D'tor
+	osgART::VideoManager::destroy();
+
+
+}
 
 //
 // Private globals.
@@ -34,6 +52,8 @@ static char g_cwd[MAXPATHLEN] = "";
 //
 extern "C" void osgARTFinal(void)
 {
+	osgARTGeneralFinaliser();
+
 	// Add OS-specific cleanup here.
 #ifdef __APPLE__
 	// Restore working directory to what it was when we were exec'ed.

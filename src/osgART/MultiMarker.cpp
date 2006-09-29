@@ -28,7 +28,8 @@ namespace osgART {
 		return true;
 	}
 
-	void MultiMarker::setActive(bool a) {
+	void
+	MultiMarker::setActive(bool a) {
 		m_active = a;
 		
 		if (m_active) arMultiActivate(m_multi);

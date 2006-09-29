@@ -159,5 +159,7 @@ int main(int argc, char* argv[]) {
 
 	video->stop();
 	video->close();
+
+	osgART::VideoManager::destroy();
 	
 }

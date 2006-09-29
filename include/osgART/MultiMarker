@@ -55,8 +55,8 @@ namespace osgART {
 		/**
 		* \brief destructor.
 		*/
-		virtual ~MultiMarker();    
-
+		virtual ~MultiMarker();
+		
 
 		ARMultiMarkerInfoT* m_multi;
 			

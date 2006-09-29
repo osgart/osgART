@@ -12,6 +12,9 @@
 // STL
 #include <map>
 
+// OSG.DB include (for plugins)
+#include <osgDB/DynamicLibrary>
+
 // graphics include
 #include <osgART/Export>
 
@@ -27,8 +30,7 @@ namespace osgART {
 	*
 	*/
 	 
-	class OSGART_EXPORT VideoManager
-	{
+	class OSGART_EXPORT VideoManager {
 	public:
 
 		/** function signature for creating a video instance */
@@ -45,7 +47,7 @@ namespace osgART {
 		/**
 		* \brief destructor.
 		*/
-		~VideoManager();    
+		virtual ~VideoManager();    
 
 		/**
 		* \brief add a video stream.
@@ -68,21 +70,16 @@ namespace osgART {
 		* \return an instance of a video manager
 		*/
 		GenericVideo* getVideo(int idVideo);
-		
-		
-		/**
-		* 
-		*
-		*/
-		static void registerVideo(unsigned int guid, p_VideoCreateFunc);
-		
-		GenericVideo* createVideo(unsigned int guid, const VideoConfiguration& fg);
 
-		
 		static
-		GenericVideo* VideoManager::createVideoFromPlugin(const std::string& plugin,
+		GenericVideo* createVideoFromPlugin(const std::string& plugin,
 			const VideoConfiguration& config);
 
+		/**
+		 * Delete the instance of the VideoManager
+		 */
+		 static
+		 void destroy();
 	    
 	protected: 
 	    
@@ -90,11 +87,21 @@ namespace osgART {
 		VideoManager();
 		
 	private:
+	
+		typedef std::map<std::string, osg::ref_ptr<osgDB::DynamicLibrary> > PluginMap;
+		typedef std::map<int, osg::ref_ptr<GenericVideo> > VideoStreamMap;
+	
+		static VideoManager* _instance;
+		
+		static p_VideoCreateFunc createFunc(const std::string& filename);
 
 		int numVideoStream;
-		std::map<int,GenericVideo*> videoMap;	
 		
-		static std::map<unsigned int, p_VideoCreateFunc> gs_videocreate;
+		// video streams
+		VideoStreamMap m_videomap;	
+		
+		// video plugins
+		static PluginMap s_plugins;
 	};
 
 }

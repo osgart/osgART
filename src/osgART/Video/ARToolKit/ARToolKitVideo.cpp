@@ -46,7 +46,7 @@ ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &)
 
 ARToolKitVideo::~ARToolKitVideo() 
 {
-    this->close();
+	this->close();
 }
 
 ARToolKitVideo& 

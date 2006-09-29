@@ -64,14 +64,29 @@ class OSGART_EXPORT TrackerManager
 		* \return an instance of a tracker
 		*/
 		GenericTracker* getTracker(int idTracker);
+		
+		
+		/**
+		 * Explicitly delete the instance of the Tracker.
+		 * This method will also destroy all attached 
+		 * Tracker and free their memory if they are not
+		 * referenced any more.
+		 */
+		static void destroy();
 	    
 	protected:
 		    
-		TrackerManager();	
+		TrackerManager();
 		
-		
+		typedef std::map<int, osg::ref_ptr<GenericTracker> > TrackerMap;
+				
 		int numTracker;
-		std::map<int,GenericTracker*> trackerMap;
+		
+		TrackerMap m_trackermap;
+		
+	private:
+	
+		static TrackerManager* s_instance;
 	};
 
 };
