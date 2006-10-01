@@ -1,13 +1,16 @@
-/*  --------------------------------------------------------------------------
-*   Copyright (C) 2004 Hitlab NZ.
-*   The distribution policy is describe on the Copyright.txt furnish 
-*    with this library.
-*   -------------------------------------------------------------------------*/
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
 /**
 *  \file  ARToolKit4Tracker
 *  \brief A wrapper class for artoolkit tracking system.
 *
-* 
 * Support Marker-Based tracking based on computer vision based on ARToolKit
 * Algorithm. This class provided video/graphic independent marker detection and
 * support multiple marker tracking.
@@ -20,11 +23,6 @@
 *  \version 3.1
 *  \date 01/12/07
 **/
-/*  --------------------------------------------------------------------------
-*   History : 
-*   Rev		Date		Who		Changes
-*
-*----------------------------------------------------------------------------*/
 
 #if defined ARToolKit4Tracker_CYCLE
 
@@ -60,10 +58,10 @@
 
 namespace osgART {
 
-/** --------------------------------------------------------------------------
-* class ARToolKit4Tracker.
-*----------------------------------------------------------------------------*/
-
+/**
+* \class ARToolKit4Tracker
+* \brief A tracker based on ARToolKit 4x.
+*/
 
 class OSGART_EXPORT ARToolKit4Tracker : public GenericTracker
 {

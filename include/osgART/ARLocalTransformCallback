@@ -16,14 +16,18 @@
 
 namespace osgART {
 
+	/**
+	 * \class ARLocalTransformCallback
+	 * \brief Node callback that updates a MatrixTransform based on the relationship between two markers
+	 */
 	class ARLocalTransformCallback : public osg::NodeCallback {
 	protected:
-		int baseMarkerId;
-		int paddleMarkerId;
+		Marker* mBaseMarker;
+		Marker* mPaddleMarker;
 
     public:
 
-		ARLocalTransformCallback(int baseMarker, int paddleMarker);
+		ARLocalTransformCallback(Marker* baseMarker, Marker* paddleMarker);
     
         virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 

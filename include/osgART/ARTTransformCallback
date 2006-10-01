@@ -21,6 +21,7 @@ namespace osgART {
 
 	/**
 	 * \class ARTTransformCallback
+	 * \brief Node callback that applies a marker's transformation from ARToolKit to an OSG MatrixTransform.
 	 */
 	class ARTTransformCallback : public osg::NodeCallback {
 	public:

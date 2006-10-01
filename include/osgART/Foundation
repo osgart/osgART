@@ -10,6 +10,16 @@
 #ifndef __OSGART_FOUNDATION__
 #define __OSGART_FOUNDATION__
 
+/*! \mainpage OSGART
+ *
+ *  \htmlinclude main.html
+ */
+
+/**
+ * \namespace osgART
+ * \brief A collection of classes to support the development of Augmented Reality applications in Open Scene Graph.
+ */
+
 #include <osgART/Export>
 
 // Keep a C interface for now.

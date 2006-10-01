@@ -24,8 +24,8 @@
 namespace osgART {
 
 	/**
-	* class SingleMarker.
-	*
+	* \class SingleMarker.
+	* \brief A marker consisting of a single pattern.
 	*/
 	class OSGART_EXPORT SingleMarker : public Marker
 	{

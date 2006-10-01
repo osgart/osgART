@@ -25,6 +25,7 @@ namespace osgART {
 
 	/**
 	* \class MultiMarker
+	* \brief A marker consisting of many patterns which can be treated as one.
 	*/
 	class OSGART_EXPORT MultiMarker : public Marker
 	{

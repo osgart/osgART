@@ -33,7 +33,10 @@
 namespace osgART {
 
 	/**
-	* ARToolKitTracker
+	* \class ARToolKitTracker
+	* \brief A tracker based on ARToolKit 2x. 
+	* 
+	* This tracker supports single and multi-markers.
 	*
 	*/
 	class OSGART_EXPORT ARToolKitTracker : public GenericTracker
@@ -78,9 +81,9 @@ namespace osgART {
 		
 		
 		/** 
-		* \brief initialize ARToolKit.
+		* \brief Initialize ARToolKit.
 		* 
-		* This core function initialize different parameters of ARToolKit: load tracked markers, initialize
+		* This core function initializes different parameters of ARToolKit: load tracked markers, initialize
 		* camera parameters.
 		* \param xsize width of the image to analyze
 		* \param ysize height of the image to analyze
@@ -92,17 +95,21 @@ namespace osgART {
 			const std::string& camera_name="Data/camera_para.dat");
 		
 		/** 
-		* \brief XXX.
+		* \brief Register a single marker with the tracker.
 		* 
-		* XXX.
+		* \param pattFile the pattern file name
+		* \param width the width of the physical marker
+		* \param center the x-y coordinates of the center of the marker (usually 0,0)
+		* \return the internal ID of the new marker, or -1 on failure 
 		*/
 		int addSingleMarker(const std::string& pattFile, 
 			double width, double center[2]);
 		
 		/** 
-		* \brief XXX.
+		* \brief Register a multi-marker with the tracker
 		* 
-		* XXX.
+		* \param multiFile the multi-marker configuration file name
+		* \return the internal ID of the new marker, or -1 on failure
 		*/
 		int addMultiMarker(const std::string& multiFile);
 		
