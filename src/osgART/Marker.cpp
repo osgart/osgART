@@ -26,7 +26,9 @@ namespace osgART {
 	}
 
 	Marker::~Marker() {	   
+#ifndef NDEBUG
 		std::cout << "Deleting marker" << std::endl;
+#endif
 	}
 
 	const 

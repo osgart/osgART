@@ -28,8 +28,8 @@ namespace osgART {
 	/*virtual*/ 
 	void VideoTexCallback::load(const osg::Texture2D& texture, osg::State& state) const {
 
-#ifdef OSGART_GET_BLENDING_WITH_PERFORMANCE_HIT
-		// glPixelTransferf(GL_ALPHA_BIAS, m_alphabias);
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
 #endif
 
 	switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
@@ -73,7 +73,7 @@ namespace osgART {
 			default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
 			 break;
 		}
-#ifdef OSGART_GET_BLENDING_WITH_PERFORMANCE_HIT
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
 		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
 
@@ -87,8 +87,8 @@ namespace osgART {
 
 		if (frame == NULL) return;
 
-#ifdef OSGART_GET_BLENDING_WITH_PERFORMANCE_HIT
-		// glPixelTransferf(GL_ALPHA_BIAS, m_alphabias);
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
 #endif
 
 	switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
@@ -139,9 +139,9 @@ namespace osgART {
 		default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
 			break;
 	}
-
-#ifdef OSGART_GET_BLENDING_WITH_PERFORMANCE_HIT
-		//glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
+#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
+
 	}
 };
