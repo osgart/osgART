@@ -1,4 +1,4 @@
-#include "ARLocalTransformCallback"
+#include "osgART/ARLocalTransformCallback"
 
 
 #include "osgART/TrackerManager"
