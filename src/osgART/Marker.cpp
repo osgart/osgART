@@ -7,6 +7,7 @@
  *
  */
 #include "osgART/Marker"
+#include <iostream>
 
 
 namespace osgART {
@@ -24,7 +25,8 @@ namespace osgART {
 		m_seen = false;
 	}
 
-	Marker::~Marker() {	    
+	Marker::~Marker() {	   
+		std::cout << "Deleting marker" << std::endl;
 	}
 
 	const 

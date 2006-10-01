@@ -26,6 +26,8 @@ namespace osgART {
 	ARToolKitTracker::~ARToolKitTracker()
 	{
 	    // Should delete list of markers...
+	
+
 	}
 
 

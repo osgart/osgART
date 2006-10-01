@@ -7,9 +7,8 @@
 namespace osgART {
 
 
-	ARLocalTransformCallback::ARLocalTransformCallback(int baseMarker, int paddleMarker) : osg::NodeCallback() {
-		baseMarkerId = baseMarker;
-		paddleMarkerId = paddleMarker;
+	ARLocalTransformCallback::ARLocalTransformCallback(Marker* baseMarker, Marker* paddleMarker) : osg::NodeCallback(),
+		mBaseMarker(baseMarker), mPaddleMarker(paddleMarker) {		
     };
 
     /* virtual */
@@ -24,13 +23,10 @@ namespace osgART {
             
 			osg::Matrix baseMatrix, paddleMatrix;
 
-			Marker* baseMarker = TrackerManager::getInstance()->getTracker(0)->getMarker(baseMarkerId);
-			Marker* paddleMarker = TrackerManager::getInstance()->getTracker(0)->getMarker(paddleMarkerId);
-
-			if (baseMarker->isValid() && paddleMarker->isValid()) {
+			if (mBaseMarker->isValid() && mPaddleMarker->isValid()) {
 			
-				baseMatrix = baseMarker->getTransform();
-				paddleMatrix = paddleMarker->getTransform();
+				baseMatrix = mBaseMarker->getTransform();
+				paddleMatrix = mPaddleMarker->getTransform();
 
 				baseMatrix.invert(baseMatrix);
 
