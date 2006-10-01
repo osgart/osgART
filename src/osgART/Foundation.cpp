@@ -24,9 +24,6 @@
 #  include <osgText/Version>
 #endif
 
-void osgARTGeneralFinaliser();
-
-
 static 
 void osgARTGeneralFinaliser() 
 {
