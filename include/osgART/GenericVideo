@@ -163,6 +163,10 @@ namespace osgART {
 		virtual void releaseImage() = 0;
 		
 		
+		inline PixelFormatType getPixelFormat(bool internal = true) {
+			return (internal) ? internalpixelformat : pixelformat;
+		}		
+		
 		
 		inline OpenThreads::Mutex& getMutex() {
 			return m_mutex;		

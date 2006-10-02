@@ -78,7 +78,7 @@ namespace osgART {
 	GenericTracker::setImage(GenericVideo* video)
 	{
 		if (video) this->setImageRaw(video->getImageRaw(),
-			video->getPixelFormat());
+			video->getPixelFormat(false));
 	}
 
 

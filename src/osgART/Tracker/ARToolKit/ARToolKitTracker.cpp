@@ -209,6 +209,29 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
+
+		unsigned int _artoolkit_pixsize = 0;
+
+		// hse25: this is really a dumb sanity check
+		switch (this->m_imageptr_format) {
+			case VIDEOFORMAT_RGB24:
+			case VIDEOFORMAT_BGR24:
+				_artoolkit_pixsize = 3;
+				break;
+			case VIDEOFORMAT_BGRA32:
+			case VIDEOFORMAT_RGBA32:
+				_artoolkit_pixsize = 4;
+				break;
+		// please fill out the rest!
+			default:
+                break;
+		}
+
+		if (AR_PIX_SIZE_DEFAULT != _artoolkit_pixsize) {
+			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
+			return;
+		}
+
 		// Detect the markers in the video frame.
 		if(arDetectMarker(m_imageptr, threshold, &marker_info, &marker_num) < 0) 
 		{

@@ -1,38 +1,11 @@
-///////////////////////////////////////////////////////////////////////////////
-// File name : VideoLayer.C
-//
-// Creation : YYY
-//
-// Version : YYY
-//
-// Author : Raphael Grasset
-//
-// email : Raphael.Grasset@imag.fr
-//
-// Purpose : ??
-//
-// Distribution :
-//
-// Use :
-//	??
-//
-// Todo :
-//	O ??
-//	/
-//	X
-//
-// History :
-//	YYY : Mr Grasset : Creation of the file
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// include file
-///////////////////////////////////////////////////////////////////////////////
-
-//HACK RAPH
-// #include "osgART/ARToolKitTracker"
-// #include <osgART/ARToolKit4Tracker>
-
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
 #include "osgART/VideoLayer"
 #include "osgART/TrackerManager"
 #include "osgART/VideoTexture"
@@ -52,39 +25,74 @@
 #include <osg/Geometry>
 #include <osg/BlendFunc>
 
-#include <AR/param.h>
+#define  PD_LOOP   3
 
 
-//#include "util.h"
+template <typename T> 
+int Observer2Ideal(	const T dist_factor[4], 
+					const T ox, 
+					const T oy,
+					T *ix, T *iy )
+{
+    T  z02, z0, p, q, z, px, py;
+    register int i = 0;
+
+    px = ox - dist_factor[0];
+    py = oy - dist_factor[1];
+    p = dist_factor[2]/100000000.0;
+    z02 = px*px+ py*py;
+    q = z0 = sqrt(px*px+ py*py);
+
+    for( i = 1; ; i++ ) {
+        if( z0 != 0.0 ) {
+            z = z0 - ((1.0 - p*z02)*z0 - q) / (1.0 - 3.0*p*z02);
+            px = px * z / z0;
+            py = py * z / z0;
+        }
+        else {
+            px = 0.0;
+            py = 0.0;
+            break;
+        }
+        if( i == PD_LOOP ) break;
+
+        z02 = px*px+ py*py;
+        z0 = sqrt(px*px+ py*py);
+    }
+
+    *ix = px / dist_factor[3] + dist_factor[0];
+    *iy = py / dist_factor[3] + dist_factor[1];
+
+    return(0);
+}
+
 
 namespace osgART {
 
 
-class ImageUpdateCallback : public osg::NodeCallback
-{
-public:
+	class ImageUpdateCallback : public osg::NodeCallback
+	{
+	public:
 
-	ImageUpdateCallback(osg::TextureRectangle* texture, osgART::GenericVideo* video):
-        _texture(texture),
-		_video(video)
-    {
-		if (video->getImage()) {
-			// std::cout << (long)video->getImage()->data() << std::endl;
+		ImageUpdateCallback(osg::TextureRectangle* texture, osgART::GenericVideo* video):
+			_texture(texture),
+			_video(video)
+		{
+			if (video->getImage()) {
+				// std::cout << (long)video->getImage()->data() << std::endl;
+			}
 		}
-    }
 
-    virtual void operator()(osg::Node*, osg::NodeVisitor* nv)
-    {
-		_texture->setImage(_video->getImage());        
-    }
-    
-	protected:
-		osg::ref_ptr<osg::TextureRectangle>	_texture;
-		osg::ref_ptr<osgART::GenericVideo>	_video;
-		
-};
-
-
+		virtual void operator()(osg::Node*, osg::NodeVisitor* nv)
+		{
+			_texture->setImage(_video->getImage());        
+		}
+	    
+		protected:
+			osg::ref_ptr<osg::TextureRectangle>	_texture;
+			osg::ref_ptr<osgART::GenericVideo>	_video;
+			
+	};
 
 	VideoLayer::VideoLayer(int videoId,int layerD)
 		: GenericVideoObject(videoId) ,
@@ -97,6 +105,8 @@ public:
 		m_height = VideoManager::getInstance()->getVideo(videoId)->getHeight();
 
 	}
+
+
 
 	VideoLayer::~VideoLayer()
 	{	    
@@ -232,7 +242,7 @@ public:
 						x = c * colSize;
 						y = r * rowSize;
 
-						arParamObserv2Ideal(p.dist_factor, x, y, &px, &py);
+						Observer2Ideal(p.dist_factor, x, y, &px, &py);
 						coords->push_back(osg::Vec3(px, py, 0.0f));
 
 						u = (c / (float)cols) * maxU;
@@ -242,7 +252,7 @@ public:
 						x = c * colSize;
 						y = (r+1) * rowSize;
 
-						arParamObserv2Ideal(p.dist_factor, x, y, &px, &py);
+						Observer2Ideal(p.dist_factor, x, y, &px, &py);
 						coords->push_back(osg::Vec3(px, py, 0.0f));
 
 						u = (c / (float)cols) * maxU;

@@ -40,7 +40,7 @@ namespace osgART {
 		case VIDEOFORMAT_BGR24:
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_texWidth, m_texHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, NULL);
 			break;
-		case VIDEOFORMAT_RGB32:
+		case VIDEOFORMAT_RGBA32:
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_texWidth, m_texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			break;
 		case VIDEOFORMAT_ABGR32:
@@ -98,7 +98,7 @@ namespace osgART {
 		case VIDEOFORMAT_BGR24:			
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_vidWidth, m_vidHeight, GL_BGR, GL_UNSIGNED_BYTE, frame);
 			break;
-		case VIDEOFORMAT_RGB32:
+		case VIDEOFORMAT_RGBA32:
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_vidWidth, m_vidHeight, GL_RGBA, GL_UNSIGNED_BYTE, frame);
 			break;
 		case VIDEOFORMAT_ABGR32:

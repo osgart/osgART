@@ -10,6 +10,3 @@ DLL_API osgART::GenericTracker* osgart_create_tracker()
 }
 
 OSGART_PLUGIN_ENTRY()
-
-
-

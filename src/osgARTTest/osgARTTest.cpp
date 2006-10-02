@@ -20,7 +20,6 @@
 
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
-#include <osgART/ARToolKitTracker>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
 #include <osgART/VideoBackground>
@@ -58,7 +57,12 @@ int main(int argc, char* argv[]) {
 	cfg.deviceconfig = MY_VCONF;
 
 	/* load a video plugin */
-	osg::ref_ptr<osgART::GenericVideo> video = osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	osg::ref_ptr<osgART::GenericVideo> video = 
+		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	
+	/* load a tracker plugin */
+	osg::ref_ptr<osgART::GenericTracker> tracker = 
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
 	/* 
 	cfg.deviceconfig = "imagewithmarker.png";
@@ -82,10 +86,10 @@ int main(int argc, char* argv[]) {
 	video->open();
 
 	//creating an instance of a marker-based tracking
-	osg::ref_ptr<osgART::GenericTracker> tracker = new osgART::ARToolKitTracker;
+	// osg::ref_ptr<osgART::GenericTracker> tracker = new osgART::ARToolKitTracker;
 	
 	// add the tracker to the tracker manager
-	osgART::TrackerManager::getInstance()->addTracker(tracker.get());
+	// osgART::TrackerManager::getInstance()->addTracker(tracker.get());
 
 	tracker->init(video->getWidth(), video->getHeight());
 

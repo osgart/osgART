@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libARd.lib glu32.lib libARgsub_lited.lib libARMultid.lib"
+				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib libARgsub_lited.lib libARMultid.lib libARd.lib"
 				OutputFile="../../bin/osgARTd.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
@@ -84,7 +84,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib opengl32.lib OpenThreadsWin32.lib libAR.lib libARMulti.lib libARgsub_lite.lib osgDB.lib glu32.lib"
+				AdditionalDependencies="osg.lib opengl32.lib OpenThreadsWin32.lib osgDB.lib glu32.lib"
 				OutputFile="../../bin/osgART.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(OSG_ROOT)\lib"
@@ -168,9 +168,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\osgART\ARToolKitTracker.cpp">
-				</File>
-				<File
 					RelativePath="..\..\src\osgART\ARTTransform.cpp">
 				</File>
 				<File
@@ -196,9 +193,6 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\MultiMarker.cpp">
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\NFTART4Marker.cpp">
@@ -229,9 +223,6 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\SingleMarker.cpp">
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\TrackerManager.cpp">
@@ -345,14 +336,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\include\osgART\ARToolKitTracker">
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\include\osgART\ARTTransform">
 				</File>
 				<File
@@ -382,14 +365,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\include\osgART\MultiMarker">
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\include\osgART\NFTART4Marker">
 					<FileConfiguration
 						Name="Release|Win32"
@@ -403,14 +378,6 @@
 					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\SingleMarker">
-					<FileConfiguration
-						Name="Release|Win32">
 						<Tool
 							Name="VCCustomBuildTool"/>
 					</FileConfiguration>
@@ -497,6 +464,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\PluginBase">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\TrackerPlugin">
 				</File>
 			</Filter>
 		</Filter>

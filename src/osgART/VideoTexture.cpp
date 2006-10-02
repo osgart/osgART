@@ -59,7 +59,7 @@ namespace osgART {
 		case VIDEOFORMAT_BGR24:
 				this->setInternalFormat(GL_RGB);
 				break;
-		case VIDEOFORMAT_RGB32:
+		case VIDEOFORMAT_RGBA32:
 				this->setInternalFormat(GL_RGBA);
 				break;
 		case VIDEOFORMAT_ABGR32:

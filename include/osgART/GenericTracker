@@ -76,7 +76,8 @@ namespace osgART {
 		* 
 		* \param image the new image for the tracking 
 		*/
-		void setImageRaw(unsigned char* image);
+		void setImageRaw(unsigned char* image, 
+			PixelFormatType format = VIDEOFORMAT_BGRA32);
 	    
 		/** 
 		* \brief set the image to analyzed.
@@ -113,17 +114,26 @@ namespace osgART {
 		virtual ~GenericTracker();
 	
 		/**
-		 * Use a vector of reference counted markers.
+		 * type for a vector of reference counted markers.
 		 */
 		typedef std::vector< osg::ref_ptr<Marker> > MarkerList;
 		
 		
-
+		/**
+		 * Camera parameters
+		 */
 		CameraParameter  	cparam; 		
 		
+		/**
+		 * A list of markers associated with this tracker.
+		 */ 
 		MarkerList m_markerlist;
 
-		unsigned char *image;
+		
+		unsigned char		*m_imageptr;
+		PixelFormatType		 m_imageptr_format;
+		
+		
 		double m_projectionMatrix[16];
 	  
 	private:
