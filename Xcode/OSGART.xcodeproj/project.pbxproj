@@ -292,7 +292,7 @@
 		4A94BA930AC8C12500E20A2A /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		4A94BA940AC8C12F00E20A2A /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		4A94BA950AC8C14C00E20A2A /* VideoLoadModel.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoLoadModel.cpp; sourceTree = "<group>"; };
-		4A9969550AC782FB0068A373 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = ../data; sourceTree = SOURCE_ROOT; };
+		4A9969550AC782FB0068A373 /* etc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = etc; path = ../etc; sourceTree = SOURCE_ROOT; };
 		4A99696D0AC783140068A373 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = docs; path = ../docs; sourceTree = SOURCE_ROOT; };
 		4A99697E0AC783430068A373 /* PlaneARShadowRenderer */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = PlaneARShadowRenderer; sourceTree = "<group>"; };
 		4A99697F0AC783430068A373 /* ShadowRenderer */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ShadowRenderer; sourceTree = "<group>"; };
@@ -826,7 +826,7 @@
 			isa = PBXGroup;
 			children = (
 				4AECD75E0ACA341400527735 /* bin */,
-				4A9969550AC782FB0068A373 /* data */,
+				4A9969550AC782FB0068A373 /* etc */,
 				4A99696D0AC783140068A373 /* docs */,
 				7842DB1F09182F8200414BD5 /* include */,
 				7842DB3509182F8200414BD5 /* src */,
