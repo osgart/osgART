@@ -1,12 +1,14 @@
+#include "ARToolKitTracker"
+
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/ar.h>
 
 #include <AR/gsub_lite.h>
 
-#include <osgART/ARToolKitTracker>
-#include <osgART/SingleMarker>
-#include <osgART/MultiMarker>
+
+#include "SingleMarker"
+#include "MultiMarker"
 
 #include <osgART/GenericVideo>
 

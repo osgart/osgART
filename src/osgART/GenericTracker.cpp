@@ -15,7 +15,7 @@ namespace osgART {
 
 	GenericTracker::GenericTracker() : osg::Referenced(),
 		trackerId(GenericTracker::trackerNum++),
-		image(0)
+		m_imageptr(0L)
 	{
 	}
 
@@ -67,15 +67,18 @@ namespace osgART {
 
 
 	void 
-	GenericTracker::setImageRaw(unsigned char* grabbed_image)
+	GenericTracker::setImageRaw(unsigned char* grabbed_image,
+		PixelFormatType format /*= VIDEOFORMAT_BGRA32*/)
 	{
-		image = grabbed_image;
+		m_imageptr = grabbed_image;
+		m_imageptr_format = format;
 	}
 
 	void 
 	GenericTracker::setImage(GenericVideo* video)
 	{
-		if (video) this->setImageRaw(video->getImageRaw());
+		if (video) this->setImageRaw(video->getImageRaw(),
+			video->getPixelFormat());
 	}
 
 

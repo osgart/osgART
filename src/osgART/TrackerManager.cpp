@@ -1,5 +1,7 @@
 #include <osgART/TrackerManager>
 
+#include <osgDB/DynamicLibrary>
+
 #include <iostream>
 
 namespace osgART {
@@ -23,7 +25,7 @@ namespace osgART {
 	TrackerManager::addTracker(GenericTracker* tracker)
 	{
 		m_trackermap[tracker->getId()] = tracker;
-		return numTracker++;
+		return m_trackercount++;
 	}
 
 	void 
@@ -40,7 +42,7 @@ namespace osgART {
 				return;
 			}
 			
-			numTracker--;
+			m_trackercount--;
 
 		}
 	}
@@ -48,7 +50,7 @@ namespace osgART {
 	GenericTracker* 
 	TrackerManager::getTracker(int id)
 	{
-		if (id<=numTracker)
+		if (id <= m_trackercount)
 		{
 			return m_trackermap[id].get();
 		}
@@ -69,9 +71,31 @@ namespace osgART {
 	}
 
 
-	TrackerManager::TrackerManager()
+	TrackerManager::TrackerManager() : m_trackercount(0)
 	{
-		numTracker = 0;
 	}
 
+	/* static */
+	GenericTracker* TrackerManager::createTrackerFromPlugin(const std::string& plugin) 
+	{
+
+		osgDB::DynamicLibrary *_lib = osgDB::DynamicLibrary::loadLibrary(plugin);
+
+		GenericTracker* _ret = 0L;
+
+		p_TrackerCreateFunc _createfunc = static_cast<p_TrackerCreateFunc>(_lib->getProcAddress("osgart_create_tracker"));
+
+		_ret = (_createfunc) ? _createfunc() : 0L; 
+
+		if (_ret) {
+			
+			TrackerManager::getInstance()->addTracker(_ret);
+
+		} else {
+			std::cerr << "Could not create TrackerPlugin " << std::endl;
+		}
+
+		return _ret;
+
+	}
 };

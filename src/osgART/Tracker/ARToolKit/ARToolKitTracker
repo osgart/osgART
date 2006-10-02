@@ -1,0 +1,149 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_ARTTOOLKITTRACKER
+#define OSGART_ARTTOOLKITTRACKER
+
+/**
+ * \file  ARToolKitTracker
+ * \brief A wrapper class for ARToolkit tracking system.
+ *
+ * Support Marker-Based tracking based on computer vision based on ARToolKit
+ * Algorithm. This class provided video/graphic independent marker detection and
+ * support multiple marker tracking.
+ *	
+ * \author Julian Looser Julian.Looser@hitlabnz.org
+ * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+ */
+
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+
+#include <string>
+
+
+namespace osgART {
+
+	/**
+	* \class ARToolKitTracker
+	* \brief A tracker based on ARToolKit 2x. 
+	* 
+	* This tracker supports single and multi-markers.
+	*
+	*/
+	class ARToolKitTracker : public GenericTracker
+	{
+
+	public:        
+	   
+		/** 
+		* \brief constructor.
+		*/
+		ARToolKitTracker(void);
+
+		/** 
+		* \brief set the openGL parameters for the projection matrix.
+		* 
+		* Initialize internal parameters computation for delivers an openGL Matrix (modify
+		* nothing to openGL state machine). 
+		* \param n near field of view
+		* \param f far field of view
+		*/
+		void setProjection(const double n, const double f);
+		
+		/** 
+		* \brief Set the threshold value for the tracking algorithm.
+		* 
+		* Define the threshold used to binarize the image in ARToolkit.
+		* \param thresh integer value between 0 (dark) and 255 (bright) 
+		*/
+		void setThreshold(int thresh);
+		
+		/**
+		* \brief Get the current threshold value for the tracking algorithm.
+		*
+		* \return The current threshold.
+		*/
+		int getThreshold();
+		
+
+		unsigned char* getDebugImage();	
+		void setDebugMode(bool d);
+		bool getDebugMode();
+		
+		
+		/** 
+		* \brief Initialize ARToolKit.
+		* 
+		* This core function initializes different parameters of ARToolKit: load tracked markers, initialize
+		* camera parameters.
+		* \param xsize width of the image to analyze
+		* \param ysize height of the image to analyze
+		* \param pattlist_name a file structure of the marker
+		* \param camera_name description file of the camera used (pinhole model)
+		*/
+		virtual bool init(int xsize, int ysize, 
+			const std::string& pattlist_name = "Data/markers_list.dat", 
+			const std::string& camera_name="Data/camera_para.dat");
+		
+		/** 
+		* \brief Register a single marker with the tracker.
+		* 
+		* \param pattFile the pattern file name
+		* \param width the width of the physical marker
+		* \param center the x-y coordinates of the center of the marker (usually 0,0)
+		* \return the internal ID of the new marker, or -1 on failure 
+		*/
+		int addSingleMarker(const std::string& pattFile, 
+			double width, double center[2]);
+		
+		/** 
+		* \brief Register a multi-marker with the tracker
+		* 
+		* \param multiFile the multi-marker configuration file name
+		* \return the internal ID of the new marker, or -1 on failure
+		*/
+		int addMultiMarker(const std::string& multiFile);
+		
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function apply the ARToolKit algorithm on the last image defined by setImage.
+		*/
+		void update();
+		
+	protected:
+	
+		/** 
+		 * \brief destructor.
+		 */
+		virtual ~ARToolKitTracker();
+		
+	private:
+	
+	
+		
+		bool setupMarkers(const std::string& patternListFile);
+
+
+
+		std::string 		cparamName;
+		int					threshold;
+
+		bool 				m_debugMode;
+
+	};
+
+};
+
+#endif 
+
+
