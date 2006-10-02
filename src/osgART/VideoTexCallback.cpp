@@ -28,7 +28,7 @@ namespace osgART {
 	/*virtual*/ 
 	void VideoTexCallback::load(const osg::Texture2D& texture, osg::State& state) const {
 
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
 #endif
 
@@ -73,10 +73,9 @@ namespace osgART {
 			default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
 			 break;
 		}
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
-
 	}
 	
 	/*virtual */ 
@@ -87,7 +86,7 @@ namespace osgART {
 
 		if (frame == NULL) return;
 
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
 #endif
 
@@ -139,7 +138,7 @@ namespace osgART {
 		default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
 			break;
 	}
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
 

@@ -6,6 +6,17 @@
 #ifndef OSGART_EXPORT_
 #define OSGART_EXPORT_
 
+#include <osg/Version>
+
+
+#if defined(_MSC_VER)
+#if (OSG_VERSION_MAJOR == 1) && (OSG_VERSION_MINOR == 0)
+# define OSGART_PIXELBIAS_NO_PERFORMANCE 1
+#endif
+#else 
+# undef OSGART_PIXELBIAS_NO_PERFORMANCE
+#endif
+
 #if defined(_MSC_VER)
 #	pragma warning ( disable : 4251 )
 #endif

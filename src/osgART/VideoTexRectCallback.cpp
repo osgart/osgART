@@ -22,7 +22,7 @@ namespace osgART {
 	void VideoTexRectCallback::load(const osg::TextureRectangle& texture, 
 		osg::State& state) const {
 
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
 #endif
 
@@ -67,7 +67,7 @@ namespace osgART {
 				break;
 		}
 
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
 
@@ -81,10 +81,9 @@ namespace osgART {
 
 		if (frame == NULL) return;
 
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
 #endif
-
 
 	switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
 	{
@@ -139,7 +138,9 @@ namespace osgART {
 
 	}
 
-#if (OSG_VERSION_MAJOR > 0) && (OSG_VERSION_MINOR > 0) 
+
+	
+#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
 		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
 
