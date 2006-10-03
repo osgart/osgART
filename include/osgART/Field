@@ -24,7 +24,7 @@ namespace osgART {
 	public:
 		Field() : osg::Referenced() {};
 		
-		virtual void operator = (const Field& value) {
+		virtual void operator = (const Field&) {
 		}
 	
 	protected:			
@@ -39,7 +39,7 @@ namespace osgART {
 	public:
 	
 		TypedField(T* value) : Field(), 
-			f_sethandler(TypedField<T>::defaultSetHandler),
+			f_sethandler(&TypedField<T>::defaultSetHandler),
 			m_value(value) 
 		{
 		}

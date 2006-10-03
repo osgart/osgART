@@ -117,7 +117,7 @@ DummyImageVideo::open()
 		{
 			g_Image->setPixelFormat(GL_RGBA);
 			pixelsize=4;
-			pixelformat=VIDEOFORMAT_RGB32;
+			pixelformat=VIDEOFORMAT_RGBA32;
 		}
 		else
 		{

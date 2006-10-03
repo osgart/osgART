@@ -23,7 +23,7 @@ CPPFLAGS =
 LDFLAGS = 
 
 # Set to 1 to build debug version [0,1]
-DEBUG = 0
+DEBUG = 1
 
 
 
@@ -41,8 +41,6 @@ OSGART_OBJECTS =  \
 	osgART_Foundation.o \
 	osgART_Marker.o \
 	osgART_VideoBillboard.o \
-	osgART_ARToolKitTracker.o \
-	osgART_MultiMarker.o \
 	osgART_VideoLayer.o \
 	osgART_ARTTransform.o \
 	osgART_VideoManager.o \
@@ -51,7 +49,6 @@ OSGART_OBJECTS =  \
 	osgART_VideoTexCallback.o \
 	osgART_VideoTexture.o \
 	osgART_GenericTracker.o \
-	osgART_SingleMarker.o \
 	osgART_VideoTextureRectangle.o \
 	osgART_GenericVideo.o \
 	osgART_TrackerManager.o \
@@ -67,6 +64,14 @@ OSGART_ARTOOLKIT_CXXFLAGS = -I/home/seichter/Projects/artoolkit/include \
 OSGART_ARTOOLKIT_OBJECTS =  \
 	osgart_artoolkit_ARToolKitVideo.o \
 	osgart_artoolkit_Main.o
+OSGART_ARTOOLKIT_TRACKER_CXXFLAGS = \
+	-I/home/seichter/Projects/artoolkit/include -I../include -I. -fPIC -DPIC \
+	$(CPPFLAGS) $(CXXFLAGS)
+OSGART_ARTOOLKIT_TRACKER_OBJECTS =  \
+	osgart_artoolkit_tracker_ARToolKitTracker.o \
+	osgart_artoolkit_tracker_MultiMarker.o \
+	osgart_artoolkit_tracker_SingleMarker.o \
+	osgart_artoolkit_tracker_Main.o
 OSGART_DUMMYIMAGE_CXXFLAGS = -I../include -I. -fPIC -DPIC $(CPPFLAGS) $(CXXFLAGS)
 OSGART_DUMMYIMAGE_OBJECTS =  \
 	osgart_dummyimage_DummyImageVideo.o \
@@ -96,7 +101,7 @@ endif
 
 ### Targets: ###
 
-all: libosgART.so osgART_Example osgart_artoolkit.so osgart_dummyimage.so
+all: libosgART.so osgART_Example osgart_artoolkit.so osgart_artoolkit_tracker.so osgart_dummyimage.so
 
 install: all
 
@@ -109,16 +114,20 @@ clean:
 	rm -f libosgART.so
 	rm -f osgART_Example
 	rm -f osgart_artoolkit.so
+	rm -f osgart_artoolkit_tracker.so
 	rm -f osgart_dummyimage.so
 
 libosgART.so: $(OSGART_OBJECTS)
-	$(CXX) -shared -fPIC -o $@ $(OSGART_OBJECTS) $(LDFLAGS) $(____DEBUG_4) -L/home/seichter/Projects/artoolkit/lib/  -lARgsub_lite -lAR -lARMulti
+	$(CXX) -shared -fPIC -o $@ $(OSGART_OBJECTS) $(LDFLAGS) $(____DEBUG_4) -L/home/seichter/Projects/artoolkit/lib/
 
 osgART_Example: $(OSGART_EXAMPLE_OBJECTS) libosgART.so
 	$(CXX) -o $@ $(OSGART_EXAMPLE_OBJECTS) $(LDFLAGS)   libosgART.so -losg -losgDB -losgProducer -lProducer
 
 osgart_artoolkit.so: $(OSGART_ARTOOLKIT_OBJECTS) libosgART.so
 	$(CXX) -shared -fPIC -o $@ $(OSGART_ARTOOLKIT_OBJECTS) $(LDFLAGS) -L/home/seichter/Projects/artoolkit/lib/  libosgART.so -lARvideo -losg -lgstreamer-0.10 -lgobject-2.0
+
+osgart_artoolkit_tracker.so: $(OSGART_ARTOOLKIT_TRACKER_OBJECTS) libosgART.so
+	$(CXX) -shared -fPIC -o $@ $(OSGART_ARTOOLKIT_TRACKER_OBJECTS) $(LDFLAGS) -L/home/seichter/Projects/artoolkit/lib/  libosgART.so -losg -lARgsub_lite -lAR -lARMulti
 
 osgart_dummyimage.so: $(OSGART_DUMMYIMAGE_OBJECTS) libosgART.so
 	$(CXX) -shared -fPIC -o $@ $(OSGART_DUMMYIMAGE_OBJECTS) $(LDFLAGS) -L/home/seichter/Projects/artoolkit/lib/  libosgART.so -losg -losgDB
@@ -130,12 +139,6 @@ osgART_Marker.o: ./../src/osgART/Marker.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_VideoBillboard.o: ./../src/osgART/VideoBillboard.cpp
-	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
-
-osgART_ARToolKitTracker.o: ./../src/osgART/ARToolKitTracker.cpp
-	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
-
-osgART_MultiMarker.o: ./../src/osgART/MultiMarker.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_VideoLayer.o: ./../src/osgART/VideoLayer.cpp
@@ -160,9 +163,6 @@ osgART_VideoTexture.o: ./../src/osgART/VideoTexture.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_GenericTracker.o: ./../src/osgART/GenericTracker.cpp
-	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
-
-osgART_SingleMarker.o: ./../src/osgART/SingleMarker.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_VideoTextureRectangle.o: ./../src/osgART/VideoTextureRectangle.cpp
@@ -194,6 +194,18 @@ osgart_artoolkit_ARToolKitVideo.o: ./../src/osgART/Video/ARToolKit/ARToolKitVide
 
 osgart_artoolkit_Main.o: ./../src/osgART/Video/ARToolKit/Main.cpp
 	$(CXX) -c -o $@ $(OSGART_ARTOOLKIT_CXXFLAGS) $(CPPDEPS) $<
+
+osgart_artoolkit_tracker_ARToolKitTracker.o: ./../src/osgART/Tracker/ARToolKit/ARToolKitTracker.cpp
+	$(CXX) -c -o $@ $(OSGART_ARTOOLKIT_TRACKER_CXXFLAGS) $(CPPDEPS) $<
+
+osgart_artoolkit_tracker_MultiMarker.o: ./../src/osgART/Tracker/ARToolKit/MultiMarker.cpp
+	$(CXX) -c -o $@ $(OSGART_ARTOOLKIT_TRACKER_CXXFLAGS) $(CPPDEPS) $<
+
+osgart_artoolkit_tracker_SingleMarker.o: ./../src/osgART/Tracker/ARToolKit/SingleMarker.cpp
+	$(CXX) -c -o $@ $(OSGART_ARTOOLKIT_TRACKER_CXXFLAGS) $(CPPDEPS) $<
+
+osgart_artoolkit_tracker_Main.o: ./../src/osgART/Tracker/ARToolKit/Main.cpp
+	$(CXX) -c -o $@ $(OSGART_ARTOOLKIT_TRACKER_CXXFLAGS) $(CPPDEPS) $<
 
 osgart_dummyimage_DummyImageVideo.o: ./../src/osgART/Video/DummyImage/DummyImageVideo.cpp
 	$(CXX) -c -o $@ $(OSGART_DUMMYIMAGE_CXXFLAGS) $(CPPDEPS) $<

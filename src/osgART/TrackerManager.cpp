@@ -78,21 +78,30 @@ namespace osgART {
 	/* static */
 	GenericTracker* TrackerManager::createTrackerFromPlugin(const std::string& plugin) 
 	{
-
-		osgDB::DynamicLibrary *_lib = osgDB::DynamicLibrary::loadLibrary(plugin);
-
 		GenericTracker* _ret = 0L;
+		std::string localLibraryName;
 
-		p_TrackerCreateFunc _createfunc = static_cast<p_TrackerCreateFunc>(_lib->getProcAddress("osgart_create_tracker"));
+#ifdef _WIN32
+		localLibraryName = plugin;
+#else
+		localLibraryName = plugin + ".so";
+#endif
 
-		_ret = (_createfunc) ? _createfunc() : 0L; 
+		osgDB::DynamicLibrary *_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
 
-		if (_ret) {
-			
-			TrackerManager::getInstance()->addTracker(_ret);
+		if (_lib) {
 
-		} else {
-			std::cerr << "Could not create TrackerPlugin " << std::endl;
+			p_TrackerCreateFunc _createfunc = (p_TrackerCreateFunc)_lib->getProcAddress("osgart_create_tracker");
+
+			_ret = (_createfunc) ? _createfunc() : 0L; 
+
+			if (_ret) {
+				
+				TrackerManager::getInstance()->addTracker(_ret);
+
+			} else {
+				std::cerr << "Could not create TrackerPlugin " << std::endl;
+			}
 		}
 
 		return _ret;
