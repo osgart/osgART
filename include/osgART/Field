@@ -29,7 +29,8 @@ namespace osgART {
 	
 	protected:			
 
-		virtual ~Field() {};
+		virtual ~Field() {
+		}
 	};
 	
 	typedef std::map<std::string, osg::ref_ptr<Field> > FieldMap;
