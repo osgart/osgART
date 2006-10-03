@@ -64,6 +64,13 @@ int main(int argc, char* argv[]) {
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
+	/* RFC: this how you would get any type in and out through the plugin system */
+	osg::ref_ptr< osgART::TypedField<int> > _field = 
+		dynamic_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
+
+	/* values can only be accessed through a get()/set() mechanism */
+	if (_field.valid()) _field->set(50);
+
 	/* 
 	cfg.deviceconfig = "imagewithmarker.png";
 	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_dummyimage", cfg);

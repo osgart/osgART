@@ -460,6 +460,9 @@
 					RelativePath="..\..\include\osgART\Export">
 				</File>
 				<File
+					RelativePath="..\..\include\osgART\Field">
+				</File>
+				<File
 					RelativePath="..\..\include\osgART\Foundation">
 				</File>
 				<File

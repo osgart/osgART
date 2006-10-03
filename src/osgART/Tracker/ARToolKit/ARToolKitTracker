@@ -72,7 +72,7 @@ namespace osgART {
 		*
 		* \return The current threshold.
 		*/
-		int getThreshold();
+		int getThreshold();	
 		
 
 		unsigned char* getDebugImage();	

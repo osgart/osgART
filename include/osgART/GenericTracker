@@ -9,16 +9,22 @@
 
 
 #ifndef OSGART_GENERICTRACKER
-#define OSGART_GENERICTRACKER
+#define OSGART_GENERICTRACKER 1
+
+
+// std include
+#include <map>
+#include <iostream>
 
 // local include
 #include "osgART/Export"
 #include "osgART/GenericVideo"
 #include "osgART/Marker"
+#include "osgART/Field"
+
 
 namespace osgART {
 
-	
 	typedef struct {
 	    int      width, height;
     	double   mat[3][4];
@@ -43,13 +49,27 @@ namespace osgART {
 
 
 		/** 
-		* \brief update the tracking.
-		* 
-		* This core function apply the Generic algorithm on the last image defined by setImage.
+		 * \brief update the tracking.
+		 * 
+		 * This core function apply the Generic algorithm on the last 
+		 * image defined by setImage.
+		 */
+		virtual void update() = 0;
+
+		/*						
+		osg::ref_ptr<Field> get(const std::string& name);		
 		*/
-		virtual void update() = 0;		
 		
+		/**
+		 * Access a field by its name. You need to cast
+		 * the field into its respective type in order
+		 * to access it.
+		 * \param name Name of the field
+		 * \return pointer to the field (0L if not found)
+		 */
+		Field* get(const std::string& name);
 		
+	
 		/**
 		 *
 		 */
@@ -60,7 +80,7 @@ namespace osgART {
 
 		/**
 		* \brief get GenericVideo id.
-		* @return a GenericVideo identifier.
+		* \return a GenericVideo identifier.
 		*/
 		int getId();
 
@@ -104,7 +124,9 @@ namespace osgART {
 		virtual const double* getProjectionMatrix() const;
 		 
 	    
-	protected:
+	protected:		
+	
+		FieldMap m_fields;
 	
 		    
 		/** 

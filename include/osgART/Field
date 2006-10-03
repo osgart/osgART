@@ -1,0 +1,78 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_FIELD
+#define OSGART_FIELD 1
+
+// include STL
+#include <map>
+
+// include OSG
+#include <osg/Referenced>
+#include <osg/ref_ptr>
+
+
+namespace osgART {
+
+	class Field : public osg::Referenced {		
+	public:
+		Field() : osg::Referenced() {};
+		
+		virtual void operator = (const Field& value) {
+		}
+	
+	protected:			
+
+		virtual ~Field() {};
+	};
+	
+	typedef std::map<std::string, osg::ref_ptr<Field> > FieldMap;
+	
+	
+	template <typename T> class TypedField : public Field {
+	public:
+	
+		TypedField(T* value) : Field(), 
+			f_sethandler(TypedField<T>::defaultSetHandler),
+			m_value(value) 
+		{
+		}
+		
+		T& get() const
+		{
+			return *m_value;
+		}
+		
+		void set(const T& value) {
+			(*this.*f_sethandler)(*m_value,value);
+		}		
+						
+	protected:
+	
+		void (TypedField<T>::*f_sethandler)(T&, const T&);	
+		
+		void defaultSetHandler(T& dest, const T& src)
+		{			
+			dest = src;
+		}				
+		
+		TypedField<T>& operator = (const T& value) {
+			*m_value = value;		
+			return *this;
+		}
+	
+		void operator = (const TypedField<T>& value) {
+			*m_value = value.get();		
+		}
+		
+		T* m_value;
+	};
+ };
+ 
+ #endif

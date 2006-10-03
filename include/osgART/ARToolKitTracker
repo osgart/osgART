@@ -128,12 +128,8 @@ namespace osgART {
 		virtual ~ARToolKitTracker();
 		
 	private:
-	
-	
 		
 		bool setupMarkers(const std::string& patternListFile);
-
-
 
 		std::string 		cparamName;
 		int					threshold;

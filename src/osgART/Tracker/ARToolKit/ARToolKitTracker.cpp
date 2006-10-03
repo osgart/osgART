@@ -12,8 +12,6 @@
 
 #include <osgART/GenericVideo>
 
-
-
 #include <iostream>
 #include <fstream>
 
@@ -21,15 +19,17 @@
 namespace osgART {
 
 	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
-		threshold(100)
+		threshold(100),
+		m_debugMode(false)
 	{
+		// attach a new field to the name "threshold"
+		m_fields["threshold"] = new TypedField<int>(&threshold);
+		// attach a new field to the name "debug"
+		m_fields["debug"] = new TypedField<bool>(&m_debugMode);
 	}
 
 	ARToolKitTracker::~ARToolKitTracker()
 	{
-	    // Should delete list of markers...
-	
-
 	}
 
 
@@ -54,8 +54,9 @@ namespace osgART {
 	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;
 
 		setProjection(10.0f, 8000.0f);
-		setDebugMode(false);
-		setThreshold(100);
+		// setDebugMode(false);
+		// setThreshold(100);
+
 
 		if (!setupMarkers(pattlist_name)) {
 			std::cerr << "ERROR: Marker setup failed." << std::endl;
