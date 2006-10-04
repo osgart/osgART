@@ -34,6 +34,7 @@
 *----------------------------------------------------------------------------*/
 
 // OSG include
+#include <osg/Geode>
 #include <osg/Node>
 #include <osg/Group>
 #include <osg/MatrixTransform>
@@ -110,17 +111,21 @@ namespace osgART {
 
 		/**
 		 * Helper method to create a video layer
+		 */				
+		osg::ref_ptr<osg::Projection> buildLayer();
+		
+		/**
+		 * Helper method to create the actual geometry
 		 */
-				
-		osg::Node* buildLayer();
-		osg::Geode* buildLayerGeometry();
+		osg::ref_ptr<osg::Geode> buildLayerGeometry();
 
 
-		osg::MatrixTransform*	m_layerModelViewMatrix;
-		osg::Projection*		m_layerProjectionMatrix;
-		osg::Geometry*			m_geometry;
-		osg::Geode*				m_layerGeode;
-		osg::StateSet*          m_layerStateSet;
+		/* Member variables */
+		osg::ref_ptr<osg::MatrixTransform>	m_layerModelViewMatrix;
+		osg::ref_ptr<osg::Projection>		m_layerProjectionMatrix;
+		osg::ref_ptr<osg::Geometry>			m_geometry;
+		osg::ref_ptr<osg::Geode>			m_layerGeode;
+		osg::ref_ptr<osg::StateSet>			m_layerStateSet;
 
 	};
 

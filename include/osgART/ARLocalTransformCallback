@@ -8,7 +8,7 @@
  */
  
 #ifndef OSGART_ARLOCALTRANSFORMCALLBACK
-#define OSGART_ARLOCALTRANSFORMCALLBACK
+#define OSGART_ARLOCALTRANSFORMCALLBACK 1
 
 #include <osg/MatrixTransform>
 
@@ -23,8 +23,8 @@ namespace osgART {
 	 */
 	class OSGART_EXPORT ARLocalTransformCallback : public osg::NodeCallback {
 	protected:
-		Marker* mBaseMarker;
-		Marker* mPaddleMarker;
+		osg::ref_ptr<Marker> mBaseMarker;
+		osg::ref_ptr<Marker> mPaddleMarker;
 
     public:
 

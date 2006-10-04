@@ -176,7 +176,7 @@ namespace osgART {
 			++_ii;
 		}
 
-		if (m_vShader)
+		if (m_vShader.valid())
 		{
 			m_vShader->Apply(*(m_geometry->getOrCreateStateSet()));	
 		}

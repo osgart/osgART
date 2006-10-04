@@ -161,7 +161,7 @@ namespace osgART {
 
 		m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
 	   
-		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, m_vTexture, osg::StateAttribute::ON);
+		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, m_vTexture.get(), osg::StateAttribute::ON);
 		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
 
 		backGeode->addDrawable(m_geometry);

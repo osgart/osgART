@@ -85,7 +85,7 @@ namespace osgART {
 		m_vTexture = new VideoTexture(m_videoId);
 		
 		m_geometry=osgDB::readNodeFile(m_modelName);
-		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, m_vTexture, osg::StateAttribute::ON);
+		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, m_vTexture.get(), osg::StateAttribute::ON);
 		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
 
 	/*		osg::Program* program = new osg::Program;   

@@ -88,7 +88,7 @@ namespace osgART {
 		};
 
 		inline osg::Texture* getTexture() const {
-			return m_vTexture;
+			return m_vTexture.get();
 		};
 	    
 		inline void setShader(GenericVideoShader* vs) { 
@@ -96,7 +96,7 @@ namespace osgART {
 		};
 	    
 		inline GenericVideoShader* getShader() const {
-			return m_vShader;
+			return m_vShader.get();
 		};    
 	    
 		inline void setTextureMode(TextureMode tm) {
@@ -116,11 +116,14 @@ namespace osgART {
 		};
 	    
 	    
-	protected: 
+	protected:
+	
+	
+		osg::ref_ptr<GenericVideoShader>	m_vShader;
+		osg::ref_ptr<osg::Texture>			m_vTexture;
 
-		int m_videoId;
-		GenericVideoShader* m_vShader;
-		osg::Texture* m_vTexture;
+		int m_videoId;	
+		
 		
 		DistortionCorrectionMode m_distortionMode;
 		TextureMode m_textureMode;

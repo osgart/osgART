@@ -19,7 +19,7 @@ namespace osgART {
 
         osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node);
 
-        if (mt) {
+		if (mt && mBaseMarker.valid() && mPaddleMarker.valid()) {
             
 			osg::Matrix baseMatrix, paddleMatrix;
 

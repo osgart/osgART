@@ -114,7 +114,7 @@ namespace osgART {
 	VideoLayer::init()
 	{
 		// add as a child
-		this->addChild(buildLayer());
+		this->addChild(buildLayer().get());
 	}
 
 	void 
@@ -145,30 +145,30 @@ namespace osgART {
 		m_layerStateSet->setRenderBinDetails(m_layerDepth, "RenderBin");
 	}
 	
-	osg::Node* 
+	osg::ref_ptr<osg::Projection>
 	VideoLayer::buildLayer() 
 	{
-		osg::Projection* m_layerProjectionMatrix = new osg::Projection(osg::Matrix::ortho2D(0, m_width, 0, m_height));
+		m_layerProjectionMatrix = new osg::Projection(osg::Matrix::ortho2D(0, m_width, 0, m_height));
 
-		osg::MatrixTransform* m_layerModelViewMatrix = new osg::MatrixTransform();
+		m_layerModelViewMatrix = new osg::MatrixTransform();
 		m_layerModelViewMatrix->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
-		m_layerProjectionMatrix->addChild(m_layerModelViewMatrix);
+		m_layerProjectionMatrix->addChild(m_layerModelViewMatrix.get());
 
 		osg::Group* layerGroup = new osg::Group();
 		m_layerModelViewMatrix->addChild(layerGroup);
 
 		m_layerStateSet = new osg::StateSet();
-		layerGroup->setStateSet(m_layerStateSet);
+		layerGroup->setStateSet(m_layerStateSet.get());
 
 		setLayerDepth(m_layerDepth);
 		layerGroup->getOrCreateStateSet()->setAttribute(new osg::Depth(osg::Depth::ALWAYS, 1.0f, 1.0f));
-		layerGroup->addChild(buildLayerGeometry());
+		layerGroup->addChild(buildLayerGeometry().get());
 
 		return m_layerProjectionMatrix;
 	}
 
 
-	osg::Geode* 
+	osg::ref_ptr<osg::Geode>
 	VideoLayer::buildLayerGeometry() 
 	{
 		float maxU = 1.0f, maxV = 1.0f;
@@ -286,11 +286,11 @@ namespace osgART {
 		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, _texture, osg::StateAttribute::ON);
 		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
 
-		if (m_vShader)
+		if (m_vShader.valid())
 		{
 			m_vShader->Apply(*(m_geometry->getOrCreateStateSet()));	
 		}
-		m_layerGeode->addDrawable(m_geometry);
+		m_layerGeode->addDrawable(m_geometry.get());
 
 		return m_layerGeode;
 

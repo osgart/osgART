@@ -184,10 +184,10 @@ namespace osgART {
 
 		m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
 	   
-		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, m_vTexture, osg::StateAttribute::ON);
+		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, m_vTexture.get(), osg::StateAttribute::ON);
 		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
 
-		if (m_vShader)
+		if (m_vShader.valid())
 		{
 			m_vShader->Apply(*(m_geometry->getOrCreateStateSet()));	
 		}
