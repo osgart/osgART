@@ -138,6 +138,9 @@
 				Name="SpatialRegistration"
 				Filter="">
 				<File
+					RelativePath="..\..\src\osgART\ARLocalTransformCallback.cpp">
+				</File>
+				<File
 					RelativePath="..\..\src\osgART\ARToolKit4NFTTracker.cpp">
 					<FileConfiguration
 						Name="Debug|Win32"
