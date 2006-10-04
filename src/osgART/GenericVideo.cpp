@@ -12,7 +12,6 @@ namespace osgART {
 	GenericVideo::GenericVideo() 
 		: osg::Referenced(), 
 		xsize(-1), ysize(-1),
-		image(0L),
 		pixelsize(4), 
 		videoId(GenericVideo::videoNum++),
 		pixelformat(VIDEOFORMAT_RGB24),
@@ -44,11 +43,16 @@ namespace osgART {
 	unsigned char*
 	GenericVideo::getImageRaw() {
 		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
-		return image; // this->getImage()->data();
+		return m_image->data();
 	}
 
-	osg::Image* GenericVideo::getImage() {		
-		return m_image.get();
+	osg::ref_ptr<osg::Image> GenericVideo::getImage() const {		
+		return m_image;
 	}
 
+	void
+	GenericVideo::setImage(osg::Image* image) 
+	{
+		m_image = image;
+	}
 };

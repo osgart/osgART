@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
 				OutputFile="..\..\bin\osgart_ptgrey.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib;&quot;C:\Program Files\Point Grey Research\PGR FlyCapture\lib&quot;"

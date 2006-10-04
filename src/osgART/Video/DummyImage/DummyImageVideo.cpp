@@ -101,21 +101,21 @@ DummyImageVideo::operator=(const DummyImageVideo &)
 void
 DummyImageVideo::open()
 {
-	g_Image = osgDB::readImageFile(videoName.c_str());
-	xsize=g_Image->s();
-	ysize=g_Image->t();
+	m_image = osgDB::readImageFile(videoName.c_str());
+	xsize=m_image->s();
+	ysize=m_image->t();
 
-	if (osg::Image::computeNumComponents(g_Image->getPixelFormat())==3)
+	if (osg::Image::computeNumComponents(m_image->getPixelFormat())==3)
 	{
-		g_Image->setPixelFormat(GL_RGB);
+		m_image->setPixelFormat(GL_RGB);
 		pixelsize=3;
 		pixelformat=VIDEOFORMAT_RGB24;
 	}
 	else
 	{
-		if (osg::Image::computeNumComponents(g_Image->getPixelFormat())==4)
+		if (osg::Image::computeNumComponents(m_image->getPixelFormat())==4)
 		{
-			g_Image->setPixelFormat(GL_RGBA);
+			m_image->setPixelFormat(GL_RGBA);
 			pixelsize=4;
 			pixelformat=VIDEOFORMAT_RGBA32;
 		}
@@ -125,8 +125,7 @@ DummyImageVideo::open()
 			exit(-1);
 		}
 	}
-
-	g_Image->flipVertical();
+	m_image->flipVertical();
 }
 
 void
@@ -167,7 +166,6 @@ DummyImageVideo::update()
 #endif
 
 */
-	image = g_Image->data();
 }
 
 

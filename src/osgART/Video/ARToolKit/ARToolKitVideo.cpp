@@ -107,11 +107,17 @@ ARToolKitVideo::update()
 
 		newImage = (unsigned char*)ar2VideoGetImage(video);
 
+		if (newImage && m_image.valid())
+			m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+				GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);	
+
+		/*
 		if (!newImage) {
 			image = NULL;
 		} else {
 			image = newImage;
 		}
+		*/
 
 		// image = (unsigned char*)ar2VideoGetImage(video);
 

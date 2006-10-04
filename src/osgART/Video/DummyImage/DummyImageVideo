@@ -114,9 +114,8 @@ protected:
 
 private:
 
-
 	std::string videoName;
-	osg::ref_ptr<osg::Image> g_Image;
+
 };
 
 #endif

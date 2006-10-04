@@ -77,15 +77,12 @@ namespace osgART {
 		ImageUpdateCallback(osg::TextureRectangle* texture, osgART::GenericVideo* video):
 			_texture(texture),
 			_video(video)
-		{
-			if (video->getImage()) {
-				// std::cout << (long)video->getImage()->data() << std::endl;
-			}
+		{			
 		}
 
 		virtual void operator()(osg::Node*, osg::NodeVisitor* nv)
 		{
-			_texture->setImage(_video->getImage());        
+			_texture->setImage(_video->getImage().get());        
 		}
 	    
 		protected:

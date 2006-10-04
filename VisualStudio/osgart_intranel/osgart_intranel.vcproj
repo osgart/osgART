@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib"
+				AdditionalDependencies="osg.lib osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib"
 				OutputFile="..\..\bin\osgart_intranel.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib;&quot;$(DXSDK_DIR)\Extras\DirectShow\Samples\C++\DirectShow\BaseClasses\Release&quot;"

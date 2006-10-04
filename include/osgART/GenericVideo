@@ -152,7 +152,14 @@ namespace osgART {
 		 * \brief get an image.
 		 * Get the last image retrieved since call of update.
 		 */
-		osg::Image* getImage();
+		osg::ref_ptr<osg::Image> getImage() const;
+		
+		/**
+		 * \brief set an image.
+		 * \param image set the internal image 
+		 * Get the last image retrieved since call of update.
+		 */
+		void setImage(osg::Image* image);
 		
 		
 		/**
@@ -180,14 +187,8 @@ namespace osgART {
 		*/
 		virtual ~GenericVideo();   
  
-
-		//Protected Data		
-		unsigned char* image;
-		
-		
 		osg::ref_ptr<osg::Image> m_image;
-		
-		
+
 		int xsize;
 		int ysize;	
 		int pixelsize;
@@ -201,6 +202,13 @@ namespace osgART {
 		
 		// used for locking
 		OpenThreads::Mutex m_mutex;
+
+#if 0
+		// hse25: no more raw image pointer
+		unsigned char* image;		
+#endif
+	
+		
 		
 	};
 

@@ -126,13 +126,10 @@ DSVLVideo::update()
 			newImage = NULL;
 		}
 	}
-	
-	image = newImage;
-#if 0
-	if (image && m_image.valid()) 
+
+	if (newImage && m_image.valid()) 
 		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
-			GL_UNSIGNED_BYTE, image, osg::Image::NO_DELETE, 1);	
-#endif
+			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);	
 
 }
 

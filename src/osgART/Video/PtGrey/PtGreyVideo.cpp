@@ -134,7 +134,8 @@ PtGreyVideoThread::~PtGreyVideoThread()
 
 PtGreyVideo::PtGreyVideo(int id_cam,PixelFormatType pf,int _xsize,int _ysize,FrameRateType fr) : 
 	GenericVideo(),
-	camIndex(id_cam)
+	camIndex(id_cam),
+	newImage(0L)
 {
 	xsize=_xsize;
 	ysize=_ysize;
@@ -354,18 +355,13 @@ PtGreyVideo::stop()
 void
 PtGreyVideo::update()
 {
-
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
+	
+	if (haveNewImage && m_image.valid()) 
+		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);
 
-	if (!haveNewImage)
-	{
-		image=NULL;
-	}
-	else
-	{
-		image=newImage;
-	}
-	haveNewImage=false;
+	haveNewImage = false;
 }
 
 void

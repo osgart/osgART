@@ -878,16 +878,12 @@ const int& IntranelStreamVideo::IsUpdated() const {
 void
 IntranelStreamVideo::update()
 {
-	unsigned char* newImage = NULL;
-
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
-	newImage = m_frame->buffer;
-
-	if (!newImage) {
-			image = NULL;
-	} else {
-			image = newImage;
+	if (m_frame->buffer && m_image.valid()) {
+		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+			GL_UNSIGNED_BYTE, m_frame->buffer, osg::Image::NO_DELETE, 1);
+        
 	}
 }
 
