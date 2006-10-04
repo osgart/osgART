@@ -144,19 +144,18 @@ namespace osgART {
 		m_layerDepth=level;
 		m_layerStateSet->setRenderBinDetails(m_layerDepth, "RenderBin");
 	}
-
-
+	
 	osg::Node* 
 	VideoLayer::buildLayer() 
 	{
-		osg::Projection* projection = new osg::Projection(osg::Matrix::ortho2D(0, m_width, 0, m_height));
+		osg::Projection* m_layerProjectionMatrix = new osg::Projection(osg::Matrix::ortho2D(0, m_width, 0, m_height));
 
-		osg::MatrixTransform* modelview = new osg::MatrixTransform();
-		modelview->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
-		projection->addChild(modelview);
+		osg::MatrixTransform* m_layerModelViewMatrix = new osg::MatrixTransform();
+		m_layerModelViewMatrix->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+		m_layerProjectionMatrix->addChild(m_layerModelViewMatrix);
 
 		osg::Group* layerGroup = new osg::Group();
-		modelview->addChild(layerGroup);
+		m_layerModelViewMatrix->addChild(layerGroup);
 
 		m_layerStateSet = new osg::StateSet();
 		layerGroup->setStateSet(m_layerStateSet);
@@ -165,7 +164,7 @@ namespace osgART {
 		layerGroup->getOrCreateStateSet()->setAttribute(new osg::Depth(osg::Depth::ALWAYS, 1.0f, 1.0f));
 		layerGroup->addChild(buildLayerGeometry());
 
-		return projection;
+		return m_layerProjectionMatrix;
 	}
 
 
@@ -203,19 +202,20 @@ namespace osgART {
 		this->m_vTexture = _texture;
 		_texture->setDataVariance(osg::Object::DYNAMIC);
 
-		osg::Geode* backGeode = new osg::Geode();
-		osg::Geometry* geometry = new osg::Geometry();
-			
+		m_layerGeode = new osg::Geode();
+
+		m_geometry = new osg::Geometry();
+		
 		osg::Vec3Array* coords = new osg::Vec3Array();
-		geometry->setVertexArray(coords);
+		m_geometry->setVertexArray(coords);
 
 		osg::Vec2Array* tcoords = new osg::Vec2Array();
-		geometry->setTexCoordArray(0, tcoords);
+		m_geometry->setTexCoordArray(0, tcoords);
 
 		osg::Vec4Array* colors = new osg::Vec4Array();
 		colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		geometry->setColorArray(colors);
-		geometry->setColorBinding(osg::Geometry::BIND_OVERALL);
+		m_geometry->setColorArray(colors);
+		m_geometry->setColorBinding(osg::Geometry::BIND_OVERALL);
 
 		switch (m_distortionMode) {
 
@@ -258,7 +258,7 @@ namespace osgART {
 
 					}
 
-					geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 
+					m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 
 						r * 2 * (cols+1), 2 * (cols+1)));
 
 				}
@@ -278,17 +278,21 @@ namespace osgART {
 			tcoords->push_back(osg::Vec2(maxU, 0.0f));
 			tcoords->push_back(osg::Vec2(0.0f, 0.0f));
 
-			geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
+			m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
 
 			break;
 		}
 	    
-		geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, _texture, osg::StateAttribute::ON);
-		geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
+		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, _texture, osg::StateAttribute::ON);
+		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
 
-		backGeode->addDrawable(geometry);
+		if (m_vShader)
+		{
+			m_vShader->Apply(*(m_geometry->getOrCreateStateSet()));	
+		}
+		m_layerGeode->addDrawable(m_geometry);
 
-		return backGeode;
+		return m_layerGeode;
 
 	}
 

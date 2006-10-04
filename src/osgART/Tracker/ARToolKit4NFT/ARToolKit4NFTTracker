@@ -1,0 +1,175 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_ARTOOLKIT4NFTTRACKER
+#define OSGART_ARTOOLKIT4NFTTRACKER 1
+
+/**
+ * \file  ARToolKitTracker
+ * \brief A wrapper class for ARToolkit4 with NFT tracking system.
+ *
+ * Support Natural-feature tracking based on computer vision combined ARToolKit4
+ * with TexTracking NFT (original code from Hirokazu Kato). 
+ * This class provided video/graphic independent marker detection and
+ * support multiple marker tracking.
+ *	
+ * \author Julian Looser Julian.Looser@hitlabnz.org
+ * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+ */
+ 
+// graphics include
+
+#include <AR4/AR/config.h>
+#include <AR4/AR/param.h>
+#include <AR4/AR/ar.h>
+
+#include <AR2/marker.h>    
+#include <AR2/featureSet.h>    
+#include <AR2/imageSet.h>    
+#include <AR2/tracking.h>    
+#include <AR2/coord.h>    
+#include <AR2/template.h>    
+#include <AR2/util.h>    
+
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+
+namespace osgART {
+
+	/**
+	* \class ARToolKit4NFTTracker.
+	* \brief A tracker based on ARToolKit 4x. + NFT Tracking. 
+	* 
+	* This tracker supports single, NFT and multi-markers tracking.
+	*
+	*/
+
+	class ARToolKit4NFTTracker : public GenericTracker
+	{
+	public:        
+	   
+		/** 
+		* \brief default constructor
+		*/
+		ARToolKit4NFTTracker(void);
+
+		/** 
+		* \brief set the openGL parameters for the projeciton matrix.
+		* 
+		* Initialize internal parameters computation for delivers an openGL Matrix (modify
+		* nothing to openGL state machine). 
+		* @param n near field of view
+		* @param f far field of view
+		*/
+		void setProjection(const double n, const double f);
+		
+		/** 
+		* \brief set the threshhold value for the algorithm.
+		* 
+		* define the threshold use for the lighting condition in artoolkit.
+		* @param thresh integer value between 0 (dark) and 100 (bright) 
+		*/
+		void setThreshold(int thresh);
+		
+		/**
+		* \brief Get the current threshold value for the tracking algorithm.
+		*
+		* \return The current threshold.
+		*/
+		int getThreshold();	
+		
+		// services
+		
+		/** 
+		* \brief initialize ARToolKit.
+		* 
+		* This core function initialize different parameters of ARToolKit: load tracked markers, initialize
+		* camera parameters.
+		* @param xsize width of the image to analyze
+		* @param ysize height of the image to analyze
+		* @param pattlist_name a file structure of the marker
+		* @param camera_name description file of the camera used (pinhole model)
+		*/
+		virtual bool init(int xsize,int ysize,
+			const std::string& pattlist_name = "Data/markers_list.dat", 
+			const std::string& camera_name="Data/camera_para.dat");
+		
+		/** 
+		* \brief Register a single marker with the tracker.
+		* 
+		* \param pattFile the pattern file name
+		* \param width the width of the physical marker
+		* \param center the x-y coordinates of the center of the marker (usually 0,0)
+		* \return the internal ID of the new marker, or -1 on failure 
+		*/
+		int addSingleMarker(const std::string& pattFile, 
+		double width, double center[2]);
+		
+		/** 
+		* \brief Register a multi-marker with the tracker
+		* 
+		* \param multiFile the multi-marker configuration file name
+		* \return the internal ID of the new marker, or -1 on failure
+		*/
+		int addMultiMarker(const std::string& multiFile);
+		
+		/** 
+		* \brief Register a nft-marker with the tracker
+		* 
+		* \param nftFile the nft-marker configuration file name
+		* \return the internal ID of the new marker, or -1 on failure
+		*/
+		int addNFTMarker(const std::string& nftFile);
+		
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function apply the ARToolKit algorithm on the last image defined by setImage.
+		*/
+		void update();
+		 
+	    
+	protected: 
+	    
+		/** 
+		 * \brief destructor.
+		 */
+		virtual ~ARToolKit4NFTTracker();
+		
+	private:
+	
+		/** 
+		* \brief conversion function.
+		* 
+		* utility function to transform matrix from ARToolKit representation to GL representation.
+		* @param para the input ARToolKit Matrix
+		* @param gl the computed GL Matrix
+		*/
+		
+		int square_tracking( ARUint8 *dataPtr, double patt_trans1[3][4] );
+	
+		bool setupMarkers(const std::string& patternListFile);
+	
+	ARParam  cparam;
+	std::string cparamName;
+	int					threshold;
+
+	ARHandle           *arHandle;
+	ARPattHandle       *arPattHandle;
+	AR3DHandle         *ar3DHandle;
+	  
+	AR2HandleT			*ar2Handle;
+	AR2SurfaceSetT		*surfaceSet;
+	 
+	};
+};
+
+#endif

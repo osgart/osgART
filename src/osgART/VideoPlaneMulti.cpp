@@ -176,6 +176,11 @@ namespace osgART {
 			++_ii;
 		}
 
+		if (m_vShader)
+		{
+			m_vShader->Apply(*(m_geometry->getOrCreateStateSet()));	
+		}
+
 		backGeode->addDrawable(m_geometry);
 
 		return backGeode;

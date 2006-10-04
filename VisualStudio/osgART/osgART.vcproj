@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_EXPORTS;OSGART_LIBRARY"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_EXPORTS;OSGART_LIBRARY;OSGART_PIXELBIAS_NO_PERFORMANCE"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
@@ -141,36 +141,6 @@
 					RelativePath="..\..\src\osgART\ARLocalTransformCallback.cpp">
 				</File>
 				<File
-					RelativePath="..\..\src\osgART\ARToolKit4NFTTracker.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\ARToolKit4Tracker.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\src\osgART\ARTTransform.cpp">
 				</File>
 				<File
@@ -181,51 +151,6 @@
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\Marker.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\MultiART4Marker.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\NFTART4Marker.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\SingleART4Marker.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\TrackerManager.cpp">
@@ -321,24 +246,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\include\osgART\ARToolKit4NFTTracker">
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\ARToolKit4Tracker">
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath="..\..\include\osgART\ARTTransform">
 				</File>
 				<File
@@ -357,33 +264,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\Marker">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\MultiART4Marker">
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\NFTART4Marker">
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\SingleART4Marker">
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCustomBuildTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\TrackerManager">

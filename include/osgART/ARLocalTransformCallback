@@ -21,7 +21,7 @@ namespace osgART {
 	 * \class ARLocalTransformCallback
 	 * \brief Node callback that updates a MatrixTransform based on the relationship between two markers
 	 */
-	class ARLocalTransformCallback : public osg::NodeCallback {
+	class OSGART_EXPORT ARLocalTransformCallback : public osg::NodeCallback {
 	protected:
 		Marker* mBaseMarker;
 		Marker* mPaddleMarker;
