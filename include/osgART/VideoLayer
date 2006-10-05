@@ -101,7 +101,7 @@ namespace osgART {
 		}	
 		
 		inline float getHeight() const {
-			return m_width;
+			return m_height;
 		}	
 		
 	    
