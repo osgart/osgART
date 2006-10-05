@@ -29,9 +29,6 @@
 #ifndef OSGART_VIDEOLAYER
 #define OSGART_VIDEOLAYER
 
-/* --------------------------------------------------------------------------
-* include file
-*----------------------------------------------------------------------------*/
 
 // OSG include
 #include <osg/Geode>
@@ -98,6 +95,14 @@ namespace osgART {
 		inline int getLayerDepth() const {
 			return m_layerDepth;
 		};
+		
+		inline float getWidth() const {
+			return m_width;
+		}	
+		
+		inline float getHeight() const {
+			return m_width;
+		}	
 		
 	    
 	protected: 
