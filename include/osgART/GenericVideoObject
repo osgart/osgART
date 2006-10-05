@@ -85,35 +85,35 @@ namespace osgART {
 	    
 		inline void setTexture(osg::Texture* vt) {
 			m_vTexture=vt;
-		};
+		}
 
-		inline osg::Texture* getTexture() const {
-			return m_vTexture.get();
-		};
+		inline osg::ref_ptr<osg::Texture> getTexture() {
+			return m_vTexture;
+		}
 	    
 		inline void setShader(GenericVideoShader* vs) { 
 			m_vShader=vs;
-		};
+		}
 	    
-		inline GenericVideoShader* getShader() const {
-			return m_vShader.get();
-		};    
+		inline osg::ref_ptr<GenericVideoShader> getShader() {
+			return m_vShader;
+		}    
 	    
 		inline void setTextureMode(TextureMode tm) {
 			m_textureMode=tm;
-		};
+		}
 
 		inline TextureMode getTextureMode() const {
 			return m_textureMode;
-		};
+		}
 
 		inline void setDistortionCorrectionMode(DistortionCorrectionMode dcm) {
 			m_distortionMode=dcm;
-		};
+		}
 
 		inline DistortionCorrectionMode getDistorsionCorrectionMode() const {
 			return m_distortionMode;
-		};
+		}
 	    
 	    
 	protected:
