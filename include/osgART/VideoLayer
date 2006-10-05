@@ -94,7 +94,7 @@ namespace osgART {
 		 */
 		inline int getLayerDepth() const {
 			return m_layerDepth;
-		};
+		}
 		
 		inline float getWidth() const {
 			return m_width;
