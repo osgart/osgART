@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib OpenThreadsWin32.lib VidCapLib.lib Strmiids.lib Quartz.lib"
+				AdditionalDependencies="osgART.lib osg.lib OpenThreadsWin32.lib VidCapLib.lib Strmiids.lib Quartz.lib"
 				OutputFile="..\..\bin\osgart_VidCapture.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

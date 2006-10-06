@@ -142,7 +142,8 @@ private:
 
 //Private Data
 	 VideoSource *vs;
-	 IniParser* iniParser;
+	 std::string videoConfig;
+	 IplImage *m_ipl_image;
 };
 
 #endif

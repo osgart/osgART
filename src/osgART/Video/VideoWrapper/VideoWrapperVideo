@@ -119,7 +119,7 @@ public:
     */
 	void update();
 	
-	inline virtual void releaseImage() {};
+	virtual void releaseImage();
 // Public Type
     
 // Public Datas

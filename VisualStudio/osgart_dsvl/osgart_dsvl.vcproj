@@ -79,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="DSVL.lib osgART.lib"
+				AdditionalDependencies="DSVL.lib osgART.lib osg.lib"
 				OutputFile="..\..\bin\osgart_dsvl.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

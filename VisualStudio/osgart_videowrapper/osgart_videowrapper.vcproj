@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib VideoWrapper.lib"
+				AdditionalDependencies="osgART.lib osg.lib VideoWrapper.lib"
 				OutputFile="..\..\bin\osgart_videowrapper.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

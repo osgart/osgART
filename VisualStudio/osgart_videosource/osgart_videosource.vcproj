@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib Videosource.lib PGRFlyCapture.lib cv.lib cxcore.lib highgui.lib Strmiids.lib Quartz.lib"
+				AdditionalDependencies="osgART.lib osg.lib Videosource.lib PGRFlyCapture.lib cv.lib cxcore.lib highgui.lib Strmiids.lib Quartz.lib"
 				OutputFile="..\..\bin\osgart_videosource.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

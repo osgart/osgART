@@ -173,16 +173,9 @@ CVCamVideo::update()
 
 	cvcamGetProperty(0,"raw_image",&ipl_image);
 
-	image=(unsigned char*)ipl_image->imageData;
-	//if (!CVCam::haveNewImage)
-	//{
-	//	image=NULL;
-	//}
-	//else
-	//{
-	//	image=newImage;
-	//}
-//	haveNewImage=false;
+	if (ipl_image && m_image.valid()) 
+		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+			GL_UNSIGNED_BYTE, (unsigned char*)ipl_image->imageData, osg::Image::NO_DELETE, 1);	
 }
 
 void 

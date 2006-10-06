@@ -340,14 +340,9 @@ VidCaptureVideo::update()
 {
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
-	if (!haveNewImage)
-	{
-		image=NULL;
-	}
-	else
-	{
-		image=newImage;
-	}
+	if (haveNewImage && m_image.valid()) 
+		m_image->setImage(this->xsize, this->ysize, 1, GL_RGB, GL_RGB, 
+			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);	
 	haveNewImage=false;
 }
 

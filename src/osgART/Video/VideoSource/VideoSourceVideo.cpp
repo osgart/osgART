@@ -67,12 +67,12 @@ const char* const Video_RCS_ID = "@(#)class Video definition.";
 // PUBLIC: Standard services 
 ///////////////////////////////////////////////////////////////////////////////
 
-VideoSourceVideo::VideoSourceVideo(const char* config_file)
+VideoSourceVideo::VideoSourceVideo(const char* config_file):
+GenericVideo(),
+videoConfig(config_file)
 {
-
 	pixelsize=3;
 	pixelformat=VIDEOFORMAT_RGB24;
-		
 }
 
 /*
@@ -99,19 +99,31 @@ VideoSourceVideo::operator=(const VideoSourceVideo &)
 void
 VideoSourceVideo::open()
 {
- vs = VideoSourceFactory::instance()->construct();
- if (vs==0)
- {
-	 std::cerr<<"ERROR:this is not working :-("<<std::endl;
- }
- else
- vs->initialize();
+	 // Create the video source:
+
+	// 1) construct .ini parser
+	IniParser parser(0);
+
+	// 2) parse .ini file
+    VideoSourceFactory::instance()->registerParameters(&parser);
+
+	if (!parser.parse(videoConfig.c_str())) {
+		std::cerr<<"ERROR:can't parse your video file.."<<std::endl;
+	}
+	// 3) try to construct a valid video source 
+    if (!(vs=VideoSourceFactory::instance()->construct())) {
+		std::cerr <<"ERROR:Unable to open video source!"<<std::endl;
+    }
+
+	vs->getSize(xsize,ysize);
+
+	m_ipl_image = cvCreateImage(cvSize(xsize,ysize), IPL_DEPTH_8U, vs->getChannels());
 }
 
 void
 VideoSourceVideo::close()
 {
-
+	cvReleaseImage(&m_ipl_image);
 }
 
 void
@@ -129,18 +141,13 @@ VideoSourceVideo::stop()
 void
 VideoSourceVideo::update()
 {
-	IplImage *ipl_image;
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
-	vs->getFrame(ipl_image);
-	if (ipl_image!=NULL)
-	{
-		image=(unsigned char*)ipl_image->imageData;
-	}
-	else
-	{
-		image=NULL;
-	}
+	vs->getFrame(m_ipl_image);
+	if ((m_ipl_image!=NULL) && m_image.valid()) 
+		m_image->setImage(this->xsize, this->ysize, 1, GL_RGB, GL_RGB, 
+			GL_UNSIGNED_BYTE, (unsigned char*)m_ipl_image->imageData, osg::Image::NO_DELETE, 1);	
+
 }
 
 
