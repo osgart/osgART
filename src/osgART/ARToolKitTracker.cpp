@@ -257,27 +257,8 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		}
 	}
 
-
-#if 0
-	void ARToolKitTracker::ARTransToGL(double para[3][4], double gl[16]) 
-	{
-	    for (int j = 0; j < 3; j++) 
-		{
-	        for (int i = 0; i < 4; i++) 
-			{
-	            gl[i*4+j] = para[j][i];
-	        }
-	    }
-
-	    gl[3] = gl[7] = gl[11] = 0.0f;
-	    gl[15] = 1.0f;
-
-	}
-#endif
-
-
 	void ARToolKitTracker::setProjection(const double n, const double f) {
-		arglCameraFrustum((ARParam*)&cparam, n, f, m_projectionMatrix);
+		arglCameraFrustumRH((ARParam*)&cparam, n, f, m_projectionMatrix);
 	}
 
 }; // namespace osgART

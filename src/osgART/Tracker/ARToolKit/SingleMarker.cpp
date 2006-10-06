@@ -36,9 +36,10 @@ namespace osgART {
 			m_valid = true;
 
 		}
-
-		updateTransform(patt_trans);
-
+		GLdouble modelView[16];
+		arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
+		osg::Matrix tmp(modelView);
+		updateTransform(tmp);
 	}
 
 	void SingleMarker::setActive(bool a) {

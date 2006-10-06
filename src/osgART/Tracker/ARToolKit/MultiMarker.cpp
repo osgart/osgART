@@ -40,7 +40,10 @@ namespace osgART {
 	MultiMarker::update(ARMarkerInfo* markerInfo, int markerCount) 
 	{
 		m_valid = (arMultiGetTransMat(markerInfo, markerCount, m_multi) >= 0);
-		updateTransform(m_multi->trans);
+		GLdouble modelView[16];
+		arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
+		osg::Matrix tmp(modelView);
+		updateTransform(tmp);
 	}
-
+	
 };

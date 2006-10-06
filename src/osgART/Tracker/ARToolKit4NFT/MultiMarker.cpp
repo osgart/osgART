@@ -38,18 +38,17 @@ void
 MultiMarker::update(AR3DHandle *ar3DHandle,ARMarkerInfo* markerInfo, int markerCount) 
 {
 	std::cerr<<"to update.."<<std::endl;
-	for (int i=0;i<m_multi->marker_num;i++)
-	{
+	for (int i=0;i<m_multi->marker_num;i++) {
 		m_multi->marker[i].visible=-1;
 	}
 	//arGetTransMatMultiSquare(ar3DHandle,markerInfo, markerCount, m_multi);
 
-	for (int i=0;i<m_multi->marker_num;i++)
-	{
-		m_valid|=(m_multi->marker[i].visible==-1?false:true);
+	for (int i=0;i<m_multi->marker_num;i++) {
+		m_valid |= (m_multi->marker[i].visible==-1?false:true);
 	}
-	if (m_valid)
-		updateTransform(m_multi->trans);
-		
+	GLdouble modelView[16];
+	arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
+	osg::Matrix tmp(modelView);
+	updateTransform(tmp);
 }
 };

@@ -131,7 +131,7 @@ namespace osgART {
 		
 	protected:
 		
-		void updateTransform(double trans[3][4]);
+		void updateTransform(osg::Matrix transform);
 		
 		bool m_valid;
 		

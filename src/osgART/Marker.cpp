@@ -67,25 +67,18 @@ namespace osgART {
 	}
 
 	void 
-	Marker::updateTransform(double trans[3][4]) {
+	Marker::updateTransform(osg::Matrix transform) {
 		
 		// jcl64: removed loops
 		if (m_valid) {
-
-			// Copy ARToolKit matrix into OSG matrix
-			osg::Matrix tmp(
-				trans[0][0], trans[1][0], trans[2][0], 0.0f,
-				trans[0][1], trans[1][1], trans[2][1], 0.0f,
-				trans[0][2], trans[1][2], trans[2][2], 0.0f,
-				trans[0][3], trans[1][3], trans[2][3], 1.0f);
 
 			if (m_seen) {				
 				
 				osg::Vec3 newPosition;
 				osg::Quat newRotation;
 
-				newPosition = tmp.getTrans();
-				tmp.get(newRotation);
+				newPosition = transform.getTrans();
+				transform.get(newRotation);
 				m_storedRotation.slerp(m_rotationSmoothFactor, 
 					m_storedRotation, newRotation);
 
@@ -96,8 +89,8 @@ namespace osgART {
 				
 			} else {			
 			
-				m_storedPosition = tmp.getTrans();
-				tmp.get(m_storedRotation);
+				m_storedPosition = transform.getTrans();
+				transform.get(m_storedRotation);
 				m_seen = true;
 
 			}

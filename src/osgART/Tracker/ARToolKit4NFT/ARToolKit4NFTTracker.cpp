@@ -421,72 +421,7 @@ ARToolKit4NFTTracker::update()
 
 }
 
-#if 0
-void ARToolKit4NFTTracker::ARTransToGL(double para[3][4], double gl[16]) {
-    for (int j = 0; j < 3; j++) {
-        for (int i = 0; i < 4; i++) {
-            gl[i*4+j] = para[j][i];
-        }
-    }
-    gl[0*4+3] = gl[1*4+3] = gl[2*4+3] = 0.0;
-    gl[3*4+3] = 1.0;
-}
-#endif
-
-void ARToolKit4NFTTracker::setProjection(const double focalmin, const double focalmax) {
-
-	double   icpara[3][4];
-    double   trans[3][4];
-    double   p[3][3], q[4][4];
-	int      width, height;
-    int      i, j;
-	
-    width  = cparam.xsize;
-    height = cparam.ysize;
-
-    if (arParamDecompMat(cparam.mat, icpara, trans) < 0) {
-        fprintf(stderr, "arglCameraFrustum(): arParamDecompMat() indicated parameter error.\n");
-        return;
-    }
-	for (i = 0; i < 4; i++) {
-        icpara[1][i] = (height - 1)*(icpara[2][i]) - icpara[1][i];
-    }
-		
-    for(i = 0; i < 3; i++) {
-        for(j = 0; j < 3; j++) {
-            p[i][j] = icpara[i][j] / icpara[2][2];
-        }
-    }
-    q[0][0] = (2.0 * p[0][0] / (width - 1));
-    q[0][1] = (2.0 * p[0][1] / (width - 1));
-    q[0][2] = ((2.0 * p[0][2] / (width - 1))  - 1.0);
-    q[0][3] = 0.0;
-	
-    q[1][0] = 0.0;
-    q[1][1] = (2.0 * p[1][1] / (height - 1));
-    q[1][2] = ((2.0 * p[1][2] / (height - 1)) - 1.0);
-    q[1][3] = 0.0;
-	
-    q[2][0] = 0.0;
-    q[2][1] = 0.0;
-    q[2][2] = (focalmax + focalmin)/(focalmax - focalmin);
-    q[2][3] = -2.0 * focalmax * focalmin / (focalmax - focalmin);
-	
-    q[3][0] = 0.0;
-    q[3][1] = 0.0;
-    q[3][2] = 1.0;
-    q[3][3] = 0.0;
-	
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 3; j++) {
-            m_projectionMatrix[i + j*4] = q[i][0] * trans[0][j]
-			+ q[i][1] * trans[1][j]
-			+ q[i][2] * trans[2][j];
-        }
-        m_projectionMatrix[i + 3*4] = q[i][0] * trans[0][3]
-		+ q[i][1] * trans[1][3]
-		+ q[i][2] * trans[2][3]
-		+ q[i][3];
-    }	
+void ARToolKit4NFTTracker::setProjection(const double n, const double f) {
+	arglCameraFrustumRH((ARParam*)&cparam, n, f, m_projectionMatrix);
 }
 };

@@ -42,17 +42,19 @@ void SingleMarker::update(AR3DHandle *ar3DHandle, ARMarkerInfo* markerInfo) {
 		arGetTransMatSquare(ar3DHandle,&(markerInfo[patt_id]), patt_width, patt_trans);
 //		arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
 		m_valid = true;
-			for (int i=0;i<3;i++)
-	{
-		for (int j=0;j<4;j++)
-		{
-			std::cerr<<patt_trans[i][j]<<" ";
+#ifdef NDEBUG
+		for (int i=0;i<3;i++) {
+			for (int j=0;j<4;j++) {
+				std::cerr<<patt_trans[i][j]<<" ";
+			}
+			std::cerr<<std::endl;
 		}
-		std::cerr<<std::endl;
+#endif
 	}
-		updateTransform(patt_trans);
-	}
-
+	GLdouble modelView[16];
+	arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
+	osg::Matrix tmp(modelView);
+	updateTransform(tmp);	
 }
 
 int SingleMarker::getPatternID() {
