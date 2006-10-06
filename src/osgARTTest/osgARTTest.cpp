@@ -10,6 +10,7 @@
 #include <Producer/RenderSurface>
 #include <osgProducer/Viewer>
 
+#include <osg/Vec4s>
 #include <osg/Node>
 #include <osg/Group>
 #include <osg/Geode>
@@ -17,6 +18,7 @@
 #include <osg/AutoTransform>
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
+
 
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
@@ -58,19 +60,32 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+
+	/* check if loading the plugin was successful */
+	if (!video.valid()) {
+		std::cerr << "Could not initialize video!" << std::endl;
+		exit(1);
+	}
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
-	/* RFC: this how you would get any type in and out through the plugin system */
-	osg::ref_ptr< osgART::TypedField<int> > _field = 
-		dynamic_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
+	if (tracker.valid()) {
 
-	/* values can only be accessed through a get()/set() mechanism */
-	if (_field.valid()) _field->set(50);
+		/* RFC: this how you would get any type in and out through the plugin system */
+		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
+			dynamic_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
 
+		/* values can only be accessed through a get()/set() mechanism */
+		if (_threshold.valid()) _threshold->set(75);
+	} else {
+
+		std::cerr << "Could not initialize tracker plugin!" << std::endl;
+		exit(1);
+	}
+	
 	/* 
 	cfg.deviceconfig = "imagewithmarker.png";
 	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_dummyimage", cfg);
@@ -81,23 +96,36 @@ int main(int argc, char* argv[]) {
 
 	/*
 	cfg.id = 0;
-	cfg.type = osgART::VIDEOFORMAT_YUV411;
-	cfg.width = 640;
-	cfg.height = 480;
+	cfg.type = osgART::VIDEOFORMAT_Y16;
+	cfg.width = 800;
+	cfg.height = 600;
 	cfg.framerate = osgART::VIDEOFRAMERATE_30;
 	
 	osg::ref_ptr<osgART::GenericVideo> video = osgART::VideoManager::createVideoFromPlugin("osgart_ptgrey", cfg);
+
+	if (video.valid()) {
+		
+		osg::ref_ptr< osgART::TypedField<bool> > _roi = 
+			dynamic_cast< osgART::TypedField<bool>* >(video->get("ROI"));
+
+		osg::ref_ptr< osgART::TypedField<osg::Vec4s> > _set_roi = 
+			dynamic_cast< osgART::TypedField<osg::Vec4s>* >(video->get("setROI"));
+
+		if (_roi.valid() && _set_roi.valid()) {
+
+			_roi->set(false);            
+			_set_roi->set(osg::Vec4s(16,16,320,240));
+
+		}
+
+
+	}
 	*/
 
 	/* open the video */
 	video->open();
 
-	//creating an instance of a marker-based tracking
-	// osg::ref_ptr<osgART::GenericTracker> tracker = new osgART::ARToolKitTracker;
-	
-	// add the tracker to the tracker manager
-	// osgART::TrackerManager::getInstance()->addTracker(tracker.get());
-
+	/* Initialise the tracker */
 	tracker->init(video->getWidth(), video->getHeight());
 
 	//Adding video background
@@ -113,6 +141,7 @@ int main(int argc, char* argv[]) {
 	foregroundGroup->addChild(videoBackground);
 
 	foregroundGroup->getOrCreateStateSet()->setRenderBinDetails(2, "RenderBin");
+
 
 	osg::Projection* projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	

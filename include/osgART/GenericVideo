@@ -14,14 +14,19 @@
 #include <osg/ref_ptr>
 #include <osg/Image>
 #include <osg/Referenced>
+#include <osg/Vec4b>
+
 
 // Local include
 #include "osgART/Export"
 #include "osgART/VideoConfig"
+#include "osgART/Field"
+
 
 
 #include <OpenThreads/ScopedLock>
 #include <OpenThreads/Mutex>
+
 
 
 namespace osgART {
@@ -178,8 +183,20 @@ namespace osgART {
 		inline OpenThreads::Mutex& getMutex() {
 			return m_mutex;		
 		}
+		
+		/**
+		 * Access a field by its name. You need to cast
+		 * the field into its respective type in order
+		 * to access it.
+		 * \param name Name of the field
+		 * \return pointer to the field (0L if not found)
+		 */
+		Field* get(const std::string& name);
+		
 	   
 	protected:		
+	
+		FieldMap	m_fields;
 	
 		/** 
 		* \brief destructor.
@@ -202,12 +219,7 @@ namespace osgART {
 		
 		// used for locking
 		OpenThreads::Mutex m_mutex;
-
-#if 0
-		// hse25: no more raw image pointer
-		unsigned char* image;		
-#endif
-	
+		
 		
 		
 	};

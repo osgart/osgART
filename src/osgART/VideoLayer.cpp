@@ -93,7 +93,8 @@ namespace osgART {
 
 	VideoLayer::VideoLayer(int videoId,int layerD)
 		: GenericVideoObject(videoId) ,
-		m_layerDepth(layerD)
+		m_layerDepth(layerD),
+		m_trackerid_undistort(0)
 	{
 		// Should check whether it's a valid video id!
 		// m_videoId = videoId;
@@ -230,7 +231,7 @@ namespace osgART {
 
 				// new version by Hartmut, should work for both ARToolkit and ART4
 				const osgART::CameraParameter p = 
-					dynamic_cast<osgART::GenericTracker*>(osgART::TrackerManager::getInstance()->getTracker(0))->getIntrinsicParameters();
+					dynamic_cast<osgART::GenericTracker*>(osgART::TrackerManager::getInstance()->getTracker(this->m_trackerid_undistort))->getIntrinsicParameters();
 				
 
 				for (unsigned int r = 0; r < rows; r++) {

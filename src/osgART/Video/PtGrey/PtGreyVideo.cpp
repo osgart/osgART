@@ -1,35 +1,12 @@
-///////////////////////////////////////////////////////////////////////////////
-// File name : PtGreyVideo.C
-//
-// Creation : YYY
-//
-// Version : YYY
-//
-// Author : Raphael Grasset
-//
-// email : Raphael.Grasset@imag.fr
-//
-// Purpose : ??
-//
-// Distribution :
-//
-// Use :
-//	??
-//
-// Todo :
-//	O add the settings dialog box with GU.
-//    add the capture mode
-//	/
-//	X
-//
-// History :
-//	YYY : Mr Grasset : Creation of the file
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// include file
-///////////////////////////////////////////////////////////////////////////////
-
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
 #include "PtGreyVideo"
 #include <OpenThreads/Thread>
 
@@ -37,25 +14,6 @@
 
 using namespace std;
 using namespace osgART;
-
-///////////////////////////////////////////////////////////////////////////////
-// Macro 
-///////////////////////////////////////////////////////////////////////////////
-
-#if defined(NO_DEBUG)
-#define ASSERT(x)
-#else //defined(NO_DEBUG)
-#define ASSERT(x) if(!(x)) \
-    { cerr << "Assertion failed : (" << #x << ')' << endl \
-    << "In file : " << __FILE__ << "at line #" << __LINE__ << endl \
-    << "Compiled the " << __DATE__ << " at " << __TIME__ << endl; abort();}
-#endif // else defined(NO_DEBUG)
-
-const char* const Video_RCS_ID = "@(#)class Video definition.";
-
-///////////////////////////////////////////////////////////////////////////////
-// class Video
-///////////////////////////////////////////////////////////////////////////////
 
 
 class PtGreyVideoThread: public OpenThreads::Thread
@@ -101,11 +59,22 @@ void PtGreyVideoThread::run()
 			std::cerr<<"ERROR:"<<flycaptureErrorToString( error );
 		}
 
-		ptgrey->getMutex().lock();
-		*(ptgrey->getRefImage())=imagePtr->pData;
-		ptgrey->haveNewImage=true;
+		{
+			OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(ptgrey->getMutex());
+			*(ptgrey->getRefImage()) = imagePtr->pData;
+			ptgrey->haveNewImage=true;
+
+		}
+		imagePtr = (imagePtr == &convertedimage) ? (&convertedimage2):(&convertedimage);
+		
+		/*
+
+		
 		ptgrey->getMutex().unlock();
+
 		imagePtr=(imagePtr==&convertedimage)?(&convertedimage2):(&convertedimage);
+
+		*/
 	}
 }
 
@@ -135,8 +104,14 @@ PtGreyVideoThread::~PtGreyVideoThread()
 PtGreyVideo::PtGreyVideo(int id_cam,PixelFormatType pf,int _xsize,int _ysize,FrameRateType fr) : 
 	GenericVideo(),
 	camIndex(id_cam),
-	newImage(0L)
+	newImage(0L),
+	isRoi(false)
 {
+
+	m_fields["ROI"] = new TypedField<bool>(&isRoi);
+	m_fields["setROI"] = new TypedField<osg::Vec4s>(&m_roi);
+
+
 	xsize=_xsize;
 	ysize=_ysize;
 	pixelformat=pf;
@@ -259,8 +234,7 @@ PtGreyVideo::PtGreyVideo(int id_cam,PixelFormatType pf,int _xsize,int _ysize,Fra
 		exit(-1);
 	}
 	isRunning=false;
-	haveNewImage=false;
-	isRoi=false;
+
 	//we are using ART so we are converting the video to the readable ART format
 	pixelformat=VIDEOFORMAT_BGRA32;
 }
@@ -289,6 +263,14 @@ PtGreyVideo::operator=(const PtGreyVideo &)
 void
 PtGreyVideo::open()
 {
+
+	if (isRoi) {
+		// capture with Region of Interest
+
+		xsize = m_roi[2] - m_roi[0];
+		ysize = m_roi[3] - m_roi[1];
+	}
+
     FlyCaptureError   error;
 	if ((error = flycaptureCreateContext( &context ))!= FLYCAPTURE_OK )
 	{
@@ -316,11 +298,15 @@ PtGreyVideo::start()
 {
 	FlyCaptureError   error;
 
-	if (isRoi)
-	{	//start a color capture
-		if ((error =flycaptureStartCustomImage(context,0,xstart,ystart,xend,yend,100.0,FLYCAPTURE_RAW8 ))!= FLYCAPTURE_OK)
+	if (isRoi) {
+
+
+		if ((error = flycaptureStartCustomImage(context,0,
+				m_roi[0],m_roi[1],m_roi[2],m_roi[3],
+				100.0,FLYCAPTURE_RAW8 )) != FLYCAPTURE_OK)
 		{
-			std::cerr<<"ERROR:"<<flycaptureErrorToString( error );
+			std::cerr<< "PtGreyVideo::start() " << flycaptureErrorToString( error ) << std::endl;
+
 			exit(-1);
 		}
 	}
@@ -328,9 +314,14 @@ PtGreyVideo::start()
 	{
 		if ((error = flycaptureStart(context,videoMode,videoSpeed))!= FLYCAPTURE_OK)
 		{
-			std::cerr<<"ERROR:"<<flycaptureErrorToString( error );
+			std::cerr<< "PtGreyVideo::start() " << flycaptureErrorToString( error ) << std::endl;
+			
 			exit(-1);
 		}
+	}
+
+	if (isRoi) {
+
 	}
 
 	isRunning=true;
@@ -357,11 +348,13 @@ PtGreyVideo::update()
 {
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 	
-	if (haveNewImage && m_image.valid()) 
+	if (haveNewImage && m_image.valid()) { 
 		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);
 
-	haveNewImage = false;
+		haveNewImage = false;
+
+	} 
 }
 
 void

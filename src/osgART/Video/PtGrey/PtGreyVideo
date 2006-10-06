@@ -1,36 +1,14 @@
-/*  --------------------------------------------------------------------------
-*   Copyright (C) 2004 Hitlab NZ.
-*   The distribution policy is describe on the Copyright.txt furnish 
-*    with this library.
-*   -------------------------------------------------------------------------*/
-/**
-*  \file  PtGreyVideo
-*  \brief A Video class for PtGrey Camera input.
-*
-* A Video class support Point Grey Research cameras. 
-* Based on the PGR Fly Capture SDK.
-*	
-*   \remark this class have been tested with Firefly, DragonFly, Flea cameras.
-*
-*   History :
-*
-*  \author Julian Looser Julian.Looser@hitlabnz.org
-*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
-*  \version 3.1
-*  \date 01/12/07
-**/
-/*  --------------------------------------------------------------------------
-*   History : 
-*   Rev		Date		Who		Changes
-*   1.1     06/05/30    RG		Add the ROI mode
-*----------------------------------------------------------------------------*/
-
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
 #ifndef OSGART_PTGREYVIDEO
-#define OSGART_PTGREYVIDEO
-
-/* --------------------------------------------------------------------------
-* include file
-*----------------------------------------------------------------------------*/
+#define OSGART_PTGREYVIDEO 1
 
 //standard include
 #include <iostream>
@@ -40,15 +18,16 @@
 #include <PGRFlyCapture.h>
 #include <osgART/Export>
 #include <OpenThreads/Mutex>
+#include <osg/Vec4s>
 
 //personnal include
 #include <osgART/GenericVideo>
 #include <osgART/VideoConfig>
 
-/** --------------------------------------------------------------------------
-* class PtGreyVideo.
-*----------------------------------------------------------------------------*/
-
+/**
+ * class PtGreyVideo.
+ *
+ */
 class PtGreyVideo: public osgART::GenericVideo
 {
 public:        
@@ -57,7 +36,11 @@ public:
     /** 
     * \brief default constructor.
     */
-    PtGreyVideo(int id_cam,osgART::PixelFormatType pft=osgART::VIDEOFORMAT_RGB24,int _xsize=640,int _ysize=480,osgART::FrameRateType frame_rate=osgART::VIDEOFRAMERATE_30);
+    PtGreyVideo(int id_cam, 
+		osgART::PixelFormatType pft=osgART::VIDEOFORMAT_RGB24,
+		int _xsize=640,
+		int _ysize=480,
+		osgART::FrameRateType frame_rate = osgART::VIDEOFRAMERATE_30);
 
     /** 
     * \brief copy constructor.
@@ -172,6 +155,10 @@ private:
 	int xstart,ystart,xend,yend;
 	unsigned char* newImage;
 	OpenThreads::Mutex internalMutex;
+	
+	osg::Vec4s m_roi;
+
+	
 };
 
 #endif

@@ -81,7 +81,7 @@ namespace osgART {
 		 */
 		inline float getTransparency() const { 
 			return m_alpha;
-		};
+		}
 
 
 		/**
@@ -102,7 +102,11 @@ namespace osgART {
 		
 		inline float getHeight() const {
 			return m_height;
-		}	
+		}
+		
+		inline void setUndistortionTrackerID(int trackerID) {
+			m_trackerid_undistort = trackerID;
+		}
 		
 	    
 	protected: 
@@ -111,6 +115,8 @@ namespace osgART {
 		float m_height;
 		int m_layerDepth;
 		float m_alpha;
+		
+		int m_trackerid_undistort;
 	
 	private:
 
