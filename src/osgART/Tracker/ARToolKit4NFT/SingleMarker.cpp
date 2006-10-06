@@ -1,5 +1,7 @@
 #include "SingleMarker"
 
+typedef int AR_PIXEL_FORMAT;
+#include <AR/gsub_lite.h>
 #include <iostream>
 
 namespace osgART {
@@ -51,7 +53,7 @@ void SingleMarker::update(AR3DHandle *ar3DHandle, ARMarkerInfo* markerInfo) {
 		}
 #endif
 	}
-	GLdouble modelView[16];
+	double modelView[16];
 	arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
 	osg::Matrix tmp(modelView);
 	updateTransform(tmp);	

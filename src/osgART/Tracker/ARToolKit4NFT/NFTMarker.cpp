@@ -1,5 +1,8 @@
 #include "NFTMarker"
 
+typedef int AR_PIXEL_FORMAT;
+#include <AR/gsub_lite.h>
+
 namespace osgART {
 
 NFTMarker::NFTMarker():Marker()
@@ -35,7 +38,12 @@ NFTMarker::update(double trans[3][4]) {
 		m_valid = false;
 	
 	if (m_valid)
-		updateTransform(trans);
+	{
+		double modelView[16];
+		arglCameraViewRH(trans, modelView, 1.0); // scale = 1.0.
+		osg::Matrix tmp(modelView);
+		updateTransform(tmp);
+	}
 		
 }
 };

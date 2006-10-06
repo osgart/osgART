@@ -1,5 +1,8 @@
 #include "MultiMarker"
 
+typedef int AR_PIXEL_FORMAT;
+#include <AR/gsub_lite.h>
+
 #include <iostream>
 
 namespace osgART {
@@ -46,7 +49,7 @@ MultiMarker::update(AR3DHandle *ar3DHandle,ARMarkerInfo* markerInfo, int markerC
 	for (int i=0;i<m_multi->marker_num;i++) {
 		m_valid |= (m_multi->marker[i].visible==-1?false:true);
 	}
-	GLdouble modelView[16];
+	double modelView[16];
 	arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
 	osg::Matrix tmp(modelView);
 	updateTransform(tmp);

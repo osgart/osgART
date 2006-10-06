@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib  osg.lib cvcam.lib"
+				AdditionalDependencies="osgART.lib osg.lib highgui.lib cvcam.lib cxcore.lib cv.lib"
 				OutputFile="..\..\bin\osgart_CVCam.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

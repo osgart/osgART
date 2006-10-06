@@ -43,8 +43,8 @@
 
 //personnal include
 #include <osgART/GenericVideo>
-#include "cvcam.h"
-
+#include "highgui.h"
+//#include "cvaux.h"
 
 /** --------------------------------------------------------------------------
 * class CVCamVideo.
@@ -140,7 +140,9 @@ private:
 //Private Type
 
 //Private Data
+	CvCapture*	captureCam;
 	int camIndex;
+	float vidFrameRate;
 	
 	bool haveNewImage;
 };

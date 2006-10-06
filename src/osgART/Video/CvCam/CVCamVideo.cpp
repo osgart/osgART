@@ -69,6 +69,7 @@ unsigned char* CVCamVideo::newImage=NULL;
 void imageCallback(IplImage* image)
 {
 	CVCamVideo::newImage=(unsigned char*)image->imageData;
+	std::cerr<<"Get new image.."<<std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -80,10 +81,10 @@ CVCamVideo::CVCamVideo()
 	camIndex=1;
 	pixelsize=3;
 	pixelformat=VIDEOFORMAT_RGB24;
-	/*
-	xsize=_xsize;
-	ysize=_ysize;
-
+	xsize=320;
+	ysize=240;
+	vidFrameRate=30.;
+/*
 	gFrameNum=0;
 	gDevNum=0;
 
@@ -133,34 +134,43 @@ CVCamVideo::operator=(const CVCamVideo &)
 void
 CVCamVideo::open()
 {
+	captureCam= cvCaptureFromCAM(camIndex);
+	cvSetCaptureProperty(captureCam,CV_CAP_PROP_FRAME_WIDTH,xsize);
+	cvSetCaptureProperty(captureCam,CV_CAP_PROP_FRAME_WIDTH,ysize);
+	cvSetCaptureProperty(captureCam,CV_CAP_PROP_FPS,vidFrameRate);
+//	cvSetCaptureProperty(captureCam,CV_CAP_PROP_FOURCC,RGB24);
+	/*
 	int* out;
 	cvcamSelectCamera(&out);
 
 	camIndex=out[0];
+//	cvcamGetProperty(camIndex, CVCAM_VIDEOFORMAT, NULL);
 	cvcamSetProperty(camIndex, CVCAM_RNDWIDTH, &xsize);
 	cvcamSetProperty(camIndex, CVCAM_RNDHEIGHT, &ysize);
 	cvcamSetProperty(camIndex, CVCAM_PROP_ENABLE, CVCAMTRUE); 
-	cvcamSetProperty(camIndex, CVCAM_PROP_RENDER, CVCAMTRUE); 
-	cvcamSetProperty(0, CVCAM_PROP_CALLBACK, imageCallback);
-	cvcamInit();
+	cvcamSetProperty(camIndex, CVCAM_PROP_RENDER, CVCAMFALSE); 
+	//cvcamSetProperty(0, CVCAM_PROP_CALLBACK, imageCallback);
+	
+	cvcamInit();*/
 }
 
 void
 CVCamVideo::close()
 {
-  cvcamExit(); 
+	cvReleaseCapture( &captureCam );
+ // cvcamExit(); 
 }
 
 void
 CVCamVideo::start()
 {
-   cvcamStart();
+   //cvcamStart();
 }
 
 void
 CVCamVideo::stop()
 {
-	cvcamStop();
+	//cvcamStop();
 }
 
 void
@@ -168,20 +178,45 @@ CVCamVideo::update()
 {
 
 	IplImage* ipl_image;
-
+/*
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
-	cvcamGetProperty(0,"raw_image",&ipl_image);
+	ipl_image = cvQueryFrame(captureCam);
+
+	IplImage* bgr_to_rgb = cvCreateImage( cvGetSize(ipl_image), IPL_DEPTH_8U, 3 );
+	cvCvtColor(ipl_image, bgr_to_rgb, CV_BGR2RGB);
 
 	if (ipl_image && m_image.valid()) 
-		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
-			GL_UNSIGNED_BYTE, (unsigned char*)ipl_image->imageData, osg::Image::NO_DELETE, 1);	
+	{
+		m_image->setImage(this->xsize, this->ysize, 1, GL_RGB, GL_RGB, 
+			GL_UNSIGNED_BYTE, (unsigned char*)bgr_to_rgb->imageData, osg::Image::NO_DELETE, 1);
+	}*/
+	
+	if (cvGrabFrame(captureCam))
+	{
+		ipl_image=cvRetrieveFrame(captureCam);
+		IplImage* bgr_to_rgb = cvCreateImage( cvGetSize(ipl_image), IPL_DEPTH_8U, 3 );
+		cvCvtColor(ipl_image, bgr_to_rgb, CV_BGR2RGB);
+
+		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
+
+		if (ipl_image && m_image.valid()) 
+		m_image->setImage(this->xsize, this->ysize, 1, GL_RGBA, GL_RGBA, 
+			GL_UNSIGNED_BYTE, (unsigned char*)bgr_to_rgb->imageData, osg::Image::NO_DELETE, 1);	
+	}
+
+	//ipl_image=cvRetrieveFrame(captureCam);
+	/*
+	cvcamGetProperty(0,CVCAM_PROP_RAW,&ipl_image);
+
+
+	cvcamResume();*/
 }
 
 void 
 CVCamVideo::releaseImage()
 {
-	cvcamResume();
+//	cvcamResume();
 }
 
 
