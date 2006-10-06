@@ -7,6 +7,38 @@
 #include <iostream>
 #include <fstream>
 
+/* JENS MODIF
+.dat configuration file format
+
+	First integer in File does not represent the number of markers to be read, now represents the number of entries in the file.
+	I.e. NFT image sets count as one entry, disregarding how many surfaces and markers they come with
+	-> For single marker applications nothing has changed
+
+
+
+ARToolKit4Tracker.cpp
+
+	ARToolKit4Tracker::addNFTMarker
+
+		Now reading all surfaces and related markers at once,
+		also initializes all related ARTNFTMarkers at the same time
+	
+		Needs to be called only once per surface Set
+
+
+	ARToolKit4Tracker::square_tracking
+
+		Now returns index of currently tracked surface or -1 on errors
+
+
+	ARToolKit4Tracker::update
+
+		Introduced const int active_surface, holding index of currently tracked surface or -1 if no surface has been identified
+		Using this info - the computed transformation matrix is copied to the right OSG node, i.e. model
+						- the right OSG node is activated for rendering
+
+*/
+
 namespace osgART {
 
 ARToolKit4NFTTracker::ARToolKit4NFTTracker() : GenericTracker(),
@@ -421,7 +453,72 @@ ARToolKit4NFTTracker::update()
 
 }
 
-void ARToolKit4NFTTracker::setProjection(const double n, const double f) {
-	arglCameraFrustumRH((ARParam*)&cparam, n, f, m_projectionMatrix);
+#if 0
+void ARToolKit4NFTTracker::ARTransToGL(double para[3][4], double gl[16]) {
+    for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < 4; i++) {
+            gl[i*4+j] = para[j][i];
+        }
+    }
+    gl[0*4+3] = gl[1*4+3] = gl[2*4+3] = 0.0;
+    gl[3*4+3] = 1.0;
+}
+#endif
+
+void ARToolKit4NFTTracker::setProjection(const double focalmin, const double focalmax) {
+
+	double   icpara[3][4];
+    double   trans[3][4];
+    double   p[3][3], q[4][4];
+	int      width, height;
+    int      i, j;
+	
+    width  = cparam.xsize;
+    height = cparam.ysize;
+
+    if (arParamDecompMat(cparam.mat, icpara, trans) < 0) {
+        fprintf(stderr, "arglCameraFrustum(): arParamDecompMat() indicated parameter error.\n");
+        return;
+    }
+	for (i = 0; i < 4; i++) {
+        icpara[1][i] = (height - 1)*(icpara[2][i]) - icpara[1][i];
+    }
+		
+    for(i = 0; i < 3; i++) {
+        for(j = 0; j < 3; j++) {
+            p[i][j] = icpara[i][j] / icpara[2][2];
+        }
+    }
+    q[0][0] = (2.0 * p[0][0] / (width - 1));
+    q[0][1] = (2.0 * p[0][1] / (width - 1));
+    q[0][2] = ((2.0 * p[0][2] / (width - 1))  - 1.0);
+    q[0][3] = 0.0;
+	
+    q[1][0] = 0.0;
+    q[1][1] = (2.0 * p[1][1] / (height - 1));
+    q[1][2] = ((2.0 * p[1][2] / (height - 1)) - 1.0);
+    q[1][3] = 0.0;
+	
+    q[2][0] = 0.0;
+    q[2][1] = 0.0;
+    q[2][2] = (focalmax + focalmin)/(focalmax - focalmin);
+    q[2][3] = -2.0 * focalmax * focalmin / (focalmax - focalmin);
+	
+    q[3][0] = 0.0;
+    q[3][1] = 0.0;
+    q[3][2] = 1.0;
+    q[3][3] = 0.0;
+	
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            m_projectionMatrix[i + j*4] = q[i][0] * trans[0][j]
+			+ q[i][1] * trans[1][j]
+			+ q[i][2] * trans[2][j];
+        }
+        m_projectionMatrix[i + 3*4] = q[i][0] * trans[0][3]
+		+ q[i][1] * trans[1][3]
+		+ q[i][2] * trans[2][3]
+		+ q[i][3];
+    }	
 }
 };
