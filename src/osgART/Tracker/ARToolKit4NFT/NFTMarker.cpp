@@ -1,6 +1,6 @@
 #include "NFTMarker"
-
-typedef int AR_PIXEL_FORMAT;
+#include <AR/config.h>
+#include <AR/ar.h>
 #include <AR/gsub_lite.h>
 
 namespace osgART {

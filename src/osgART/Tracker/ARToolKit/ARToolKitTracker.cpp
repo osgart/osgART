@@ -221,9 +221,18 @@ std::string trim(std::string& s,const std::string& drop = " ")
 				break;
 			case VIDEOFORMAT_BGRA32:
 			case VIDEOFORMAT_RGBA32:
+			case VIDEOFORMAT_ARGB32:
+			case VIDEOFORMAT_ABGR32:
 				_artoolkit_pixsize = 4;
 				break;
-		// please fill out the rest!
+			case VIDEOFORMAT_YUV422:
+			case VIDEOFORMAT_YUV422P:
+				_artoolkit_pixsize = 2;
+				break;
+			case VIDEOFORMAT_GREY8:
+				_artoolkit_pixsize = 1;
+				break;
+				// please fill out the rest!
 			default:
                 break;
 		}
