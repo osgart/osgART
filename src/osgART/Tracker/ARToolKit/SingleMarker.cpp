@@ -4,7 +4,8 @@
 
 namespace osgART {
 
-	SingleMarker::SingleMarker() : Marker() 	{
+	SingleMarker::SingleMarker() : Marker() {
+			m_fields["confidence"] = new TypedField<double>(&m_confidence);
 	}
 
 	SingleMarker::~SingleMarker() {
@@ -34,6 +35,8 @@ namespace osgART {
 		} else {
 			//arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
 			arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
+
+			m_confidence = markerInfo->cf;
 			
 			m_valid = true;
 

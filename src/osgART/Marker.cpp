@@ -105,6 +105,15 @@ namespace osgART {
 
 		}
 	}
+	
+	
+	Field*
+	Marker::get(const std::string& name)
+	{
+		FieldMap::iterator _found = m_fields.find(name);
+		return (_found != m_fields.end()) ? _found->second.get() : 0L;
+	}
+
 
 	// static
 	/*Marker* Marker::create(Marker::MarkerType type) 

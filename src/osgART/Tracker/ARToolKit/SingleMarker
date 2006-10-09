@@ -65,6 +65,10 @@ namespace osgART {
 		double          patt_center[2];
 		double          patt_trans[3][4];
 		
+		double			m_confidence;
+		
+		friend class ARToolKitTracker;
+		
 	};
 };
 

@@ -15,6 +15,7 @@
 
 // local headers
 #include "osgART/Export"
+#include "osgART/Field"
 
 // OSG headers
 #include <osg/Matrix>
@@ -121,6 +122,9 @@ namespace osgART {
 		//static Marker* Marker::create(MarkerType type);
 		
 		
+		Field* get(const std::string& name);
+		
+		
 
 	protected: 
 	
@@ -130,6 +134,8 @@ namespace osgART {
 		virtual ~Marker(); 
 		
 	protected:
+	
+		FieldMap m_fields;
 		
 		void updateTransform(osg::Matrix transform);
 		

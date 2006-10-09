@@ -21,12 +21,16 @@ namespace osgART {
 
 	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
 		threshold(100),
-		m_debugMode(false)
+		m_debugMode(false),
+		m_marker_num(0)
 	{
 		// attach a new field to the name "threshold"
 		m_fields["threshold"] = new TypedField<int>(&threshold);
 		// attach a new field to the name "debug"
 		m_fields["debug"] = new TypedField<bool>(&m_debugMode);
+
+		// for statistics
+		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
 	}
 
 	ARToolKitTracker::~ARToolKitTracker()
@@ -205,7 +209,7 @@ std::string trim(std::string& s,const std::string& drop = " ")
 	{	
 
 		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
-		int             marker_num;						// Count of number of markers detected.
+		
 	    int             j, k;
 
 		// Do not update with a null image
@@ -244,7 +248,7 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		}
 
 		// Detect the markers in the video frame.
-		if(arDetectMarker(m_imageptr, threshold, &marker_info, &marker_num) < 0) 
+		if(arDetectMarker(m_imageptr, threshold, &marker_info, &m_marker_num) < 0) 
 		{
 			std::cerr << "Error detecting markers in image." << std::endl;
 			return;
@@ -266,7 +270,7 @@ std::string trim(std::string& s,const std::string& drop = " ")
 				SingleMarker* singleMarker = static_cast<SingleMarker*>(currentMarker);
 
 				k = -1;
-				for (j = 0; j < marker_num; j++)	
+				for (j = 0; j < m_marker_num; j++)	
 				{
 					if (singleMarker->getPatternID() == marker_info[j].id) 
 					{
@@ -278,7 +282,7 @@ std::string trim(std::string& s,const std::string& drop = " ")
 					
 				if(k != -1) 
 				{
-					singleMarker->update(&marker_info[k]);
+					singleMarker->update(&marker_info[k]); 
 				} 
 				else 
 				{
@@ -287,7 +291,7 @@ std::string trim(std::string& s,const std::string& drop = " ")
 			}
 			else if (currentMarker->getType() == Marker::ART_MULTI)
 			{
-				static_cast<MultiMarker*>(currentMarker)->update(marker_info, marker_num);
+				static_cast<MultiMarker*>(currentMarker)->update(marker_info, m_marker_num);
 				
 			}
 		}
