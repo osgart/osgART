@@ -3,9 +3,10 @@
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/ar.h>
-
 #include <AR/gsub_lite.h>
-
+#ifndef AR_HAVE_HEADER_VERSION_2_72
+#error ARToolKit v2.72 or later is required to build the OSGART ARToolKit tracker.
+#endif
 
 #include "SingleMarker"
 #include "MultiMarker"

@@ -30,6 +30,34 @@
 		4A133C360A8BBEA100C95219 /* VideoTexRectCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3209182F8200414BD5 /* VideoTexRectCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C370A8BBEA100C95219 /* VideoTexture in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3309182F8200414BD5 /* VideoTexture */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C380A8BBEA100C95219 /* VideoTextureRectangle in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3409182F8200414BD5 /* VideoTextureRectangle */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A174BB50AD9D66000B9FC9B /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
+		4A174BB60AD9D66000B9FC9B /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
+		4A174BB70AD9D66000B9FC9B /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
+		4A174BB80AD9D66000B9FC9B /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
+		4A174BB90AD9D66000B9FC9B /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
+		4A174BBA0AD9D66000B9FC9B /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
+		4A174BBB0AD9D66000B9FC9B /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
+		4A174BBC0AD9D66000B9FC9B /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
+		4A174BBD0AD9D66000B9FC9B /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
+		4A174BBE0AD9D66000B9FC9B /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
+		4A174BBF0AD9D66000B9FC9B /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
+		4A174BC00AD9D66000B9FC9B /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
+		4A174BC10AD9D66000B9FC9B /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
+		4A174BC20AD9D66000B9FC9B /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
+		4A174BC30AD9D66000B9FC9B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
+		4A174BC40AD9D66000B9FC9B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
+		4A174BC50AD9D66000B9FC9B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
+		4A174BC60AD9D66000B9FC9B /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
+		4A174BC70AD9D66000B9FC9B /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
+		4A174BD00AD9D6AD00B9FC9B /* ARToolKit4Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A174B8A0AD9D01900B9FC9B /* ARToolKit4Tracker.cpp */; };
+		4A174BD10AD9D6AF00B9FC9B /* MultiMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A174B8D0AD9D01900B9FC9B /* MultiMarker.cpp */; };
+		4A174BD20AD9D6B000B9FC9B /* SingleMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A174B8F0AD9D01900B9FC9B /* SingleMarker.cpp */; };
+		4A174BD30AD9D6B100B9FC9B /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A174B8B0AD9D01900B9FC9B /* Main.cpp */; };
+		4A174BD60AD9D75900B9FC9B /* ARToolKit4NFTTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA390AD5E077006DC8DB /* ARToolKit4NFTTracker.cpp */; };
+		4A174BD70AD9D75C00B9FC9B /* MultiMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA3C0AD5E077006DC8DB /* MultiMarker.cpp */; };
+		4A174BD80AD9D75E00B9FC9B /* NFTMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA3E0AD5E077006DC8DB /* NFTMarker.cpp */; };
+		4A174BD90AD9D76100B9FC9B /* SingleMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA400AD5E077006DC8DB /* SingleMarker.cpp */; };
+		4A174BDA0AD9D76200B9FC9B /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA3A0AD5E077006DC8DB /* Main.cpp */; };
 		4A38FA8F0AD5EB78006DC8DB /* libAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAA09184FDD00414BD5 /* libAR.a */; };
 		4A38FA900AD5EB78006DC8DB /* libARgsub_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */; };
 		4A38FA910AD5EB78006DC8DB /* libARMulti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAC09184FDD00414BD5 /* libARMulti.a */; };
@@ -57,10 +85,6 @@
 		4A38FAAD0AD5EBAF006DC8DB /* SingleMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA360AD5E077006DC8DB /* SingleMarker.cpp */; };
 		4A38FAAE0AD5EBB0006DC8DB /* MultiMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA340AD5E077006DC8DB /* MultiMarker.cpp */; };
 		4A38FAAF0AD5EBB1006DC8DB /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA320AD5E077006DC8DB /* Main.cpp */; };
-		4A38FAB50AD5EC05006DC8DB /* ARToolKitTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA310AD5E077006DC8DB /* ARToolKitTracker.cpp */; };
-		4A38FAB60AD5EC05006DC8DB /* SingleMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA360AD5E077006DC8DB /* SingleMarker.cpp */; };
-		4A38FAB70AD5EC05006DC8DB /* MultiMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA340AD5E077006DC8DB /* MultiMarker.cpp */; };
-		4A38FAB80AD5EC05006DC8DB /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA320AD5E077006DC8DB /* Main.cpp */; };
 		4A38FABE0AD5EC05006DC8DB /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		4A38FABF0AD5EC05006DC8DB /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		4A38FAC00AD5EC05006DC8DB /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
@@ -217,6 +241,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4A174BAD0AD9D66000B9FC9B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7842DB5609183C2F00414BD5;
+			remoteInfo = osgART;
+		};
 		4A38FA890AD5EB78006DC8DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
@@ -316,6 +347,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A174B890AD9D01900B9FC9B /* ARToolKit4Tracker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ARToolKit4Tracker; sourceTree = "<group>"; };
+		4A174B8A0AD9D01900B9FC9B /* ARToolKit4Tracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARToolKit4Tracker.cpp; sourceTree = "<group>"; };
+		4A174B8B0AD9D01900B9FC9B /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		4A174B8C0AD9D01900B9FC9B /* MultiMarker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = MultiMarker; sourceTree = "<group>"; };
+		4A174B8D0AD9D01900B9FC9B /* MultiMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = MultiMarker.cpp; sourceTree = "<group>"; };
+		4A174B8E0AD9D01900B9FC9B /* SingleMarker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = SingleMarker; sourceTree = "<group>"; };
+		4A174B8F0AD9D01900B9FC9B /* SingleMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SingleMarker.cpp; sourceTree = "<group>"; };
+		4A174BCB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = osgart_artoolkit4_tracker.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A38FA300AD5E077006DC8DB /* ARToolKitTracker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ARToolKitTracker; sourceTree = "<group>"; };
 		4A38FA310AD5E077006DC8DB /* ARToolKitTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARToolKitTracker.cpp; sourceTree = "<group>"; };
 		4A38FA320AD5E077006DC8DB /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
@@ -476,6 +515,32 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4A174BB40AD9D66000B9FC9B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A174BB50AD9D66000B9FC9B /* gdal.framework in Frameworks */,
+				4A174BB60AD9D66000B9FC9B /* OpenThreads.framework in Frameworks */,
+				4A174BB70AD9D66000B9FC9B /* osg.framework in Frameworks */,
+				4A174BB80AD9D66000B9FC9B /* osgDB.framework in Frameworks */,
+				4A174BB90AD9D66000B9FC9B /* osgFX.framework in Frameworks */,
+				4A174BBA0AD9D66000B9FC9B /* osgGA.framework in Frameworks */,
+				4A174BBB0AD9D66000B9FC9B /* osgIntrospection.framework in Frameworks */,
+				4A174BBC0AD9D66000B9FC9B /* osgParticle.framework in Frameworks */,
+				4A174BBD0AD9D66000B9FC9B /* osgProducer.framework in Frameworks */,
+				4A174BBE0AD9D66000B9FC9B /* osgSim.framework in Frameworks */,
+				4A174BBF0AD9D66000B9FC9B /* osgTerrain.framework in Frameworks */,
+				4A174BC00AD9D66000B9FC9B /* osgText.framework in Frameworks */,
+				4A174BC10AD9D66000B9FC9B /* osgUtil.framework in Frameworks */,
+				4A174BC20AD9D66000B9FC9B /* Producer.framework in Frameworks */,
+				4A174BC30AD9D66000B9FC9B /* OpenGL.framework in Frameworks */,
+				4A174BC40AD9D66000B9FC9B /* Carbon.framework in Frameworks */,
+				4A174BC50AD9D66000B9FC9B /* Cocoa.framework in Frameworks */,
+				4A174BC60AD9D66000B9FC9B /* QuickTime.framework in Frameworks */,
+				4A174BC70AD9D66000B9FC9B /* osgART.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A38FA8E0AD5EB78006DC8DB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -641,10 +706,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A174B860AD9CFA600B9FC9B /* ARToolKit4 */ = {
+			isa = PBXGroup;
+			children = (
+				4A174B890AD9D01900B9FC9B /* ARToolKit4Tracker */,
+				4A174B8A0AD9D01900B9FC9B /* ARToolKit4Tracker.cpp */,
+				4A174B8C0AD9D01900B9FC9B /* MultiMarker */,
+				4A174B8D0AD9D01900B9FC9B /* MultiMarker.cpp */,
+				4A174B8E0AD9D01900B9FC9B /* SingleMarker */,
+				4A174B8F0AD9D01900B9FC9B /* SingleMarker.cpp */,
+				4A174B8B0AD9D01900B9FC9B /* Main.cpp */,
+			);
+			path = ARToolKit4;
+			sourceTree = "<group>";
+		};
 		4A38FA2E0AD5E077006DC8DB /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
 				4A38FA2F0AD5E077006DC8DB /* ARToolKit */,
+				4A174B860AD9CFA600B9FC9B /* ARToolKit4 */,
 				4A38FA370AD5E077006DC8DB /* ARToolKit4NFT */,
 			);
 			path = Tracker;
@@ -1088,6 +1168,7 @@
 				4A9969CD0AC785D10068A373 /* osgart_dummyimage.so */,
 				4A38FAA90AD5EB78006DC8DB /* osgart_artoolkit_tracker.so */,
 				4A38FAD40AD5EC05006DC8DB /* osgart_artoolkit4nft_tracker.so */,
+				4A174BCB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker.so */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1131,6 +1212,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		4A174BAE0AD9D66000B9FC9B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A38FA8A0AD5EB78006DC8DB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1200,6 +1288,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		4A174BAB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A174BC80AD9D66000B9FC9B /* Build configuration list for PBXNativeTarget "osgart_artoolkit4_tracker" */;
+			buildPhases = (
+				4A174BAE0AD9D66000B9FC9B /* Headers */,
+				4A174BAF0AD9D66000B9FC9B /* Sources */,
+				4A174BB40AD9D66000B9FC9B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4A174BAC0AD9D66000B9FC9B /* PBXTargetDependency */,
+			);
+			name = osgart_artoolkit4_tracker;
+			productName = osgart_artoolkit;
+			productReference = 4A174BCB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker.so */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		4A38FA870AD5EB78006DC8DB /* osgart_artoolkit_tracker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4A38FAA60AD5EB78006DC8DB /* Build configuration list for PBXNativeTarget "osgart_artoolkit_tracker" */;
@@ -1328,6 +1434,7 @@
 				4A55AB1E0AA7A376005EDC69 /* osgart_artoolkit */,
 				4A9969AB0AC785D10068A373 /* osgart_dummyimage */,
 				4A38FA870AD5EB78006DC8DB /* osgart_artoolkit_tracker */,
+				4A174BAB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker */,
 				4A38FAB00AD5EC05006DC8DB /* osgart_artoolkit4nft_tracker */,
 				78BDBDDB091B00CA00D9D0B9 /* osgARTTest */,
 			);
@@ -1353,6 +1460,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4A174BAF0AD9D66000B9FC9B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A174BD00AD9D6AD00B9FC9B /* ARToolKit4Tracker.cpp in Sources */,
+				4A174BD10AD9D6AF00B9FC9B /* MultiMarker.cpp in Sources */,
+				4A174BD20AD9D6B000B9FC9B /* SingleMarker.cpp in Sources */,
+				4A174BD30AD9D6B100B9FC9B /* Main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4A38FA8B0AD5EB78006DC8DB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1368,10 +1486,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A38FAB50AD5EC05006DC8DB /* ARToolKitTracker.cpp in Sources */,
-				4A38FAB60AD5EC05006DC8DB /* SingleMarker.cpp in Sources */,
-				4A38FAB70AD5EC05006DC8DB /* MultiMarker.cpp in Sources */,
-				4A38FAB80AD5EC05006DC8DB /* Main.cpp in Sources */,
+				4A174BD60AD9D75900B9FC9B /* ARToolKit4NFTTracker.cpp in Sources */,
+				4A174BD70AD9D75C00B9FC9B /* MultiMarker.cpp in Sources */,
+				4A174BD80AD9D75E00B9FC9B /* NFTMarker.cpp in Sources */,
+				4A174BD90AD9D76100B9FC9B /* SingleMarker.cpp in Sources */,
+				4A174BDA0AD9D76200B9FC9B /* Main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1436,6 +1555,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4A174BAC0AD9D66000B9FC9B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7842DB5609183C2F00414BD5 /* osgART */;
+			targetProxy = 4A174BAD0AD9D66000B9FC9B /* PBXContainerItemProxy */;
+		};
 		4A38FA880AD5EB78006DC8DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7842DB5609183C2F00414BD5 /* osgART */;
@@ -1474,6 +1598,54 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4A174BC90AD9D66000B9FC9B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_EXTENSION = so;
+				EXECUTABLE_PREFIX = "";
+				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					../include,
+					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
+				);
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
+				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				MACH_O_TYPE = mh_bundle;
+				PRODUCT_NAME = osgart_artoolkit4_tracker;
+			};
+			name = Debug;
+		};
+		4A174BCA0AD9D66000B9FC9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = "";
+				DYLIB_CURRENT_VERSION = "";
+				EXECUTABLE_EXTENSION = so;
+				EXECUTABLE_PREFIX = "";
+				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					../include,
+					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
+				);
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
+				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				MACH_O_TYPE = mh_bundle;
+				PRODUCT_NAME = osgart_artoolkit4_tracker;
+			};
+			name = Release;
+		};
 		4A38FAA70AD5EB78006DC8DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1709,13 +1881,10 @@
 				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
-				HEADER_SEARCH_PATHS = (
-					../include,
-					../../ARToolKit/artoolkit/include,
-				);
+				HEADER_SEARCH_PATHS = ../include;
 				INFOPLIST_FILE = "osgART-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = ../../ARToolKit/artoolkit/lib;
+				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = osgART;
 				WARNING_CFLAGS = (
@@ -1735,13 +1904,10 @@
 				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
-				HEADER_SEARCH_PATHS = (
-					../include,
-					../../ARToolKit/artoolkit/include,
-				);
+				HEADER_SEARCH_PATHS = ../include;
 				INFOPLIST_FILE = "osgART-Info.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = ../../ARToolKit/artoolkit/lib;
+				LIBRARY_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = osgART;
 				WARNING_CFLAGS = (
@@ -1798,6 +1964,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4A174BC80AD9D66000B9FC9B /* Build configuration list for PBXNativeTarget "osgart_artoolkit4_tracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A174BC90AD9D66000B9FC9B /* Debug */,
+				4A174BCA0AD9D66000B9FC9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4A38FAA60AD5EB78006DC8DB /* Build configuration list for PBXNativeTarget "osgart_artoolkit_tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

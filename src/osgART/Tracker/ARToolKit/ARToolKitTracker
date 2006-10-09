@@ -116,7 +116,7 @@ namespace osgART {
 		/** 
 		* \brief update the tracking.
 		* 
-		* This core function apply the ARToolKit algorithm on the last image defined by setImage.
+		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
 		*/
 		void update();
 		
