@@ -14,7 +14,6 @@
 #include <osg/ref_ptr>
 #include <osg/Image>
 #include <osg/Referenced>
-#include <osg/Vec4b>
 
 
 // Local include

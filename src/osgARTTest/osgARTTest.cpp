@@ -10,7 +10,6 @@
 #include <Producer/RenderSurface>
 #include <osgProducer/Viewer>
 
-#include <osg/Vec4s>
 #include <osg/Node>
 #include <osg/Group>
 #include <osg/Geode>
