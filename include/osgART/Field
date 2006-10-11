@@ -12,6 +12,7 @@
 
 // include STL
 #include <map>
+#include <iostream>
 
 // include OSG
 #include <osg/Referenced>
@@ -22,16 +23,18 @@ namespace osgART {
 
 	class Field : public osg::Referenced {		
 	public:
-		Field() : osg::Referenced() {};
+		Field();
 		
-		virtual void operator = (const Field&) {
+		inline virtual void operator = (const Field&);
+		
+		inline virtual void serialize(std::ostream& out) 
+		{			
 		}
 	
-	protected:			
+	protected:
+		virtual ~Field();
+	};	
 
-		virtual ~Field() {
-		}
-	};
 	
 	typedef std::map<std::string, osg::ref_ptr<Field> > FieldMap;
 	
@@ -50,9 +53,15 @@ namespace osgART {
 			return *m_value;
 		}
 		
-		void set(const T& value) {
+		void set(const T& value) 
+		{
 			(*this.*f_sethandler)(*m_value,value);
-		}		
+		}
+		
+		virtual void serialize(std::ostream& out) 
+		{
+			out << *m_value;
+		}
 						
 	protected:
 	
@@ -74,6 +83,58 @@ namespace osgART {
 		
 		T* m_value;
 	};
+	
+	
+	template <typename T> class FieldContainer {
+	public:
+	
+		void serialize(std::ostream& out) 
+		{
+			FieldMap::iterator _i = m_fields.begin();
+						
+			while (_i != m_fields.end()) 
+			{	
+				out << _i->first << ":";
+				_i->second->serialize(out);				
+				_i++;
+				out << std::endl;
+			}					
+		}
+		
+	    /** 
+		* Return a data field within the plugin
+		* \param name identifier of the field
+		* \return pointer to the Field. Has to casted 
+		* to the correct type.
+		*/
+		Field* get(const std::string& name);		
+	
+	protected:
+	
+		FieldMap m_fields;
+		
+	};
+	
+	
+	inline Field::Field() : osg::Referenced() 
+	{
+	}
+	
+	inline void Field::operator = (const Field&) 
+	{
+	}
+	
+	inline Field::~Field() 
+	{
+	}
+	
+	
+	template <typename T> Field* FieldContainer<T>::get(const std::string& name)
+	{
+		FieldMap::iterator _found = m_fields.find(name);
+		return (_found != m_fields.end()) ? _found->second.get() : 0L;
+	}
+
  };
  
  #endif

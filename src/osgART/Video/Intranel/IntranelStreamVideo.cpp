@@ -59,7 +59,7 @@ void Msg(TCHAR *szFormat, ...)
 
     // Use a bounded buffer size to prevent buffer overruns.  Limit count to
     // character size minus one to allow for a NULL terminating character.
-    _vsntprintf(szBuffer, NUMCHARS - 1, szFormat, pArgs);
+    _snprintf(szBuffer, NUMCHARS - 1, szFormat, pArgs);
     va_end(pArgs);
 
     // Ensure that the formatted string is NULL-terminated
@@ -598,7 +598,7 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
     if (FAILED(hr))
 
     {
-        Msg(TEXT("Could not render the capture stream.  hr=0x%x\r\n\r\n", hr));
+        Msg(TEXT("Could not render the capture stream.  hr=0x%x\r\n\r\n"), hr);
         return hr;
     }
 	else

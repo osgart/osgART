@@ -38,7 +38,8 @@ namespace osgART {
 	 * that connects video streams, markers and their representation in
 	 * the virtual environment.
 	 */
-	class OSGART_EXPORT GenericTracker : public osg::Referenced
+	class OSGART_EXPORT GenericTracker : public osg::Referenced, 
+		public FieldContainer<GenericTracker>
 	{
 	public:        
 		/**
@@ -56,19 +57,6 @@ namespace osgART {
 		 */
 		virtual void update() = 0;
 
-		/*						
-		osg::ref_ptr<Field> get(const std::string& name);		
-		*/
-		
-		/**
-		 * Access a field by its name. You need to cast
-		 * the field into its respective type in order
-		 * to access it.
-		 * \param name Name of the field
-		 * \return pointer to the field (0L if not found)
-		 */
-		Field* get(const std::string& name);
-		
 	
 		/**
 		 *
@@ -126,9 +114,6 @@ namespace osgART {
 	    
 	protected:		
 	
-		FieldMap m_fields;
-	
-		    
 		/** 
 		 * \brief destructor.
 		 *

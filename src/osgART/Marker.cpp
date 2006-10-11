@@ -13,7 +13,11 @@
 namespace osgART {
 
 
-	Marker::Marker() : osg::Referenced() {
+	Marker::Marker() : osg::Referenced() 
+	{
+		m_fields["name"] = new TypedField<std::string>(&m_name);
+		m_fields["active"] = new TypedField<bool>(&m_active);
+
 		m_transform.makeIdentity();
 		m_valid = false;
 
@@ -67,7 +71,7 @@ namespace osgART {
 	}
 
 	void 
-	Marker::updateTransform(osg::Matrix transform) {
+	Marker::updateTransform(const osg::Matrix& transform) {
 		
 		// jcl64: removed loops
 		if (m_valid) {
@@ -105,34 +109,4 @@ namespace osgART {
 
 		}
 	}
-	
-	
-	Field*
-	Marker::get(const std::string& name)
-	{
-		FieldMap::iterator _found = m_fields.find(name);
-		return (_found != m_fields.end()) ? _found->second.get() : 0L;
-	}
-
-
-	// static
-	/*Marker* Marker::create(Marker::MarkerType type) 
-	{
-		Marker* ret = 0L;
-
-		switch (type) {
-			case Marker::ART_SINGLE :
-				ret = new SingleMarker();
-				break;
-			case Marker::ART_MULTI :
-				ret = new MultiMarker();
-				break;
-			default:
-				// we could warn here ?
-				break;
-		};
-
-		return ret;
-	};
-	*/
 };

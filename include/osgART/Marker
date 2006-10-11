@@ -28,7 +28,7 @@ namespace osgART {
 	* \class Marker
 	* \brief A base class from which specific types of markers are derived.
 	*/
-	class OSGART_EXPORT Marker : public osg::Referenced
+	class OSGART_EXPORT Marker : public osg::Referenced, public FieldContainer<Marker>
 	{
 	public:
 
@@ -114,17 +114,7 @@ namespace osgART {
 		*/
 		bool isActive() const;
 		
-		/**
-		* Factory method for creating instances of a Marker
-		* \param type type of the required marker
-		* \return an instance of a marker
-		*/
-		//static Marker* Marker::create(MarkerType type);
-		
-		
-		Field* get(const std::string& name);
-		
-		
+
 
 	protected: 
 	
@@ -135,12 +125,14 @@ namespace osgART {
 		
 	protected:
 	
-		FieldMap m_fields;
+	
+		/**
+		 * Internal update of matrix
+		 */
+		void updateTransform(const osg::Matrix& transform);
 		
-		void updateTransform(osg::Matrix transform);
 		
-		bool m_valid;
-		
+		bool m_valid;		
 		bool m_active;
 		
 		osg::Matrix m_transform;
@@ -148,13 +140,12 @@ namespace osgART {
 		osg::Vec3 m_storedPosition;
 		osg::Quat m_storedRotation;
 
-		// hse25: should move outside of the Marker
 		float m_positionSmoothFactor;
 		float m_rotationSmoothFactor;
+
 		bool m_seen;
 
 		std::string m_name;
-		
 
 	};
 

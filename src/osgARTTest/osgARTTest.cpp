@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
+
 	if (tracker.valid()) {
 
 		/* RFC: this how you would get any type in and out through the plugin system */
@@ -83,7 +84,7 @@ int main(int argc, char* argv[]) {
 
 		std::cerr << "Could not initialize tracker plugin!" << std::endl;
 		exit(1);
-	}
+	}	
 	
 	/* 
 	cfg.deviceconfig = "imagewithmarker.png";
@@ -116,8 +117,6 @@ int main(int argc, char* argv[]) {
 			_set_roi->set(osg::Vec4s(16,16,320,240));
 
 		}
-
-
 	}
 	*/
 
@@ -146,7 +145,7 @@ int main(int argc, char* argv[]) {
 	
 	osg::ref_ptr<osgART::ARTTransform> markerTrans = new osgART::ARTTransform(0);
 
-
+    
 	// never assume the Marker really exists
 	osg::ref_ptr<osgART::Marker> marker = markerTrans->getMarker();
 

@@ -88,34 +88,4 @@ namespace osgART {
 		return m_projectionMatrix;
 	}
 
-	//osg::ref_ptr<Field> 
-	//GenericTracker::get(const std::string& name)
-	//{
-	//	FieldMap::iterator _found = m_fields.find(name);        
-	//	return _found->second;
-	//}
-
-	Field*
-	GenericTracker::get(const std::string& name)
-	{
-		FieldMap::iterator _found = m_fields.find(name);
-		return (_found != m_fields.end()) ? _found->second.get() : 0L;
-	}
-
-	
-	/*
-	void 
-	GenericTracker::set(const std::string& name, 
-		const Field& value) 
-	{
-		FieldMap::iterator _item = m_fields.find(name);
-
-		if(_item != m_fields.end()) 
-		{
-			*(_item->second.get()) = value;
-		}
-	
-	}
-	*/
-
 };
