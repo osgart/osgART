@@ -2,9 +2,6 @@
 #include "osgART/Marker"
 #include "osgART/GenericVideo"
 
-#include <AR/gsub_lite.h>
-
-
 #include <iostream>
 
 
