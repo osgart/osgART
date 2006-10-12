@@ -133,6 +133,7 @@
 		4A55AB540AA7AD90005EDC69 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
 		4A55AB560AA7AD9F005EDC69 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A55ABB40AA7B65A005EDC69 /* osgart_artoolkit.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A55AB1F0AA7A376005EDC69 /* osgart_artoolkit.so */; };
+		4A5E72530ADDE57500A8249D /* Field in Headers */ = {isa = PBXBuildFile; fileRef = 4A5E72520ADDE57500A8249D /* Field */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A8F9F5409D8FA5800E57FEA /* Marker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8F9F5009D8FA5800E57FEA /* Marker.cpp */; };
 		4A8F9F5709D8FA5800E57FEA /* VideoBillboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */; };
 		4A94BA7F0AC8BFE600E20A2A /* VideoLoadModel in Headers */ = {isa = PBXBuildFile; fileRef = 4A94BA7E0AC8BFE600E20A2A /* VideoLoadModel */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -385,6 +386,7 @@
 		4A55A7120AA78803005EDC69 /* VideoConfig */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoConfig; sourceTree = "<group>"; };
 		4A55A7130AA78803005EDC69 /* VideoPlugin */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoPlugin; sourceTree = "<group>"; };
 		4A55AB1F0AA7A376005EDC69 /* osgart_artoolkit.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = osgart_artoolkit.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A5E72520ADDE57500A8249D /* Field */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Field; sourceTree = "<group>"; };
 		4A8F9F4809D8F9F300E57FEA /* Marker */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = Marker; sourceTree = "<group>"; };
 		4A8F9F5009D8FA5800E57FEA /* Marker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Marker.cpp; sourceTree = "<group>"; };
 		4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoBillboard.cpp; sourceTree = "<group>"; };
@@ -1085,6 +1087,7 @@
 				7842DB2509182F8200414BD5 /* ARTTransform */,
 				7842DB2609182F8200414BD5 /* ARTTransformCallback */,
 				7842DB2709182F8200414BD5 /* Export */,
+				4A5E72520ADDE57500A8249D /* Field */,
 				4AECD6F50ACA2C7F00527735 /* Foundation */,
 				4AE1ED390A63093A007D0FA4 /* GenericTracker */,
 				4AE1ED3A0A63093A007D0FA4 /* GenericVideo */,
@@ -1256,6 +1259,7 @@
 				4A133C170A8BBEA100C95219 /* ARTTransform in Headers */,
 				4A133C180A8BBEA100C95219 /* ARTTransformCallback in Headers */,
 				4A133C1C0A8BBEA100C95219 /* Export in Headers */,
+				4A5E72530ADDE57500A8249D /* Field in Headers */,
 				4AECD6F60ACA2C7F00527735 /* Foundation in Headers */,
 				4A133C1D0A8BBEA100C95219 /* GenericTracker in Headers */,
 				4A133C1E0A8BBEA100C95219 /* GenericVideo in Headers */,
@@ -1856,6 +1860,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
@@ -1869,6 +1874,7 @@
 				);
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Release;
