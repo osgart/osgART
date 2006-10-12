@@ -126,7 +126,7 @@ namespace osgART {
 			float maxU, float maxV,
 			osg::Geometry &geometry);
 			
-		friend VideoLayer;
+		friend class VideoLayer;
 	
 		/** 
 		 * \brief destructor.
