@@ -84,8 +84,8 @@ namespace osgART {
 		* 
 		* \param image the new image for the tracking 
 		*/
-		void setImageRaw(unsigned char* image, 
-			PixelFormatType format = VIDEOFORMAT_BGRA32);
+		virtual void setImageRaw(unsigned char* image, 
+			PixelFormatType format = VIDEOFORMAT_GREY8);
 	    
 		/** 
 		* \brief set the image to analyzed.

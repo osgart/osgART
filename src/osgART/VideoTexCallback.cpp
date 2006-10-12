@@ -59,7 +59,7 @@ namespace osgART {
 #endif
 			break;
 		case VIDEOFORMAT_YUV422:
-			std::cerr<<"Due to an unidentified issue, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
+			std::cerr<<"Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
 			/*
 #ifdef __APPLE__
 #ifdef __BIG_ENDIAN__
@@ -121,7 +121,7 @@ namespace osgART {
 #endif
 			break;
 		case VIDEOFORMAT_YUV422:
-			std::cerr<<"Due to an unidentified issue, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
+			std::cerr<<"Due tolack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
 			/*
 #ifdef __APPLE__
 #ifdef __BIG_ENDIAN__

@@ -52,7 +52,7 @@ namespace osgART {
 	#endif
 				break;
 		case VIDEOFORMAT_YUV422:
-			std::cerr<<"Due to an unidentified issue, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
+			std::cerr<<"Due to an lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
 			/*
 	#ifdef __APPLE__
 	#ifdef __BIG_ENDIAN__
@@ -114,7 +114,7 @@ namespace osgART {
 		break;
 	case VIDEOFORMAT_YUV422:
 #ifdef __APPLE__
-		std::cerr<<"Due to an unidentified issue, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
+		std::cerr<<"Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
 /*
 #ifdef __BIG_ENDIAN__
 			glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGB, m_vidWidth, m_vidHeight, 0, GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, frame);

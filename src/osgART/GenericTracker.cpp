@@ -66,7 +66,7 @@ namespace osgART {
 	}
 
 
-	void 
+	virtual void 
 	GenericTracker::setImageRaw(unsigned char* grabbed_image,
 		PixelFormatType format /*= VIDEOFORMAT_BGRA32*/)
 	{

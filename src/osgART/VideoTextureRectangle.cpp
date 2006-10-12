@@ -50,7 +50,7 @@ namespace osgART {
 				break;
 		case VIDEOFORMAT_YUV422:
 	#ifdef __APPLE__
-	//# error Due to an unidentified issue, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n
+	//# error Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n
 			this->setInternalFormat(GL_RGB);
 	#endif
 				break;

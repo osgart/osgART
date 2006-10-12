@@ -204,6 +204,53 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		return m_debugMode;
 	}
 
+    virtual void ARToolKitTracker::setImageRaw(unsigned char * image, PixelFormatType format)
+    {
+		if (m_imageptr_format != format) {
+			// format has changed.
+			// Translate the pixel format to an appropriate type for ARToolKit v2.
+			switch (format) {
+				case VIDEOFORMAT_RGB24:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_RGB;
+					m_artoolkit_pixsize = 3;
+					break;
+				case VIDEOFORMAT_BGR24:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_BGR;
+					m_artoolkit_pixsize = 3;
+					break;
+				case VIDEOFORMAT_BGRA32:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_BGRA;
+					m_artoolkit_pixsize = 4;
+					break;
+				case VIDEOFORMAT_RGBA32:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_RGBA;
+					m_artoolkit_pixsize = 4;
+					break;
+				case VIDEOFORMAT_ARGB32:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_ARGB;
+					m_artoolkit_pixsize = 4;
+					break;
+				case VIDEOFORMAT_ABGR32:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_ABGR;
+					m_artoolkit_pixsize = 4;
+					break;
+				case VIDEOFORMAT_YUV422:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_2vuy;
+					m_artoolkit_pixsize = 2;
+					break;
+				case VIDEOFORMAT_Y8:
+				case VIDEOFORMAT_GREY8:
+					m_artoolkit_pixformat = AR_PIXEL_FORMAT_MONO;
+					m_artoolkit_pixsize = 1;
+					break;
+				default:
+					break;
+			}        
+		}
+		
+        // We are only augmenting method in parent class.
+        GenericTracker::setImageRaw(image, format);
+    }
 
 	void ARToolKitTracker::update()
 	{	
@@ -214,35 +261,10 @@ std::string trim(std::string& s,const std::string& drop = " ")
 
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
-
-
-		unsigned int _artoolkit_pixsize = 0;
-
-		// hse25: this is really a dumb sanity check
-		switch (this->m_imageptr_format) {
-			case VIDEOFORMAT_RGB24:
-			case VIDEOFORMAT_BGR24:
-				_artoolkit_pixsize = 3;
-				break;
-			case VIDEOFORMAT_BGRA32:
-			case VIDEOFORMAT_RGBA32:
-			case VIDEOFORMAT_ARGB32:
-			case VIDEOFORMAT_ABGR32:
-				_artoolkit_pixsize = 4;
-				break;
-			case VIDEOFORMAT_YUV422:
-			case VIDEOFORMAT_YUV422P:
-				_artoolkit_pixsize = 2;
-				break;
-			case VIDEOFORMAT_GREY8:
-				_artoolkit_pixsize = 1;
-				break;
-				// please fill out the rest!
-			default:
-                break;
-		}
-
-		if (AR_PIX_SIZE_DEFAULT != _artoolkit_pixsize) {
+        
+        // ARToolKit v2's image processing format is determined at build time.
+        // Check that the format matches the one passed in.
+		if (AR_PIX_SIZE_DEFAULT != m_artoolkit_pixsize || AR_DEFAULT_PIXEL_FORMAT != m_artoolkit_pixformat) {
 			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
