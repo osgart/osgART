@@ -310,33 +310,9 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
-		unsigned int _artoolkit_pixsize = 0;
-
-		// hse25: this is really a dumb sanity check
-		switch (this->m_imageptr_format) {
-			case VIDEOFORMAT_RGB24:
-			case VIDEOFORMAT_BGR24:
-				_artoolkit_pixsize = 3;
-				break;
-			case VIDEOFORMAT_BGRA32:
-			case VIDEOFORMAT_RGBA32:
-			case VIDEOFORMAT_ARGB32:
-			case VIDEOFORMAT_ABGR32:
-				_artoolkit_pixsize = 4;
-				break;
-			case VIDEOFORMAT_YUV422:
-			case VIDEOFORMAT_YUV422P:
-				_artoolkit_pixsize = 2;
-				break;
-			case VIDEOFORMAT_GREY8:
-				_artoolkit_pixsize = 1;
-				break;
-				// please fill out the rest!
-			default:
-                break;
-		}
-
-		if (AR_PIX_SIZE_DEFAULT != _artoolkit_pixsize) {
+        // ARToolKit v2's image processing format is determined at build time.
+        // Check that the format matches the one passed in.
+		if (AR_PIX_SIZE_DEFAULT != m_artoolkit_pixsize || AR_DEFAULT_PIXEL_FORMAT != m_artoolkit_pixformat) {
 			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
