@@ -120,7 +120,7 @@ namespace osgART {
 		* \param format OSGART-defined pixel format of the raw pixels. This will be converted
 		*		to a format understood by ARToolKit internally.
 		*/
-		virtual void setImageRaw(unsigned char * image, PixelFormatType format);
+		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
 		
 		/** 
 		* \brief update the tracking.
