@@ -83,7 +83,7 @@ class OSGART_EXPORT TrackerManager
 		static
 		GenericTracker* createTrackerFromPlugin(const std::string& plugin);
 			
-		/** function signature for creating a video instance */
+		/** function signature for creating a tracker instance */
 		typedef GenericTracker* (*p_TrackerCreateFunc)(void);
 	    
 	protected:

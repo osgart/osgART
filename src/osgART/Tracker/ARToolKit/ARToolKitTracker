@@ -18,6 +18,7 @@
  * Algorithm. This class provided video/graphic independent marker detection and
  * support multiple marker tracking.
  *	
+ * \author Philip Lamb philip.lamb@artoolworks.com
  * \author Julian Looser Julian.Looser@hitlabnz.org
  * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
  */
