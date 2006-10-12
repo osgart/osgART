@@ -53,20 +53,21 @@ namespace osgART {
 		return _m;
 	}
 
-	const CameraParameter& 
-	GenericTracker::getIntrinsicParameters() const
-	{
-		return cparam;
-	}
-
 	unsigned int 
 	GenericTracker::getMarkerCount() const 
 	{
 		return (unsigned int)m_markerlist.size();
 	}
 
+	/*virtual*/ 
+	void GenericTracker::createUndistortedMesh(int,int,
+		float,float,osg::Geometry&)
+	{
+	}
 
-	virtual void 
+
+	/*virtual*/ 
+	void 
 	GenericTracker::setImageRaw(unsigned char* grabbed_image,
 		PixelFormatType format)
 	{

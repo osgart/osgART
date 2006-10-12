@@ -16,6 +16,8 @@
 #include <map>
 #include <iostream>
 
+#include <osg/Geometry>
+
 // local include
 #include "osgART/Export"
 #include "osgART/GenericVideo"
@@ -25,11 +27,8 @@
 
 namespace osgART {
 
-	typedef struct {
-	    int      width, height;
-    	double   mat[3][4];
-	    double   dist_factor[4];
-	} CameraParameter;
+	/* Forward declaration */
+	class VideoLayer;
 
 	/**
 	 * \class GenericTracker.
@@ -72,19 +71,20 @@ namespace osgART {
 		*/
 		int getId();
 
-
+#if 0
 		/**
  		 * Return the camera model parameters.
 		 * \return cameraparameter model identical to that of AR Toolkit
 		 */
 		const CameraParameter& getIntrinsicParameters() const;
-		
+#endif	
 		/** 
-		* \brief Aet the image to analyzed.
+		* \brief Set the image to analyzed.
 		* 
 		* \param image the new image for the tracking 
 		*/
-		virtual void setImageRaw(unsigned char* image, 
+		virtual 
+		void setImageRaw(unsigned char* image, 
 			PixelFormatType format = VIDEOFORMAT_GREY8);
 	    
 		/** 
@@ -110,9 +110,23 @@ namespace osgART {
 		* @param proj the openGL projection matrix computed
 		*/
 		virtual const double* getProjectionMatrix() const;
-		 
+	
 	    
 	protected:		
+	
+	
+		/**
+		 * Creates an undistorted mesh, according to the 
+		 * parameters know to the tracker
+		 * \param geometry geometry to be filled with an
+		 * undistorted mesh
+		 */
+		virtual void 
+		createUndistortedMesh(int width, int height,
+			float maxU, float maxV,
+			osg::Geometry &geometry);
+			
+		friend VideoLayer;
 	
 		/** 
 		 * \brief destructor.
@@ -125,11 +139,6 @@ namespace osgART {
 		 */
 		typedef std::vector< osg::ref_ptr<Marker> > MarkerList;
 		
-		
-		/**
-		 * Camera parameters
-		 */
-		CameraParameter  	cparam; 		
 		
 		/**
 		 * A list of markers associated with this tracker.

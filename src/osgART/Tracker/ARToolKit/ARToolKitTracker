@@ -136,14 +136,20 @@ namespace osgART {
 		 */
 		virtual ~ARToolKitTracker();
 		
+		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
+		
+		
 	private:
+		
+		struct				CameraParameter;
+		CameraParameter*	m_cparam;
 	
 		bool setupMarkers(const std::string& patternListFile);
 
 		std::string 		cparamName;
-		int					threshold;
+		int					m_threshold;
 
-		bool 				m_debugMode;
+		bool 				m_debugmode;
 		
 		int					m_marker_num;
 		

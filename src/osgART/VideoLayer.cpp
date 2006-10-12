@@ -25,48 +25,6 @@
 #include <osg/Geometry>
 #include <osg/BlendFunc>
 
-#define  PD_LOOP   3
-
-
-template <typename T> 
-int Observer2Ideal(	const T dist_factor[4], 
-					const T ox, 
-					const T oy,
-					T *ix, T *iy )
-{
-    T  z02, z0, p, q, z, px, py;
-    register int i = 0;
-
-    px = ox - dist_factor[0];
-    py = oy - dist_factor[1];
-    p = dist_factor[2]/100000000.0;
-    z02 = px*px+ py*py;
-    q = z0 = sqrt(px*px+ py*py);
-
-    for( i = 1; ; i++ ) {
-        if( z0 != 0.0 ) {
-            z = z0 - ((1.0 - p*z02)*z0 - q) / (1.0 - 3.0*p*z02);
-            px = px * z / z0;
-            py = py * z / z0;
-        }
-        else {
-            px = 0.0;
-            py = 0.0;
-            break;
-        }
-        if( i == PD_LOOP ) break;
-
-        z02 = px*px+ py*py;
-        z0 = sqrt(px*px+ py*py);
-    }
-
-    *ix = px / dist_factor[3] + dist_factor[0];
-    *iy = py / dist_factor[3] + dist_factor[1];
-
-    return(0);
-}
-
-
 namespace osgART {
 
 
@@ -223,7 +181,11 @@ namespace osgART {
 			case CAMERA_PARAM_CORRECTION:
 			{
 				// create grid with radial texture correction
+				TrackerManager::getInstance()->getTracker(this->m_trackerid_undistort)->
+					createUndistortedMesh(m_width, m_height, maxU, maxV, *m_geometry);
 
+#if 0
+				
 				unsigned int rows = 20, cols = 20;
 				float rowSize = m_height / (float)rows;
 				float colSize = m_width / (float)cols;
@@ -261,11 +223,12 @@ namespace osgART {
 
 					m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 
 						r * 2 * (cols+1), 2 * (cols+1)));
-
 				}
 
 				break;
+#endif
 			}
+
 
 		case NO_CORRECTION:
 

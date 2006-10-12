@@ -158,16 +158,16 @@ namespace osgART {
 	
 		bool setupMarkers(const std::string& patternListFile);
 	
-	ARParam  cparam;
-	std::string cparamName;
-	int					threshold;
+		ARParam  cparam;
+		std::string cparamName;
+		int					threshold;
 
-	ARHandle           *arHandle;
-	ARPattHandle       *arPattHandle;
-	AR3DHandle         *ar3DHandle;
-	  
-	AR2HandleT			*ar2Handle;
-	AR2SurfaceSetT		*surfaceSet;
+		ARHandle           *arHandle;
+		ARPattHandle       *arPattHandle;
+		AR3DHandle         *ar3DHandle;
+		  
+		AR2HandleT			*ar2Handle;
+		AR2SurfaceSetT		*surfaceSet;
 	 
 	};
 };

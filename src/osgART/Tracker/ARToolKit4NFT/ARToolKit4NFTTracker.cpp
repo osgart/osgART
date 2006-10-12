@@ -231,11 +231,11 @@ ARToolKit4NFTTracker::addSingleMarker(const std::string& pattFile,
 									  double width, double center[2])
 {
 
-	Marker* singleMarker = new osgART::SingleMarker();
+	osgART::SingleMarker* singleMarker = new osgART::SingleMarker();
 	
-	if (!static_cast<osgART::SingleMarker*>(singleMarker)->initialise(arPattHandle,(char*)pattFile.c_str(), width, center))
+	if (singleMarker->initialise(arPattHandle,(char*)pattFile.c_str(), width, center))
 	{
-		//delete singleMarker;
+		singleMarker->unref();
 		return -1;
 	}
 
@@ -247,11 +247,11 @@ ARToolKit4NFTTracker::addSingleMarker(const std::string& pattFile,
 int 
 ARToolKit4NFTTracker::addMultiMarker(const std::string& multiFile) 
 {
-	Marker* multiMarker = new MultiMarker();
+	osgART::Marker* multiMarker = new osgART::MultiMarker();
 
-	if (!static_cast<MultiMarker*>(multiMarker)->initialise((char*)multiFile.c_str()))
+	if (!multiMarker->initialise((char*)multiFile.c_str()))
 	{
-		//delete multiMarker;
+		multiMarker->unref();
 		return -1;
 	}
 	
@@ -279,13 +279,18 @@ ARToolKit4NFTTracker::addNFTMarker(const std::string& nftFile)
 	
 	for (int i = 0; i < surfaceSet->num; i++) {
 
-		Marker* nftMarker = new NFTMarker();
-		if (!static_cast<NFTMarker*>(nftMarker)->initialise()){
-				std::cerr<<"ca initialize mal la colle.."<<std::endl;
-			//delete nftMarker;
+		NFTMarker* nftMarker = new NFTMarker();
+		
+		if (!nftMarker->initialise())
+		{
+				
+			std::cerr<<"ca initialize mal la colle.."<<std::endl;			
+			nftMarker->unref();
+
 			break;
 		}
-		else {
+		else 
+		{
 			m_markerlist.push_back(nftMarker);
 		}
 
@@ -457,7 +462,8 @@ ARToolKit4NFTTracker::update()
 }
 
 
-void ARToolKit4NFTTracker::setProjection(const double n, const double f) {
+void ARToolKit4NFTTracker::setProjection(const double n, const double f) 
+{
 	arglCameraFrustumRH((ARParam*)&cparam, n, f, m_projectionMatrix);
 }
 };

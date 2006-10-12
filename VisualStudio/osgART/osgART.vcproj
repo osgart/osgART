@@ -252,6 +252,9 @@
 					RelativePath="..\..\include\osgART\ARTTransformCallback">
 				</File>
 				<File
+					RelativePath="..\..\include\osgART\CameraParameter">
+				</File>
+				<File
 					RelativePath="..\..\include\osgART\GenericMarkerTransform">
 				</File>
 				<File
