@@ -34,18 +34,22 @@ namespace osgART {
 	MultiMarker::setActive(bool a) {
 		m_active = a;
 		
-		if (m_active) arMultiActivate(m_multi);
-		else arMultiDeactivate(m_multi);
+		//if (m_active) arMultiActivate(m_multi);
+		//else arMultiDeactivate(m_multi);
 	}
 
 	void 
-	MultiMarker::update(ARMarkerInfo* markerInfo, int markerCount) 
+	MultiMarker::update(AR3DHandle *handle, ARMarkerInfo* markerInfo, int markerCount) 
 	{
-		m_valid = (arMultiGetTransMat(markerInfo, markerCount, m_multi) >= 0);
-		double modelView[16];
-		arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
-		osg::Matrix tmp(modelView);
-		updateTransform(tmp);
+		m_valid = (arGetTransMatMultiSquare(handle, markerInfo, markerCount, m_multi) >= 0);
+		if (m_valid) {
+			double modelView[16];
+			arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
+			osg::Matrix tmp(modelView);
+			updateTransform(tmp);
+		} else {
+			m_seen = false;
+		}
 	}
 	
 };

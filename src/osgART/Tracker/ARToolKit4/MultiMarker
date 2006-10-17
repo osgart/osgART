@@ -41,7 +41,7 @@ namespace osgART {
 		
 		virtual void setActive(bool a);
 		
-		void update(ARMarkerInfo* markerInfo, int markerCount);
+		void update(AR3DHandle *handle, ARMarkerInfo* markerInfo, int markerCount);
 		
 		/**
 		* \brief return the type of the maker.

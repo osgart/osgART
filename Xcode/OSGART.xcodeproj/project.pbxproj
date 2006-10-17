@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A0B2D4F0AE4A08A00F4E8A3 /* libAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A0B2D4B0AE4A07300F4E8A3 /* libAR.a */; };
+		4A0B2D500AE4A08A00F4E8A3 /* libARgsub_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A0B2D4C0AE4A07300F4E8A3 /* libARgsub_lite.a */; };
+		4A0B2D510AE4A08A00F4E8A3 /* libARMulti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A0B2D4D0AE4A07300F4E8A3 /* libARMulti.a */; };
 		4A133C120A8BBEA100C95219 /* ARInfoHUD in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2109182F8200414BD5 /* ARInfoHUD */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C130A8BBEA100C95219 /* ARLocalTransformCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2209182F8200414BD5 /* ARLocalTransformCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C170A8BBEA100C95219 /* ARTTransform in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2509182F8200414BD5 /* ARTTransform */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,7 +64,6 @@
 		4A38FA8F0AD5EB78006DC8DB /* libAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAA09184FDD00414BD5 /* libAR.a */; };
 		4A38FA900AD5EB78006DC8DB /* libARgsub_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */; };
 		4A38FA910AD5EB78006DC8DB /* libARMulti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAC09184FDD00414BD5 /* libARMulti.a */; };
-		4A38FA920AD5EB78006DC8DB /* libARvideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAD09184FDD00414BD5 /* libARvideo.a */; };
 		4A38FA930AD5EB78006DC8DB /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		4A38FA940AD5EB78006DC8DB /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		4A38FA950AD5EB78006DC8DB /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
@@ -348,6 +350,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A0B2D4B0AE4A07300F4E8A3 /* libAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAR.a; path = ../../ARToolKit/ARToolKit4/lib/libAR.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4C0AE4A07300F4E8A3 /* libARgsub_lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARgsub_lite.a; path = ../../ARToolKit/ARToolKit4/lib/libARgsub_lite.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4D0AE4A07300F4E8A3 /* libARMulti.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARMulti.a; path = ../../ARToolKit/ARToolKit4/lib/libARMulti.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4E0AE4A07300F4E8A3 /* libARvideo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARvideo.a; path = ../../ARToolKit/ARToolKit4/lib/libARvideo.a; sourceTree = SOURCE_ROOT; };
 		4A174B890AD9D01900B9FC9B /* ARToolKit4Tracker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ARToolKit4Tracker; sourceTree = "<group>"; };
 		4A174B8A0AD9D01900B9FC9B /* ARToolKit4Tracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARToolKit4Tracker.cpp; sourceTree = "<group>"; };
 		4A174B8B0AD9D01900B9FC9B /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
@@ -521,6 +527,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0B2D500AE4A08A00F4E8A3 /* libARgsub_lite.a in Frameworks */,
+				4A0B2D510AE4A08A00F4E8A3 /* libARMulti.a in Frameworks */,
+				4A0B2D4F0AE4A08A00F4E8A3 /* libAR.a in Frameworks */,
 				4A174BB50AD9D66000B9FC9B /* gdal.framework in Frameworks */,
 				4A174BB60AD9D66000B9FC9B /* OpenThreads.framework in Frameworks */,
 				4A174BB70AD9D66000B9FC9B /* osg.framework in Frameworks */,
@@ -549,7 +558,6 @@
 			files = (
 				4A38FA900AD5EB78006DC8DB /* libARgsub_lite.a in Frameworks */,
 				4A38FA910AD5EB78006DC8DB /* libARMulti.a in Frameworks */,
-				4A38FA920AD5EB78006DC8DB /* libARvideo.a in Frameworks */,
 				4A38FA8F0AD5EB78006DC8DB /* libAR.a in Frameworks */,
 				4A38FA930AD5EB78006DC8DB /* gdal.framework in Frameworks */,
 				4A38FA940AD5EB78006DC8DB /* OpenThreads.framework in Frameworks */,
@@ -776,6 +784,10 @@
 		4A38FAE20AD5EDAD006DC8DB /* ARToolKit4 */ = {
 			isa = PBXGroup;
 			children = (
+				4A0B2D4B0AE4A07300F4E8A3 /* libAR.a */,
+				4A0B2D4C0AE4A07300F4E8A3 /* libARgsub_lite.a */,
+				4A0B2D4D0AE4A07300F4E8A3 /* libARMulti.a */,
+				4A0B2D4E0AE4A07300F4E8A3 /* libARvideo.a */,
 			);
 			name = ARToolKit4;
 			sourceTree = "<group>";
@@ -1619,8 +1631,12 @@
 				);
 				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4_tracker;
 			};
@@ -1643,8 +1659,12 @@
 				);
 				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4_tracker;
 			};

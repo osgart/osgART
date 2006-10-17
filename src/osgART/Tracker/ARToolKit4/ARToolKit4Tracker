@@ -104,8 +104,7 @@ namespace osgART {
 		* \param center the x-y coordinates of the center of the marker (usually 0,0)
 		* \return the internal ID of the new marker, or -1 on failure 
 		*/
-		int addSingleMarker(const std::string& pattFile, 
-			double width, double center[2]);
+		int addSingleMarker(const std::string& pattFile, double width);
 		
 		/** 
 		* \brief Register a multi-marker with the tracker
@@ -147,6 +146,7 @@ namespace osgART {
 		CameraParameter*	m_cparam;
 	
 		bool setupMarkers(const std::string& patternListFile);
+		void cleanupMarkers(void);
 
 		std::string 		cparamName;
 		int					m_threshold;
@@ -159,6 +159,7 @@ namespace osgART {
         int                 m_artoolkit_pixsize;
 		ARHandle*			m_arhandle;
 		AR3DHandle*			m_ar3dhandle;
+		ARPattHandle*		m_arPattHandle;
 
 	};
 

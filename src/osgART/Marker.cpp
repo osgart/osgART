@@ -73,7 +73,6 @@ namespace osgART {
 	void 
 	Marker::updateTransform(const osg::Matrix& transform) {
 		
-		// jcl64: removed loops
 		if (m_valid) {
 
 			if (m_seen) {				

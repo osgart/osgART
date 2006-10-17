@@ -38,16 +38,14 @@ namespace osgART {
 		SingleMarker();
 		
 	    
-		bool initialise(const std::string& pattFile, double width, double center[2]);
+		bool initialise(ARPattHandle *pattHandle, const std::string& pattFile, double width);
 
 		virtual void setActive(bool a);
 
-		void update(ARMarkerInfo* markerInfo);
+		void update(AR3DHandle *handle, ARMarkerInfo* markerInfo);
 		
 		int getPatternID();
 		double getPatternWidth();
-		double* getPatternCenter();
-
 		
 		MarkerType getType() const;
 	
@@ -62,10 +60,11 @@ namespace osgART {
 	 
 	    int             patt_id;
 		double          patt_width;
-		double          patt_center[2];
 		double          patt_trans[3][4];
 		
 		double			m_confidence;
+		
+		ARPattHandle*	m_arPattHandle;
 		
 		friend class ARToolKit4Tracker;
 		

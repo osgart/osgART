@@ -4,66 +4,73 @@
 
 namespace osgART {
 
-	SingleMarker::SingleMarker() : Marker() {
+	SingleMarker::SingleMarker() : Marker(),
+		patt_id(-1),
+		m_arPattHandle(NULL)
+	{
 			m_fields["confidence"] = new TypedField<double>(&m_confidence);
 	}
 
-	SingleMarker::~SingleMarker() {
+	SingleMarker::~SingleMarker()
+	{
 		// jcl64: Free the pattern
-		if (patt_id > 0) arFreePatt(patt_id);
+		if (patt_id >= 0) arPattFree(m_arPattHandle, patt_id);
+		patt_id = -1;
+		m_arPattHandle = NULL;
 	}
 
-	Marker::MarkerType SingleMarker::getType() const {
+	Marker::MarkerType SingleMarker::getType() const
+	{
 		return Marker::ART_SINGLE;
 	}
 
-	bool SingleMarker::initialise(const std::string& pattFile, double width, double center[2]) {
-		patt_id = arLoadPatt(pattFile.c_str());
+	bool SingleMarker::initialise(ARPattHandle *pattHandle, const std::string& pattFile, double width)
+	{
+		if (patt_id >= 0) return (false);
+		if (m_arPattHandle) return (false);
+		patt_id = arPattLoad(pattHandle, pattFile.c_str());
 		if (patt_id < 0) return false;
 		patt_width = width;
-		patt_center[0] = center[0];
-		patt_center[1] = center[1];
 		setName(pattFile);
 		setActive(false);
+		m_arPattHandle = pattHandle;
 		return true;
 	}
 
-	void SingleMarker::update(ARMarkerInfo* markerInfo) {
-		
+	void SingleMarker::update(AR3DHandle *handle, ARMarkerInfo* markerInfo)
+	{
+		double err;
+
 		if (markerInfo == NULL) {
 			m_valid = false;
+			m_seen = false;
 		} else {
-			//arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
-			arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
-
-			m_confidence = markerInfo->cf;
-			
 			m_valid = true;
-
+			err = arGetTransMatSquare(handle, markerInfo, patt_width, patt_trans);
+			m_confidence = markerInfo->cf;
+			double modelView[16];
+			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
+			osg::Matrix tmp(modelView);
+			updateTransform(tmp);
 		}
-		double modelView[16];
-		arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
-		osg::Matrix tmp(modelView);
-		updateTransform(tmp);
 	}
 
-	void SingleMarker::setActive(bool a) {
+	void SingleMarker::setActive(bool a)
+	{
 		m_active = a;
 		
-		if (m_active) arActivatePatt(patt_id);
-		else arDeactivatePatt(patt_id);
-
+		if (m_active) arPattActivate(m_arPattHandle, patt_id);
+		else arPattDeactivate(m_arPattHandle, patt_id);
 	}
 
-	int SingleMarker::getPatternID() {
+	int SingleMarker::getPatternID()
+	{
 		return patt_id;
 	}
 
-	double SingleMarker::getPatternWidth() {
+	double SingleMarker::getPatternWidth()
+	{
 		return patt_width;
 	}
 		
-	double* SingleMarker::getPatternCenter() {
-		return patt_center;
-	}
 };
