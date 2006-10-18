@@ -23,7 +23,7 @@ CPPFLAGS =
 LDFLAGS = 
 
 # Set to 1 to build debug version [0,1]
-DEBUG = 1
+DEBUG = 0
 
 
 

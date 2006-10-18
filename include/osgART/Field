@@ -136,6 +136,19 @@ namespace osgART {
 	};
 	
 	
+	inline Field::Field() : osg::Referenced() 
+	{
+	}
+	
+	inline void Field::operator = (const Field&) 
+	{
+	}
+	
+	inline Field::~Field() 
+	{
+	}
+
+	
 	template <typename T> class FieldContainer {
 	public:
 	
@@ -149,7 +162,7 @@ namespace osgART {
 				_i->second->serialize(out);				
 				_i++;
 				out << std::endl;
-			}					
+			}
 		}
 		
 	    /** 
@@ -159,6 +172,9 @@ namespace osgART {
 		* to the correct type.
 		*/
 		Field* get(const std::string& name);		
+
+
+		void dump();
 	
 	protected:
 	
@@ -167,23 +183,21 @@ namespace osgART {
 	};
 	
 	
-	inline Field::Field() : osg::Referenced() 
-	{
-	}
-	
-	inline void Field::operator = (const Field&) 
-	{
-	}
-	
-	inline Field::~Field() 
-	{
-	}
-	
-	
 	template <typename T> Field* FieldContainer<T>::get(const std::string& name)
 	{
 		FieldMap::iterator _found = m_fields.find(name);
 		return (_found != m_fields.end()) ? _found->second.get() : 0L;
+	}
+
+	template <typename T> void FieldContainer<T>::dump()
+	{
+		FieldMap::iterator _i = m_fields.begin();
+
+		for (;_i != m_fields.end(); ++_i) 
+		{
+			std::cout << "Field: " << (*_i).first << std::endl;
+		}
+
 	}
 
  };

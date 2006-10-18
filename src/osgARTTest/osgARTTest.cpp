@@ -34,10 +34,8 @@
 #  else
 #    define MY_VCONF "showDlg,flipV"
 #  endif
-#elif defined(__linux)
-// # define MY_VCONF "videotestsrc ! capsfilter caps=video/x-raw-rgb,bpp=24 ! identity name=artoolkit ! fakesink"
-# define MY_VCONF "v4l2src use-fixed-fps=false ! decodebin ! ffmpegcolorspace ! capsfilter caps=video/x-raw-rgb,bpp=24 ! identity name=artoolkit ! fakesink"
 #else
+// Please read documentation for setting video parameters
 #  define MY_VCONF ""
 #endif
 
@@ -62,7 +60,8 @@ int main(int argc, char* argv[]) {
 	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
 
 	/* check if loading the plugin was successful */
-	if (!video.valid()) {
+	if (!video.valid()) 
+	{
 		std::cerr << "Could not initialize video!" << std::endl;
 		exit(1);
 	}
@@ -71,30 +70,36 @@ int main(int argc, char* argv[]) {
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
+	/* make sure the tracker is been loaded correctly */
+	if (tracker.valid()) 
+	{
 
-	if (tracker.valid()) {
+		tracker->dump();
 
 		/* RFC: this how you would get any type in and out through the plugin system */
 		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
-			dynamic_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
+			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
 
 		/* values can only be accessed through a get()/set() mechanism */
 		if (_threshold.valid()) 
 		{
 			
-			// set the threshold
+			/* set the threshold */
 			_threshold->set(100);
 
-			// check what we actually get
+			/* check what we actually get */
 			std::cout << "Threshold: " << _threshold->get() << std::endl;
+		} else 
+		{
+			std::cout << "Field 'threshold' supported for this tracker" << std::endl;
 		}
-
 		
 
-	} else {
+	} else 
+	{
 
 		std::cerr << "Could not initialize tracker plugin!" << std::endl;
-		exit(1);
+		exit(-1);
 	}	
 	
 	/* 
