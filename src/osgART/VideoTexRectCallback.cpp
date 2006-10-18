@@ -141,7 +141,7 @@ namespace osgART {
 
 	
 #ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
-		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
+	glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 #endif
 
 

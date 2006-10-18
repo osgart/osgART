@@ -70,12 +70,13 @@ namespace osgART {
 		m_threshold(100),
 		m_debugmode(false),
 		m_marker_num(0),
-		m_cparam(new CameraParameter),
-		m_artoolkit_pixformat(AR_DEFAULT_PIXEL_FORMAT),
-		m_artoolkit_pixsize(AR_PIX_SIZE_DEFAULT)
-	{
-		// attach a new field to the name "threshold"
-		m_fields["threshold"] = new TypedField<int>(&m_threshold);
+		m_cparam(new CameraParameter)
+	{		
+		// create a new field 
+		m_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
+			&ARToolKitTracker::getThreshold,
+			&ARToolKitTracker::setThreshold);
+		
 		// attach a new field to the name "debug"
 		m_fields["debug"] = new TypedField<bool>(&m_debugmode);
 
@@ -97,7 +98,7 @@ namespace osgART {
 		
 	    // Set the initial camera parameters.
 		cparamName = camera_name;
-	    if (arParamLoad((char*)cparamName.c_str(), 1, &wparam) < 0) {
+	    if(arParamLoad((char*)cparamName.c_str(), 1, &wparam) < 0) {
 			std::cerr << "ERROR: Camera parameter load error." << std::endl;
 			return false;
 	    }
@@ -133,10 +134,13 @@ std::string trim(std::string& s,const std::string& drop = " ")
 
 	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
 	{
-		// Need to check whether the passed file even exists.
-		// Need to check for error when opening file.
 		std::ifstream markerFile;
+
+		// Need to check whether the passed file even exists
+
 		markerFile.open(patternListFile.c_str());
+
+		// Need to check for error when opening file
 		if (!markerFile.is_open()) return false;
 
 		bool ret = true;
@@ -145,17 +149,25 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		markerFile >> patternNum;
 
 		std::string patternName, patternType;
-		for (int i = 0; (i < patternNum) && (!markerFile.eof()); i++) {
-			// Get the whole line for the marker file (will handle spaces in filename).
+
+		// Need EOF checking in here... atm it assumes there are really as many markers as the number says
+
+		for (int i = 0; (i < patternNum) && (!markerFile.eof()); i++)
+		{
+			// jcl64: Get the whole line for the marker file (will handle spaces in filename)
 			patternName = "";
 			while (trim(patternName) == "" && !markerFile.eof()) {
 				getline(markerFile, patternName);
 			}
 			
+			
 			// Check whether markerFile exists?
+
 			markerFile >> patternType;
 
-			if (patternType == "SINGLE") {
+			if (patternType == "SINGLE")
+			{
+				
 				double width, center[2];
 				markerFile >> width >> center[0] >> center[1];
 				if (addSingleMarker(patternName, width, center) == -1) {
@@ -163,13 +175,19 @@ std::string trim(std::string& s,const std::string& drop = " ")
 					ret = false;
 					break;
 				}
-			} else if (patternType == "MULTI") {
+
+			}
+			else if (patternType == "MULTI")
+			{
 				if (addMultiMarker(patternName) == -1) {
 					std::cerr << "Error adding multi-marker pattern: " << patternName << std::endl;
 					ret = false;
 					break;
 				}
-			} else {
+
+			} 
+			else 
+			{
 				std::cerr << "Unrecognized pattern type: " << patternType << std::endl;
 				ret = false;
 				break;
@@ -178,26 +196,16 @@ std::string trim(std::string& s,const std::string& drop = " ")
 
 		markerFile.close();
 
-		// Cleanup from any errors.
-		if (!ret) {
-			cleanupMarkers();
-		}
 		return ret;
 	}
 
-	void ARToolKitTracker::cleanupMarkers(void)
-	{
-		// Need to unload markers here.
-		//
-	}
-
 	int 
-	ARToolKitTracker::addSingleMarker(const std::string& pattFile, double width, double center[2])
-	{
+	ARToolKitTracker::addSingleMarker(const std::string& pattFile, double width, double center[2]) {
 
 		SingleMarker* singleMarker = new SingleMarker();
 
-		if (!singleMarker->initialise(pattFile, width, center)) {
+		if (!singleMarker->initialise(pattFile, width, center))
+		{
 			singleMarker->unref();
 			return -1;
 		}
@@ -212,7 +220,8 @@ std::string trim(std::string& s,const std::string& drop = " ")
 	{
 		MultiMarker* multiMarker = new MultiMarker();
 		
-		if (!multiMarker->initialise(multiFile)) {
+		if (!multiMarker->initialise(multiFile))
+		{
 			multiMarker->unref();
 			return -1;
 		}
@@ -223,18 +232,17 @@ std::string trim(std::string& s,const std::string& drop = " ")
 
 	}
 
-	void ARToolKitTracker::setThreshold(int thresh)
+	void ARToolKitTracker::setThreshold(const int& thresh)	
 	{
-		m_threshold = osg::clampBetween(thresh, 0, 255);		
+		m_threshold = osg::clampBetween(thresh,0,255);		
 	}
 
-	int ARToolKitTracker::getThreshold()
+	int ARToolKitTracker::getThreshold() const 
 	{
 		return m_threshold;
 	}
 
-	unsigned char* ARToolKitTracker::getDebugImage()
-	{
+	unsigned char* ARToolKitTracker::getDebugImage() {
 		return arImage;
 	}
 		
@@ -300,22 +308,25 @@ std::string trim(std::string& s,const std::string& drop = " ")
 
 	void ARToolKitTracker::update()
 	{
+
 		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
+		
 		
 	    register int             j, k;
 
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
-        // ARToolKit v2's image processing format is determined at build time.
+#if 0
         // Check that the format matches the one passed in.
 		if (AR_PIX_SIZE_DEFAULT != m_artoolkit_pixsize || AR_DEFAULT_PIXEL_FORMAT != m_artoolkit_pixformat) {
 			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
-
+#endif
 		// Detect the markers in the video frame.
-		if (arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) {
+		if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
+		{
 			std::cerr << "Error detecting markers in image." << std::endl;
 			return;
 		}
@@ -328,7 +339,6 @@ std::string trim(std::string& s,const std::string& drop = " ")
 			iter != _end; 
 			++iter)		
 		{
-			
 			SingleMarker* singleMarker = dynamic_cast<SingleMarker*>((*iter).get());
 			MultiMarker* multiMarker = dynamic_cast<MultiMarker*>((*iter).get());
 
@@ -346,17 +356,25 @@ std::string trim(std::string& s,const std::string& drop = " ")
 					}
 				}
 					
-				if(k != -1) {
+				if(k != -1) 
+				{
 					singleMarker->update(&marker_info[k]); 
-				} else {
+				} 
+				else 
+				{
 					singleMarker->update(NULL);
 				}
-			} else if (multiMarker) {
+			}
+			else if (multiMarker)
+			{
 				multiMarker->update(marker_info, m_marker_num);
+				
 			} else {
 				std::cerr << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
 			}
 		}
+// #endif
+
 	}
 
 	void ARToolKitTracker::setProjection(const double n, const double f) 

@@ -66,14 +66,14 @@ namespace osgART {
 		* Define the threshold used to binarize the image in ARToolkit.
 		* \param thresh integer value between 0 (dark) and 255 (bright) 
 		*/
-		void setThreshold(int thresh);
+		void setThreshold(const int& thresh);
 		
 		/**
 		* \brief Get the current threshold value for the tracking algorithm.
 		*
 		* \return The current threshold.
 		*/
-		int getThreshold();	
+		int getThreshold() const;	
 		
 
 		unsigned char* getDebugImage();	

@@ -71,13 +71,6 @@ namespace osgART {
 		*/
 		int getId();
 
-#if 0
-		/**
- 		 * Return the camera model parameters.
-		 * \return cameraparameter model identical to that of AR Toolkit
-		 */
-		const CameraParameter& getIntrinsicParameters() const;
-#endif	
 		/** 
 		* \brief Set the image to analyzed.
 		* 
@@ -118,6 +111,10 @@ namespace osgART {
 		/**
 		 * Creates an undistorted mesh, according to the 
 		 * parameters know to the tracker
+		 * \param width width of the actual video
+		 * \param height height of the actual video
+		 * \param maxU texture coordinate maximum in u direction
+		 * \param maxV texture coordinate maximum in u direction
 		 * \param geometry geometry to be filled with an
 		 * undistorted mesh
 		 */
@@ -125,7 +122,8 @@ namespace osgART {
 		createUndistortedMesh(int width, int height,
 			float maxU, float maxV,
 			osg::Geometry &geometry);
-			
+		
+		/* only videolayer needs to access protected methods */	
 		friend class VideoLayer;
 	
 		/** 

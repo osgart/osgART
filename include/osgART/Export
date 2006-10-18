@@ -1,20 +1,24 @@
-// OSGART for OpenSceneGraph
-// C++ header file - Copyright (C) 2004 by Marco Jez
-// Distributed under the terms of the GNU Lesser General Public License (LGPL)
-// as published by the Free Software Foundation.
-
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
 #ifndef OSGART_EXPORT_
-#define OSGART_EXPORT_
+#define OSGART_EXPORT_ 1
 
 #include <osg/Version>
 
 
 #if defined(_MSC_VER)
-#if (OSG_VERSION_MAJOR == 1) && (OSG_VERSION_MINOR == 0)
-# define OSGART_PIXELBIAS_NO_PERFORMANCE 1
+#if OSG_VERSION_MAJOR > 0 && OSG_VERSION_MINOR > 0
+# undef  OSGART_PIXELBIAS_NO_PERFORMANCE
 #endif
 #else 
-# undef OSGART_PIXELBIAS_NO_PERFORMANCE
+# define OSGART_PIXELBIAS_NO_PERFORMANCE 1
 #endif
 
 #if defined(_MSC_VER)

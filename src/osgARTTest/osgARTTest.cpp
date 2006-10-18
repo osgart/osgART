@@ -79,7 +79,18 @@ int main(int argc, char* argv[]) {
 			dynamic_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
 
 		/* values can only be accessed through a get()/set() mechanism */
-		if (_threshold.valid()) _threshold->set(75);
+		if (_threshold.valid()) 
+		{
+			
+			// set the threshold
+			_threshold->set(100);
+
+			// check what we actually get
+			std::cout << "Threshold: " << _threshold->get() << std::endl;
+		}
+
+		
+
 	} else {
 
 		std::cerr << "Could not initialize tracker plugin!" << std::endl;

@@ -39,39 +39,39 @@ namespace osgART {
 	typedef std::map<std::string, osg::ref_ptr<Field> > FieldMap;
 	
 	
-	template <typename T> class TypedField : public Field {
+	template <typename T> class TypedField : public Field 
+	{
 	public:
 	
-		TypedField(T* value) : Field(), 
-			f_sethandler(&TypedField<T>::defaultSetHandler),
+		TypedField(T* value = 0) : Field(),			
 			m_value(value) 
 		{
 		}
 		
-		T& get() const
+		virtual 
+		T 
+		get() const
 		{
 			return *m_value;
 		}
 		
-		void set(const T& value) 
-		{
-			(*this.*f_sethandler)(*m_value,value);
+		virtual 
+		void 
+		set(const T& value) 
+		{			
+			*m_value = value;
 		}
 		
 		virtual void serialize(std::ostream& out) 
 		{
 			out << *m_value;
 		}
-						
-	protected:
-	
+		
 		void (TypedField<T>::*f_sethandler)(T&, const T&);	
 		
-		void defaultSetHandler(T& dest, const T& src)
-		{			
-			dest = src;
-		}				
-		
+						
+	protected:
+				
 		TypedField<T>& operator = (const T& value) {
 			*m_value = value;		
 			return *this;
@@ -82,6 +82,57 @@ namespace osgART {
 		}
 		
 		T* m_value;
+	};
+	
+	
+	
+	template <class C, typename T> class CallbackField : public TypedField<T> 
+	{
+	public:	
+	
+		typedef T (C::* GetHandler)() const;
+		typedef void (C::* SetHandler)(const T&);
+								
+		CallbackField(C *object, 
+			GetHandler ghandler = 0,
+			SetHandler shandler = 0) : 
+			mp_object(object),
+			f_gethandler(ghandler),			
+			f_sethandler(shandler)
+		{
+		}
+		
+		virtual 
+		T get() const
+		{
+			return (mp_object->*f_gethandler)();
+		}
+		
+		virtual 
+		void set(const T& value) 
+		{
+			if (f_sethandler) 
+			{
+				(mp_object->*f_sethandler)(value);			
+			} else 
+			{
+				std::cerr << "osgART::Field, no set accessor defined!" << std::endl;
+			}
+		}
+		
+		void setAccessor(GetHandler ghandler, 
+			SetHandler shandler)
+		{
+			f_gethandler = ghandler;
+			f_sethandler = shandler;
+		} 
+		
+	protected:	
+	
+		GetHandler f_gethandler;
+		SetHandler f_sethandler;
+		
+		C* mp_object;				
 	};
 	
 	
