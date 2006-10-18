@@ -4,7 +4,7 @@
 	Version="7.10"
 	Name="osgart_artoolkit_tracker"
 	ProjectGUID="{076A3DF8-75F0-485C-887C-4487AFD8F057}"
-	RootNamespace="osgart_artoolkit_tracker"
+	RootNamespace="osgart_artoolkit4_tracker"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -35,13 +35,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="osgARTd.lib libARd.lib libARmultid.lib libARgsub_lited.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_trackerd.dll"
+				OutputFile="..\..\bin\osgart_artoolkit4_trackerd.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_artoolkit_tracker.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_artoolkit4_tracker.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/osgart_artoolkit_tracker.lib"
+				ImportLibrary="$(OutDir)/osgart_artoolkit4_tracker.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -85,14 +85,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_tracker.dll"
+				OutputFile="..\..\bin\osgart_artoolkit4_tracker.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/osgart_artoolkit_tracker.lib"
+				ImportLibrary="$(OutDir)/osgart_artoolkit4_tracker.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -124,16 +124,16 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker.cpp">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\ARToolKit4Tracker.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\Main.cpp">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\Main.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker.cpp">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\MultiMarker.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker.cpp">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\SingleMarker.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -141,13 +141,13 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\ARToolKit4Tracker">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\MultiMarker">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKit4\SingleMarker">
 			</File>
 		</Filter>
 		<Filter

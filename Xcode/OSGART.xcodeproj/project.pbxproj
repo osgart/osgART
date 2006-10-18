@@ -362,6 +362,13 @@
 		4A174B8E0AD9D01900B9FC9B /* SingleMarker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = SingleMarker; sourceTree = "<group>"; };
 		4A174B8F0AD9D01900B9FC9B /* SingleMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SingleMarker.cpp; sourceTree = "<group>"; };
 		4A174BCB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = osgart_artoolkit4_tracker.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A2166B50AE6C8F10074DD4F /* ExtendedExample.sln */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ExtendedExample.sln; sourceTree = "<group>"; };
+		4A2166B60AE6C8F10074DD4F /* ExtendedExample.vcproj */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = ExtendedExample.vcproj; sourceTree = "<group>"; };
+		4A2166B70AE6C8F10074DD4F /* Test.sln */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Test.sln; sourceTree = "<group>"; };
+		4A2166B80AE6C8F10074DD4F /* Test.vcproj */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = Test.vcproj; sourceTree = "<group>"; };
+		4A2166BA0AE6C8F10074DD4F /* osgart_artoolkit_tracker.vcproj */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = osgart_artoolkit_tracker.vcproj; sourceTree = "<group>"; };
+		4A2166BC0AE6C8F10074DD4F /* osgart_artoolkit4nft_tracker.vcproj */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = osgart_artoolkit4nft_tracker.vcproj; sourceTree = "<group>"; };
+		4A2166C20AE6C9FC0074DD4F /* osgart_artoolkit4_tracker.vcproj */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = osgart_artoolkit4_tracker.vcproj; sourceTree = "<group>"; };
 		4A38FA300AD5E077006DC8DB /* ARToolKitTracker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ARToolKitTracker; sourceTree = "<group>"; };
 		4A38FA310AD5E077006DC8DB /* ARToolKitTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARToolKitTracker.cpp; sourceTree = "<group>"; };
 		4A38FA320AD5E077006DC8DB /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
@@ -730,6 +737,41 @@
 			path = ARToolKit4;
 			sourceTree = "<group>";
 		};
+		4A2166B40AE6C8F10074DD4F /* Example_Jung */ = {
+			isa = PBXGroup;
+			children = (
+				4A2166B50AE6C8F10074DD4F /* ExtendedExample.sln */,
+				4A2166B60AE6C8F10074DD4F /* ExtendedExample.vcproj */,
+				4A2166B70AE6C8F10074DD4F /* Test.sln */,
+				4A2166B80AE6C8F10074DD4F /* Test.vcproj */,
+			);
+			path = Example_Jung;
+			sourceTree = "<group>";
+		};
+		4A2166B90AE6C8F10074DD4F /* osgart_artoolkit_tracker */ = {
+			isa = PBXGroup;
+			children = (
+				4A2166BA0AE6C8F10074DD4F /* osgart_artoolkit_tracker.vcproj */,
+			);
+			path = osgart_artoolkit_tracker;
+			sourceTree = "<group>";
+		};
+		4A2166BB0AE6C8F10074DD4F /* osgart_artoolkit4NFT_tracker */ = {
+			isa = PBXGroup;
+			children = (
+				4A2166BC0AE6C8F10074DD4F /* osgart_artoolkit4nft_tracker.vcproj */,
+			);
+			path = osgart_artoolkit4NFT_tracker;
+			sourceTree = "<group>";
+		};
+		4A2166C10AE6C9FC0074DD4F /* osgart_artoolkit4_tracker */ = {
+			isa = PBXGroup;
+			children = (
+				4A2166C20AE6C9FC0074DD4F /* osgart_artoolkit4_tracker.vcproj */,
+			);
+			path = osgart_artoolkit4_tracker;
+			sourceTree = "<group>";
+		};
 		4A38FA2E0AD5E077006DC8DB /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
@@ -943,8 +985,12 @@
 			isa = PBXGroup;
 			children = (
 				4AECD7640ACA346F00527735 /* Example */,
+				4A2166B40AE6C8F10074DD4F /* Example_Jung */,
 				4AECD7670ACA346F00527735 /* osgART */,
 				4AECD76A0ACA346F00527735 /* osgart_artoolkit */,
+				4A2166B90AE6C8F10074DD4F /* osgart_artoolkit_tracker */,
+				4A2166C10AE6C9FC0074DD4F /* osgart_artoolkit4_tracker */,
+				4A2166BB0AE6C8F10074DD4F /* osgart_artoolkit4NFT_tracker */,
 				4AECD76C0ACA346F00527735 /* osgart_cvcam */,
 				4AECD76E0ACA346F00527735 /* osgart_dsvl */,
 				4AECD7700ACA346F00527735 /* osgart_dsvl2 */,
