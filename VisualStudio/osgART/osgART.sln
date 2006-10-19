@@ -58,6 +58,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit4nft_tracke
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgwrapper_osgART", "..\osgwrapper_osgART\osgwrapper_osgART.vcproj", "{9FF3836F-BFC1-4C40-A96A-500ECC88440C}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9FF3836F-BFC1-4C40-A96A-500ECC88440C} = {9FF3836F-BFC1-4C40-A96A-500ECC88440C}
 	EndProjectSection
 EndProject
 Global
