@@ -28,7 +28,7 @@ BEGIN_ENUM_REFLECTOR(osgART::Marker::MarkerType)
 END_REFLECTOR
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::Marker)
-	I_BaseType(osgART::FieldContainer);
+	// I_BaseType(osgART::FieldContainer);
 	I_Constructor0();
 	I_Method0(osgART::Marker::MarkerType, getType);
 	I_Method0(bool, isValid);

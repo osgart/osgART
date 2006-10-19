@@ -22,7 +22,7 @@
 #undef OUT
 #endif
 
-TYPE_NAME_ALIAS(osgART::GenericVideo *(*, osgART::VideoManager::p_VideoCreateFunc);
+// TYPE_NAME_ALIAS(osgART::GenericVideo *(*, osgART::VideoManager::p_VideoCreateFunc);
 
 BEGIN_VALUE_REFLECTOR(osgART::VideoManager)
 	I_Method1(int, addVideoStream, IN, osgART::GenericVideo *, video);

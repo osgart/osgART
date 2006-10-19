@@ -56,6 +56,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit4nft_tracke
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgwrapper_osgART", "..\osgwrapper_osgART\osgwrapper_osgART.vcproj", "{9FF3836F-BFC1-4C40-A96A-500ECC88440C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -120,6 +124,10 @@ Global
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
+		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Debug.ActiveCfg = Debug|Win32
+		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Debug.Build.0 = Debug|Win32
+		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Release.ActiveCfg = Release|Win32
+		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

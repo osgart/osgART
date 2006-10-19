@@ -74,7 +74,8 @@ int main(int argc, char* argv[]) {
 	if (tracker.valid()) 
 	{
 
-		tracker->dump();
+	if (tracker.valid()) 
+	{
 
 		/* RFC: this how you would get any type in and out through the plugin system */
 		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
@@ -85,7 +86,7 @@ int main(int argc, char* argv[]) {
 		{
 			
 			/* set the threshold */
-			_threshold->set(100);
+			_threshold->set(400);
 
 			/* check what we actually get */
 			std::cout << "Threshold: " << _threshold->get() << std::endl;

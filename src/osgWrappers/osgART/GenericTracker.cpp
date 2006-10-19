@@ -24,7 +24,7 @@
 #endif
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericTracker)
-	I_BaseType(osgART::FieldContainer);
+	// I_BaseType(osgART::FieldContainer);
 	I_Constructor0();
 	I_Method0(void, update);
 	I_MethodWithDefaults4(bool, init, IN, int, xsize, , IN, int, ysize, , IN, const std::string &, pattlist_name, "Data/markers_list.dat", IN, const std::string &, camera_name, "Data/camera_para.dat");

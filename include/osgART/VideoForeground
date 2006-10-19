@@ -61,7 +61,7 @@ namespace osgART {
 	
 	// Implementation 	
 	VideoForeground::VideoForeground(int videoID /* = 0*/)
-	 : VideoLayer(videoID), m_layerDepth(1000) 
+	 : VideoLayer(videoID) 
 	{}
 	
 };

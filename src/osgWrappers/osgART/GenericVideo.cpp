@@ -42,13 +42,13 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideo)
 	I_Method1(void, setImage, IN, osg::Image *, image);
 	I_Method0(void, releaseImage);
 	I_MethodWithDefaults1(osgART::PixelFormatType, getPixelFormat, IN, bool, internal, true);
-	I_Method0(OpenThreads::Mutex &, getMutex);
+	// I_Method0(OpenThreads::Mutex &, getMutex);
 	I_Method1(osgART::Field *, get, IN, const std::string &, name);
 	I_ReadOnlyProperty(int, Height);
 	I_ReadOnlyProperty(int, Id);
 	I_WriteOnlyProperty(osg::Image *, Image);
 	I_ReadOnlyProperty(unsigned char *, ImageRaw);
-	I_ReadOnlyProperty(OpenThreads::Mutex &, Mutex);
+	// I_ReadOnlyProperty(OpenThreads::Mutex &, Mutex);
 	I_ReadOnlyProperty(int, Width);
 END_REFLECTOR
 

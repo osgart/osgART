@@ -21,7 +21,7 @@
 #undef OUT
 #endif
 
-TYPE_NAME_ALIAS(osgART::GenericTracker *(*, osgART::TrackerManager::p_TrackerCreateFunc);
+// TYPE_NAME_ALIAS(osgART::GenericTracker *(*, osgART::TrackerManager::p_TrackerCreateFunc);
 
 BEGIN_VALUE_REFLECTOR(osgART::TrackerManager)
 	I_Method1(int, addTracker, IN, osgART::GenericTracker *, tracker);
