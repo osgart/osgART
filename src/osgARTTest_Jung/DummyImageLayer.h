@@ -36,7 +36,7 @@ public:
 	};
 
 	void setRenderBin(int);
-	void setTexture( osg::ref_ptr<osg::Texture> _tex );
+	void setTexture( osg::ref_ptr<osg::Texture> _tex, int id = 0 );
 
 private:
 	

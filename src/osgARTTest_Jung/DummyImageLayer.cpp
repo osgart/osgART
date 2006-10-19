@@ -47,10 +47,9 @@ void DummyImageLayer::buildGeometry()
 	getOrCreateStateSet()->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
 }
 
-void DummyImageLayer::setTexture( osg::ref_ptr<osg::Texture> _tex )
+void DummyImageLayer::setTexture( osg::ref_ptr<osg::Texture> _tex, int id)
 {
 	tex = _tex;
-	//m_layerStateSet->setTextureAttributeAndModes(0, tex.get() ,osg::StateAttribute::ON);
-	getOrCreateStateSet()->setTextureAttributeAndModes(0, tex.get() ,osg::StateAttribute::ON);
-	//layerGroup->getOrCreateStateSet()->setTextureAttribute(1, tex.get(),osg::StateAttribute::ON);
+	
+	getOrCreateStateSet()->setTextureAttributeAndModes(id, tex.get() ,osg::StateAttribute::ON);	
 }
