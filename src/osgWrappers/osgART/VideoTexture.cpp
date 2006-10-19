@@ -22,11 +22,5 @@
 
 BEGIN_VALUE_REFLECTOR(osgART::VideoTexture)
 	I_Constructor1(IN, int, video);
-	I_Constructor1(IN, int, video);
-END_REFLECTOR
-
-BEGIN_VALUE_REFLECTOR(osgART::VideoTexture)
-	I_Constructor1(IN, int, video);
-	I_Constructor1(IN, int, video);
 END_REFLECTOR
 

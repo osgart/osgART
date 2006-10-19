@@ -10,9 +10,9 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
-#include <osgART/.svn/text-base/Field.svn-base>
-#include <osgART/.svn/text-base/VideoConfig.svn-base>
+#include <osgART/Field>
 #include <osgART/GenericVideo>
+#include <osgART/VideoConfig>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -23,78 +23,6 @@
 #endif
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideo)
-	I_Constructor0();
-	I_Constructor1(IN, const osgART::GenericVideo &, x);
-	I_Method0(int, getWidth);
-	I_Method0(int, getHeight);
-	I_Method0(int, pixelSize);
-	I_Method0(osgART::PixelFormatType, pixelFormat);
-	I_Method0(osgART::PixelFormatType, pixelInternalFormat);
-	I_Method0(osgART::FrameRateType, frameRate);
-	I_Method0(int, getId);
-	I_Method0(void, open);
-	I_Method0(void, close);
-	I_Method0(void, start);
-	I_Method0(void, stop);
-	I_Method0(void, update);
-	I_Method0(unsigned char *, getImageRaw);
-	I_Method0(osg::ref_ptr< osg::Image >, getImage);
-	I_Method1(void, setImage, IN, osg::Image *, image);
-	I_Method0(void, releaseImage);
-	I_MethodWithDefaults1(osgART::PixelFormatType, getPixelFormat, IN, bool, internal, true);
-	I_Method0(OpenThreads::Mutex &, getMutex);
-	I_Method1(osgART::Field *, get, IN, const std::string &, name);
-	I_Constructor0();
-	I_Constructor1(IN, const osgART::GenericVideo &, x);
-	I_Method0(int, getWidth);
-	I_Method0(int, getHeight);
-	I_Method0(int, pixelSize);
-	I_Method0(osgART::PixelFormatType, pixelFormat);
-	I_Method0(osgART::PixelFormatType, pixelInternalFormat);
-	I_Method0(osgART::FrameRateType, frameRate);
-	I_Method0(int, getId);
-	I_Method0(void, open);
-	I_Method0(void, close);
-	I_Method0(void, start);
-	I_Method0(void, stop);
-	I_Method0(void, update);
-	I_Method0(unsigned char *, getImageRaw);
-	I_Method0(osg::ref_ptr< osg::Image >, getImage);
-	I_Method1(void, setImage, IN, osg::Image *, image);
-	I_Method0(void, releaseImage);
-	I_MethodWithDefaults1(osgART::PixelFormatType, getPixelFormat, IN, bool, internal, true);
-	I_Method0(OpenThreads::Mutex &, getMutex);
-	I_Method1(osgART::Field *, get, IN, const std::string &, name);
-	I_ReadOnlyProperty(int, Height);
-	I_ReadOnlyProperty(int, Id);
-	I_WriteOnlyProperty(osg::Image *, Image);
-	I_ReadOnlyProperty(unsigned char *, ImageRaw);
-	I_ReadOnlyProperty(OpenThreads::Mutex &, Mutex);
-	I_ReadOnlyProperty(int, Width);
-END_REFLECTOR
-
-BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideo)
-	I_Constructor0();
-	I_Constructor1(IN, const osgART::GenericVideo &, x);
-	I_Method0(int, getWidth);
-	I_Method0(int, getHeight);
-	I_Method0(int, pixelSize);
-	I_Method0(osgART::PixelFormatType, pixelFormat);
-	I_Method0(osgART::PixelFormatType, pixelInternalFormat);
-	I_Method0(osgART::FrameRateType, frameRate);
-	I_Method0(int, getId);
-	I_Method0(void, open);
-	I_Method0(void, close);
-	I_Method0(void, start);
-	I_Method0(void, stop);
-	I_Method0(void, update);
-	I_Method0(unsigned char *, getImageRaw);
-	I_Method0(osg::ref_ptr< osg::Image >, getImage);
-	I_Method1(void, setImage, IN, osg::Image *, image);
-	I_Method0(void, releaseImage);
-	I_MethodWithDefaults1(osgART::PixelFormatType, getPixelFormat, IN, bool, internal, true);
-	I_Method0(OpenThreads::Mutex &, getMutex);
-	I_Method1(osgART::Field *, get, IN, const std::string &, name);
 	I_Constructor0();
 	I_Constructor1(IN, const osgART::GenericVideo &, x);
 	I_Method0(int, getWidth);

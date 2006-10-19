@@ -22,15 +22,6 @@
 
 BEGIN_OBJECT_REFLECTOR(osgART::VideoForeground)
 	I_BaseType(osgART::VideoLayer);
-	I_BaseType(osgART::VideoLayer);
-	I_ConstructorWithDefaults1(IN, int, videoID, 0);
-	I_ConstructorWithDefaults1(IN, int, videoID, 0);
-END_REFLECTOR
-
-BEGIN_OBJECT_REFLECTOR(osgART::VideoForeground)
-	I_BaseType(osgART::VideoLayer);
-	I_BaseType(osgART::VideoLayer);
-	I_ConstructorWithDefaults1(IN, int, videoID, 0);
 	I_ConstructorWithDefaults1(IN, int, videoID, 0);
 END_REFLECTOR
 

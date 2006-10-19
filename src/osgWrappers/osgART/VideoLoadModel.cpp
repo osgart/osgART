@@ -11,7 +11,7 @@
 #include <osgIntrospection/Attributes>
 
 #include <osgART/GenericVideo>
-#include <osgART/VideoAvatar>
+#include <osgART/VideoLoadModel>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -21,9 +21,9 @@
 #undef OUT
 #endif
 
-BEGIN_OBJECT_REFLECTOR(osgART::VideoAvatar)
+BEGIN_OBJECT_REFLECTOR(osgART::VideoLoadModel)
 	I_BaseType(osgART::GenericVideoObject);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
+	I_Constructor2(IN, int, videoId, IN, const char *, video_name);
 	I_Constructor1(IN, const osgART::GenericVideo &, video);
 	I_Method0(void, init);
 	I_MethodWithDefaults5(void, cropVideo, IN, int, x, , IN, int, y, , IN, int, width, , IN, int, height, , IN, bool, crop, true);

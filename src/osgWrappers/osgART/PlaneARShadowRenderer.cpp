@@ -10,7 +10,7 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
-#include <osgART/VideoBackground>
+#include <osgART/PlaneARShadowRenderer>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -20,8 +20,9 @@
 #undef OUT
 #endif
 
-BEGIN_OBJECT_REFLECTOR(osgART::VideoBackground)
-	I_BaseType(osgART::VideoLayer);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
+BEGIN_OBJECT_REFLECTOR(osgART::PlaneARShadowRenderer)
+	I_BaseType(osgART::ShadowRenderer);
+	I_ConstructorWithDefaults4(IN, osg::Node *, x, , IN, osg::MatrixTransform *, x, , IN, osg::Vec2f, size, , IN, int, markerId, 0);
+	I_Method0(void, init);
 END_REFLECTOR
 

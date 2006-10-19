@@ -10,7 +10,8 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
-#include <osgART/VideoBackground>
+#include <osgART/ARTTransform>
+#include <osgART/Marker>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -20,8 +21,9 @@
 #undef OUT
 #endif
 
-BEGIN_OBJECT_REFLECTOR(osgART::VideoBackground)
-	I_BaseType(osgART::VideoLayer);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
+BEGIN_OBJECT_REFLECTOR(osgART::ARTTransform)
+	I_ConstructorWithDefaults2(IN, int, markerID, 0, IN, int, trackerId, 0);
+	I_Method0(osgART::Marker *, getMarker);
+	I_ReadOnlyProperty(osgART::Marker *, Marker);
 END_REFLECTOR
 

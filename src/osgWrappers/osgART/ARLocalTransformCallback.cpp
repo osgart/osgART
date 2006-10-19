@@ -10,8 +10,8 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
-#include <osgART/.svn/text-base/Marker.svn-base>
 #include <osgART/ARLocalTransformCallback>
+#include <osgART/Marker>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -22,12 +22,6 @@
 #endif
 
 BEGIN_VALUE_REFLECTOR(osgART::ARLocalTransformCallback)
-	I_Constructor2(IN, osgART::Marker *, baseMarker, IN, osgART::Marker *, paddleMarker);
-	I_Constructor2(IN, osgART::Marker *, baseMarker, IN, osgART::Marker *, paddleMarker);
-END_REFLECTOR
-
-BEGIN_VALUE_REFLECTOR(osgART::ARLocalTransformCallback)
-	I_Constructor2(IN, osgART::Marker *, baseMarker, IN, osgART::Marker *, paddleMarker);
 	I_Constructor2(IN, osgART::Marker *, baseMarker, IN, osgART::Marker *, paddleMarker);
 END_REFLECTOR
 

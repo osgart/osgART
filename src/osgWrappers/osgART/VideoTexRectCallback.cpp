@@ -10,7 +10,7 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
-#include <osgART/VideoBackground>
+#include <osgART/VideoTexRectCallback>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -20,8 +20,9 @@
 #undef OUT
 #endif
 
-BEGIN_OBJECT_REFLECTOR(osgART::VideoBackground)
-	I_BaseType(osgART::VideoLayer);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
+BEGIN_VALUE_REFLECTOR(osgART::VideoTexRectCallback)
+	I_Constructor3(IN, int, video, IN, int, vw, IN, int, vh);
+	I_Method2(void, load, IN, const osg::TextureRectangle &, texture, IN, osg::State &, state);
+	I_Method2(void, subload, IN, const osg::TextureRectangle &, texture, IN, osg::State &, state);
 END_REFLECTOR
 

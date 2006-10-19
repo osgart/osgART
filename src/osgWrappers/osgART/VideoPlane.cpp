@@ -23,21 +23,6 @@
 
 BEGIN_OBJECT_REFLECTOR(osgART::VideoPlane)
 	I_BaseType(osgART::GenericVideoObject);
-	I_BaseType(osgART::GenericVideoObject);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
-	I_Constructor1(IN, const osgART::GenericVideo &, video);
-	I_Method0(void, init);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
-	I_Constructor1(IN, const osgART::GenericVideo &, video);
-	I_Method0(void, init);
-END_REFLECTOR
-
-BEGIN_OBJECT_REFLECTOR(osgART::VideoPlane)
-	I_BaseType(osgART::GenericVideoObject);
-	I_BaseType(osgART::GenericVideoObject);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
-	I_Constructor1(IN, const osgART::GenericVideo &, video);
-	I_Method0(void, init);
 	I_ConstructorWithDefaults1(IN, int, videoId, 0);
 	I_Constructor1(IN, const osgART::GenericVideo &, video);
 	I_Method0(void, init);

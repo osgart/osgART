@@ -20,5 +20,12 @@
 #undef OUT
 #endif
 
+BEGIN_OBJECT_REFLECTOR(osgART::Field)
+	I_Constructor0();
+	I_Method1(void, serialize, IN, std::ostream &, out);
+END_REFLECTOR
+
 TYPE_NAME_ALIAS(std::map< std::string COMMA  osg::ref_ptr< osgART::Field > >, osgART::FieldMap);
+
+STD_MAP_REFLECTOR(std::map< std::string COMMA  osg::ref_ptr< osgART::Field > >);
 
