@@ -247,7 +247,7 @@ ARToolKit4NFTTracker::addSingleMarker(const std::string& pattFile,
 int 
 ARToolKit4NFTTracker::addMultiMarker(const std::string& multiFile) 
 {
-	osgART::Marker* multiMarker = new osgART::MultiMarker();
+	osgART::MultiMarker* multiMarker = new osgART::MultiMarker();
 
 	if (!multiMarker->initialise((char*)multiFile.c_str()))
 	{

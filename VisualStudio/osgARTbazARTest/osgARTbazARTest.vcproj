@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="osgart_artoolkit_tracker"
-	ProjectGUID="{076A3DF8-75F0-485C-887C-4487AFD8F057}"
-	RootNamespace="osgart_artoolkit_tracker"
+	Name="osgARTbazARTest"
+	ProjectGUID="{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
+	RootNamespace="osgARTbazARTest"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -13,15 +13,15 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="Debug"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OSGART_DSVL_EXPORTS;OSGART_PLUGIN_EXPORT"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -34,15 +34,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgARTd.lib libARd.lib libARmultid.lib libARgsub_lited.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_trackerd.dll"
+				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libARd.lib glu32.lib libARgsub_lited.lib libARMultid.lib libARvideod.lib osgARTd.lib"
+				OutputFile="../../bin/osgARTbazARTestd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
-				IgnoreDefaultLibraryNames="libcmtd"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_artoolkit_tracker.pdb"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/osgart_artoolkit_tracker.lib"
+				ProgramDatabaseFile="$(OutDir)/Example.pdb"
+				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -67,33 +65,33 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="Release"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;OSGART_LIBRARY"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_tracker.dll"
+				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib"
+				OutputFile="../../bin/osgARTbazarTest.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib"
+				AdditionalLibraryDirectories="../../lib"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="TRUE"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/osgart_artoolkit_tracker.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -125,36 +123,8 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker.cpp">
+				RelativePath="..\..\src\osgARTbazARTest\osgARTbazARTest.cpp">
 			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\Main.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker.cpp">
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker">
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 		</Filter>
 	</Files>
 	<Globals>

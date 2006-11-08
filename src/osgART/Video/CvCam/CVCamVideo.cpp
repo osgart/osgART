@@ -78,7 +78,7 @@ void imageCallback(IplImage* image)
 
 CVCamVideo::CVCamVideo()
 {
-	camIndex=1;
+	camIndex=0;
 	pixelsize=3;
 	pixelformat=VIDEOFORMAT_RGB24;
 	xsize=320;

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="osgart_artoolkit_tracker"
+	Name="osgart_bazar_tracker"
 	ProjectGUID="{076A3DF8-75F0-485C-887C-4487AFD8F057}"
-	RootNamespace="osgart_artoolkit_tracker"
+	RootNamespace="osgart_bazar"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,8 +34,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgARTd.lib libARd.lib libARmultid.lib libARgsub_lited.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_trackerd.dll"
+				AdditionalDependencies="osgARTd.lib libARd.lib osg.lib libARmultid.lib libARgsub_lited.lib opengl32.lib glu32.lib"
+				OutputFile="..\..\bin\osgart_bazar_trackerd.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
 				IgnoreDefaultLibraryNames="libcmtd"
@@ -85,8 +85,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_tracker.dll"
+				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib garfeild_win32d.lib starter_win32d.lib cv.lib cxcore.lib highgui.lib cvaux.lib"
+				OutputFile="..\..\bin\osgart_bazar_tracker.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
@@ -125,16 +125,13 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker.cpp">
+				RelativePath="..\..\src\osgART\Tracker\bazAR\BazarMarker.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\Main.cpp">
+				RelativePath="..\..\src\osgART\Tracker\bazAR\BazARTracker.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker.cpp">
+				RelativePath="..\..\src\osgART\Tracker\bazAR\Main.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -142,13 +139,15 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker">
+				RelativePath="..\..\src\osgART\Tracker\bazAR\BazarMarker">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker">
+				RelativePath="..\..\src\osgART\Tracker\bazAR\BazARTracker">
 			</File>
 		</Filter>
 		<Filter

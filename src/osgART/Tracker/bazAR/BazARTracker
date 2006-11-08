@@ -1,0 +1,157 @@
+/*
+ * osgART / BazAR for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_BAZARTRACKER
+#define OSGART_BAZARTRACKER
+
+/**
+ * \file  BazARTracker
+ * \brief A wrapper class for the EPFL BazAR ver1.3 tracking system.
+ *
+ * Support rigid surface tracking based on computer vision based on BazAR
+ * Algorithm. This class provides video/graphic independent surface detection and
+ * tracking.
+ *	
+ * \author Jens Hopfer jens.hopfer@hitlabnz.org
+ */
+
+// BAZAR
+#include <viewsets/planar_object_recognizer.h>
+#include <calib/CamAugmentation.h>
+
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+
+#include <string>
+
+namespace osgART {
+
+	/**
+	* \class BazARTracker
+	* \brief A tracker based on BazAR 1.3. 
+	* 
+	* This tracker supports tracking of rigid, textured surfaces.
+	*
+	*/
+	class BazARTracker : public GenericTracker
+	{
+
+	public:        
+	   
+		/** 
+		* \brief constructor.
+		*/
+		BazARTracker(void);
+
+		/** 
+		* \brief set the openGL parameters for the projection matrix.
+		* 
+		* Initialize internal parameters computation for delivers an openGL Matrix (modify
+		* nothing to openGL state machine). 
+		* \param n near field of view
+		* \param f far field of view
+		*/
+		void setProjection(const double n, const double f);
+		
+		unsigned char* getDebugImage();	
+		void setDebugMode(bool d);
+		bool getDebugMode();
+		
+		
+		/** 
+		* \brief Initialize BazAR.
+		* 
+		* This core function initializes different parameters of BazAR: load tracked markers, initialize
+		* camera parameters.
+		* \param xsize width of the image to analyze
+		* \param ysize height of the image to analyze
+		* \param pattlist_name a file structure of the marker
+		* \param camera_name description file of the camera used (pinhole model)
+		*/
+		virtual bool init(int xsize, int ysize, 
+			const std::string& pattlist_name = "Data/markers_list.dat", 
+			const std::string& camera_name="Data/camera_para.dat");
+		
+		
+		/** 
+		* \brief Register a bazar marker with the tracker.
+		* 
+		* \return the internal ID of the new marker, or -1 on failure 
+		*/
+		int addBazARMarker();
+		
+		/** 
+		* \brief set the image which will be used for tracking.
+		* 
+		* \param image Pointer to raw image pixels.
+		* \param format OSGART-defined pixel format of the raw pixels. This will be converted
+		*		to a format understood by ARToolKit internally.
+		*/
+		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
+		
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
+		*/
+		void update();
+		
+	protected:
+	
+		/** 
+		 * \brief destructor.
+		 */
+		virtual ~BazARTracker();
+					
+		
+	private:
+		
+		// bazar
+		bool add_detected_homography(planar_object_recognizer &detector, CamAugmentation &a);
+		void show_result(CamAugmentation &augment, IplImage *video, IplImage **dst);
+		void GetARToolKitRTfromBAZARProjMat(CvMat *Intrinsic, CvMat *bazProjMat, CvMat *arRT);
+		
+		// init the planar object recognizer
+		planar_object_recognizer		detector;
+		CamAugmentation					augment;
+						
+		double projected[3][4];
+		CvMat *matCameraRT4_4; // Transformation matrix for rendering in OpenGL
+		CvMat *g_matIntrinsic;   // Camera Intrinsic matrix
+		CvMat *m;
+		CvMat *coordinateTrans;
+		
+		
+		// original
+		struct				CameraParameter;
+		CameraParameter*	m_cparam;
+	
+		bool setupMarkers();
+
+		std::string 		cparamName;
+
+		bool 				m_debugmode;
+		
+		int					m_marker_num;
+		
+        int                 m_artoolkit_pixformat;
+        int                 m_artoolkit_pixsize;
+        
+		
+
+
+	};
+
+};
+
+#endif 
+
+

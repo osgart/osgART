@@ -37,7 +37,7 @@ namespace osgART {
 			ART_UNKOWN = 0,	//<! unknown marker type
 			ART_SINGLE,		//<! a single marker
 			ART_MULTI,		//<! a multimarker
-			ART_NFT			//<! a natural feature
+			ART_NFT			//<! a natural feature		`			
 		};
 	    
 		/** 
@@ -129,7 +129,8 @@ namespace osgART {
 		/**
 		 * Internal update of matrix
 		 */
-		void updateTransform(const osg::Matrix& transform);
+		void updateTransform(const osg::Matrix& transform,
+			bool alternative = false);
 		
 		
 		bool m_valid;		

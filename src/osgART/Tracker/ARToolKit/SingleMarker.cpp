@@ -2,6 +2,9 @@
 
 #include <AR/gsub_lite.h>
 
+#define NDEBUG
+
+
 namespace osgART {
 
 	SingleMarker::SingleMarker() : Marker(),

@@ -56,17 +56,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit4nft_tracke
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgwrapper_osgART", "..\osgwrapper_osgART\osgwrapper_osgART.vcproj", "{9FF3836F-BFC1-4C40-A96A-500ECC88440C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_bazar", "..\osgart_bazar\osgart_bazar_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
-		{9FF3836F-BFC1-4C40-A96A-500ECC88440C} = {9FF3836F-BFC1-4C40-A96A-500ECC88440C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgARTbazARTest", "..\osgARTbazARTest\osgARTbazARTest.vcproj", "{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
+	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Debug.ActiveCfg = Debug|Win32

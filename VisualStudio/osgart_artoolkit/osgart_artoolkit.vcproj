@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgARTd.lib libARvideod.lib"
+				AdditionalDependencies="osgARTd.lib libARvideod.lib osg.lib"
 				OutputFile="..\..\bin\osgart_artoolkitd.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"

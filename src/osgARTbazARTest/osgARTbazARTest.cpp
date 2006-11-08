@@ -7,6 +7,7 @@
  *
  */
 
+
 #include <Producer/RenderSurface>
 #include <osgProducer/Viewer>
 
@@ -18,24 +19,27 @@
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
 
-
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
 #include <osgART/VideoBackground>
 #include <osgART/VideoPlane>
+#include <osg/io_utils>
 
  #define AR_VIDEO_WIN32_DIRECTSHOW_2_71
 
 #ifdef _WIN32
 #  ifdef AR_VIDEO_WIN32_DIRECTSHOW_2_71
 #    define MY_VCONF "data/WDM_camera_flipV.xml"
+//#    define MY_VCONF "data/video_input.xml"
 #  else
 #    define MY_VCONF "showDlg,flipV"
 #  endif
+#elif defined(__linux)
+// # define MY_VCONF "videotestsrc ! capsfilter caps=video/x-raw-rgb,bpp=24 ! identity name=artoolkit ! fakesink"
+# define MY_VCONF "v4l2src use-fixed-fps=false ! decodebin ! ffmpegcolorspace ! capsfilter caps=video/x-raw-rgb,bpp=24 ! identity name=artoolkit ! fakesink"
 #else
-// Please read documentation for setting video parameters
 #  define MY_VCONF ""
 #endif
 
@@ -58,54 +62,33 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
+	//osgART::VideoManager::createVideoFromPlugin("osgart_dsvl2", cfg);
 	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	//osgART::VideoManager::createVideoFromPlugin("osgart_cvcam", cfg);
 
-	osgART::VideoConfiguration cfg;
-	cfg.deviceconfig = MY_VCONF;
-
-	/* load a video plugin */
-	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	
 
 	/* check if loading the plugin was successful */
-	if (!video.valid()) 
-	{
+	if (!video.valid()) {
 		std::cerr << "Could not initialize video!" << std::endl;
 		exit(1);
 	}
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
+		// osgART::TrackerManager::createTrackerFromPlugin("osgart_bazar_tracker");
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit4nft_tracker");
+		// osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
-	/* make sure the tracker is been loaded correctly */
-	if (tracker.valid()) 
-	{
+	//osg::ref_ptr<osgART::GenericTracker> tracker = 
+	//	osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+	
+	if (tracker.valid()) {
 
-		/* RFC: this how you would get any type in and out through the plugin system */
-		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
-			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
+	} else {
 
-		/* values can only be accessed through a get()/set() mechanism */
-		if (_threshold.valid()) 
-		{
-			
-			/* set the threshold */
-			_threshold->set(400);
-
-			/* check what we actually get */
-			std::cout << "Threshold: " << _threshold->get() << std::endl;
-		} else 
-		{
-			std::cout << "Field 'threshold' supported for this tracker" << std::endl;
-		}
-		
-
-	} else 
-	{
-
-		std::cerr << "Could not initialize tracker plugin!" << std::endl;
-		exit(-1);
+		std::cerr << "Could not initialize BazAR tracker plugin!" << std::endl;
+		exit(1);
 	}	
 	
 	/* 
@@ -147,7 +130,10 @@ int main(int argc, char* argv[]) {
 
 
 	/* Initialise the tracker */
-	tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_para4.dat");
+	//tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_c_mlee.txt");
+	//tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_para4.dat");
+	tracker->init(video->getWidth(), video->getHeight(),"data/markers_list.dat","data/camera_para.dat");
+
 
 	//Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
@@ -176,8 +162,8 @@ int main(int argc, char* argv[]) {
 	// check before accessing the linked marker
 	if (marker.valid()) marker->setActive(true);
 
-	float boxSize = 40.0f;
-	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, boxSize / 2.0f), boxSize));
+	float boxSize = 50.0f;
+	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(125, 125, boxSize / 2.0f), boxSize));
 	sd->setColor(osg::Vec4(0, 0, 1, 1));
 	
 	osg::Geode* geode = new osg::Geode();
@@ -211,6 +197,12 @@ int main(int argc, char* argv[]) {
 		tracker->setImage(video.get());
 		tracker->update();
 		
+		projectionMatrix->setMatrix(osg::Matrix(tracker->getProjectionMatrix()));
+	
+		osg::Matrix projMat=osg::Matrix(tracker->getProjectionMatrix());
+		
+		osg::Matrix modelMat=osgART::TrackerManager::getInstance()->getTracker(0)->getMarker(0)->getTransform();
+
         viewer.update();
         viewer.frame();
 	

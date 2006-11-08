@@ -8,7 +8,7 @@
  */
 #include "osgART/Marker"
 #include <iostream>
-
+#include <osg/io_utils>
 
 namespace osgART {
 
@@ -71,7 +71,8 @@ namespace osgART {
 	}
 
 	void 
-	Marker::updateTransform(const osg::Matrix& transform) {
+	Marker::updateTransform(const osg::Matrix& transform,
+		bool alternative /*= false*/) {
 		
 		if (m_valid) {
 
@@ -90,17 +91,16 @@ namespace osgART {
 				osg::Vec3 b = a * m_positionSmoothFactor;
 				m_storedPosition += b;
 				
-			} else {			
-			
+			} else {	
+
 				m_storedPosition = transform.getTrans();
 				transform.get(m_storedRotation);
-				m_seen = true;
-
+				//m_seen = true;
 			}
 
-			m_transform.set(m_storedRotation);
-			m_transform.setTrans(m_storedPosition);
-
+			m_transform=transform;
+			//m_transform.set(m_storedRotation);
+			//m_transform.setTrans(m_storedPosition);
 
 		} else {
 		
