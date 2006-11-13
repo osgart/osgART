@@ -76,18 +76,17 @@ int main(int argc, char* argv[]) {
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		// osgART::TrackerManager::createTrackerFromPlugin("osgart_bazar_tracker");
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit4nft_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_bazar_tracker");
+		// osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit4nft_tracker");
 		// osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
 	//osg::ref_ptr<osgART::GenericTracker> tracker = 
 	//	osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 	
 	if (tracker.valid()) {
-
-	} else {
-
-		std::cerr << "Could not initialize BazAR tracker plugin!" << std::endl;
+	} 
+	else {
+		std::cerr << "Could not initialize tracker plugin!" << std::endl;
 		exit(1);
 	}	
 	
@@ -132,7 +131,7 @@ int main(int argc, char* argv[]) {
 	/* Initialise the tracker */
 	//tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_c_mlee.txt");
 	//tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_para4.dat");
-	tracker->init(video->getWidth(), video->getHeight(),"data/markers_list.dat","data/camera_para.dat");
+	tracker->init(video->getWidth(), video->getHeight(),"data/artbazar_config.txt","data/camera_para.dat");
 
 
 	//Adding video background
