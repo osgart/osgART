@@ -85,7 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib garfeild_win32d.lib starter_win32d.lib cv.lib cxcore.lib highgui.lib cvaux.lib"
+				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib garfeild_win32.lib starter_win32.lib cv.lib cxcore.lib highgui.lib cvaux.lib"
 				OutputFile="..\..\bin\osgart_bazar_tracker.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
