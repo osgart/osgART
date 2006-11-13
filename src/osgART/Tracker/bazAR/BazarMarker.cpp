@@ -21,6 +21,9 @@ namespace osgART {
 
 	bool BazARMarker::initialise() 
 	{
+		// take configuration file as argument
+		// initialise detector
+
 		return true;
 	}
 
@@ -33,7 +36,6 @@ namespace osgART {
 		} 
 		else 
 		{
-		
 			double modelView[16];
 		 	double patt_trans[3][4];
 
@@ -43,6 +45,7 @@ namespace osgART {
 				patt_trans[i][j]=((double*)(matCameraRT4_4->data.ptr + matCameraRT4_4->step*j))[i];
 				}
 			}
+
 			// apply changes to match gl's right handed coordinate system -> modelView
 			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
 			osg::Matrix tmp(modelView);
