@@ -2,15 +2,16 @@
 
 ARScene::ARScene()
 {
-	background = new osg::Group();       
-	backgroundTextureBuffer = new osg::Group(); 
-	backgroundTextureBuffer->ref();
+	sceneGroup = new osg::Group();       
+	backgroundGroup = new osg::Group(); 
+	backgroundGroup->ref();
 
-	foreground = new osg::Group(); 
-	
+	foregroundGroup = new osg::Group(); 
+	foregroundGroup->ref();
 
-	background->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
-	foreground->getOrCreateStateSet()->setRenderBinDetails(20 , "RenderBin");
+	sceneGroup->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
+	backgroundGroup->getOrCreateStateSet()->setRenderBinDetails(10 , "RenderBin");
+	foregroundGroup->getOrCreateStateSet()->setRenderBinDetails(20 , "RenderBin");
 	
 	fboManager = new FBOManager;
 }
@@ -24,13 +25,11 @@ void ARScene::init(osg::ref_ptr<osgART::GenericTracker> tracker, int _trakerID)
 	projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	projectionMatrixForFBO = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	trackerID = _trakerID;
-
-	this->addChild(projectionMatrix.get());
 	
-	projectionMatrix->addChild( foreground.get() );
-	backgroundTextureBuffer->addChild(projectionMatrixForFBO.get());
+	projectionMatrix->addChild( foregroundGroup.get() );
+	backgroundGroup->addChild(projectionMatrixForFBO.get());
 
-	this->addChild( background.get() );
+	this->addChild( sceneGroup.get() );
 }
 	
 void ARScene::addARNode(osg::ref_ptr<ARNode> arNode, int binNum,  bool addToSceneGraph )
@@ -39,7 +38,7 @@ void ARScene::addARNode(osg::ref_ptr<ARNode> arNode, int binNum,  bool addToScen
 	arNode->getOrCreateStateSet()->setRenderBinDetails(binNum, "RenderBin");
 
 	if ( addToSceneGraph )
-		foreground->addChild( arNode.get() );	
+		foregroundGroup->addChild( arNode.get() );	
 }
 	
 osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum)
@@ -72,33 +71,59 @@ osg::ref_ptr<osgART::VideoBackground> ARScene::makeVideoBackground(int id)
 osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(int id)
 {
 	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(id);
-	background->addChild(videoBackground.get());
+	sceneGroup->addChild(videoBackground.get());
 	
 	return videoBackground;
 }
 
-osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, bool addDummyLayer)
+osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, bool addDummyLayer, int colNum , int rowNum )
 {
 	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(id);
-	backgroundTextureBuffer->addChild(videoBackground.get());
+	backgroundGroup->addChild(videoBackground.get());
 
 	fboManager->init(bgWidth, bgHeight, this);
 	
-	fboManager->attachTarget( backgroundTextureBuffer.get(), 1000);
-	videoBackgroundTexture = fboManager->getTexture(0);
+	fboManager->attachTarget( backgroundGroup.get(), 1000);
+	backgroundTexture = fboManager->getTexture(0);
 
 	if ( addDummyLayer )
 	{
 		osg::ref_ptr<DummyImageLayer> dummy = new DummyImageLayer;
-		dummy->init(bgWidth,bgHeight);
-		dummy->setTexture( videoBackgroundTexture.get() );	
+		dummy->init(bgWidth,bgHeight, colNum, rowNum);
+		dummy->setTexture( backgroundTexture.get() );	
 		dummy->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
 
-		background->addChild( dummy.get() );
+		sceneGroup->addChild( dummy.get() );
 	}
 
-	return videoBackgroundTexture;
+	return backgroundTexture;
 }
+
+	
+void ARScene::initDefaultForeground()
+{
+	this->addChild(projectionMatrix.get());
+}
+
+osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(bool addDummyLayer , int colNum, int rowNum)
+{
+
+	fboManager->attachTarget( foregroundGroup.get(), 1000);
+	foregroundTexture = fboManager->getTexture(1);
+
+	if ( addDummyLayer )
+	{
+		osg::ref_ptr<DummyImageLayer> dummy = new DummyImageLayer;
+		dummy->init(bgWidth,bgHeight, colNum, rowNum);
+		dummy->setTexture( backgroundTexture.get() );	
+		dummy->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
+
+		sceneGroup->addChild( dummy.get() );
+	}
+
+	return foregroundTexture;
+}
+
 
 void ARScene::addToBackgroundTextureGroup(osg::Node *aNode, bool isARNode)
 {
@@ -106,12 +131,12 @@ void ARScene::addToBackgroundTextureGroup(osg::Node *aNode, bool isARNode)
 	if ( isARNode )
 		projectionMatrixForFBO->addChild(aNode);
 	else
-		backgroundTextureBuffer->addChild(aNode);
+		backgroundGroup->addChild(aNode);
 }
 
 void ARScene::addToBackgroundGroup(osg::Node *aNode)
 {
-	background->addChild(aNode);
+	sceneGroup->addChild(aNode);
 }
 
 

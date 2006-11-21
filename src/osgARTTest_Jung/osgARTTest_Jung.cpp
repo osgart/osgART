@@ -33,6 +33,7 @@
 #include "DummyImageLayer.h"
 #include "ARScene.h"
 #include "ARNode.h"
+#include "DummyBackgroundPlane.h"
 
 #define AR_VIDEO_WIN32_DIRECTSHOW_2_71
 
@@ -196,13 +197,15 @@ int main(int argc, char* argv[]) {
 	
 	arScene->init(tracker);
 	
-	// example 01: Simple shader
-	// 1. Add sobel filter to the video background
-	// 2. Add toon shader to the truck
+	//// example 01: Simple shader
+	//// 1. Add sobel filter to the video background
+	//// 2. Add toon shader to the truck
 
-	// load default video <osgART::VideoBackground> 
+	////load default video <osgART::VideoBackground> 
 	//osg::ref_ptr<osgART::VideoBackground> videoBackground =
 	//	arScene->initDefaultVideoBackground( video->getId() );
+	//arScene->initDefaultForeground();
+
 	//int videoBGWidth = video->getWidth();
 	//int videoBGHeight = video->getHeight();
 
@@ -231,24 +234,25 @@ int main(int argc, char* argv[]) {
 	//// put the model to marker
 	//osg::ref_ptr<ARNode> hiroMarkerWithTruck =		
 	//	arScene->addNewARNodeWith( truckModel );
-	//////////////////////////////////////////////////////////////// example 01 end here 
+	////////////////////////////////////////////////////////////////// example 01 end here 
 	
 
 		
-	// example 02: Simple shader with texture background version
-	// 1. Add sobel filter to the video background
-	// 2. Add toon shader to the truck
+	//// example 02: Simple shader with texture background version
+	//// 1. Add sobel filter to the video background
+	//// 2. Add toon shader to the truck
 
-	// init texture video. The background is rendered to a texture
-	// if you set addDummy as false, it does not add dummyLayer.
-	// By default it is true.
+	//// init texture video. The background is rendered to a texture
+	//// if you set addDummy as false, it does not add dummyLayer.
+	//// By default it is true.
 
 	//arScene->initTextureVideoBackground( video->getId());
+	//arScene->initDefaultForeground();
 	//int videoBGWidth = video->getWidth();
 	//int videoBGHeight = video->getHeight();
 
 	//// we inited with dummyLayer so the 1st child is the dummyLayer
-	//osg::ref_ptr<osg::Node> dummyBackground = arScene->getBackgroundGroup()->getChild(0);
+	//osg::ref_ptr<osg::Node> dummyBackground = arScene->getSceneGroup()->getChild(0);
 
 	//sf.addFragmentShaderFromFile("./data/shader/SimpleSobelFilter.frag", dummyBackground.get());
 	//dummyBackground->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
@@ -343,8 +347,6 @@ int main(int argc, char* argv[]) {
 
 	// put the model to marker
 	arScene->addARNode( arNode, 1100, false ); // just add to ARScene but not to scene graph
-	
-	//////////////////////////////////////////////////////////////// example 03 end here 
 
 	viewer.setSceneData(arScene.get());
 	

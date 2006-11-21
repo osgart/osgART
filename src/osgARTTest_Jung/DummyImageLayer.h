@@ -7,6 +7,7 @@
 #include <osg/Geometry>
 #include <osg/Projection>
 #include <osg/Geode>
+#include <osg/Drawable>
 #include <osg/Depth>
 #include <osg/Texture2D>
 
@@ -23,7 +24,7 @@ public:
 	DummyImageLayer();
 	virtual ~DummyImageLayer();
 
-	virtual void init(int, int);
+	virtual void init(int w, int h, int colNum = 1, int rowNum = 1);
 	
 	int getWidth()
 	{
@@ -41,16 +42,16 @@ public:
 private:
 	
 	void buildGeometry();
+	osg::Drawable* createDrawable();
 	int width, height;
-		
+	int row, col;	
 	
 	osg::ref_ptr<osg::MatrixTransform>	m_layerModelViewMatrix;
 	osg::ref_ptr<osg::Projection>		m_layerProjectionMatrix;
 	osg::ref_ptr<osg::Geometry>			m_geometry;
 	osg::ref_ptr<osg::Geode>			m_layerGeode;
 	osg::ref_ptr<osg::StateSet>			m_layerStateSet;
-	osg::ref_ptr<osg::Texture>        tex;
-
+	
 	osg::ref_ptr<osg::Group> layerGroup;
 };
 #endif

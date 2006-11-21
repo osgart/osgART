@@ -32,7 +32,7 @@ public:
 
 	void addARNode(osg::ref_ptr<ARNode> arnode, int binNum, bool addToSceneGraph = true);
 
-	osg::ref_ptr<ARNode> addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum = 20);
+	virtual osg::ref_ptr<ARNode> addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum = 20);
 	
 	void addToBackgroundGroup(osg::Node *aNode);
 	void addToBackgroundTextureGroup(osg::Node *aNode, bool isARNode);
@@ -40,31 +40,35 @@ public:
 
 	// choose to use only one!
 	osg::ref_ptr<osgART::VideoBackground> initDefaultVideoBackground(int id);
-	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, bool addDummyLayer = true);
+	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, bool addDummyLayer = true, int colNum = 1, int rowNum = 1 );
 
-	osg::ref_ptr<osg::Group> getBackgroundGroup()
+	void initDefaultForeground();
+	osg::ref_ptr<osg::Texture> initTextureVideoBackground(bool addDummyLayer = true, int colNum = 1, int rowNum = 1 );
+
+
+	osg::ref_ptr<osg::Group> getSceneGroup()
 	{
-		return background;
+		return sceneGroup;
 	};
 	
 	osg::ref_ptr<osg::Group> getBackgroundTextureGroup()
 	{
-		return backgroundTextureBuffer;
+		return backgroundGroup;
 	};
 
 	osg::ref_ptr<osg::Group> getForegroundGroup()
 	{
-		return foreground;
+		return foregroundGroup;
 	};
 
 	osg::ref_ptr<osg::Texture> getBackgroundTexture()
 	{
-		return videoBackgroundTexture;
+		return backgroundTexture;
 	};
 
 	osg::ref_ptr<ARNode> at(int id);
 	int size();
-private:
+protected:
 
 	osg::ref_ptr<osgART::VideoBackground> makeVideoBackground(int id);
 
@@ -75,15 +79,16 @@ private:
 	osg::ref_ptr<osg::Projection> projectionMatrix;
 	osg::ref_ptr<osg::Projection> projectionMatrixForFBO;
 	
-	osg::ref_ptr<osg::Group> background;
-	osg::ref_ptr<osg::Group> backgroundTextureBuffer;
-	osg::ref_ptr<osg::Group> foreground;
+	osg::ref_ptr<osg::Group> sceneGroup;
+	osg::ref_ptr<osg::Group> backgroundGroup;
+	osg::ref_ptr<osg::Group> foregroundGroup;
 
 
 	// for background
 	int bgWidth, bgHeight;
 
-	osg::ref_ptr<osg::Texture> videoBackgroundTexture;
+	osg::ref_ptr<osg::Texture> backgroundTexture;
+	osg::ref_ptr<osg::Texture> foregroundTexture;
 };
 
 #endif
