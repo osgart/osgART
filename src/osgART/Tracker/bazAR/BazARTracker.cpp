@@ -420,6 +420,11 @@ namespace osgART {
 		return m_debugmode;
 	}
 
+	ARParam* BazARTracker::getCParam()
+	{
+		return &(m_cparam->cparam);
+	}
+
     /*virtual*/ 
 	void BazARTracker::setImageRaw(unsigned char * image, PixelFormatType format)
     {
