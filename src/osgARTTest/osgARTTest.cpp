@@ -53,12 +53,6 @@ int main(int argc, char* argv[]) {
 	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
 #endif
 
-	osgART::VideoConfiguration cfg;
-	cfg.deviceconfig = MY_VCONF;
-
-	/* load a video plugin */
-	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
 
 	osgART::VideoConfiguration cfg;
 	cfg.deviceconfig = MY_VCONF;
@@ -77,7 +71,8 @@ int main(int argc, char* argv[]) {
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit4nft_tracker");
-
+		//osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+	std::cout<<"here"<<std::endl;
 	/* make sure the tracker is been loaded correctly */
 	if (tracker.valid()) 
 	{
@@ -91,7 +86,7 @@ int main(int argc, char* argv[]) {
 		{
 			
 			/* set the threshold */
-			_threshold->set(400);
+			_threshold->set(100);
 
 			/* check what we actually get */
 			std::cout << "Threshold: " << _threshold->get() << std::endl;
@@ -107,7 +102,7 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}	
-	
+
 	/* 
 	cfg.deviceconfig = "imagewithmarker.png";
 	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_dummyimage", cfg);
@@ -145,10 +140,9 @@ int main(int argc, char* argv[]) {
 	/* open the video */
 	video->open();
 
-
 	/* Initialise the tracker */
-	tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_para4.dat");
-
+	tracker->init(video->getWidth(), video->getHeight(),"data/data.dat","data/camera_para4.dat");
+	
 	//Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
@@ -176,7 +170,7 @@ int main(int argc, char* argv[]) {
 	// check before accessing the linked marker
 	if (marker.valid()) marker->setActive(true);
 
-	float boxSize = 40.0f;
+	float boxSize = 150.0f;
 	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, boxSize / 2.0f), boxSize));
 	sd->setColor(osg::Vec4(0, 0, 1, 1));
 	
