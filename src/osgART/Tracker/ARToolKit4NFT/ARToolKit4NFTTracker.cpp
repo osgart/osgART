@@ -102,7 +102,7 @@ ARToolKit4NFTTracker::init(int xsize,int ysize,
 
 	if( arSetLabelingThresh(arHandle,threshold) < 0 ) 
 	{
-        std::cerr << "Error: arSetDebugMode." << std::endl;
+        std::cerr << "Error: arSetLabelingThresh." << std::endl;
         return false;
     }
 
