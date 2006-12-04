@@ -33,6 +33,7 @@
 #include <viewsets/planar_object_recognizer.h>
 #include <calib/CamAugmentation.h>
 
+#include <AR/Param.h>
 
 // OSGART#include "osgART/Export"
 #include "osgART/Marker"
@@ -85,9 +86,24 @@ namespace osgART {
 		*/
 		void setProjection(const double n, const double f);
 		
-		unsigned char* getDebugImage();	
 		void setDebugMode(bool d);
+		
+		unsigned char* getDebugImage();	
 		bool getDebugMode();
+		
+		/** 
+		* \brief set the image which will be used for tracking.
+		* 
+		* \param image Pointer to raw image pixels.
+		* \param format OSGART-defined pixel format of the raw pixels. This will be converted
+		*		to a format understood by ARToolKit internally.
+		*/
+		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
+		
+		/** 
+		* \brief return camera parameters.
+		*/
+		ARParam* getCParam();
 		
 		/** 
 		* \brief load BazAR's configuration files and detector parameters.
@@ -131,20 +147,13 @@ namespace osgART {
 		int addBazARMarker();
 		
 		/** 
-		* \brief set the image which will be used for tracking.
-		* 
-		* \param image Pointer to raw image pixels.
-		* \param format OSGART-defined pixel format of the raw pixels. This will be converted
-		*		to a format understood by ARToolKit internally.
-		*/
-		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
-		
-		/** 
 		* \brief update the tracking.
 		* 
 		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
 		*/
 		void update();
+		
+		
 		
 	protected:
 	
