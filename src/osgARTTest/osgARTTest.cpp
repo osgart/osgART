@@ -10,6 +10,7 @@
 #include <Producer/RenderSurface>
 #include <osgProducer/Viewer>
 
+#include <osg/Notify>
 #include <osg/Node>
 #include <osg/Group>
 #include <osg/Geode>
@@ -17,6 +18,7 @@
 #include <osg/AutoTransform>
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
+#include <osg/Image>
 
 
 #include <osgART/Foundation>
@@ -26,21 +28,19 @@
 #include <osgART/VideoBackground>
 #include <osgART/VideoPlane>
 
- #define AR_VIDEO_WIN32_DIRECTSHOW_2_71
 
 #ifdef _WIN32
-#  ifdef AR_VIDEO_WIN32_DIRECTSHOW_2_71
 #    define MY_VCONF "data/WDM_camera_flipV.xml"
-#  else
-#    define MY_VCONF "showDlg,flipV"
-#  endif
 #else
 // Please read documentation for setting video parameters
 #  define MY_VCONF ""
 #endif
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
+
+	osg::setNotifyLevel(osg::ALWAYS);
 
 	osgARTInit(&argc, argv);
 	
@@ -53,102 +53,72 @@ int main(int argc, char* argv[]) {
 	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
 #endif
 
-
 	osgART::VideoConfiguration cfg;
 	cfg.deviceconfig = MY_VCONF;
 
-	/* load a video plugin */
+	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
 	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
 
-	/* check if loading the plugin was successful */
+	// check if loading the plugin was successful
 	if (!video.valid()) 
 	{
-		std::cerr << "Could not initialize video!" << std::endl;
+		// without video an AR application can not work
+		osg::notify(osg::FATAL) << "Could not initialize video!" << std::endl;
+
+		// quit the program
 		exit(1);
 	}
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit4nft_tracker");
-		//osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
-	std::cout<<"here"<<std::endl;
-	/* make sure the tracker is been loaded correctly */
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+
 	if (tracker.valid()) 
 	{
 
-		/* RFC: this how you would get any type in and out through the plugin system */
+		// access a field within the tracker
 		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
 			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
 
-		/* values can only be accessed through a get()/set() mechanism */
+		// values can only be accessed through a get()/set() mechanism
 		if (_threshold.valid()) 
-		{
-			
-			/* set the threshold */
+		{			
+			// set the threshold
 			_threshold->set(100);
 
 			/* check what we actually get */
-			std::cout << "Threshold: " << _threshold->get() << std::endl;
+			osg::notify() << "Field 'threshold' = " << _threshold->get() << std::endl;
+
 		} else 
 		{
-			std::cout << "Field 'threshold' supported for this tracker" << std::endl;
-		}
-		
+			osg::notify() << "Field 'threshold' supported for this tracker" << std::endl;
+		}		
 
 	} else 
 	{
-
+        // this example needs a tracker
 		std::cerr << "Could not initialize tracker plugin!" << std::endl;
+
+		// quit the program
 		exit(-1);
 	}	
-
-	/* 
-	cfg.deviceconfig = "imagewithmarker.png";
-	osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_dummyimage", cfg);
-	*/
-
-	//osgART::GenericVideo* video = osgART::VideoManager::createVideoFromPlugin("osgart_intranel",
-	//	cfg);
-
-	/*
-	cfg.id = 0;
-	cfg.type = osgART::VIDEOFORMAT_Y16;
-	cfg.width = 800;
-	cfg.height = 600;
-	cfg.framerate = osgART::VIDEOFRAMERATE_30;
 	
-	osg::ref_ptr<osgART::GenericVideo> video = osgART::VideoManager::createVideoFromPlugin("osgart_ptgrey", cfg);
-
-	if (video.valid()) {
-		
-		osg::ref_ptr< osgART::TypedField<bool> > _roi = 
-			dynamic_cast< osgART::TypedField<bool>* >(video->get("ROI"));
-
-		osg::ref_ptr< osgART::TypedField<osg::Vec4s> > _set_roi = 
-			dynamic_cast< osgART::TypedField<osg::Vec4s>* >(video->get("setROI"));
-
-		if (_roi.valid() && _set_roi.valid()) {
-
-			_roi->set(false);            
-			_set_roi->set(osg::Vec4s(16,16,320,240));
-
-		}
-	}
-	*/
-
-	/* open the video */
+	// Open the video. This will not yet start the video stream but will
+	// get information about the format of the video which is essential
+	// for the connected tracker
 	video->open();
 
-	/* Initialise the tracker */
-	tracker->init(video->getWidth(), video->getHeight(),"data/data.dat","data/camera_para4.dat");
-	
-	//Adding video background
+	// Initialise the tracker with the dimensions of the video image
+	tracker->init(video->getWidth(), video->getHeight());
+
+	// From here on the scene is going to be built
+
+	// Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
-	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video->getId());
+	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
 
-//	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_2D);
 
 	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
 
@@ -160,17 +130,26 @@ int main(int argc, char* argv[]) {
 
 
 	osg::Projection* projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
-	
-	osg::ref_ptr<osgART::ARTTransform> markerTrans = new osgART::ARTTransform(0);
 
-    
-	// never assume the Marker really exists
-	osg::ref_ptr<osgART::Marker> marker = markerTrans->getMarker();
-
+	// create marker with id number '0'
+	osg::ref_ptr<osgART::Marker> marker = tracker->getMarker(0);
+		
 	// check before accessing the linked marker
-	if (marker.valid()) marker->setActive(true);
+	if (!marker.valid()) {
+        
+		osg::notify(osg::FATAL) << "No Marker defined!" << std::endl;
 
-	float boxSize = 150.0f;
+		exit(-1);
+	}
+
+	// activate the marker
+	marker->setActive(true);
+
+	// create a matrix transform related to the marker
+	osg::ref_ptr<osg::MatrixTransform> markerTrans = 
+		new osgART::ARTTransform(marker.get());
+
+	float boxSize = 40.0f;
 	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, boxSize / 2.0f), boxSize));
 	sd->setColor(osg::Vec4(0, 0, 1, 1));
 	
@@ -178,6 +157,7 @@ int main(int argc, char* argv[]) {
 	geode->addDrawable(sd);
 	markerTrans->addChild(geode);
 
+	// 
 	osg::Group* sceneGroup = new osg::Group();
 	sceneGroup->getOrCreateStateSet()->setRenderBinDetails(5, "RenderBin");
 	sceneGroup->addChild(markerTrans.get());
@@ -196,7 +176,8 @@ int main(int argc, char* argv[]) {
 	
 	video->start();
 	
-    while (!viewer.done()) {
+    while (!viewer.done()) 
+	{
 		
 		viewer.sync();	
 		
