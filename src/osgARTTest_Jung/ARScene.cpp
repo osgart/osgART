@@ -4,10 +4,10 @@ ARScene::ARScene()
 {
 	sceneGroup = new osg::Group();       
 	backgroundGroup = new osg::Group(); 
-	backgroundGroup->ref();
+	
 
 	foregroundGroup = new osg::Group(); 
-	foregroundGroup->ref();
+	
 
 	sceneGroup->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
 	backgroundGroup->getOrCreateStateSet()->setRenderBinDetails(10 , "RenderBin");
@@ -76,7 +76,7 @@ osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(int id
 	return videoBackground;
 }
 
-osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, bool addDummyLayer, int colNum , int rowNum )
+osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, int colNum , int rowNum, bool addDummyLayer )
 {
 	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(id);
 	backgroundGroup->addChild(videoBackground.get());
@@ -94,6 +94,8 @@ osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, bool addD
 		dummy->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
 
 		sceneGroup->addChild( dummy.get() );
+
+		backgroundDummyLayer = dummy;
 	}
 
 	return backgroundTexture;
@@ -105,20 +107,23 @@ void ARScene::initDefaultForeground()
 	this->addChild(projectionMatrix.get());
 }
 
-osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(bool addDummyLayer , int colNum, int rowNum)
+osg::ref_ptr<osg::Texture> ARScene::initTextureForeground(int colNum, int rowNum, bool addDummyLayer)
 {
 
-	fboManager->attachTarget( foregroundGroup.get(), 1000);
+	fboManager->attachTarget( projectionMatrix.get(), 1100, osg::Vec4(1.0,1.0f,1.0f,0.0f));
 	foregroundTexture = fboManager->getTexture(1);
-
+	
 	if ( addDummyLayer )
 	{
 		osg::ref_ptr<DummyImageLayer> dummy = new DummyImageLayer;
 		dummy->init(bgWidth,bgHeight, colNum, rowNum);
-		dummy->setTexture( backgroundTexture.get() );	
-		dummy->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
-
+		dummy->setTexture( foregroundTexture.get() );	
+		dummy->getOrCreateStateSet()->setRenderBinDetails(6 , "RenderBin");
+		dummy->getOrCreateStateSet()->setMode(GL_BLEND,osg::StateAttribute::ON);
+		
 		sceneGroup->addChild( dummy.get() );
+
+		foregroundDummyLayer = dummy;
 	}
 
 	return foregroundTexture;

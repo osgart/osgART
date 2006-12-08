@@ -71,7 +71,7 @@ osg::Drawable* DummyImageLayer::createDrawable()
 	currentHeight = 0;
 	
 
-	for ( int k=0; k < row + 1 ; k++)
+	for ( int k=0; k < row + 1 ; k++) 
 	{
 		currentWidth = 0;
 		for ( int j=0; j < col + 1; j++)
@@ -95,7 +95,8 @@ osg::Drawable* DummyImageLayer::createDrawable()
 			backgroundIndices->push_back(j + k *(col+1) );
 			backgroundIndices->push_back((j + 1) + k *(col+1) );
 			backgroundIndices->push_back((j + 1) + (k + 1) *(col+1) );
-			backgroundIndices->push_back( j  + (k + 1) *(col+1) );				
+			backgroundIndices->push_back( j  + (k + 1) *(col+1) );	
+			
 		}		
 	}
  

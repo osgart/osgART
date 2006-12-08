@@ -28,7 +28,7 @@ public:
 	ARScene();
 	virtual ~ARScene();
 
-	void init(osg::ref_ptr<osgART::GenericTracker> tracker, int _trakerID = 0);
+	virtual void init(osg::ref_ptr<osgART::GenericTracker> tracker, int _trakerID = 0);
 
 	void addARNode(osg::ref_ptr<ARNode> arnode, int binNum, bool addToSceneGraph = true);
 
@@ -40,10 +40,10 @@ public:
 
 	// choose to use only one!
 	osg::ref_ptr<osgART::VideoBackground> initDefaultVideoBackground(int id);
-	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, bool addDummyLayer = true, int colNum = 1, int rowNum = 1 );
+	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, int colNum = 1, int rowNum = 1, bool addDummyLayer = true );
 
 	void initDefaultForeground();
-	osg::ref_ptr<osg::Texture> initTextureVideoBackground(bool addDummyLayer = true, int colNum = 1, int rowNum = 1 );
+	osg::ref_ptr<osg::Texture> initTextureForeground(int colNum = 1, int rowNum = 1 , bool addDummyLayer = true);
 
 
 	osg::ref_ptr<osg::Group> getSceneGroup()
@@ -68,6 +68,16 @@ public:
 
 	osg::ref_ptr<ARNode> at(int id);
 	int size();
+
+	osg::ref_ptr<DummyImageLayer> getBackgroundDummyLayer()
+	{
+		return backgroundDummyLayer;
+	};
+	osg::ref_ptr<DummyImageLayer> getForegroundDummyLayer()
+	{
+		return foregroundDummyLayer;
+	};
+	
 protected:
 
 	osg::ref_ptr<osgART::VideoBackground> makeVideoBackground(int id);
@@ -89,6 +99,10 @@ protected:
 
 	osg::ref_ptr<osg::Texture> backgroundTexture;
 	osg::ref_ptr<osg::Texture> foregroundTexture;
+
+	osg::ref_ptr<DummyImageLayer> backgroundDummyLayer;
+	osg::ref_ptr<DummyImageLayer> foregroundDummyLayer;
+
 };
 
 #endif

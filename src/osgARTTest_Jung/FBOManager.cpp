@@ -19,6 +19,11 @@ osg::ref_ptr<osg::Texture> FBOManager::getTexture(int id)
 	return attachedTextures.at(id);
 }
 
+int FBOManager::size()
+{
+	return attachedTextures.size();
+}
+
 void FBOManager::init(int w,int h, osg::Group *_root)
 {
 	width = w;
@@ -31,7 +36,7 @@ void FBOManager::init(int w,int h, osg::Group *_root)
 	root->addChild(this);
 }
 
-bool FBOManager::attachTarget( osg::ref_ptr<osg::Node> renderedNode, int binNum)
+bool FBOManager::attachTarget( osg::ref_ptr<osg::Node> renderedNode, int binNum, osg::Vec4 bgColor)
 {
 	int size = (int)attachedTextures.size();
 	int maxNum = GL_MAX_COLOR_ATTACHMENTS_EXT;
@@ -44,12 +49,13 @@ bool FBOManager::attachTarget( osg::ref_ptr<osg::Node> renderedNode, int binNum)
 	
 	osg::ref_ptr<osg::Texture> tex;
 	
+	//tex = createRenderTexture2D(width, height); 
 	tex = createRenderTexture2D(width, height); 
 
-	//= createRenderTexture(width, height);
 	attachedTextures.push_back(tex);
 
 	osg::ref_ptr<osg::CameraNode> camera = createCamera(tex.get(), width, height);
+	camera->setClearColor(bgColor);
 	cameras.push_back(camera);
 
 	// attach the subgraph
@@ -69,12 +75,23 @@ osg::ref_ptr<osg::Texture> FBOManager::createRenderTexture2D(int w, int h)
 	osg::ref_ptr< osg::Texture2D > tex = dynamic_cast< osg::Texture2D* > (t.get());
 	
 	tex->setTextureSize(w, h);
+	//tex->setInternalFormat(GL_RGBA32F_ARB); //!!!
 	tex->setInternalFormat(GL_RGBA);
+
+	//tex->setSourceFormat(GL_RGBA);
+	//tex->setSourceType(GL_FLOAT);//!!!
+	//tex->setInternalFormat(GL_RGBA32F_ARB);
+	//GL_RGBA_FLOAT32_ATI	
+
 	tex->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::LINEAR);
 	tex->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::LINEAR); 
+	//tex->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::NEAREST);
+	//tex->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::NEAREST_MIPMAP_NEAREST);
+
 	tex->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
     tex->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
 
+	
 	return t;
 }
 
