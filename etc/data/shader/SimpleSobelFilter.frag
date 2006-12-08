@@ -43,12 +43,16 @@ void main(void)
    else 
 	   edge = 0.0;
 
-   edge = 1.0 - edge;
- 
-   gl_FragColor.x = edge;
-   gl_FragColor.y = edge;
-   gl_FragColor.z = edge;
-   gl_FragColor.w = 1.0;
+   
+   vec4 cc =  texture2D( tex,  gl_TexCoord[0].st );
+   gl_FragColor.x = cc.x - edge;
+   gl_FragColor.y = cc.y - edge;
+   gl_FragColor.z = cc.z - edge;
+
+   //edge = 1.0 - edge;
+   //gl_FragColor.x = edge;
+   //gl_FragColor.y = edge;
+   //gl_FragColor.z = edge;
 
    gl_FragColor.w = 1.0;
 }

@@ -43,7 +43,7 @@ void main(void)
    gl_FragColor = avg;
 
 
-   gl_FragColor.w = 1.0;
+   //gl_FragColor.w = 1.0;
 
  
 }
