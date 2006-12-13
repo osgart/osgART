@@ -25,7 +25,7 @@ public:
 	FBOManager();
 	virtual ~FBOManager();
 
-	void init(int w,int h, osg::Group *_root);
+	void init(int w,int h, osg::Group *_root, bool _useFloatTexture = false, GLuint _texInternalFormat = GL_RGBA32F_ARB);
 	
 	bool attachTarget( osg::ref_ptr<osg::Node> renderedNode, int binNum =1000, osg::Vec4 bgColor = osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	
@@ -47,7 +47,8 @@ private:
 	vector< osg::ref_ptr<osg::Texture> > attachedTextures;
 	vector< osg::ref_ptr<osg::CameraNode> > cameras;
 	
-
+	bool useFloatTexture;
+	GLuint texInternalFormat;
 };
 
 #endif

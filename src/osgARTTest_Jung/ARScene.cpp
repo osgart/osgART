@@ -76,12 +76,12 @@ osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(int id
 	return videoBackground;
 }
 
-osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, int colNum , int rowNum, bool addDummyLayer )
+osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, int colNum , int rowNum, bool addDummyLayer, bool _useFloatTexture, GLuint _texInternalFormat )
 {
 	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(id);
 	backgroundGroup->addChild(videoBackground.get());
 
-	fboManager->init(bgWidth, bgHeight, this);
+	fboManager->init(bgWidth, bgHeight, this, _useFloatTexture, _texInternalFormat);
 	
 	fboManager->attachTarget( backgroundGroup.get(), 1000);
 	backgroundTexture = fboManager->getTexture(0);
@@ -110,7 +110,7 @@ void ARScene::initDefaultForeground()
 osg::ref_ptr<osg::Texture> ARScene::initTextureForeground(int colNum, int rowNum, bool addDummyLayer)
 {
 
-	fboManager->attachTarget( projectionMatrix.get(), 1100, osg::Vec4(1.0,1.0f,1.0f,0.0f));
+	fboManager->attachTarget( projectionMatrix.get(), 1100, osg::Vec4(0.0,0.0f,0.0f,0.0f));
 	foregroundTexture = fboManager->getTexture(1);
 	
 	if ( addDummyLayer )

@@ -40,7 +40,7 @@ public:
 
 	// choose to use only one!
 	osg::ref_ptr<osgART::VideoBackground> initDefaultVideoBackground(int id);
-	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, int colNum = 1, int rowNum = 1, bool addDummyLayer = true );
+	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, int colNum = 1, int rowNum = 1, bool addDummyLayer = true, bool _useFloatTexture = false, GLuint _texInternalFormat = GL_RGBA32F_ARB );
 
 	void initDefaultForeground();
 	osg::ref_ptr<osg::Texture> initTextureForeground(int colNum = 1, int rowNum = 1 , bool addDummyLayer = true);

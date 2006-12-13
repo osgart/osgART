@@ -24,7 +24,7 @@ int FBOManager::size()
 	return attachedTextures.size();
 }
 
-void FBOManager::init(int w,int h, osg::Group *_root)
+void FBOManager::init(int w,int h, osg::Group *_root, bool _useFloatTexture, GLuint _texInternalFormat)
 {
 	width = w;
 	height = h;
@@ -32,6 +32,10 @@ void FBOManager::init(int w,int h, osg::Group *_root)
 	root = _root;
    
 	getOrCreateStateSet()->setRenderBinDetails(1000, "RenderBin");
+
+
+	useFloatTexture = _useFloatTexture;
+	texInternalFormat = _texInternalFormat;
 
 	root->addChild(this);
 }
@@ -75,11 +79,19 @@ osg::ref_ptr<osg::Texture> FBOManager::createRenderTexture2D(int w, int h)
 	osg::ref_ptr< osg::Texture2D > tex = dynamic_cast< osg::Texture2D* > (t.get());
 	
 	tex->setTextureSize(w, h);
-	//tex->setInternalFormat(GL_RGBA32F_ARB); //!!!
-	tex->setInternalFormat(GL_RGBA);
+	tex->setSourceFormat(GL_RGBA);
 
-	//tex->setSourceFormat(GL_RGBA);
-	//tex->setSourceType(GL_FLOAT);//!!!
+	if ( useFloatTexture )
+	{
+		tex->setInternalFormat(texInternalFormat); //!!!
+		tex->setSourceType(GL_FLOAT);//!!!
+	}
+	else
+	{
+		tex->setInternalFormat(GL_RGBA);
+	}
+
+
 	//tex->setInternalFormat(GL_RGBA32F_ARB);
 	//GL_RGBA_FLOAT32_ATI	
 

@@ -299,11 +299,11 @@ int main(int argc, char* argv[]) {
 	lightPos = osg::Vec3f(1.0,-1.0,-1.0);
 	addLightAt( truckModel->getOrCreateStateSet(), lightPos);
 	// 2. Add cartoon shader
-	sf.addVertexAndFragmentShaderFromFile("./data/shader/CartoonShader.vert",
+/*	sf.addVertexAndFragmentShaderFromFile("./data/shader/CartoonShader.vert",
 	                                      "./data/shader/CartoonShader.frag", 
 									      truckModel.get());
 	lightPos.normalize();
-	truckModel.get()->getOrCreateStateSet()->addUniform(new osg::Uniform("lightDir", lightPos)); 
+	truckModel.get()->getOrCreateStateSet()->addUniform(new osg::Uniform("lightDir", lightPos));*/ 
 	
 	// 3. Add truck to background texture group ( not the video background )
 	// note. we have to make a ARNode because of markerTrans
