@@ -1,3 +1,6 @@
+#ifndef GAZEINTERACTIONSPHERETARGET_H
+#define GAZEINTERACTIONSPHERETARTET_H
+
 #include "GazeInteractionTarget.h"
 
 
@@ -20,3 +23,4 @@ class GazeInteractionSphereTarget : public GazeInteractionTarget
 
 	private:
 };
+#endif

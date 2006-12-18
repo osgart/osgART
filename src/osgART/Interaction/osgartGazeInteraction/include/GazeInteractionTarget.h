@@ -1,5 +1,10 @@
+#ifndef GAZEINTERACTIONTARGET_H
+#define GAZEINTERACTIONTARGET_H
+
 #include <osg/ShapeDrawable>
 #include <string>
+
+
 
 class GazeInteractionTarget {
 
@@ -19,29 +24,36 @@ public:
 	~GazeInteractionTarget();
 
 	bool			setName(char* name);
-	bool			setPosX(int posX);
-	bool			setPosY(int posY);
-	bool			setPosZ(int posZ);
+	bool			setID(int id);
+	bool			setPosX(double posX);
+	bool			setPosY(double posY);
+	bool			setPosZ(double posZ);
+	bool			setPosition(osg::Vec3d* position);
 	bool			setosgGeode(osg::Geode* geode);
 	
+	int						getID();
 	std::string				getName();
 	virtual GITargetType	getType() = 0;
-	int						getPosX();
-	int						getPosY();
-	int						getPosZ();
-	osg::Geode*		getosgGeode();
+	double					getPosX();
+	double					getPosY();
+	double					getPosZ();
+	osg::Vec3d*				getPosition();
+	osg::Geode*				getosgGeode();
 
 
 protected:
 
+	int m_ID;
 	std::string	m_Name;
 	GITargetType m_Type;
-	int		m_posX;
-	int		m_posY;
-	int		m_posZ;
+	double		m_posX;
+	double		m_posY;
+	double		m_posZ;
+	osg::Vec3d*	m_position;
 	osg::Geode* m_geode;
 
 
 private:
 	
 };
+#endif
