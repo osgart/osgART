@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libARd.lib glu32.lib libARgsub_lited.lib libARMultid.lib libARvideod.lib osgARTd.lib"
+				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgARTd.lib"
 				OutputFile="../../bin/Example_Debug.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
