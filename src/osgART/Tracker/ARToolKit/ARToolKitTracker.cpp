@@ -12,9 +12,13 @@
 #include "MultiMarker"
 
 #include <osgART/GenericVideo>
+#include <osgART/VideoConfig>
 
 #include <iostream>
 #include <fstream>
+
+#include <AR/gsub_lite.h> //add by yannick
+
 
 
 #define PD_LOOP 3
@@ -66,27 +70,37 @@ namespace osgART {
 	};
 
 
-	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
-		m_threshold(100),
-		m_debugmode(false),
-		m_marker_num(0),
-		m_cparam(new CameraParameter)
-	{		
-		// create a new field 
-		m_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
+	ARToolKitTracker::ARToolKitTracker() : ARToolKitTrackerProfiler("ARToolkit", AR_HEADER_VERSION_STRING),
+			m_threshold(100),
+			m_debugmode(false),
+			m_marker_num(0),
+			m_cparam(new CameraParameter)
+	{
+		//normal fields
+		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
+	
+		//callback fields
+		m_fields["threshold"]	= new CallbackField<ARToolKitTracker,int>(this,
 			&ARToolKitTracker::getThreshold,
 			&ARToolKitTracker::setThreshold);
-		
-		// attach a new field to the name "debug"
-		m_fields["debug"] = new TypedField<bool>(&m_debugmode);
+		m_fields["debug"]		= new CallbackField<ARToolKitTracker,bool>(this,
+			&ARToolKitTracker::getDebugMode,
+			&ARToolKitTracker::setDebugMode);
 
-		// for statistics
-		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
+		//set the internal format of ARToolkit 2.7, defined at compile time
+		//see SetImageRaw() for conversion
+		m_arInternalFormat	= ConvertARTPixelFormatToOSGART(AR_DEFAULT_PIXEL_FORMAT);
+#if AR_TRACKER_PROFILE
+		arLoadBench((std::string(AR_HEADER_VERSION_STRING) + std::string(".xml")).c_str());
+#endif
 	}
 
 	ARToolKitTracker::~ARToolKitTracker()
 	{
 		delete m_cparam;
+#if AR_TRACKER_PROFILE
+		arSaveBench((std::string(AR_HEADER_VERSION_STRING) + std::string(".xml")).c_str());
+#endif
 	}
 
 
@@ -94,6 +108,9 @@ namespace osgART {
 		const std::string& pattlist_name, 
 		const std::string& camera_name)
 	{
+		
+		m_width = xsize;
+		m_height = ysize; 
 		ARParam  wparam;
 		
 	    // Set the initial camera parameters.
@@ -124,14 +141,6 @@ namespace osgART {
 		return true;
 	}
 
-
-std::string trim(std::string& s,const std::string& drop = " ")
-{
-	std::string r=s.erase(s.find_last_not_of(drop)+1);
-	return r.erase(0,r.find_first_not_of(drop));
-}
-
-
 	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
 	{
 		std::ifstream markerFile;
@@ -144,12 +153,9 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		if (!markerFile.is_open()) return false;
 
 		bool ret = true;
-
 		int patternNum = 0;
 		markerFile >> patternNum;
-
 		std::string patternName, patternType;
-
 		// Need EOF checking in here... atm it assumes there are really as many markers as the number says
 
 		for (int i = 0; (i < patternNum) && (!markerFile.eof()); i++)
@@ -160,14 +166,12 @@ std::string trim(std::string& s,const std::string& drop = " ")
 				getline(markerFile, patternName);
 			}
 			
-			
 			// Check whether markerFile exists?
 
 			markerFile >> patternType;
 
 			if (patternType == "SINGLE")
 			{
-				
 				double width, center[2];
 				markerFile >> width >> center[0] >> center[1];
 				if (addSingleMarker(patternName, width, center) == -1) {
@@ -175,7 +179,6 @@ std::string trim(std::string& s,const std::string& drop = " ")
 					ret = false;
 					break;
 				}
-
 			}
 			else if (patternType == "MULTI")
 			{
@@ -184,7 +187,6 @@ std::string trim(std::string& s,const std::string& drop = " ")
 					ret = false;
 					break;
 				}
-
 			} 
 			else 
 			{
@@ -246,90 +248,105 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		return arImage;
 	}
 		
-	void ARToolKitTracker::setDebugMode(bool d) 
+	void ARToolKitTracker::setDebugMode(const bool & d) 
 	{
 		m_debugmode = d;
 		arDebug = (m_debugmode) ? 1 : 0;
 	}
 
-	bool ARToolKitTracker::getDebugMode() 
+	bool ARToolKitTracker::getDebugMode()const 
 	{
 		return m_debugmode;
 	}
 
-    /*virtual*/ 
+	int ARToolKitTracker::ConvertOSGARTPixelFormatToART(PixelFormatType format)const
+	{
+		switch (format)
+		{
+			case VIDEOFORMAT_RGB24: return AR_PIXEL_FORMAT_RGB;
+			case VIDEOFORMAT_BGR24:	return AR_PIXEL_FORMAT_BGR;
+			case VIDEOFORMAT_BGRA32:return AR_PIXEL_FORMAT_BGRA;
+			case VIDEOFORMAT_RGBA32:return AR_PIXEL_FORMAT_RGBA;
+			case VIDEOFORMAT_ARGB32:return AR_PIXEL_FORMAT_ARGB;
+			case VIDEOFORMAT_ABGR32:return AR_PIXEL_FORMAT_ABGR;
+			case VIDEOFORMAT_YUV422:return AR_PIXEL_FORMAT_2vuy;
+			case VIDEOFORMAT_Y8:
+			case VIDEOFORMAT_GREY8:
+									return AR_PIXEL_FORMAT_MONO;
+			default:
+				osg::notify() << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << std::endl;
+				return 0;
+		}        
+		return 0;
+	}
+
+	PixelFormatType ARToolKitTracker::ConvertARTPixelFormatToOSGART(int format)const
+	{
+		switch (format)
+		{
+			case AR_PIXEL_FORMAT_RGB : return VIDEOFORMAT_RGB24;
+			case AR_PIXEL_FORMAT_BGR : return VIDEOFORMAT_BGR24;
+			case AR_PIXEL_FORMAT_BGRA :return VIDEOFORMAT_BGRA32;
+			case AR_PIXEL_FORMAT_RGBA :return VIDEOFORMAT_RGBA32;
+			case AR_PIXEL_FORMAT_ARGB :return VIDEOFORMAT_ARGB32;
+			case AR_PIXEL_FORMAT_ABGR :return VIDEOFORMAT_ABGR32;
+			case AR_PIXEL_FORMAT_2vuy :return VIDEOFORMAT_YUV422;
+			case AR_PIXEL_FORMAT_MONO :return VIDEOFORMAT_Y8;//or VIDEOFORMAT_GREY8:
+			default:
+				osg::notify() << "ConvertARTPixelFormatToOSGART() : Unknown pixel format!" << std::endl;
+		}        
+		return VIDEOFORMAT_ANY;
+	}
+
+    /*virtual*/
 	void ARToolKitTracker::setImageRaw(unsigned char * image, PixelFormatType format)
     {
-		if (m_imageptr_format != format) {
-			// format has changed.
-			// Translate the pixel format to an appropriate type for ARToolKit v2.
-			switch (format) {
-				case VIDEOFORMAT_RGB24:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_RGB;
-					m_artoolkit_pixsize = 3;
-					break;
-				case VIDEOFORMAT_BGR24:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_BGR;
-					m_artoolkit_pixsize = 3;
-					break;
-				case VIDEOFORMAT_BGRA32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_BGRA;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_RGBA32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_RGBA;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_ARGB32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_ARGB;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_ABGR32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_ABGR;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_YUV422:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_2vuy;
-					m_artoolkit_pixsize = 2;
-					break;
-				case VIDEOFORMAT_Y8:
-				case VIDEOFORMAT_GREY8:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_MONO;
-					m_artoolkit_pixsize = 1;
-					break;
-				default:
-					break;
-			}        
+		//We are only augmenting method in parent class.
+		m_arInternalFormat	= ConvertARTPixelFormatToOSGART( AR_DEFAULT_PIXEL_FORMAT);
+
+		if (format != m_arInternalFormat)
+		{			
+			GenericTracker::setImageRaw(
+				ConvertImageFormat<unsigned char>(image, m_width, m_height, format, m_arInternalFormat),
+				m_arInternalFormat);
 		}
-		
-        // We are only augmenting method in parent class.
-        GenericTracker::setImageRaw(image, format);
+		else
+			GenericTracker::setImageRaw(image, format);
     }
 
 	void ARToolKitTracker::update()
 	{
-
+#if AR_TRACKER_PROFILE
+		osg::notify() << "Start->" << m_versionName  <<"::update()" << endl;
+		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct		("arDetectMarker_TIME");		
+#endif
 		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
-		
 		
 	    register int             j, k;
 
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
-#if 0
-        // Check that the format matches the one passed in.
-		if (AR_PIX_SIZE_DEFAULT != m_artoolkit_pixsize || AR_DEFAULT_PIXEL_FORMAT != m_artoolkit_pixformat) {
-			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
-			return;
-		}
+#if  0//AR_TRACKER_PROFILE
+		AR_BENCH_TIME(ThisFct, 
+			// Detect the markers in the video frame.
+			if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
+			{
+				std::cerr << "Error detecting markers in image." << std::endl;
+				return;
+			}
+		, m_markerlist.size()
+		, m_versionName
+		, m_marker_num
+		);
+#else
+			// Detect the markers in the video frame.
+			if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
+			{
+				std::cerr << "Error detecting markers in image." << std::endl;
+				return;
+			}
 #endif
-		// Detect the markers in the video frame.
-		if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
-		{
-			std::cerr << "Error detecting markers in image." << std::endl;
-			return;
-		}
 
 		MarkerList::iterator _end = m_markerlist.end();
 			
@@ -339,12 +356,11 @@ std::string trim(std::string& s,const std::string& drop = " ")
 			iter != _end; 
 			++iter)		
 		{
-			SingleMarker* singleMarker = dynamic_cast<SingleMarker*>((*iter).get());
-			MultiMarker* multiMarker = dynamic_cast<MultiMarker*>((*iter).get());
+			SingleMarker*	singleMarker = dynamic_cast<SingleMarker*>((*iter).get());
+			MultiMarker*	multiMarker  = dynamic_cast<MultiMarker*>((*iter).get());
 
 			if (singleMarker)
 			{			
-
 				k = -1;
 				for (j = 0; j < m_marker_num; j++)	
 				{
@@ -358,7 +374,10 @@ std::string trim(std::string& s,const std::string& drop = " ")
 					
 				if(k != -1) 
 				{
-					singleMarker->update(&marker_info[k]); 
+					singleMarker->update(&marker_info[k]);
+#if AR_TRACKER_PROFILE
+					RecordMarkerStats(marker_info[k].id, marker_info[k].cf, singleMarker->getTransform(), true);
+#endif// AR_TRACKER_PROFILE
 				} 
 				else 
 				{
@@ -370,11 +389,12 @@ std::string trim(std::string& s,const std::string& drop = " ")
 				multiMarker->update(marker_info, m_marker_num);
 				
 			} else {
-				std::cerr << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
+				osg::notify(osg::WARN) << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
 			}
 		}
-// #endif
-
+#if AR_TRACKER_PROFILE
+		osg::notify() << "<-Stop" << m_versionName << "::update()" << endl;
+#endif
 	}
 
 	void ARToolKitTracker::setProjection(const double n, const double f) 
@@ -387,7 +407,6 @@ std::string trim(std::string& s,const std::string& drop = " ")
 		float maxU, float maxV,
 		osg::Geometry &geometry)
 	{
-
 		osg::Vec3Array *coords = dynamic_cast<osg::Vec3Array*>(geometry.getVertexArray());
 		osg::Vec2Array* tcoords = dynamic_cast<osg::Vec2Array*>(geometry.getTexCoordArray(0));
 						
@@ -418,7 +437,6 @@ std::string trim(std::string& s,const std::string& drop = " ")
 				u = (c / (float)cols) * maxU;
 				v = (1.0f - ((r+1) / (float)rows)) * maxV;
 				tcoords->push_back(osg::Vec2(u, v));
-
 			}
 
 			geometry.addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 

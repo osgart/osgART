@@ -1,7 +1,7 @@
 #include "SingleMarker"
 
 #include <AR/gsub_lite.h>
-
+#include "Profilertools"
 #define NDEBUG
 
 
@@ -51,6 +51,7 @@ namespace osgART {
 			double modelView[16];
 			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
 			osg::Matrix tmp(modelView);
+			//osgART::PrintMatrix("ARToolkit simple marker Matrix :", tmp);
 			updateTransform(tmp);
 		}
 	}

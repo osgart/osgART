@@ -21,6 +21,8 @@
  * \author Philip Lamb philip.lamb@artoolworks.com
  * \author Julian Looser Julian.Looser@hitlabnz.org
  * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+ * \author Yannick Allusse yannick.allusse@hitlabnz.org
+
  */
 
 #include "osgART/Export"
@@ -31,6 +33,9 @@
 #include <string>
 
 
+#include "ARToolKitTrackerProfiler"
+	
+
 namespace osgART {
 
 	/**
@@ -40,7 +45,8 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARToolKitTracker : public GenericTracker
+	class ARToolKitTracker 
+		: public ARToolKitTrackerProfiler
 	{
 
 	public:        
@@ -77,8 +83,8 @@ namespace osgART {
 		
 
 		unsigned char* getDebugImage();	
-		void setDebugMode(bool d);
-		bool getDebugMode();
+		void	setDebugMode(const bool& d);
+		bool	getDebugMode()const;
 		
 		
 		/** 
@@ -130,6 +136,19 @@ namespace osgART {
 		*/
 		void update();
 		
+		/**
+		* \brief Convert the ARToolkit format type to osgART format type.
+		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
+		*/
+		//virtual 
+		PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
+		
+		/**
+		* \brief Convert the osgART format type to ARToolkit format type.
+		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
+		*/
+		//virtual 
+		int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
 	protected:
 	
 		/** 
