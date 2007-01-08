@@ -72,11 +72,11 @@ int main(int argc, char* argv[])
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");	// for ARToolkit 2.7
+		//osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkitplus_tracker"); // for ARToolkit PLUS
 
 	if (tracker.valid()) 
-	{
-
+	{		
 		// access a field within the tracker
 		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
 			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
@@ -110,14 +110,19 @@ int main(int argc, char* argv[])
 	video->open();
 
 	// Initialise the tracker with the dimensions of the video image
-	tracker->init(video->getWidth(), video->getHeight());
+	if(!tracker->init(video->getWidth(), video->getHeight()))
+	{
+		std::cerr << "Could not initialize tracker plugin!" << std::endl;
+		exit(-1);		
+	}
 
 	// From here on the scene is going to be built
 
 	// Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
-	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
+	//osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
+	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(0);
 
 
 	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
@@ -147,7 +152,9 @@ int main(int argc, char* argv[])
 
 	// create a matrix transform related to the marker
 	osg::ref_ptr<osg::MatrixTransform> markerTrans = 
-		new osgART::ARTTransform(marker.get());
+		//new osgART::ARTTransform(marker.get());
+		new osgART::ARTTransform(0,0);
+
 
 	float boxSize = 40.0f;
 	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, boxSize / 2.0f), boxSize));
