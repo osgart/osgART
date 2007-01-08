@@ -13,6 +13,8 @@ namespace osgART {
 	GenericTracker::GenericTracker() : osg::Referenced(),
 		trackerId(GenericTracker::trackerNum++),
 		//yannick
+		m_name(""),
+		m_version(""),
 		m_imageptr(0L),
 		m_width(-1),
 		m_height(-1),
@@ -24,6 +26,8 @@ namespace osgART {
 	{
 		//Add by Yannick
 		//Add fields
+		m_fields["name"]	= new TypedField<std::string>(&m_name);
+		m_fields["version"]	= new TypedField<std::string>(&m_version);
 		m_fields["width"]	= new TypedField<int>(&m_width);
 		m_fields["height"]	= new TypedField<int>(&m_height);
 
