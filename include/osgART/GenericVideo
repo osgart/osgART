@@ -165,6 +165,18 @@ namespace osgART {
 		 */
 		void setImage(osg::Image* image);
 		
+//Yannick 31/10/06===	
+		/**
+		 * \brief take a snapshot of the video and record it to a file.
+		 * \param filename the file will be saved to 
+		 * Take a snapshot of the current image from the video and saveit to disk.
+		 * \note Format Supported with ARToolkit: .bmp
+		 * \note Format UnSupported with ARToolkit: .jpg
+		 * \note Format not tested : .png .gif ...
+		 * \return true if success, else false.
+		 */
+		bool takeSnapShot(const std::string & filename);
+//yannick============
 		
 		/**
 		* \brief force a release of the frame.

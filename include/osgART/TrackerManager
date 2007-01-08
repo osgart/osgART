@@ -86,6 +86,9 @@ class OSGART_EXPORT TrackerManager
 		/** function signature for creating a tracker instance */
 		typedef GenericTracker* (*p_TrackerCreateFunc)(void);
 	    
+	    /** Get the number of tracker */
+	    int	GetCount();
+	
 	protected:
 		    
 		TrackerManager();

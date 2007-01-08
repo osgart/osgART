@@ -12,8 +12,25 @@ namespace osgART {
 
 	GenericTracker::GenericTracker() : osg::Referenced(),
 		trackerId(GenericTracker::trackerNum++),
-		m_imageptr(0L)
+		//yannick
+		m_imageptr(0L),
+		m_width(-1),
+		m_height(-1),
+		m_conversionBuff(NULL),
+		m_conversionBuffSize(0),
+		m_arInternalFormat(osgART::VIDEOFORMAT_ANY),
+		m_imageptr_format(osgART::VIDEOFORMAT_ANY)
+		//=============
 	{
+		//Add by Yannick
+		//Add fields
+		m_fields["width"]	= new TypedField<int>(&m_width);
+		m_fields["height"]	= new TypedField<int>(&m_height);
+
+		m_fields["arInternalFormat"]= new TypedField<PixelFormatType>(&m_arInternalFormat);
+		m_fields["imageptr_format"]	= new TypedField<PixelFormatType>(&m_imageptr_format);
+		m_fields["conversionBuffSize"]	= new TypedField<int>(&m_conversionBuffSize);
+		//===========================
 	}
 
 	GenericTracker::~GenericTracker() 
@@ -85,5 +102,39 @@ namespace osgART {
 	{
 		return m_projectionMatrix;
 	}
+
+	//yannick
+	char GenericTracker::getPixelSize(PixelFormatType format) const 
+	{
+		switch (format) 
+		{
+			case VIDEOFORMAT_RGB24:	
+			case VIDEOFORMAT_BGR24:		return 3;
+			case VIDEOFORMAT_BGRA32: 
+			case VIDEOFORMAT_RGBA32: 
+			case VIDEOFORMAT_ARGB32: 
+			case VIDEOFORMAT_ABGR32:	return 4;
+			case VIDEOFORMAT_YUV422:	return 2;
+			case VIDEOFORMAT_Y8:
+			case VIDEOFORMAT_GREY8:		return 1;
+		}
+		osg::notify() << "Error in GenericTracker::getPixelSize(), unknown pixel format" << std::endl;
+		return 0;
+	}
+
+	/*virtual*/
+	PixelFormatType GenericTracker::ConvertARTPixelFormatToOSGART(int format) const
+	{return VIDEOFORMAT_ANY;};
+	
+    /*virtual*/
+	int GenericTracker::ConvertOSGARTPixelFormatToART(PixelFormatType format) const
+	{return 0;};
+        //=======================
+	
+
+
+
+
+	
 
 };

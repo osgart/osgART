@@ -17,6 +17,7 @@
 // include OSG
 #include <osg/Referenced>
 #include <osg/ref_ptr>
+#include <osg/notify>
 
 
 namespace osgART {
@@ -195,7 +196,7 @@ namespace osgART {
 
 		for (;_i != m_fields.end(); ++_i) 
 		{
-			std::cout << "Field: " << (*_i).first << std::endl;
+			osg::notify() << "Field: " << (*_i).first << std::endl;
 		}
 
 	}

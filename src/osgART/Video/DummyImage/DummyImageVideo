@@ -40,11 +40,12 @@
 // local include
 #include <osgART/GenericVideo>
 
+
 /**
  * class DummyImageVideo.
  *
  */
-class DummyImageVideo : public osgART::GenericVideo
+  class OSGART_EXPORT DummyImageVideo : public osgART::GenericVideo
 {
 public:        
 // Standard Services
@@ -75,6 +76,15 @@ public:
     * Access the Video stream (hardware or file) and get an handle on it.
     */
 	void open();
+	
+	
+ //yannick	
+/**
+    * \brief Select a new image and open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    
+    */
+	void openNewImage(std::string _NewFile);
 	
 	/**
     * \brief close the Video stream.
@@ -115,6 +125,8 @@ protected:
 private:
 
 	std::string videoName;
+	bool m_flip_horizontal;
+	bool m_flip_vertical;
 
 };
 

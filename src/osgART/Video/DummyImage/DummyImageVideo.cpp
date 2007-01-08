@@ -69,12 +69,19 @@ const char* const Video_RCS_ID = "@(#)class Video definition.";
 // PUBLIC: Standard services 
 ///////////////////////////////////////////////////////////////////////////////
 
-DummyImageVideo::DummyImageVideo(const char* image):videoName(image)
+DummyImageVideo::DummyImageVideo(const char* image):
+	osgART::GenericVideo(),
+	videoName(image),
+	m_flip_horizontal(false),
+	m_flip_vertical(false)
 {
 	xsize=-1;
 	ysize=-1;
 	pixelsize=3;
 	pixelformat=VIDEOFORMAT_RGB24;
+
+	m_fields["flip_horizontal"] = new TypedField<bool>(&m_flip_horizontal);
+	m_fields["flip_vertical"] = new TypedField<bool>(&m_flip_vertical);
 }
 
 /*
@@ -101,7 +108,22 @@ DummyImageVideo::operator=(const DummyImageVideo &)
 void
 DummyImageVideo::open()
 {
+//yannick
+	osg::notify() << "DummyImageVideo::open()  open image : " << videoName << std::endl;
+	if (videoName == "")
+	{
+		osg::notify(osg::WARN) << "Error in DummyImageVideo::open(), File name is empty!";
+		return;
+	}
+//=====================	
 	m_image = osgDB::readImageFile(videoName.c_str());
+//yannick
+	if (!m_image)
+	{
+		osg::notify(osg::WARN) << "Error in DummyImageVideo::open(), Could not open File!";
+		return	;
+	}
+//=====================
 	xsize=m_image->s();
 	ysize=m_image->t();
 
@@ -125,13 +147,26 @@ DummyImageVideo::open()
 			exit(-1);
 		}
 	}
-	m_image->flipVertical();
+	if (m_flip_vertical) {
+		m_image->flipVertical();
+	}
+
+	if (m_flip_horizontal) {
+        m_image->flipHorizontal();
+	}
+}
+
+void
+DummyImageVideo::openNewImage(std::string _NewFile)
+{
+	//relase previous image..???
+	videoName = _NewFile;
+	open();
 }
 
 void
 DummyImageVideo::close()
 {
-
 }
 
 void

@@ -70,6 +70,12 @@ namespace osgART {
 		s_instance = NULL;
 	}
 
+	int
+	TrackerManager::GetCount()
+	{
+		return m_trackercount;
+	}
+
 
 	TrackerManager::TrackerManager() : m_trackercount(0)
 	{
