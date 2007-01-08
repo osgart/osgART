@@ -1,0 +1,415 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+ /**
+ * \file  ARToolKitTracker_Plus
+ * \brief A wrapper class for ARToolkitPlus tracking system.
+ *
+ * Support Marker-Based tracking based on computer vision based on ARToolKit
+ * Algorithm. This class provided video/graphic independent marker detection and
+ * support multiple marker tracking.
+ *	
+* \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+* \todo - Create a osg::Referenced container for the ARToolKitPlus::MultiTracker class, so we can use osg::Ref_ptr with ARToolKitPlus objects.
+ */
+
+#ifndef OSGART_ARTTOOLKITTRACKER_PLUS
+#define OSGART_ARTTOOLKITTRACKER_PLUS
+
+
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+
+#include <string>
+#include <vector>
+
+#include <ARToolKitTrackerProfiler>
+#include <ARToolkitplus/ar.h>
+#include <ARToolkitplus/arMulti.h>
+#include <ARToolKitPlus/TrackerSingleMarkerImpl.h>
+#include <ARToolKitPlus/TrackerMultiMarkerImpl.h>
+
+namespace osgART {
+
+/*
+Note by Yannick:
+Everything is putted in the same header file cause ARToolkitPlus is not set to be compile as a DLL with VisualStudio 2003(but a project is existing with visual sutdio 2005).
+Must try the 2005 version with the DLL.
+*/
+
+#define _ARTPLUS_MAX_MARKER 16				//!< Maximum number of marker the library will process per frame.
+#define _ART_PLUS_TRACKER_PARAM_SIMPLE		6,6,6,1,		_ARTPLUS_MAX_MARKER		//!< Main template values for the Simple ID marker mode.
+#define _ART_PLUS_TRACKER_PARAM_TEMPLATE	16,16,64,15,	_ARTPLUS_MAX_MARKER		//!< Main template values for the Template marker mode.
+#define _ART_PLUS_VERSION					ARTOOLKITPLUS_VERSION_MAJOR "." ARTOOLKITPLUS_VERSION_MINOR //!< Set the current version of ARToolkit plus.
+
+//Default values	====================
+#define _ART_PLUS_DFLT_FARCLIP			8000.f	
+#define _ART_PLUS_DFLT_NEARCLIP			10.f
+#define _ART_PLUS_DFLT_MARKERMODE		ARToolKitPlus::MARKER_TEMPLATE
+#define _ART_PLUS_DFLT_THRESHOLD		100
+#define _ART_PLUS_DFLT_THRESHOLD_AUTO	true
+#define _ART_PLUS_DFLT_THRESHOLD_AUTO_RETRY_NBR	2
+#define _ART_PLUS_DFLT_USE_LITE			false
+#define _ART_PLUS_DFLT_POSE_ESTIM		ARToolKitPlus::POSE_ESTIMATOR_RPP
+#define	_ART_PLUS_DFLT_IMG_PROC_MODE	ARToolKitPlus::IMAGE_FULL_RES	
+#define _ART_PLUS_DFLT_UNDISTORT_MODE	ARToolKitPlus::UNDIST_NONE
+//**************************************
+
+
+
+//==============================================================================
+//==============================================================================
+//==============================================================================
+//				SingleMarker definition			
+//==============================================================================
+//==============================================================================
+//==============================================================================
+
+/**
+* \class SingleMarker.
+* \brief A marker consisting of a single pattern.
+*/
+class SingleMarker : public Marker
+{
+public:       
+
+	/** 
+		* \brief default constructor.
+		*
+		*/
+	SingleMarker(ARToolKitPlus::TrackerMultiMarker * _PlusTracker);
+	
+	/** 
+		* \brief Init the pattern.
+		* \param pattFile => path of the file that contain the pattern to load. If pattFile contains only a number, then we have a ID pattern.
+		* \param width => width of the pattern.
+		* \param center => relative position of the center of the pattern.
+		*/	
+	bool initialise(const std::string& pattFile, double width, double center[2]);
+
+	/**
+		* \brief Activate/Desactivate the marker.
+		* \param status.
+		* \note Activation is not yet reachable in ARToolkitPlus.
+		* \todo Use ARToolkit plus activation.
+		*/
+	virtual void setActive(bool a);
+
+
+	/**
+		* \brief Update the pattern position.
+		* \param marker info corresponding to the marker.
+		*/
+	void update(ARToolKitPlus::ARMarkerInfo* markerInfo);
+	
+	/**
+		* \brief Get Pattern ID.
+		*/
+	int		getPatternID();
+	
+	/**
+		* \brief Get Pattern width.
+		*/
+	double	getPatternWidth();
+	
+	/**
+		* \brief Get Pattern center.
+		*/
+	double* getPatternCenter();
+	
+	/**
+		* \brief Get Pattern type.
+		*/
+	MarkerType getType() const;
+
+	
+protected:
+
+	/**
+	* \brief destructor.
+	*/
+	virtual ~SingleMarker();	    
+
+	ARToolKitPlus::TrackerMultiMarker *	m_ParentTracker;		//!< Artoolkit tracker this marker is linked to
+	
+	
+	int             m_patt_id;				//!< Pattern ID.
+	double          m_patt_width;			//!< Pattern width.
+	double          m_patt_border_width;	//!< Not Used...
+	double          m_patt_center[2];		//!< Pattern center.
+	double          m_patt_trans[3][4];		//!< Marker transformation matrix.
+	double			m_confidence;			//..Still used???
+	
+	friend class ARToolKitTracker_Plus;	
+};
+
+
+//==============================================================================
+//==============================================================================
+//==============================================================================
+//				MultiMarker definition			
+//==============================================================================
+//==============================================================================
+//==============================================================================
+/**
+* \class MultiMarker
+* \brief A marker consisting of many patterns which can be treated as one.
+*/
+class MultiMarker : public Marker
+{
+public:       
+
+	/** 
+	* \brief default constructor.
+	*
+	*/
+	MultiMarker(ARToolKitPlus::TrackerMultiMarker* _PlusTracker, ARToolKitPlus::MARKER_MODE markerMode	);
+	
+	bool initialise(const std::string& multiFile);
+	
+	virtual void setActive(bool a);
+	
+	void update(ARToolKitPlus::ARMarkerInfo* markerInfo, int markerCount);
+	
+	/**
+	* \brief return the type of the maker.
+	* return if the marker is a single or multi-pattern marker.
+	* \return the type of the marker
+	*/
+	MarkerType getType() const;
+	
+protected: 
+
+	/**
+	* \brief destructor.
+	*/
+	virtual ~MultiMarker();
+	
+	//we need both tracker, cause At compile time we don't know which one wil be used
+	ARToolKitPlus::TrackerMultiMarker										* m_ParentTracker;		//!< ArtoolkitPlus tracker this marker is linked to
+	ARToolKitPlus::TrackerMultiMarkerImpl<_ART_PLUS_TRACKER_PARAM_TEMPLATE> * m_ParentTrackerTemplate;	//!<ArtoolkitPlus template tracker this marker is linked to
+	ARToolKitPlus::TrackerMultiMarkerImpl<_ART_PLUS_TRACKER_PARAM_SIMPLE>	* m_ParentTrackerSimple;	//!<ArtoolkitPlus ID tracker this marker is linked to
+	
+	
+	ARToolKitPlus::ARMultiMarkerInfoT* m_multi;
+	friend class ARToolKitTracker_Plus;	
+		
+};
+
+
+//==============================================================================
+//==============================================================================
+//==============================================================================
+//				tracker definition			
+//==============================================================================
+//==============================================================================
+//==============================================================================
+/**
+* \class ARToolKitTracker_Plus
+* \brief A tracker based on ARToolKit Plus 2.1.1. 
+* 
+* This tracker supports single and multi-markers.
+* \todo Add Undistortion map loading.
+//* \todo Add setUndistortionMode mode.
+* \todo Add Switch between arDetectMarker/arDetectMarkerLite.
+//* \todo Add setPoseEstimator(RPP/ORIGINAL) switch.
+* \todo Add setNumAutoThresholdRetries
+*/
+
+	class ARToolKitTracker_Plus 
+		: public ARToolKitTrackerProfiler
+{
+public:       
+	/** 
+	* \brief constructor.
+	*/
+	ARToolKitTracker_Plus(void);
+
+//===================================
+//	Accessing Functions Get/Set......
+//===================================
+	/** 
+	* \brief set the openGL parameters for the projection matrix.
+	* 
+	* Initialize internal parameters computation for delivers an openGL Matrix (modify
+	* nothing to openGL state machine). 
+	* \param n near field of view
+	* \param f far field of view
+	*/
+	void setProjection(const double n, const double f);
+	
+	/** 
+	* \brief Set the threshold value for the tracking algorithm.
+	* 
+	* Define the threshold used to binarize the image in ARToolkit.
+	* \param thresh integer value between 0 (dark) and 255 (bright) 
+	*/
+	void setThreshold(const int &thresh);
+	
+	/**
+	* \brief Get the current threshold value for the tracking algorithm.
+	*
+	* \return The current threshold.
+	*/
+	int getThreshold()const ;		
+
+
+	/**
+	* \brief Set the marker processing mode of ARToolkitPlus tracker. 
+	*
+	* \param marker mode value(ARToolKitPlus::MARKER_MODE = {MARKER_TEMPLATE,MARKER_ID_SIMPLE,MARKER_ID_BCH}).
+	* \todo The marker mode mst be set before the init() is called, add a control flag for that!!! or reset the tracker and init a new one
+	* \sa m_markerMode
+	*/	
+	void	 setMarkerMode(const int &_mode);
+	
+	/**
+	* \brief Get the marker processing mode of ARToolkitPlus tracker. 
+	* \return current marker mode(ARToolKitPlus::MARKER_MODE).
+	* \sa m_markerMode
+	*/
+	int		 getMarkerMode()const ;
+
+	/**
+	* \brief Set the tracker debugging mode. Only affect the plugin and not the ARToolkitPlus library. 
+	* \param debugging value.
+	*/
+	void	setDebugMode(const bool &d);
+	
+	/**
+	* \brief Get the tracker debugging mode. Only affect the plugin and not the ARToolkitPlus library. 
+	* \return debugging value.
+	*/
+	bool	getDebugMode()const ;	
+	
+	/**
+	* \brief Set the auto threshold value. 
+	* \param auto-threshold.
+	*/
+	void	setAutoThreshold(const bool &_val);
+	
+	/**
+	* \brief Get the auto threshold value. 
+	* \return auto-threshold.
+	*/
+	bool	getAutoThreshold()const;
+	
+	void	setImgProcMode(const int & _imgMode);
+	int		getImgProcMode()const;
+	
+	void	setPosEstimMode(const int & _imgMode);
+	int		getPosEstimMode()const;
+	
+	void	setUndistortionMode	(const int & _mode);
+	int		getUndistortionMode	()const;
+	
+	void	setAutoThresholdRetries	(const int & _nbr);
+	int 	getAutoThresholdRetries	()const;
+	
+	void	setUseDetectLite(const bool& _mode);
+	bool 	getUseDetectLite()const;
+	
+protected:		
+	void	setPixelFormat		(ARToolKitPlus::PIXEL_FORMAT _format);
+	void	setBorderWidth		(float _border);
+	void	setPatternWidth		(float _width);
+
+public:
+	unsigned char* getDebugImage();
+	void	setImageRaw(unsigned char * image, PixelFormatType format);
+
+//++++++++++++++++++++++++++++++++++++
+//	Accessing Functions Get/Set......
+//++++++++++++++++++++++++++++++++++++
+	/** 
+	* \brief Initialize ARToolKit.
+	* 
+	* This core function initializes different parameters of ARToolKit: load tracked markers, initialize
+	* camera parameters.
+	* \param xsize width of the image to analyze
+	* \param ysize height of the image to analyze
+	* \param pattlist_name a file structure of the marker
+	* \param camera_name description file of the camera used (pinhole model)
+	*/
+	virtual bool init(int xsize, int ysize, 
+		const std::string& pattlist_name = "Data/markers_list.dat", 
+		const std::string& camera_name="Data/camera_para.dat");
+		
+	/** 
+	* \brief Register a single marker with the tracker.
+	* 
+	* \param pattFile the pattern file name
+	* \param width the width of the physical marker
+	* \param center the x-y coordinates of the center of the marker (usually 0,0)
+	* \return the internal ID of the new marker, or -1 on failure 
+	*/
+	int addSingleMarker(const std::string& pattFile, 
+		double width, double center[2]);
+	
+	/** 
+	* \brief Register a multi-marker with the tracker
+	* 
+	* \param multiFile the multi-marker configuration file name
+	* \return the internal ID of the new marker, or -1 on failure
+	*/
+	int addMultiMarker(const std::string& multiFile);
+	
+	/** 
+	* \brief update the tracking.
+	* 
+	* This core function applies the ARToolKit algorithm to the last image defined by setImage.
+	*/
+	void update();
+	
+	int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
+	PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
+	
+	void	PrintOptions()const;
+	
+	
+protected: 
+	/** 
+		* \brief destructor.
+		*/
+	virtual ~ARToolKitTracker_Plus();	
+	
+protected:
+	bool	CreateTracker(ARToolKitPlus::MARKER_MODE _markerMode, int _Width, 	int _Height);
+	bool	setupMarkers(const std::string& patternListFile);
+	bool	LoadCameraFile(std::string _file, float _nearClip, float _farClip);
+
+private :
+	ARToolKitPlus::TrackerMultiMarker*	m_PlusTracker;			//!< ARToolkit plus tracker object.
+						
+	float				m_NearClip;								//!< Near clipping used for the projeciton matrix.
+	float				m_FarClip;								//!< Far clipping used for the projeciton matrix.
+	ARToolKitPlus::MARKER_MODE m_markerMode;					//!< Flag to define the current running mode, you should not change the mode after the function init() is called!!
+	std::string 		m_cparamName;							//!< Camera parameters file name.
+	int					m_width;								//!< Image width.
+	int					m_height;								//!< Image height.
+	int					m_pattern_width;						//!< Pattern width.
+	int					m_threshold;							//!< Threshold value.
+	bool 				m_debugMode;							//!< Debug mode flag.
+	int					m_marker_num;							//!< Number of potential markers found in the previous image.
+	
+	//ARToolKit plus features
+	ARToolKitPlus::IMAGE_PROC_MODE		m_imageProcMode;		//!< Image processing mode: {IMAGE_HALF_RES,IMAGE_FULL_RES}.
+	int									m_AutoThreshold;		//!< Automatic threshold flag.
+	int									m_AutoThresholdRetriesNbr;		//!< Number of try with different threshold value, when no marker is found. Used only when m_AutoThreshold is set.
+	ARToolKitPlus::POSE_ESTIMATOR		m_poseEstimMode;		//!< Pose estimation mode : {POSE_ESTIMATOR_ORIGINAL,POSE_ESTIMATOR_RPP}.
+	ARToolKitPlus::UNDIST_MODE			m_undistortMode;		//!< Undistortion mode : {UNDIST_NONE, UNDIST_STD, UNDIST_LUT}.
+	bool								m_useDetectLite;		//!< Flag to specify if we use the lite version of arDetectMarker.
+	//=======================
+};
+
+};//namespace
+
+#endif //OSGART_ARTTOOLKITTRACKER_PLUS

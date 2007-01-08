@@ -1,0 +1,147 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+#ifndef OSGART_ARTTOOLKITTRACKER_PROFILER
+#define OSGART_ARTTOOLKITTRACKER_PROFILER
+
+/**
+ * \file  ARToolKitTrackerProfiler
+ * \brief A wrapper class for profiling several different version of ARToolkit tracking system.
+ *
+ * Support Marker-Based tracking based on computer vision based on ARToolKit
+ * Algorithm. This class provided video/graphic independent marker detection and
+ * support multiple marker tracking.
+ *	
+* \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ */
+
+#include "osgART/Export"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+#include "osgART/TrackerManager"
+#include <osg/Vec4>
+#include <string>
+#include "ProfilerTools"
+#include "ARTracerVal"
+#include "VideoBench"
+#include <SG_TRC_appli.h>
+
+#ifdef OSGART_ARTPLUS
+	#include <ARToolkitplus/ar.h>//cause some data structures are different.
+#else
+	#include <AR\ar.h>
+#endif
+
+namespace osgART {
+#define AR_TRACKER_PROFILE 0
+
+//#if AR_TRACKER_PROFILE		
+
+using namespace SG_TRC;
+
+//macros for ARToolkit profiling
+
+#define AR_BENCH_TIME(TrcFct, CODE, MEMPATT, VERSION, MARKER_NUM){\
+		CL_TRACE_BASE_PARAMS * TempParams = new CL_TRACE_BASE_PARAMS("V", VERSION);/*create params using version name*/\
+		int PatternInMem = MEMPATT;/*we had the number of pattern in memory*/\
+        TempParams->AddInt ("M", &PatternInMem,1,2);\
+        CL_TEMP_TRACER<SG_TRC_Default_Trc_Type> Tracer(TrcFct, TempParams);\
+		CODE;\
+		TempParams->AddInt ("F", &MARKER_NUM,1,2);\
+}
+		
+	/**
+	* \class ARToolKitTrackerProfiler
+	* \brief A tracker based on ARToolKit 2x. 
+	* 
+	* This tracker supports single and multi-markers.
+	*
+	*/
+	class OSGART_EXPORT ARToolKitTrackerProfiler: public GenericTracker
+	{
+
+	public:        
+//===============================================
+//START Default members for artoolkit wrapping
+//===============================================
+		/** 
+		* \brief constructor.
+		*/
+		//ARToolKitTrackerProfiler(void);
+		ARToolKitTrackerProfiler(std::string _Name, std::string _Version);
+
+		~ARToolKitTrackerProfiler();
+		
+		void	PrintVersion()const;
+		void	PrintOptions()const;
+		
+		osg::Vec4 getColor()const;
+		void setColor(const osg::Vec4 _color);
+		
+#if AR_TRACKER_PROFILE		
+		/*						
+		osg::ref_ptr<Field> get(const std::string& name);		
+		*/
+		Field*	get(const std::string& name);
+		
+		void	RecordMarkerStats(int & _PattID, double &_Coef, osg::Matrix _transform, bool _visible);
+		void	setCurrentBenchFrame(osgART::CL_FrameRecord * _CurrentFrame);
+#endif	
+	protected:		
+	
+#if AR_TRACKER_PROFILE			
+		void RecordDistance(void){};
+		
+		osgART::CL_FrameRecord * CurrentFrame;
+	/*
+		void RecordDistance();
+		void RecordJittering();
+		void RecordConfident();
+	*/
+#endif			    
+		/** 
+		 * \brief destructor.
+		 *
+		 */
+
+	private:
+
+//===============================================
+//END Default members for artoolkit wrapping
+//===============================================
+
+//===============================================
+//START Profiler members for artoolkit profiling
+//===============================================
+public:
+		std::string			m_versionName;
+		bool				m_profilerDebug;
+		osg::Vec4		m_color;		//!< Color used as a legend for the plugin.
+
+#if AR_TRACKER_PROFILE		
+protected:
+		TTCL_APPLI_TRACER<SG_TRC_Default_Trc_Type>		*LocalARTimeTracer;
+		TTCL_APPLI_TRACER<CL_ARTracerVal>				*LocalARConfidentTracer;
+private:
+		static TTCL_APPLI_TRACER<SG_TRC_Default_Trc_Type> *MainARTimeTracer;
+		static TTCL_APPLI_TRACER<CL_ARTracerVal>		  *MainARConfidentTracer;
+		static int NbrOfPluginProfiled; // used to know when to destroy and save the profilers
+private:
+		static CLoggerDebug		*Logger;
+		
+#endif
+//===============================================
+//START Profiler members for artoolkit profiling
+//===============================================
+	};
+//#endif //AR_TRACKER_PROFILE
+};//namespace
+
+#endif 
+
+

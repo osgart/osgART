@@ -1,0 +1,94 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_CL_ARTRACERVAL
+#define OSGART_CL_ARTRACERVAL
+
+/**
+ * \file  ARToolKitTrackerProfiler
+ * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ */
+
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+#include "osgART/TrackerManager"
+#include <string>
+#include "ProfilerTools"
+#include <SG_TLS_config.h>
+#include <SG_TRC_config.h>
+#include <SG_TRC_appli.h>
+
+namespace osgART {
+	using namespace SG_TRC;
+
+
+class OSGART_EXPORT CL_ARTracerVal : public CL_Virtual_Record
+{
+		
+public :
+	int		PattID;
+	float	Distance;
+	float	Coef;
+	double	RMS_Error;
+	osg::Vec3	m_RMSTrans;
+	//osg::Vec3	m_RMSRot;
+
+	osg::Vec3 m_storedPosition;
+	osg::Vec3 m_storedRotation;
+
+	void SetTransform(const osg::Matrix &Transform);
+	osg::Matrix GetTransform();
+
+	CL_ARTracerVal(void);							//!< Default Constructor
+	CL_ARTracerVal(const CL_ARTracerVal &_Rec2);	//!< Copy Constructor
+	CL_ARTracerVal(const long T);
+	virtual ~CL_ARTracerVal(void);						//!< Destructor
+	virtual void Clear();				//!< Clear the time value 
+//	virtual	void SetToMax();
+//	virtual	void SetToMin();
+
+	//arithmetic operators
+	_SG_TRC_INLINE virtual CL_ARTracerVal&   operator  =( const CL_ARTracerVal &_Rec2);//!< operator =.
+	_SG_TRC_INLINE virtual bool				operator !=( const CL_ARTracerVal &_Rec2);//!< operator !=.
+	_SG_TRC_INLINE virtual bool				operator ==( const CL_ARTracerVal &_Rec2);//!< operator ==.
+	//_SG_TRC_INLINE virtual bool				operator ==( const long T)= 0;//!< operator ==.
+	_SG_TRC_INLINE virtual bool   operator < ( const CL_ARTracerVal &_Rec2);//!< operator < for comparing times.
+	_SG_TRC_INLINE virtual bool   operator > ( const CL_ARTracerVal &_Rec2);//!< operator > for comparing times.
+
+	_SG_TRC_INLINE virtual CL_ARTracerVal&   operator +=( const CL_ARTracerVal &_Rec2);//!< operator += for adding times.
+	_SG_TRC_INLINE virtual CL_ARTracerVal&   operator -=( const CL_ARTracerVal &_Rec2);//!< operator -= for substracting times.
+	_SG_TRC_INLINE virtual CL_ARTracerVal&   operator /=( const long T);//!< operator /= for dividing times.
+	_SG_TRC_INLINE virtual CL_ARTracerVal&   operator *=( const long T);//!< operator *= for multiplying times.
+/*
+	_SG_TRC_INLINE virtual CL_ARTracerVal   operator  +( const CL_ARTracerVal &_Rec2){};//!< operator +.
+	  _SG_TRC_INLINE virtual CL_ARTracerVal   operator  -( const CL_ARTracerVal &_Rec2){};//!< operator -.
+	  _SG_TRC_INLINE virtual CL_ARTracerVal   operator  /( const long T){};//!< operator /.
+	  _SG_TRC_INLINE virtual CL_ARTracerVal   operator  *( const long T){};//!< operator *.
+  *///========================	  
+	  
+	  //_SG_TRC_INLINE virtual void Run(void){};
+      _SG_TRC_INLINE virtual long GetValue(void);					//!< Return the time value stored in Time as a long.
+	  _SG_TRC_INLINE virtual  std::string GetStr(bool _Approxmimate=true);
+      _SG_TRC_INLINE virtual void Print();							//!< Print the time value as "\n%ds %d µs"
+	  
+	  float CalculatePosRMS ( osg::Vec3 & _RealPos);
+
+#if _SG_TLS_XML
+public:
+	virtual TiXmlElement* XMLLoad(TiXmlElement* _XML_ROOT, std::string _Name ="");
+	virtual TiXmlElement* XMLSave(TiXmlElement* _XML_ROOT, std::string _Name="");
+#endif
+};
+
+
+
+}; // namespace osgART
+#endif //OSGART_CL_ARTRACERVAL
