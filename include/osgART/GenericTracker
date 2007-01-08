@@ -161,6 +161,8 @@ namespace osgART {
 		
 		
 		double m_projectionMatrix[16];
+		std::string		m_name;		//!< Store the name of the tracker.
+		std::string		m_version;	//!< Store the version of the tracker.
 		
 		/**
 		 * Get the pixel size of the video format, see osgART::PixelFormatType.
