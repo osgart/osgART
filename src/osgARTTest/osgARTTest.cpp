@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
 		
         viewer.update();
         viewer.frame();
-	
+
     }
     
 	viewer.sync();
