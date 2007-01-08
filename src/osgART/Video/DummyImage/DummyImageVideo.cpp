@@ -81,7 +81,10 @@ DummyImageVideo::DummyImageVideo(const char* image):
 	pixelformat=VIDEOFORMAT_RGB24;
 
 	m_fields["flip_horizontal"] = new TypedField<bool>(&m_flip_horizontal);
-	m_fields["flip_vertical"] = new TypedField<bool>(&m_flip_vertical);
+	m_fields["flip_vertical"]	= new TypedField<bool>(&m_flip_vertical);
+	m_fields["image_file"]		= new CallbackField<DummyImageVideo, std::string>(this,
+		&DummyImageVideo::getImageFile,
+		&DummyImageVideo::setImageFile);
 }
 
 /*
@@ -157,16 +160,21 @@ DummyImageVideo::open()
 }
 
 void
-DummyImageVideo::openNewImage(std::string _NewFile)
+DummyImageVideo::close()
 {
-	//relase previous image..???
+}
+
+
+void DummyImageVideo::setImageFile(const std::string & _NewFile)
+{
+//relase previous image..???
 	videoName = _NewFile;
 	open();
 }
-
-void
-DummyImageVideo::close()
+	
+std::string DummyImageVideo::getImageFile()const
 {
+	return videoName;
 }
 
 void

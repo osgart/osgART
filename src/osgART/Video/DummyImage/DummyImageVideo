@@ -45,7 +45,7 @@
  * class DummyImageVideo.
  *
  */
-  class OSGART_EXPORT DummyImageVideo : public osgART::GenericVideo
+  class DummyImageVideo : public osgART::GenericVideo
 {
 public:        
 // Standard Services
@@ -79,12 +79,17 @@ public:
 	
 	
  //yannick	
-/**
+	/**
     * \brief Select a new image and open the Video stream.
     * Access the Video stream (hardware or file) and get an handle on it.
-    
     */
-	void openNewImage(std::string _NewFile);
+	void setImageFile(const std::string &_NewFile);
+	
+	/**
+    * \brief Get the image filename.
+    */	
+	std::string getImageFile()const;
+ //==================
 	
 	/**
     * \brief close the Video stream.
