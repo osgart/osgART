@@ -138,6 +138,12 @@ namespace osgART {
 		*/
 		void update();
 		
+		int NumberofCandidateMarkers();
+		int NumberofTrustedMarkers();
+		
+		
+		
+		
 	protected:
 	
 		/** 

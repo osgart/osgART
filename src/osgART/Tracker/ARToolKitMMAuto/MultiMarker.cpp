@@ -1,10 +1,14 @@
 #include "MultiMarker"
 
-#include <AR/gsub_lite.h>
 
+
+#include <AR/gsub_lite.h>
 namespace osgART {
 
-	MultiMarker::MultiMarker() : Marker() {
+	MultiMarker::MultiMarker() : Marker(), 
+		m_smoothAs(new SmoothAs)
+	{
+		m_smoothAs->setMatrixBufferSize(5);
 	}
 
 	MultiMarker::~MultiMarker() {   
@@ -47,10 +51,20 @@ namespace osgART {
 			double modelView[16];
 			arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
 			osg::Matrix tmp(modelView);
-			updateTransform(tmp);
+			filteredUpdate(tmp);
+			//updateTransform(tmp);
 		} else {
 			m_seen = false;
 		}
 	}
 	
+	void MultiMarker::filteredUpdate(osg::Matrixd& matrix)
+	{
+			// do filtering here
+			m_smoothAs->putTransform(matrix);
+			matrix.set(*m_smoothAs->getTransform());
+			updateTransform(matrix);
+	}
+
+
 };

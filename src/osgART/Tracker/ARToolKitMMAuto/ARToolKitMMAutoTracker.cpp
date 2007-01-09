@@ -10,8 +10,8 @@
 
 #include <osg/io_utils>
 
-#include "osgART/SingleMarker"
-#include "osgART/MultiMarker"
+#include "SingleMarker"
+#include "MultiMarker"
 
 #include <osgART/GenericVideo>
 
@@ -162,7 +162,6 @@ bool ARToolKitMMAutoTracker::setupMarkers(const std::string& patternListFile)
 			while (trim(patternName) == "" && !markerFile.eof()) {
 				getline(markerFile, patternName);
 			}
-			
 			
 			// Check whether markerFile exists?
 
@@ -607,5 +606,13 @@ void ARToolKitMMAutoTracker::update()
 				r * 2 * (cols+1), 2 * (cols+1)));
 		}
 	}
+
+	int ARToolKitMMAutoTracker::NumberofCandidateMarkers(){
+		return m_auto_candidate_markerlist.size();
+	}
+	int ARToolKitMMAutoTracker::NumberofTrustedMarkers(){
+		return m_auto_trusted_markerlist.size();
+	}
+
 
 }; // namespace osgART

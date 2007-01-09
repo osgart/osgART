@@ -23,6 +23,8 @@
 
 namespace osgART {
 
+	class SmoothAs;
+
 	/**
 	* \class SingleMarker.
 	* \brief A marker consisting of a single pattern.
@@ -43,6 +45,7 @@ namespace osgART {
 		virtual void setActive(bool a);
 
 		void update(ARMarkerInfo* markerInfo);
+		void filteredUpdate(osg::Matrixd& matrix);
 		
 		int getPatternID();
 		double getPatternWidth();
@@ -51,6 +54,8 @@ namespace osgART {
 		
 		MarkerType getType() const;
 	
+	
+		
 	    
 	protected:
 	
@@ -67,7 +72,11 @@ namespace osgART {
 		
 		double			m_confidence;
 		
+		SmoothAs*		m_smoothAs;
+		
 		friend class ARToolKitTracker;
+		friend class ARToolKitMMAutoTracker;
+		
 		
 	};
 };

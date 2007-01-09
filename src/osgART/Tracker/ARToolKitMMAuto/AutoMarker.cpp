@@ -21,6 +21,7 @@
 #include <osg/io_utils>
 
 #include "AutoMarker.h"
+#include "osgARTSmoothAs.h"
 
 
 // += operator for osg matrices
@@ -33,8 +34,11 @@ osg::Matrix& operator += (osg::Matrix& m1, const osg::Matrix& m2)
 	return m1;
 }
 
+namespace osgART{
 
-AutoMarker::AutoMarker()
+
+AutoMarker::AutoMarker() : SingleMarker(),
+m_mySmoothAs(new osgART::SmoothAs())
 {
 	// no AutoMarker can be trusted right away..
 	m_trusted = false;
@@ -65,6 +69,7 @@ osg::Matrixd AutoMarker::getCATransMatMean()
 				0,0,0,0,
 				0,0,0,0,
 				0,0,0,0);
+
 		// sum up all matrices
 		for (int i = 0; i < m_caTransMatList.size(); i++){
 			currentM = m_caTransMatList[i];
@@ -141,7 +146,13 @@ void AutoMarker::overrideupdateTransform(const osg::Matrix& transform){
 	m_valid = true;
 	m_seen = true;
 	m_active = true;
-	updateTransform(transform);
+	
+	//updateTransform(transform); // directly update transform
+	// working code up to here
+	
+	// experimental - filter transform before update
+	filteredUpdate(osg::Matrix(transform));
+	
 }
 
 
@@ -154,3 +165,5 @@ void AutoMarker::isTrusted(bool val)
 {
 	m_trusted = val;
 }
+
+};

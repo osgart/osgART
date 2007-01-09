@@ -18,10 +18,14 @@
 #include "osgART/Export"
 #include "osgART/Marker"
 
+#include "osgARTSmoothAs.h"
+
 // ARToolKit multimarker include
 #include <AR/arMulti.h>
 
 namespace osgART {
+
+	class SmoothAs;
 
 	/**
 	* \class MultiMarker
@@ -43,6 +47,7 @@ namespace osgART {
 		
 		void update(ARMarkerInfo* markerInfo, int markerCount);
 		
+		void filteredUpdate(osg::Matrixd& matrix);
 		/**
 		* \brief return the type of the maker.
 		* return if the marker is a single or multi-pattern marker.
@@ -58,8 +63,9 @@ namespace osgART {
 		*/
 		virtual ~MultiMarker();
 		
-
 		ARMultiMarkerInfoT* m_multi;
+		
+		SmoothAs*		m_smoothAs;
 			
 	};
 };

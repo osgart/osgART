@@ -2,15 +2,16 @@
 
 #include <AR/gsub_lite.h>
 
-#define NDEBUG
-
+#include "osgARTSmoothAs.h"
 
 namespace osgART {
 
 	SingleMarker::SingleMarker() : Marker(),
-		patt_id(-1)
+		patt_id(-1),
+		m_smoothAs(new SmoothAs)
 	{
-			m_fields["confidence"] = new TypedField<double>(&m_confidence);
+		m_fields["confidence"] = new TypedField<double>(&m_confidence);
+		m_smoothAs->setMatrixBufferSize(5);
 	}
 
 	SingleMarker::~SingleMarker()
@@ -45,14 +46,25 @@ namespace osgART {
 			m_seen = false;
 		} else {
 			m_valid = true;
-			//arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
-			arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
+			arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
+			//arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
 			m_confidence = markerInfo->cf;
 			double modelView[16];
 			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
 			osg::Matrix tmp(modelView);
-			updateTransform(tmp);
+
+			// do filtering here
+			filteredUpdate(tmp);
+			//updateTransform(tmp); // direct update
 		}
+	}
+
+	void SingleMarker::filteredUpdate(osg::Matrixd& matrix)
+	{
+			// do filtering here
+			m_smoothAs->putTransform(matrix);
+			matrix.set(*m_smoothAs->getTransform());
+			updateTransform(matrix);
 	}
 
 	void SingleMarker::setActive(bool a)

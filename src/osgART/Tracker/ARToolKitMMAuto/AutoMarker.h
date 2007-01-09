@@ -6,17 +6,22 @@
 #include <osgUtil/IntersectVisitor>
 
 #include <osgART/ARTTransform>
-#include <osgART/SingleMarker>
+#include "SingleMarker"
+#include "osgARTSmoothAs.h"
 
 #include <string>
 #include <Map>
 #include <List>
 
 
+namespace osgART{
+
 #define CATRANSLISTSIZE 50 // number of CandidateMarker->AnchorMarker transformation matrices kept in memory for averaging
 
+class SmoothAs;
 
 class AutoMarker : public osgART::SingleMarker{
+
 
 
 public:
@@ -59,8 +64,11 @@ protected:
 	osg::Matrixd	m_CATransmatVariance;
 	osgART::Marker* m_Marker;
 	bool			m_trusted;
+	osgART::SmoothAs*		m_mySmoothAs;
 
 private:
 
+	
+};
 };
 #endif
