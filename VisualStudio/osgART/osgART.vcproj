@@ -355,6 +355,9 @@
 						<File
 							RelativePath="..\..\include\osgART\TrackerPlugin">
 						</File>
+						<File
+							RelativePath="..\..\include\osgART\Utils">
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>

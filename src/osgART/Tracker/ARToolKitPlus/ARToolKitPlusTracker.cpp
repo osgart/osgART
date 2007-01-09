@@ -12,11 +12,16 @@
 #include <osgART/GenericVideo>
 #include "osgART/VideoPlugin"
 #include "osgART/VideoConfig"
+#include "osgART/Utils"
+
 #include <iostream>
 #include <fstream>
+
+#ifdef AR_TOOLKIT_PROFILER
 #include <SG_TLS_exceptions.h>
 #include <SG_TLS_cl_base_obj.h>
 #include "ProfilerTools"
+#endif
 
 namespace osgART {
 
@@ -38,7 +43,11 @@ OSGART_PLUGIN_ENTRY()
 //==============================================================================
 
 ARToolKitTracker_Plus::ARToolKitTracker_Plus() 
+#ifdef AR_TOOLKIT_PROFILER
 	: ARToolKitTrackerProfiler("ARTPlus", "2.1"),
+#else
+	: ARToolKitTrackerProfiler(),
+#endif
 			m_threshold		(_ART_PLUS_DFLT_THRESHOLD),
 			m_debugMode		(false),
 			m_marker_num	(0),
@@ -119,11 +128,11 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				m_PlusTracker = (ARToolKitPlus::TrackerMultiMarker *) (new ARToolKitPlus::TrackerMultiMarkerImpl<_ART_PLUS_TRACKER_PARAM_TEMPLATE>());//
 				break;
 			case ARToolKitPlus::MARKER_ID_BCH:
-				osg::notify(osg::FATAL) << "ARToolKitPlus::CreateTracker() :  marker mode 'MARKER_ID_BCH' not done yet" << endl;	
+				osg::notify(osg::FATAL) << "ARToolKitPlus::CreateTracker() :  marker mode 'MARKER_ID_BCH' not done yet" << std::endl;	
 				exit(-1);
 				break;
 			default:
-				osg::notify(osg::FATAL) << "ARToolKitPlus::CreateTracker() :  unknown marker mode '"<< _markerMode << "'" << endl;	
+				osg::notify(osg::FATAL) << "ARToolKitPlus::CreateTracker() :  unknown marker mode '"<< _markerMode << "'" << std::endl;	
 				exit(-1);
 		}
 
@@ -144,7 +153,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		m_height = _xsize; 
 		if (!CreateTracker	(m_markerMode, _xsize,_ysize))
 		{
-			osg::notify(osg::FATAL) << "ARToolKitPlus::init() :  could not create Tracker!" << endl;	
+			osg::notify(osg::FATAL) << "ARToolKitPlus::init() :  could not create Tracker!" << std::endl;	
 			exit(-1);
 		}
 
@@ -187,11 +196,11 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			m_width = _xsize;
 			m_height= _ysize;
 
-			osg::notify() << "Loading camera param file : " << m_cparamName << endl;
+			osg::notify() << "Loading camera param file : " << m_cparamName << std::endl;
 			
 			if (!LoadCameraFile((char*)m_cparamName.c_str(), m_NearClip, m_FarClip))
 			{
-				osg::notify(osg::FATAL) << "Can not load camera file : "<< m_cparamName << endl;	
+				osg::notify(osg::FATAL) << "Can not load camera file : "<< m_cparamName << std::endl;	
 				exit(-1);
 			}
 
@@ -200,7 +209,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		
 			if (!setupMarkers(_pattlist_name))
 			{
-				osg::notify(osg::FATAL) << "Could not load the pattern list file :" << _pattlist_name << endl;
+				osg::notify(osg::FATAL) << "Could not load the pattern list file :" << _pattlist_name << std::endl;
 			}
 		
 		//tracker->init("data/LogitechPro4000.dat", 1.0f, 1000.0f);
@@ -353,17 +362,17 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				res = ARToolKitPlus::TrackerImpl<_ART_PLUS_TRACKER_PARAM_TEMPLATE >::calcCameraMatrix(m_cparamName.c_str(), m_width, m_height, n, f, projectionMatrix_fl);
 				break;
 				case ARToolKitPlus::MARKER_ID_BCH:
-				osg::notify(osg::FATAL) << "ARToolKitPlus::setProjection() :  marker mode 'MARKER_ID_BCH' not done yet" << endl;	
+				osg::notify(osg::FATAL) << "ARToolKitPlus::setProjection() :  marker mode 'MARKER_ID_BCH' not done yet" << std::endl;	
 				exit(-1);
 				break;
 			default:
-				osg::notify(osg::FATAL) << "ARToolKitPlus::setProjection() :  unknown marker mode '"<< m_markerMode << "'" << endl;	
+				osg::notify(osg::FATAL) << "ARToolKitPlus::setProjection() :  unknown marker mode '"<< m_markerMode << "'" << std::endl;	
 				exit(-1);
 		}
 
 		if(!res)
 		{
-			osg::notify(osg::FATAL) << "Could not get camera calibration : " << m_cparamName << endl;
+			osg::notify(osg::FATAL) << "Could not get camera calibration : " << m_cparamName << std::endl;
 			exit(-1);
 		}
 
@@ -415,42 +424,43 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	
 	void ARToolKitTracker_Plus::PrintOptions()const
 	{
-	//	ARToolKitTrackerProfiler::PrintOptions()
-		cout << "===== TRACKER OPTIONS : " << m_versionName <<   endl;
-		cout << "* Threshold value	: " << m_threshold <<   endl;
-		cout << "* Threshold auto	: " ;
+#if 0
+		std::cout << "===== TRACKER OPTIONS : " << m_versionName <<   std::endl;
+		std::cout << "* Threshold value	: " << m_threshold <<   std::endl;
+		std::cout << "* Threshold auto	: " ;
 			if (getAutoThreshold())
-				cout <<"ON"<<  endl;
+				std::cout <<"ON"<<  std::endl;
 			else
-				cout <<"OFF"<<  endl;
-		cout << "* Image processing mode : ";
+				std::cout <<"OFF"<<  std::endl;
+		std::cout << "* Image processing mode : ";
 			if (m_imageProcMode)
-				cout <<"FULL" <<   endl;
+				std::cout <<"FULL" <<   std::endl;
 			else
-				cout <<"HALF" <<   endl;
-		cout << "* arDetectLite mode : ";
+				std::cout <<"HALF" <<   std::endl;
+		std::cout << "* arDetectLite mode : ";
 			if (m_useDetectLite)
-				cout << "LITE"  <<   endl;
+				std::cout << "LITE"  <<   std::endl;
 			else
-				cout << "NORMAL" <<   endl;
-		cout << "* Pose Estimation : ";
+				std::cout << "NORMAL" <<   std::endl;
+		std::cout << "* Pose Estimation : ";
 			if (m_poseEstimMode == ARToolKitPlus::POSE_ESTIMATOR_ORIGINAL)
-				cout << "POSE_ESTIMATOR_ORIGINAL"  <<   endl;
+				std::cout << "POSE_ESTIMATOR_ORIGINAL"  <<   std::endl;
 			else if (m_poseEstimMode == ARToolKitPlus::POSE_ESTIMATOR_ORIGINAL_CONT)
-				cout << "POSE_ESTIMATOR_ORIGINAL_CONT"  <<   endl;
+				std::cout << "POSE_ESTIMATOR_ORIGINAL_CONT"  <<   std::endl;
 			else if (m_poseEstimMode == ARToolKitPlus::POSE_ESTIMATOR_RPP)
-				cout << "POSE_ESTIMATOR_RPP"  <<   endl;
+				std::cout << "POSE_ESTIMATOR_RPP"  <<   std::endl;
 			else
-                cout << "Unknown" <<   endl;
-		cout << "* Undistortion mode : ";
+                std::cout << "Unknown" <<   std::endl;
+		std::cout << "* Undistortion mode : ";
 			if (m_undistortMode == ARToolKitPlus::UNDIST_LUT)
-				cout << "UNDIST_LUT"  <<   endl;
+				std::cout << "UNDIST_LUT"  <<   std::endl;
 			else if (m_undistortMode == ARToolKitPlus::UNDIST_NONE)
-				cout << "UNDIST_NONE"  <<   endl;
+				std::cout << "UNDIST_NONE"  <<   std::endl;
 			else if (m_undistortMode == ARToolKitPlus::UNDIST_STD)
-				cout << "UNDIST_STD"  <<   endl;
+				std::cout << "UNDIST_STD"  <<   std::endl;
 			else
-                cout << "Unknown" <<   endl;
+                std::cout << "Unknown" <<   std::endl;
+#endif
 	}
 
 //++++++++++++++++++++++++++++++++++++
@@ -459,7 +469,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 
 	bool ARToolKitTracker_Plus::setupMarkers(const std::string& patternListFile)
 	{
-		osg::notify() << "Setting up markers from file : " << patternListFile << endl;
+		osg::notify() << "Setting up markers from file : " << patternListFile << std::endl;
 		std::ifstream markerFile;
 
 		// Need to check whether the passed file even exists
@@ -468,7 +478,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		// Need to check for error when opening file
 		if (!markerFile.is_open())
 		{
-			osg::notify(osg::WARN) << "File does not exist : " << patternListFile << endl;
+			osg::notify(osg::WARN) << "File does not exist : " << patternListFile << std::endl;
 			return false;
 		}
 
@@ -571,7 +581,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			case VIDEOFORMAT_GREY8:
 									return PIXEL_FORMAT_LUM;
 			default:
-				osg::notify(osg::WARN) << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << endl;
+				osg::notify(osg::WARN) << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << std::endl;
 				return 0;
 		}        
 		return 0;
@@ -589,7 +599,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			case PIXEL_FORMAT_ABGR :return VIDEOFORMAT_ABGR32;
 			case PIXEL_FORMAT_LUM :return VIDEOFORMAT_Y8;//or VIDEOFORMAT_GREY8:
 			default:
-				osg::notify(osg::WARN) << "ConvertARTPixelFormatToOSGART() : Unknown pixel format!" << endl;
+				osg::notify(osg::WARN) << "ConvertARTPixelFormatToOSGART() : Unknown pixel format!" << std::endl;
 				
 		}        
 		return VIDEOFORMAT_ANY;
@@ -600,7 +610,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	void ARToolKitTracker_Plus::update()
 	{	
 #if AR_TRACKER_PROFILE
-		osg::notify() <<  "->" << m_versionName << "::update()" << endl;
+		osg::notify() <<  "->" << m_versionName << "::update()" << std::endl;
 		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct	("arDetectMarker_TIME");		
 #endif
 		
@@ -627,7 +637,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		}
 #endif
 
-	osg::notify() << "arDetectMarker() => Markerdetected = " <<m_marker_num<<endl;
+	osg::notify() << "arDetectMarker() => Markerdetected = " <<m_marker_num<<std::endl;
 
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
@@ -707,7 +717,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			}
 		
 #if AR_TRACKER_PROFILE
-		osg::notify() << "<-Stop" << m_versionName << "::update()" << endl;
+		osg::notify() << "<-Stop" << m_versionName << "::update()" << std::endl;
 #endif//AR_TRACKER_PROFILE
 	}
 
@@ -727,7 +737,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	{
 		if (!m_ParentTracker)
 		{
-			osg::notify(osg::FATAL) << "Could not create ARToolkitplus SingleMarker, no ARToolkitplus tracker." << endl;
+			osg::notify(osg::FATAL) << "Could not create ARToolkitplus SingleMarker, no ARToolkitplus tracker." << std::endl;
 			exit(-1);
 		}
 		m_fields["confidence"] = new TypedField<double>(&m_confidence);
@@ -831,7 +841,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	{
 		if (!m_ParentTracker)
 		{
-			osg::notify(osg::FATAL) << "Could not create ARToolkitplus MultiMarker, no ARToolkitplus tracker." << endl;
+			osg::notify(osg::FATAL) << "Could not create ARToolkitplus MultiMarker, no ARToolkitplus tracker." << std::endl;
 			exit(-1);
 		}
 
@@ -844,7 +854,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				m_ParentTrackerTemplate = dynamic_cast< ARToolKitPlus::TrackerMultiMarkerImpl<_ART_PLUS_TRACKER_PARAM_TEMPLATE> * >(_PlusTracker);
 				break;
 			default:
-				osg::notify(osg::WARN) << "Unkown marker mode in MultiMarker" << endl;
+				osg::notify(osg::WARN) << "Unkown marker mode in MultiMarker" << std::endl;
 		}
 		
 //		m_fields["confidence"] = new TypedField<double>(&m_confidence);
@@ -876,7 +886,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		else if (m_ParentTrackerTemplate)
 			m_multi =  m_ParentTrackerTemplate->arMultiReadConfigFile(multiFile.c_str());
 		else
-			osg::notify(osg::WARN) << "No Tracker in MultiMarker, could not initialise." << endl;
+			osg::notify(osg::WARN) << "No Tracker in MultiMarker, could not initialise." << std::endl;
 		
 		if (m_multi == NULL) return false;
 		

@@ -134,6 +134,11 @@ namespace osgART {
 	int GenericTracker::ConvertOSGARTPixelFormatToART(PixelFormatType format) const
 	{return 0;};
         //=======================
+
+
+	void GenericTracker::PrintOptions() const {
+		osg::notify() << "osgART::GenericTracker::PrintOptions() : No description available!" << std::endl;
+	}
 	
 
 

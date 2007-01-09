@@ -191,7 +191,7 @@ namespace osgART {
 		int		m_height;	  
 		//=====================
 	public:
-		virtual void PrintOptions()const = 0;
+		virtual void PrintOptions() const;
 	private:
 
 		int trackerId;

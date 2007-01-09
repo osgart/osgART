@@ -26,7 +26,6 @@
 #include <string>
 #include <stdio.h>
 
-
 #include <SG_TLS_config.h>
 #include <SG_TRC_config.h>
 #include <SG_TRC_appli.h>

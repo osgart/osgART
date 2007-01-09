@@ -53,12 +53,7 @@
 * class IntranelStreamVideo.
 *----------------------------------------------------------------------------*/
 
-typedef struct {
-	unsigned char* buffer;
-	int width;
-	int height;
-	long buffersize;
-} tpVideoFrame;
+struct tpVideoFrame;
 	
 class IntranelStreamVideo: public osgART::GenericVideo
 {

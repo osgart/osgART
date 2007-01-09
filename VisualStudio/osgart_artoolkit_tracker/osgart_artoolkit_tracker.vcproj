@@ -85,7 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib osgart_artoolkit_tracker_profiler.lib"
+				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib"
 				OutputFile="..\..\bin\osgart_artoolkit_tracker.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib;$(ARTOOLKIT_2_ROOT)\lib"

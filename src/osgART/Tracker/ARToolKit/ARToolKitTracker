@@ -32,9 +32,11 @@
 
 #include <string>
 
-
+#ifdef AR_TRACKER_PROFILER
 #include "ARToolKitTrackerProfiler"
-	
+#else
+typedef osgART::GenericTracker ARToolKitTrackerProfiler;
+#endif
 
 namespace osgART {
 
@@ -45,8 +47,8 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARToolKitTracker 
-		: public ARToolKitTrackerProfiler
+	class ARToolKitTracker	: 
+		public ARToolKitTrackerProfiler
 	{
 
 	public:        

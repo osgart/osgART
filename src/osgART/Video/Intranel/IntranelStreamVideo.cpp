@@ -32,8 +32,19 @@
 
 #include "IntranelStreamVideo"
 
+#include <osg/Notify>
+
 using namespace std;
 using namespace osgART;
+
+
+ struct tpVideoFrame {
+	unsigned char* buffer;
+	int width;
+	int height;
+	long buffersize;
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Macro 
@@ -65,7 +76,9 @@ void Msg(TCHAR *szFormat, ...)
     // Ensure that the formatted string is NULL-terminated
     szBuffer[LASTCHAR] = TEXT('\0');
 
-	MessageBox(NULL,szBuffer,"tpDS Message",MB_OK | MB_ICONERROR);
+	// MessageBox(NULL,szBuffer,"tpDS Message",MB_OK | MB_ICONERROR);
+
+	osg::notify() << "osg_intranel: " << szBuffer << std::endl;
 
 }
 
@@ -150,6 +163,9 @@ HRESULT DSMemoryRenderer::CheckMediaType(const CMediaType *pmt)
               //  m_frame->format = TP_RGBA;
 				m_frame->width = pvi->bmiHeader.biWidth;
 				m_frame->height = pvi->bmiHeader.biHeight;
+
+				fprintf(stdout, "Subtype %dx%d\n", m_frame->width, m_frame->height);
+
             }
             else
             {
@@ -160,7 +176,7 @@ HRESULT DSMemoryRenderer::CheckMediaType(const CMediaType *pmt)
     }// try
     catch(...)
     {
-       // Msg(TEXT("Failed to check media type in the renderer. Unhandled exception hr=0x%x"), E_UNEXPECTED);
+		std::cerr << "Failed to check media type in the renderer. Unhandled exception!" << std::endl;
         hr = E_UNEXPECTED;
     };
 	
@@ -196,7 +212,7 @@ HRESULT DSMemoryRenderer::SetMediaType(const CMediaType *pmt)
     }// try
     catch(...)
     {
-        //Msg(TEXT("Failed to set media type in the renderer. Unhandled exception hr=0x%x"), E_UNEXPECTED);
+		std::cout << "Failed to set media type in the renderer. Unhandled exception" << std::endl;
         return hr;
     }
 
@@ -253,7 +269,7 @@ HRESULT DSMemoryRenderer::DoRenderSample( IMediaSample * pSample )
 		//fprintf(stderr,"before get pointer..\n");
 		hr = pSample->GetPointer( &pSampleBuffer );
 		//fprintf(stderr,"get image..");
-		//fprintf(stderr,"get buffer=%i size=%i\n",pSampleBuffer,sampleSize);
+		fprintf(stderr,"get buffer=%i size=%i\n",pSampleBuffer,sampleSize);
 		if ((!m_frame->buffer) || ((long)m_frame->buffersize < sampleSize))
 		{
 			if (m_frame->buffer) delete [] m_frame->buffer;
@@ -284,17 +300,20 @@ HRESULT DSMemoryRenderer::DoRenderSample( IMediaSample * pSample )
 // PUBLIC: Standard services 
 ///////////////////////////////////////////////////////////////////////////////
 
-IntranelStreamVideo::IntranelStreamVideo():m_frame(0),
+
+IntranelStreamVideo::IntranelStreamVideo(): GenericVideo(), 
+	m_frame(new tpVideoFrame),
 	managed(false),
 	m_pCapture(NULL)
 {
-	m_frame=new tpVideoFrame;
 	m_frame->buffer=NULL;
 	m_frame->buffersize=0;
 	pixelsize=4;
 	pixelformat=VIDEOFORMAT_BGRA32;
-	xsize=720;
-	ysize=576;
+	xsize=640;
+	ysize=480;
+	m_frame->width = xsize;
+	m_frame->height = ysize;
 }
 
 IntranelStreamVideo::IntranelStreamVideo(const IntranelStreamVideo &)
@@ -396,36 +415,58 @@ IntranelStreamVideo::close()
 void
 IntranelStreamVideo::start()
 {
-if (m_pMC)
+
+	int repeatCount(0);
+	int timeOut(20);
+
+	if (m_pMC)
 	{
-		// ok, there is some evil thing about IMediaControl::Run()
-		if (m_pMC->Run() == S_FALSE)
+		if (m_pMC->Run() == S_FALSE) 
 		{
-			long pfs;
-			m_pMC->GetState(100,&pfs);
-			if (pfs != 2) 
+			
+			OAFilterState _pfs;
+			HRESULT _res;
+
+			while (repeatCount < 20) 
 			{
-				std::cerr<<"ERROR:can't start the video stream.."<<std::endl;
-				exit(-1);
+				
+				_res = m_pMC->GetState(timeOut,&_pfs);
+
+				if (S_OK == _res /* && _pfs == State_Running*/) 
+				{
+
+					std::cout << "Running ..." << std::endl;
+
+					break;
+				} else 
+				if (VFW_S_STATE_INTERMEDIATE == _res) 
+				{
+
+					std::cout << "Waiting for filtergraph (" << repeatCount << ")" << std::endl;
+
+					repeatCount++;
+
+					Sleep(10);
+
+				} else 
+				{
+
+					std::cout << "Error starting filtergraph ..." << std::endl;
+					break;
+				}
 			}
 
-		} 
+		}
 	}
-else
-{
-	std::cerr<<"ERROR:can't start the video stream.."<<std::endl;
-	exit(-1);
-}
 }
 
 void
 IntranelStreamVideo::stop()
 {
 	if (m_pMC)
-		if (m_pMC->StopWhenReady() != S_OK)
+		while (m_pMC->Stop() != S_OK)
 		{
-			std::cerr<<"ERROR:can't stop the video stream.."<<std::endl;
-			exit(-1);
+			std::cerr << "Trying to stop the stream!" << std::endl;
 		}
 }
 
@@ -442,7 +483,7 @@ IBaseFilter *GetFilter(const char* name_filter)
     IID_ICreateDevEnum, (void **)&pSysDevEnum);
 	if (FAILED(hr))
 	{
-		Msg(TEXT("Error can't create sys enumerator.."));
+		osg::notify(osg::WARN) << "osg_intranel: Error can't create sys enumerator!" << std::endl;
 	} 
 	// Obtain a class enumerator for the video compressor category.
 	IEnumMoniker *pEnumCat = NULL;
@@ -470,7 +511,8 @@ IBaseFilter *GetFilter(const char* name_filter)
 				WideCharToMultiByte(CP_ACP, 0, varName.bstrVal, -1, szName, 64, 0, 0);
 				if (strcmp(szName,name_filter)==0)
 				{
-					fprintf(stderr,"%s found..\n",szName);
+					osg::notify() << "osgart_intranel: Found `" << szName << "'" << std::endl;
+
 					hr = pMoniker->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)&myFilter);
 					if (SUCCEEDED(hr))
 					{
@@ -478,7 +520,7 @@ IBaseFilter *GetFilter(const char* name_filter)
 					}
 					else
 					{
-						Msg(TEXT("Stupid code.."));
+						osg::notify() << "osgart_intranel: Can't bind to " << szName << std::endl ;
 					}
 				}
             }
@@ -532,24 +574,27 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
     hr = m_pCapture->SetFiltergraph(m_pGB);
     if (FAILED(hr))
     {
-        Msg(TEXT("Failed to set capture filter graph!  hr=0x%x\0"), hr);
+		std::cout << "Failed to set capture filter graph!" << std::endl;
         return hr;
     }
 
 	IBaseFilter *myRTSPFilter=GetFilter("RTSP Source");
+	
 	hr = m_pGB->AddFilter(myRTSPFilter, L"Video Network Proxy");
     if (FAILED(hr))
     {
-        Msg(TEXT("Failed to add filter.. hr=0x%x\0"), hr);
+		std::cout << "Failed to add filter!" << std::endl;
         return hr;
     }
+
 	DisplayFilter(myRTSPFilter);
 
-	IBaseFilter *myFFDShowFilter=GetFilter("ffdshow MPEG-4 Video Decoder");
+	IBaseFilter *myFFDShowFilter = GetFilter("ffdshow MPEG-4 Video Decoder");
+	
 	hr = m_pGB->AddFilter(myFFDShowFilter, L"Video Conversion");
     if (FAILED(hr))
-    {
-        Msg(TEXT("Failed to add filter.. hr=0x%x\0"), hr);
+	{
+		std::cout << "Failed to add filter!" << std::endl;
         return hr;
     }
 
@@ -564,29 +609,47 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 	hr=m_pGB->Connect(rtspPinOut, ffdshowPinIn);
 	if (FAILED(hr))
     {
-		Msg(TEXT("DEBUG:Failed to connect pin..  hr=0x%x\0"), hr);
+		std::cout << "Failed to connect pin!" << std::endl;
         return hr;
     }
-	DisplayFilter(myFFDShowFilter);
 
+	
 	m_pFSrc = myFFDShowFilter;
+	// m_pFSrc = myRTSPFilter;
+
+	/*
+	hr = m_pCapture->FindInterface(&PIN_CATEGORY_CAPTURE, NULL,
+		myFFDShowFilter, IID_IAMStreamConfig, (void**)&pSrcConfig);
+	if (FAILED(hr)) 
+	{
+		std::cout << "Failed to find a Stream config!" << std::endl;
+        return hr;
+	}
+	*/
+
+
 	IPin *pIn = NULL;
 
 	pIn=ffdshowPinOut;
-	
+
+
 	AM_MEDIA_TYPE am_media;
-	//GetMediaType(rtspPinOut,&am_media);
-	//GetMediaType(ffdshowPinIn,&am_media);
-	GetMediaType(ffdshowPinOut,&am_media);
+	// GetMediaType(rtspPinOut,&am_media);
+	// GetMediaType(ffdshowPinIn,&am_media);
+	if (S_OK == GetMediaType(ffdshowPinOut,&am_media)) {
+
+		// pSrcConfig->SetFormat(&am_media);
+
+	}
 //	if (S_OK == GetMediaType(pIn,&am_media,srcinfo)) 
-	//	pSrcConfig->SetFormat(&am_media);
-	//else 
-	//	m_src->show_source = TRUE;
 	
-	//if (m_src->show_source) 
+	// pSrcConfig->SetFormat(&am_media);
 	
+
 	DisplayProperties(ffdshowPinOut);
-	
+
+
+
     // Render the preview pin on the video capture filter.
     // This will create and connect any necessary transform filters.
     // We pass a pointer to the IBaseFilter interface of our DSMemoryRendere
@@ -598,13 +661,17 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
     if (FAILED(hr))
 
     {
-        Msg(TEXT("Could not render the capture stream.  hr=0x%x\r\n\r\n"), hr);
+		std::cout << "Could not render the capture stream." << std::endl;
         return hr;
     }
 	else
 	{
 		//Msg(TEXT("Connected !!!"));
 	}
+
+
+	DisplayFilter(myFFDShowFilter);
+
 
 
 	//if (m_src->show_filter) 
@@ -624,26 +691,33 @@ HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 
 	AM_MEDIA_TYPE *n_mt = 0;
 	
-	while (S_OK == e_mt->Next(1, &n_mt,NULL)) {
+	while (S_OK == e_mt->Next(1, &n_mt, NULL)) {
 
-		if (n_mt->majortype==MEDIATYPE_Video)
+		if (n_mt->majortype == MEDIATYPE_Video)
 		{
-			if (n_mt->subtype==MEDIASUBTYPE_RGB32)
+			if (n_mt->subtype == MEDIASUBTYPE_RGB32)
 			{
-				//fprintf(stderr,"DEBUG:Media Type=Video RGB32\n");
-				//Msg(TEXT("Find Media"));
-				CopyMediaType(mt,n_mt);
-				DeleteMediaType(n_mt);
-				return S_OK;
+				VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;
+
+				if ((pvi->bmiHeader.biWidth == m_frame->width) && 
+				  	(pvi->bmiHeader.biHeight == m_frame->height)) 
+				{
+
+					fprintf(stderr,"DEBUG:Media Type=Video RGB32 %dx%d\n",
+						pvi->bmiHeader.biWidth, pvi->bmiHeader.biHeight);
+
+					CopyMediaType(mt,n_mt);
+					DeleteMediaType(n_mt);
+					return S_OK;
+
+				} else {
+
+					fprintf(stderr,"Skip Type=Video RGB32 %dx%d\n",
+						pvi->bmiHeader.biWidth, pvi->bmiHeader.biHeight);
+				}
 			}
 		}
-		else 
-			DeleteMediaType(n_mt);
-
-		//VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;		
-		//if ((pvi->bmiHeader.biWidth == srcinfo->width) && 
-		//	(pvi->bmiHeader.biHeight == srcinfo->height)) {
-		
+		DeleteMediaType(n_mt);
 	}
 
 	return E_FAIL;
@@ -673,10 +747,9 @@ HRESULT IntranelStreamVideo::GetPin(IBaseFilter *pFilter,
 
 		if ((PinInfo.dir == PinDir)&&(strcmp(szName,name)==0))
 		{
-			fprintf(stderr,"pin %i id=%i pin name=%s\n",PinDir,PinInfo.dir,szName);
-
+			fprintf(stderr,"pin %d id=%d pin name=%s\n",PinDir,PinInfo.dir,szName);
 			//HACK
-			Msg(TEXT("DEBUG:Find Pin.."));
+			// Msg(TEXT("DEBUG:Find Pin.."));
             pEnum->Release();
 
             *ppPin = pPin;
@@ -878,10 +951,10 @@ const int& IntranelStreamVideo::IsUpdated() const {
 void
 IntranelStreamVideo::update()
 {
-	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
+	// OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
 	if (m_frame->buffer && m_image.valid()) {
-		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_RGBA, 
 			GL_UNSIGNED_BYTE, m_frame->buffer, osg::Image::NO_DELETE, 1);
         
 	}

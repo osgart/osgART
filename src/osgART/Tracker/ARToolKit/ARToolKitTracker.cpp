@@ -13,6 +13,7 @@
 
 #include <osgART/GenericVideo>
 #include <osgART/VideoConfig>
+#include <osgART/Utils>
 
 #include <iostream>
 #include <fstream>
@@ -70,7 +71,12 @@ namespace osgART {
 	};
 
 
-	ARToolKitTracker::ARToolKitTracker() : ARToolKitTrackerProfiler("ARToolkit", AR_HEADER_VERSION_STRING),
+	ARToolKitTracker::ARToolKitTracker() : 
+#ifdef AR_TRACKER_PROFILER
+	ARToolKitTrackerProfiler("ARToolkit", AR_HEADER_VERSION_STRING),
+#else
+	ARToolKitTrackerProfiler(),
+#endif
 			m_threshold(100),
 			m_debugmode(false),
 			m_marker_num(0),
@@ -252,6 +258,8 @@ namespace osgART {
 	{
 		m_debugmode = d;
 		arDebug = (m_debugmode) ? 1 : 0;
+
+		std::cout << "Debug mode: " << d << std::endl;
 	}
 
 	bool ARToolKitTracker::getDebugMode()const 

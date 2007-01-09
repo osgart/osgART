@@ -31,7 +31,11 @@
 #include <string>
 #include <vector>
 
+
+#ifdef AR_TOOLKIT_PROFILER
 #include <ARToolKitTrackerProfiler>
+#endif
+
 #include <ARToolkitplus/ar.h>
 #include <ARToolkitplus/arMulti.h>
 #include <ARToolKitPlus/TrackerSingleMarkerImpl.h>
@@ -204,6 +208,10 @@ protected:
 		
 };
 
+
+#ifndef AR_TOOLKIT_PROFILER
+typedef GenericTracker ARToolKitTrackerProfiler;
+#endif
 
 //==============================================================================
 //==============================================================================

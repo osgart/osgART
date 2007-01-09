@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	osgART::VideoManager::createVideoFromPlugin("osgart_intranel", cfg);
 
 	// check if loading the plugin was successful
 	if (!video.valid()) 
@@ -94,6 +94,20 @@ int main(int argc, char* argv[])
 		{
 			osg::notify() << "Field 'threshold' supported for this tracker" << std::endl;
 		}		
+
+
+		// access a field within the tracker
+		osg::ref_ptr< osgART::TypedField<bool> > _debug = 
+			reinterpret_cast< osgART::TypedField<bool>* >(tracker->get("debug"));
+
+		if (_debug.valid()) {
+
+			_debug->set(true);
+
+		}
+
+
+
 
 	} else 
 	{

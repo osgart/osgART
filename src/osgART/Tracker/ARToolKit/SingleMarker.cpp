@@ -1,8 +1,6 @@
 #include "SingleMarker"
 
 #include <AR/gsub_lite.h>
-#include "Profilertools"
-#define NDEBUG
 
 
 namespace osgART {
