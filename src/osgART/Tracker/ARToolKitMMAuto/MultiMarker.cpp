@@ -8,7 +8,7 @@ namespace osgART {
 	MultiMarker::MultiMarker() : Marker(), 
 		m_smoothAs(new SmoothAs)
 	{
-		m_smoothAs->setMatrixBufferSize(5);
+		m_smoothAs->setMatrixBufferSize(10);
 	}
 
 	MultiMarker::~MultiMarker() {   

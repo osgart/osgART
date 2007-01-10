@@ -25,15 +25,25 @@ namespace osgART {
 		~SmoothAs();
 
 		void setMatrixBufferSize(int size);
+		void setOutlierDistance(int dist);
+		void setmaxNumofOutliers(int num);
+		void enableOutlierRejection(bool val);
+		bool checkForTransOutlier(osg::Matrix& matrix);
+		bool checkForRotOutlier(osg::Matrix& matrix);
 		void putTransform(osg::Matrix& matrix);
 		osg::Matrix* getTransform();
 
 	protected:
 
-		typedef std::vector< osg::Matrix*> MatrixList;
+		typedef std::vector< osg::Matrix* > MatrixList;
 		MatrixList m_matrixlist;
+		
 		int m_matrixBufferSize;
+		int m_outlierDistance;
+		int m_outlierCount;
+		int m_maxNumOfOutliers;
 
+		bool m_OutlierRejection;
 
 	private:
 
