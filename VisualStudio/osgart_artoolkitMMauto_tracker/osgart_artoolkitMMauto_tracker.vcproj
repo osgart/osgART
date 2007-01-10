@@ -73,7 +73,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="D:\work\osgart\trunk\src\osgART\Tracker\ARToolKitMMAuto;..\..\include"
+				AdditionalIncludeDirectories=".;..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -137,6 +137,9 @@
 				RelativePath="..\..\src\osgART\Tracker\ARToolKitMMAuto\MultiMarker.cpp">
 			</File>
 			<File
+				RelativePath="..\..\src\osgART\Tracker\ARToolKitMMAuto\osgARTSmoothAs.cpp">
+			</File>
+			<File
 				RelativePath="..\..\src\osgART\Tracker\ARToolKitMMAuto\SingleMarker.cpp">
 			</File>
 		</Filter>
@@ -152,6 +155,9 @@
 			</File>
 			<File
 				RelativePath="..\..\src\osgART\Tracker\ARToolKitMMAuto\MultiMarker">
+			</File>
+			<File
+				RelativePath="..\..\src\osgART\Tracker\ARToolKitMMAuto\osgARTSmoothAs.h">
 			</File>
 			<File
 				RelativePath="..\..\src\osgART\Tracker\ARToolKitMMAuto\SingleMarker">
