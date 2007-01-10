@@ -37,6 +37,42 @@
 using namespace std;
 using namespace osgART;
 
+#include <dshow.h>
+
+#include <string>
+#include <tchar.h>
+
+HRESULT AddToRot(IUnknown *pUnkGraph, DWORD *pdwRegister) 
+{
+    IMoniker * pMoniker;
+    IRunningObjectTable *pROT;
+    if (FAILED(GetRunningObjectTable(0, &pROT))) {
+        return E_FAIL;
+    }
+    WCHAR wsz[256];
+
+	// std::wstring wsz = L"FilterGraph " + (DWORD_PTR)pUnkGraph + L" ID: " << GetCurrentProcessId();
+
+    HRESULT hr = CreateItemMoniker(L"!", L"Whatever", &pMoniker);
+    if (SUCCEEDED(hr)) {
+        hr = pROT->Register(ROTFLAGS_REGISTRATIONKEEPSALIVE, pUnkGraph,
+            pMoniker, pdwRegister);
+        pMoniker->Release();
+    }
+    pROT->Release();
+    return hr;
+}
+
+
+void RemoveFromRot(DWORD pdwRegister)
+{
+    IRunningObjectTable *pROT;
+    if (SUCCEEDED(GetRunningObjectTable(0, &pROT))) {
+        pROT->Revoke(pdwRegister);
+        pROT->Release();
+    }
+}
+
 
  struct tpVideoFrame {
 	unsigned char* buffer;
@@ -268,8 +304,8 @@ HRESULT DSMemoryRenderer::DoRenderSample( IMediaSample * pSample )
 
 		//fprintf(stderr,"before get pointer..\n");
 		hr = pSample->GetPointer( &pSampleBuffer );
-		//fprintf(stderr,"get image..");
-		fprintf(stderr,"get buffer=%i size=%i\n",pSampleBuffer,sampleSize);
+		// fprintf(stderr,"get image..");
+		// fprintf(stderr,"get buffer=%i size=%i\n",pSampleBuffer,sampleSize);
 		if ((!m_frame->buffer) || ((long)m_frame->buffersize < sampleSize))
 		{
 			if (m_frame->buffer) delete [] m_frame->buffer;
@@ -310,8 +346,8 @@ IntranelStreamVideo::IntranelStreamVideo(): GenericVideo(),
 	m_frame->buffersize=0;
 	pixelsize=4;
 	pixelformat=VIDEOFORMAT_BGRA32;
-	xsize=640;
-	ysize=480;
+	xsize=720;
+	ysize=576;
 	m_frame->width = xsize;
 	m_frame->height = ysize;
 }
@@ -353,6 +389,8 @@ IntranelStreamVideo::open()
 		//Msg(TEXT("Failed to create filter graph.\nhr = 0x%08x"), hr);
 		exit(-1);
 	}
+
+	AddToRot(m_pGB,&this->m_dwRegister);
 
 	pDMR = new DSMemoryRenderer(m_frame,this,NULL,&hr);
 
@@ -408,7 +446,9 @@ IntranelStreamVideo::close()
 			 pFilter->Release();
 		}
 		pEnum->Release();
-	};
+	}
+
+	RemoveFromRot(this->m_dwRegister);
 	
 }
 
@@ -537,6 +577,33 @@ return myFilter;
 
 }
 
+IAMStreamConfig* GetIAMStreamConfig(IBaseFilter* pFilter)
+{
+	IAMStreamConfig *_result = 0;
+	IEnumPins *_enum = 0;
+	IPin *_pin = 0;
+
+	HRESULT _hr = pFilter->EnumPins(&_enum);
+	if (FAILED(_hr)) {
+		std::cerr << "Filter Enumeration failed" << std::endl;
+		return 0;
+	}
+
+	while (_enum->Next(1, &_pin, 0) == S_OK) {
+
+		_hr = _pin->QueryInterface(IID_IAMStreamConfig, (void**)&_result);
+		if (S_OK == _hr) {
+			return _result;
+		}
+		_pin->Release();
+	}
+	_enum->Release();
+
+	return 0;
+}
+
+
+
 
 HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 {
@@ -581,8 +648,7 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 	IBaseFilter *myRTSPFilter=GetFilter("RTSP Source");
 	
 	hr = m_pGB->AddFilter(myRTSPFilter, L"Video Network Proxy");
-    if (FAILED(hr))
-    {
+    if (FAILED(hr)) {
 		std::cout << "Failed to add filter!" << std::endl;
         return hr;
     }
@@ -592,8 +658,7 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 	IBaseFilter *myFFDShowFilter = GetFilter("ffdshow MPEG-4 Video Decoder");
 	
 	hr = m_pGB->AddFilter(myFFDShowFilter, L"Video Conversion");
-    if (FAILED(hr))
-	{
+    if (FAILED(hr)) {
 		std::cout << "Failed to add filter!" << std::endl;
         return hr;
     }
@@ -602,87 +667,72 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 	IPin* ffdshowPinOut;
 	IPin* ffdshowPinIn;
 
-	GetPin(myRTSPFilter, PINDIR_OUTPUT,"Video Out", &rtspPinOut);
-	GetPin(myFFDShowFilter, PINDIR_INPUT,"In", &ffdshowPinIn);
-	GetPin(myFFDShowFilter, PINDIR_OUTPUT,"Out", &ffdshowPinOut);
+	if (FAILED(GetPin(myRTSPFilter, PINDIR_OUTPUT,"Video Out", &rtspPinOut))) {
+		std::cout << "Can't find Video Out pin" << std::endl;
+	}
+	if (FAILED(GetPin(myFFDShowFilter, PINDIR_INPUT,"In", &ffdshowPinIn))) {
+		std::cout << "Can't find In pin" << std::endl;
+	}
+	if (FAILED(GetPin(myFFDShowFilter, PINDIR_OUTPUT,"Out", &ffdshowPinOut))) {
+		std::cout << "Can't find Out pin" << std::endl;
+	}
 
-	hr=m_pGB->Connect(rtspPinOut, ffdshowPinIn);
-	if (FAILED(hr))
-    {
-		std::cout << "Failed to connect pin!" << std::endl;
+	hr = m_pGB->Connect(rtspPinOut, ffdshowPinIn);
+	if (FAILED(hr)) {
+		std::cout << "Failed to connect pin! (RTSP > ffdshow)" << std::endl;
         return hr;
     }
 
-	
 	m_pFSrc = myFFDShowFilter;
-	// m_pFSrc = myRTSPFilter;
 
-	/*
-	hr = m_pCapture->FindInterface(&PIN_CATEGORY_CAPTURE, NULL,
-		myFFDShowFilter, IID_IAMStreamConfig, (void**)&pSrcConfig);
-	if (FAILED(hr)) 
-	{
-		std::cout << "Failed to find a Stream config!" << std::endl;
-        return hr;
+	pSrcConfig = GetIAMStreamConfig(myRTSPFilter);
+	if (pSrcConfig) {
+		std::cout << "Failed to find a Stream config (RTSP)" << std::endl;
+        // return hr;
 	}
-	*/
-
 
 	IPin *pIn = NULL;
 
-	pIn=ffdshowPinOut;
+	pIn = ffdshowPinOut;
 
 
 	AM_MEDIA_TYPE am_media;
 	// GetMediaType(rtspPinOut,&am_media);
 	// GetMediaType(ffdshowPinIn,&am_media);
 	if (S_OK == GetMediaType(ffdshowPinOut,&am_media)) {
-
 		// pSrcConfig->SetFormat(&am_media);
-
+	} else {
+		std::cout << "Could not get media format." << std::endl;
 	}
-//	if (S_OK == GetMediaType(pIn,&am_media,srcinfo)) 
-	
-	// pSrcConfig->SetFormat(&am_media);
-	
 
 	DisplayProperties(ffdshowPinOut);
 
+	DisplayFilter(myFFDShowFilter);
 
 
     // Render the preview pin on the video capture filter.
     // This will create and connect any necessary transform filters.
     // We pass a pointer to the IBaseFilter interface of our DSMemoryRendere
     // video renderer, which will draw store the frames in the dedicated memory.
-   // hr = m_pCapture->RenderStream (NULL, &MEDIATYPE_Video,
-   //                                m_pFSrc, NULL, NULL);
-    hr = m_pCapture->RenderStream (NULL, &MEDIATYPE_Video,
-									m_pFSrc, NULL, pRenderer);
-    if (FAILED(hr))
-
+	hr = m_pCapture->RenderStream(NULL, &MEDIATYPE_Video,
+									myFFDShowFilter, NULL, pRenderer);
+    
+	if (FAILED(hr))
     {
 		std::cout << "Could not render the capture stream." << std::endl;
         return hr;
     }
 	else
 	{
-		//Msg(TEXT("Connected !!!"));
+		std::cout << "All components are connected." << std::endl;
 	}
-
-
-	DisplayFilter(myFFDShowFilter);
-
-
-
-	//if (m_src->show_filter) 
-//		DisplayFilter();
 
     return S_OK;
 }
 
-HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 
-//	if (!srcinfo) return E_FAIL;
+
+HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 
 	CComPtr<IEnumMediaTypes> e_mt;
 	pin->EnumMediaTypes(&e_mt);
@@ -703,8 +753,9 @@ HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 				  	(pvi->bmiHeader.biHeight == m_frame->height)) 
 				{
 
-					fprintf(stderr,"DEBUG:Media Type=Video RGB32 %dx%d\n",
-						pvi->bmiHeader.biWidth, pvi->bmiHeader.biHeight);
+					std::cout << "Using RGB32 " <<
+						pvi->bmiHeader.biWidth << "x" << 
+						pvi->bmiHeader.biHeight << std::endl;
 
 					CopyMediaType(mt,n_mt);
 					DeleteMediaType(n_mt);

@@ -165,6 +165,9 @@ private:
 	CComPtr<IMediaControl>			m_pMC;
     CComPtr<IMediaEvent>			m_pME;			// Media Event
     
+    // for external access
+    DWORD m_dwRegister;
+    
     protected:
     
     /** 
