@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simpleShadow", "simpleShadow.vcproj", "{C8317BE2-D6DB-48A9-A6D7-F50BDF71F5AD}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C8317BE2-D6DB-48A9-A6D7-F50BDF71F5AD}.Debug.ActiveCfg = Debug|Win32
+		{C8317BE2-D6DB-48A9-A6D7-F50BDF71F5AD}.Debug.Build.0 = Debug|Win32
+		{C8317BE2-D6DB-48A9-A6D7-F50BDF71F5AD}.Release.ActiveCfg = Release|Win32
+		{C8317BE2-D6DB-48A9-A6D7-F50BDF71F5AD}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
