@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_intranel", cfg);
+	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
 
 	// check if loading the plugin was successful
 	if (!video.valid()) 

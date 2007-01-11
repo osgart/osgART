@@ -136,6 +136,9 @@
 		4A55AB560AA7AD9F005EDC69 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A55ABB40AA7B65A005EDC69 /* osgart_artoolkit.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A55AB1F0AA7A376005EDC69 /* osgart_artoolkit.so */; };
 		4A5E72530ADDE57500A8249D /* Field in Headers */ = {isa = PBXBuildFile; fileRef = 4A5E72520ADDE57500A8249D /* Field */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A6AC5A60B55CB2200BFED12 /* Utils in Headers */ = {isa = PBXBuildFile; fileRef = 4A6AC5A50B55CB2200BFED12 /* Utils */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A6AC5CE0B55CB7100BFED12 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6AC5CD0B55CB7100BFED12 /* Utils.cpp */; };
+		4A6AC6CC0B55CEE300BFED12 /* osgart_dummyimage.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A9969CD0AC785D10068A373 /* osgart_dummyimage.so */; };
 		4A8F9F5409D8FA5800E57FEA /* Marker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8F9F5009D8FA5800E57FEA /* Marker.cpp */; };
 		4A8F9F5709D8FA5800E57FEA /* VideoBillboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */; };
 		4A94BA7F0AC8BFE600E20A2A /* VideoLoadModel in Headers */ = {isa = PBXBuildFile; fileRef = 4A94BA7E0AC8BFE600E20A2A /* VideoLoadModel */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -216,10 +219,6 @@
 		78BDBFC3091B012400D9D0B9 /* osgUtil.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
 		78BDBFC4091B012400D9D0B9 /* Producer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
 		78BDBFC8091B012E00D9D0B9 /* osgART.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
-		78BDC0A6091B013900D9D0B9 /* libAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAA09184FDD00414BD5 /* libAR.a */; };
-		78BDC0A7091B013900D9D0B9 /* libARgsub_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */; };
-		78BDC0A8091B013900D9D0B9 /* libARMulti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAC09184FDD00414BD5 /* libARMulti.a */; };
-		78BDC0A9091B013900D9D0B9 /* libARvideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAD09184FDD00414BD5 /* libARvideo.a */; };
 		78BDC0AA091B013900D9D0B9 /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		78BDC0AB091B013900D9D0B9 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		78BDC0AC091B013900D9D0B9 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
@@ -309,17 +308,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				4A6AC6CC0B55CEE300BFED12 /* osgart_dummyimage.so in CopyFiles */,
 				4A55ABB40AA7B65A005EDC69 /* osgart_artoolkit.so in CopyFiles */,
 				4A38FAE70AD5EE25006DC8DB /* osgart_artoolkit_tracker.so in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4A55AB6B0AA7B043005EDC69 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 6;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,10 +341,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4A0B2D4B0AE4A07300F4E8A3 /* libAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAR.a; path = ../../ARToolKit/ARToolKit4/lib/libAR.a; sourceTree = SOURCE_ROOT; };
-		4A0B2D4C0AE4A07300F4E8A3 /* libARgsub_lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARgsub_lite.a; path = ../../ARToolKit/ARToolKit4/lib/libARgsub_lite.a; sourceTree = SOURCE_ROOT; };
-		4A0B2D4D0AE4A07300F4E8A3 /* libARMulti.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARMulti.a; path = ../../ARToolKit/ARToolKit4/lib/libARMulti.a; sourceTree = SOURCE_ROOT; };
-		4A0B2D4E0AE4A07300F4E8A3 /* libARvideo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARvideo.a; path = ../../ARToolKit/ARToolKit4/lib/libARvideo.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4B0AE4A07300F4E8A3 /* libAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAR.a; path = ../../ARToolKit4/lib/libAR.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4C0AE4A07300F4E8A3 /* libARgsub_lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARgsub_lite.a; path = ../../ARToolKit4/lib/libARgsub_lite.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4D0AE4A07300F4E8A3 /* libARMulti.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARMulti.a; path = ../../ARToolKit4/lib/libARMulti.a; sourceTree = SOURCE_ROOT; };
+		4A0B2D4E0AE4A07300F4E8A3 /* libARvideo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARvideo.a; path = ../../ARToolKit4/lib/libARvideo.a; sourceTree = SOURCE_ROOT; };
 		4A174B890AD9D01900B9FC9B /* ARToolKit4Tracker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ARToolKit4Tracker; sourceTree = "<group>"; };
 		4A174B8A0AD9D01900B9FC9B /* ARToolKit4Tracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARToolKit4Tracker.cpp; sourceTree = "<group>"; };
 		4A174B8B0AD9D01900B9FC9B /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
@@ -400,6 +391,15 @@
 		4A55A7130AA78803005EDC69 /* VideoPlugin */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoPlugin; sourceTree = "<group>"; };
 		4A55AB1F0AA7A376005EDC69 /* osgart_artoolkit.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = osgart_artoolkit.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A5E72520ADDE57500A8249D /* Field */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Field; sourceTree = "<group>"; };
+		4A6AC59E0B55CAF500BFED12 /* ARTagTracker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = ARTagTracker; sourceTree = "<group>"; };
+		4A6AC59F0B55CAF500BFED12 /* ARTagTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARTagTracker.cpp; sourceTree = "<group>"; };
+		4A6AC5A00B55CAF500BFED12 /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
+		4A6AC5A10B55CAF500BFED12 /* MultiMarker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = MultiMarker; sourceTree = "<group>"; };
+		4A6AC5A20B55CAF500BFED12 /* MultiMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = MultiMarker.cpp; sourceTree = "<group>"; };
+		4A6AC5A30B55CAF500BFED12 /* SingleMarker */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = SingleMarker; sourceTree = "<group>"; };
+		4A6AC5A40B55CAF500BFED12 /* SingleMarker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SingleMarker.cpp; sourceTree = "<group>"; };
+		4A6AC5A50B55CB2200BFED12 /* Utils */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Utils; sourceTree = "<group>"; };
+		4A6AC5CD0B55CB7100BFED12 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
 		4A8F9F4809D8F9F300E57FEA /* Marker */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = Marker; sourceTree = "<group>"; };
 		4A8F9F5009D8FA5800E57FEA /* Marker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Marker.cpp; sourceTree = "<group>"; };
 		4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoBillboard.cpp; sourceTree = "<group>"; };
@@ -538,32 +538,32 @@
 		7842DB4609182F8200414BD5 /* VideoTextureRectangle.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoTextureRectangle.cpp; sourceTree = "<group>"; };
 		7842DB5709183C2F00414BD5 /* osgART.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = osgART.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7842DB5909183C2F00414BD5 /* osgART-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgART-Info.plist"; sourceTree = "<group>"; };
-		7842DC8B09184F5F00414BD5 /* gdal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gdal.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/gdal.framework; sourceTree = SOURCE_ROOT; };
-		7842DC8C09184F5F00414BD5 /* OpenThreads.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenThreads.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/OpenThreads.framework; sourceTree = SOURCE_ROOT; };
-		7842DC8D09184F5F00414BD5 /* osg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osg.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osg.framework; sourceTree = SOURCE_ROOT; };
-		7842DC8E09184F5F00414BD5 /* osgDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgDB.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgDB.framework; sourceTree = SOURCE_ROOT; };
-		7842DC8F09184F5F00414BD5 /* osgFX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgFX.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgFX.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9009184F5F00414BD5 /* osgGA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgGA.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgGA.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9109184F5F00414BD5 /* osgIntrospection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgIntrospection.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgIntrospection.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9209184F5F00414BD5 /* osgParticle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgParticle.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgParticle.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9309184F5F00414BD5 /* osgProducer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgProducer.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgProducer.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9409184F5F00414BD5 /* osgSim.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgSim.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgSim.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9509184F5F00414BD5 /* osgTerrain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgTerrain.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgTerrain.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9609184F5F00414BD5 /* osgText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgText.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgText.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9709184F5F00414BD5 /* osgUtil.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgUtil.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/osgUtil.framework; sourceTree = SOURCE_ROOT; };
-		7842DC9809184F5F00414BD5 /* Producer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Producer.framework; path = ../../OpenSceneGraph/OpenSceneGraph/Frameworks/Producer.framework; sourceTree = SOURCE_ROOT; };
+		7842DC8B09184F5F00414BD5 /* gdal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gdal.framework; path = ../../OpenSceneGraph/Frameworks/gdal.framework; sourceTree = SOURCE_ROOT; };
+		7842DC8C09184F5F00414BD5 /* OpenThreads.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenThreads.framework; path = ../../OpenSceneGraph/Frameworks/OpenThreads.framework; sourceTree = SOURCE_ROOT; };
+		7842DC8D09184F5F00414BD5 /* osg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osg.framework; path = ../../OpenSceneGraph/Frameworks/osg.framework; sourceTree = SOURCE_ROOT; };
+		7842DC8E09184F5F00414BD5 /* osgDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgDB.framework; path = ../../OpenSceneGraph/Frameworks/osgDB.framework; sourceTree = SOURCE_ROOT; };
+		7842DC8F09184F5F00414BD5 /* osgFX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgFX.framework; path = ../../OpenSceneGraph/Frameworks/osgFX.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9009184F5F00414BD5 /* osgGA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgGA.framework; path = ../../OpenSceneGraph/Frameworks/osgGA.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9109184F5F00414BD5 /* osgIntrospection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgIntrospection.framework; path = ../../OpenSceneGraph/Frameworks/osgIntrospection.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9209184F5F00414BD5 /* osgParticle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgParticle.framework; path = ../../OpenSceneGraph/Frameworks/osgParticle.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9309184F5F00414BD5 /* osgProducer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgProducer.framework; path = ../../OpenSceneGraph/Frameworks/osgProducer.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9409184F5F00414BD5 /* osgSim.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgSim.framework; path = ../../OpenSceneGraph/Frameworks/osgSim.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9509184F5F00414BD5 /* osgTerrain.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgTerrain.framework; path = ../../OpenSceneGraph/Frameworks/osgTerrain.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9609184F5F00414BD5 /* osgText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgText.framework; path = ../../OpenSceneGraph/Frameworks/osgText.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9709184F5F00414BD5 /* osgUtil.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = osgUtil.framework; path = ../../OpenSceneGraph/Frameworks/osgUtil.framework; sourceTree = SOURCE_ROOT; };
+		7842DC9809184F5F00414BD5 /* Producer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Producer.framework; path = ../../OpenSceneGraph/Frameworks/Producer.framework; sourceTree = SOURCE_ROOT; };
 		7842DE9609184FA400414BD5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
-		7842DEAA09184FDD00414BD5 /* libAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAR.a; path = ../../ARToolKit/artoolkit/lib/libAR.a; sourceTree = SOURCE_ROOT; };
-		7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARgsub_lite.a; path = ../../ARToolKit/artoolkit/lib/libARgsub_lite.a; sourceTree = SOURCE_ROOT; };
-		7842DEAC09184FDD00414BD5 /* libARMulti.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARMulti.a; path = ../../ARToolKit/artoolkit/lib/libARMulti.a; sourceTree = SOURCE_ROOT; };
-		7842DEAD09184FDD00414BD5 /* libARvideo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARvideo.a; path = ../../ARToolKit/artoolkit/lib/libARvideo.a; sourceTree = SOURCE_ROOT; };
+		7842DEAA09184FDD00414BD5 /* libAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAR.a; path = ../../ARToolKit/lib/libAR.a; sourceTree = SOURCE_ROOT; };
+		7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARgsub_lite.a; path = ../../ARToolKit/lib/libARgsub_lite.a; sourceTree = SOURCE_ROOT; };
+		7842DEAC09184FDD00414BD5 /* libARMulti.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARMulti.a; path = ../../ARToolKit/lib/libARMulti.a; sourceTree = SOURCE_ROOT; };
+		7842DEAD09184FDD00414BD5 /* libARvideo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libARvideo.a; path = ../../ARToolKit/lib/libARvideo.a; sourceTree = SOURCE_ROOT; };
 		7842DEB40918502F00414BD5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		7842DEB50918502F00414BD5 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		7842DFB60918505900414BD5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BDBDDE091B00CA00D9D0B9 /* osgARTTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgARTTest-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
-		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../bin/Data; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -731,10 +731,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78BDC0A6091B013900D9D0B9 /* libAR.a in Frameworks */,
-				78BDC0A7091B013900D9D0B9 /* libARgsub_lite.a in Frameworks */,
-				78BDC0A8091B013900D9D0B9 /* libARMulti.a in Frameworks */,
-				78BDC0A9091B013900D9D0B9 /* libARvideo.a in Frameworks */,
 				78BDC0AA091B013900D9D0B9 /* gdal.framework in Frameworks */,
 				78BDC0AB091B013900D9D0B9 /* OpenThreads.framework in Frameworks */,
 				78BDC0AC091B013900D9D0B9 /* osg.framework in Frameworks */,
@@ -815,6 +811,7 @@
 				4A38FA2F0AD5E077006DC8DB /* ARToolKit */,
 				4A174B860AD9CFA600B9FC9B /* ARToolKit4 */,
 				4A38FA370AD5E077006DC8DB /* ARToolKit4NFT */,
+				4A6AC59D0B55CAF500BFED12 /* ARTag */,
 				4AF467E30B251A2C00C433EE /* bazAR */,
 			);
 			path = Tracker;
@@ -850,7 +847,7 @@
 			path = ARToolKit4NFT;
 			sourceTree = "<group>";
 		};
-		4A38FAE10AD5EDA2006DC8DB /* artoolkit */ = {
+		4A38FAE10AD5EDA2006DC8DB /* ARToolKit */ = {
 			isa = PBXGroup;
 			children = (
 				7842DEAA09184FDD00414BD5 /* libAR.a */,
@@ -858,7 +855,7 @@
 				7842DEAC09184FDD00414BD5 /* libARMulti.a */,
 				7842DEAD09184FDD00414BD5 /* libARvideo.a */,
 			);
-			name = artoolkit;
+			name = ARToolKit;
 			sourceTree = "<group>";
 		};
 		4A38FAE20AD5EDAD006DC8DB /* ARToolKit4 */ = {
@@ -927,6 +924,20 @@
 				78BDBDDE091B00CA00D9D0B9 /* osgARTTest-Info.plist */,
 			);
 			name = resources;
+			sourceTree = "<group>";
+		};
+		4A6AC59D0B55CAF500BFED12 /* ARTag */ = {
+			isa = PBXGroup;
+			children = (
+				4A6AC59E0B55CAF500BFED12 /* ARTagTracker */,
+				4A6AC59F0B55CAF500BFED12 /* ARTagTracker.cpp */,
+				4A6AC5A10B55CAF500BFED12 /* MultiMarker */,
+				4A6AC5A20B55CAF500BFED12 /* MultiMarker.cpp */,
+				4A6AC5A30B55CAF500BFED12 /* SingleMarker */,
+				4A6AC5A40B55CAF500BFED12 /* SingleMarker.cpp */,
+				4A6AC5A00B55CAF500BFED12 /* Main.cpp */,
+			);
+			path = ARTag;
 			sourceTree = "<group>";
 		};
 		4A996A180AC7865B0068A373 /* CvCam */ = {
@@ -1262,6 +1273,7 @@
 				4AE1ED410A63093A007D0FA4 /* ReflectionVideoFunctor */,
 				4A99697F0AC783430068A373 /* ShadowRenderer */,
 				4AE1ED430A63093A007D0FA4 /* TrackerManager */,
+				4A6AC5A50B55CB2200BFED12 /* Utils */,
 				4A9969800AC783430068A373 /* VideoAvatar */,
 				7842DB2C09182F8200414BD5 /* VideoBackground */,
 				7842DB2E09182F8200414BD5 /* VideoBillboard */,
@@ -1310,6 +1322,7 @@
 				4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */,
 				4A9969890AC783A20068A373 /* ShadowRenderer.cpp */,
 				4AE1ED600A630FD8007D0FA4 /* TrackerManager.cpp */,
+				4A6AC5CD0B55CB7100BFED12 /* Utils.cpp */,
 				4A99698A0AC783A20068A373 /* VideoAvatar.cpp */,
 				7842DB4009182F8200414BD5 /* VideoBackground.cpp */,
 				4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */,
@@ -1343,7 +1356,7 @@
 		7842DC8809184F3200414BD5 /* External Libraries & Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4A38FAE10AD5EDA2006DC8DB /* artoolkit */,
+				4A38FAE10AD5EDA2006DC8DB /* ARToolKit */,
 				4A38FAE20AD5EDAD006DC8DB /* ARToolKit4 */,
 				7842DC8B09184F5F00414BD5 /* gdal.framework */,
 				7842DC8C09184F5F00414BD5 /* OpenThreads.framework */,
@@ -1435,6 +1448,7 @@
 				4A133C280A8BBEA100C95219 /* ReflectionVideoFunctor in Headers */,
 				4A9969830AC783430068A373 /* ShadowRenderer in Headers */,
 				4A133C2B0A8BBEA100C95219 /* TrackerManager in Headers */,
+				4A6AC5A60B55CB2200BFED12 /* Utils in Headers */,
 				4A9969840AC783430068A373 /* VideoAvatar in Headers */,
 				4A133C2F0A8BBEA100C95219 /* VideoBackground in Headers */,
 				4A133C300A8BBEA100C95219 /* VideoBillboard in Headers */,
@@ -1573,7 +1587,6 @@
 				78BDBDDA091B00CA00D9D0B9 /* Frameworks */,
 				78BDBE5D091B011200D9D0B9 /* CopyFiles */,
 				4A55AB660AA7AFA7005EDC69 /* CopyFiles */,
-				4A55AB6B0AA7B043005EDC69 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1697,6 +1710,7 @@
 				4A99698F0AC783A20068A373 /* PlaneARShadowRenderer.cpp in Sources */,
 				4A9969900AC783A20068A373 /* ShadowRenderer.cpp in Sources */,
 				4AE1ED740A630FD8007D0FA4 /* TrackerManager.cpp in Sources */,
+				4A6AC5CE0B55CB7100BFED12 /* Utils.cpp in Sources */,
 				7842DB8009184AA900414BD5 /* VideoBackground.cpp in Sources */,
 				4A8F9F5709D8FA5800E57FEA /* VideoBillboard.cpp in Sources */,
 				4AE1ED770A630FD8007D0FA4 /* VideoLayer.cpp in Sources */,
@@ -1774,21 +1788,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4_tracker;
 			};
@@ -1802,21 +1812,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4_tracker;
 			};
@@ -1830,21 +1836,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit_tracker;
 			};
@@ -1858,21 +1860,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = (
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
-				);
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
-				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
+				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit_tracker;
 			};
@@ -1886,17 +1884,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4nft_tracker;
 			};
@@ -1910,17 +1908,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4nft_tracker;
 			};
@@ -1934,17 +1932,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit;
 			};
@@ -1958,17 +1956,17 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit;
 			};
@@ -1982,17 +1980,12 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					../include,
-					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
-				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/include\"";
+				HEADER_SEARCH_PATHS = ../include;
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
+				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_dummyimage;
 			};
@@ -2006,17 +1999,12 @@
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
-				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
-				HEADER_SEARCH_PATHS = (
-					../include,
-					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
-				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/include\"";
+				HEADER_SEARCH_PATHS = ../include;
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
-				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/artoolkit/lib\"";
+				LIBRARY_SEARCH_PATHS = "";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_dummyimage;
 			};
@@ -2056,7 +2044,7 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 114;
 				DYLIB_CURRENT_VERSION = 120;
-				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				HEADER_SEARCH_PATHS = ../include;
@@ -2079,7 +2067,7 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 114;
 				DYLIB_CURRENT_VERSION = 120;
-				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/Frameworks;
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				HEADER_SEARCH_PATHS = ../include;
@@ -2100,15 +2088,10 @@
 		78BDBDE0091B00CA00D9D0B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
-				HEADER_SEARCH_PATHS = (
-					../include,
-					../../ARToolKit/artoolkit/include,
-				);
 				INFOPLIST_FILE = "osgARTTest-Info.plist";
 				INSTALL_PATH = "$(USER_APPS_DIR)";
-				LIBRARY_SEARCH_PATHS = ../../ARToolKit/artoolkit/lib;
 				PRODUCT_NAME = osgARTTest;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2121,15 +2104,10 @@
 		78BDBDE1091B00CA00D9D0B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = ../../OpenSceneGraph/OpenSceneGraph/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
-				HEADER_SEARCH_PATHS = (
-					../include,
-					../../ARToolKit/artoolkit/include,
-				);
 				INFOPLIST_FILE = "osgARTTest-Info.plist";
 				INSTALL_PATH = "$(USER_APPS_DIR)";
-				LIBRARY_SEARCH_PATHS = ../../ARToolKit/artoolkit/lib;
 				PRODUCT_NAME = osgARTTest;
 				WARNING_CFLAGS = (
 					"-Wmost",
