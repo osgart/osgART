@@ -3,11 +3,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgART", "osgART.vcproj", "
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "..\Example\Example_vc71.vcproj", "{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9FF3836F-BFC1-4C40-A96A-500ECC88440C} = {9FF3836F-BFC1-4C40-A96A-500ECC88440C}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_dsvl", "..\osgart_dsvl\osgart_dsvl.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -48,31 +43,27 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_CVCam", "..\osgart_c
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit_tracker", "..\osgart_artoolkit_tracker\osgart_artoolkit_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example_Benchmark", "..\Example_Benchmark\Example_Benchmark_vc71.vcproj", "{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit4nft_tracker", "..\osgart_artoolkit4NFT_tracker\osgart_artoolkit4nft_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artag_tracker_profiler", "..\osgart_artag_tracker\osgart_artag_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_bazar_tracker", "..\osgart_bazar\osgart_bazar_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit_tracker4_profiler", "..\osgart_artoolkit4_tracker\osgart_artoolkit4_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgARTbazARTest", "..\osgARTbazARTest\osgARTbazARTest.vcproj", "{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit_tracker_profiler", "..\osgart_artoolkit_tracker\osgart_artoolkit_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artag_tracker", "..\osgart_artag_tracker\osgart_artag_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkitplus_tracker_profiler", "..\osgart_artoolkitplus_tracker\osgart_artoolkitplus_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkitplus_tracker", "..\osgart_artoolkitplus_tracker\osgart_artoolkitplus_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit_tracker_profiler", "..\osgart_tracker_profiler\osgart_artoolkit_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_tracker_profiler", "..\osgart_tracker_profiler\osgart_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -88,22 +79,6 @@ Global
 		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Debug.Build.0 = Debug|Win32
 		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Release.ActiveCfg = Release|Win32
 		{9FF3836F-BFC1-4C40-A96A-500ECC88440C}.Release.Build.0 = Release|Win32
-		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Debug.ActiveCfg = Debug|Win32
-		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Debug.Build.0 = Debug|Win32
-		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.ActiveCfg = Release|Win32
-		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.Build.0 = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
@@ -148,6 +123,14 @@ Global
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Debug.Build.0 = Debug|Win32
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.ActiveCfg = Release|Win32
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.Build.0 = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
