@@ -1,5 +1,5 @@
 #include "MultiMarker"
-#include "ProfilerTools"
+#include "osgART/Utils"
 namespace osgART {
 
 	MultiMarker::MultiMarker() : Marker(),
@@ -22,11 +22,11 @@ namespace osgART {
 	bool 
 	MultiMarker::initialise(const std::string& multiFile, const std::string& multiName) {
 		static MultiFileID = load_array_file((char*)multiFile.c_str());
-		osg::notify() << "MultiMarker, looking for multi : " << multiName << " in file " << multiFile<< endl;
+		osg::notify() << "MultiMarker, looking for multi : " << multiName << " in file " << multiFile<< std::endl;
 		
 		// Check if multifile exists!!!
 		if (MultiFileID==-1)
-			osg::notify(osg::WARN) << "ARTag can not find the multimarker file!" << endl;
+			osg::notify(osg::WARN) << "ARTag can not find the multimarker file!" << std::endl;
 
 		m_multi_patt_id = artag_associate_array((char*)multiName.c_str());
 		if (m_multi_patt_id == -1) return false;

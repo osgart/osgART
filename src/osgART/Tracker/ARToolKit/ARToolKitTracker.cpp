@@ -70,18 +70,21 @@ namespace osgART {
 		ARParam cparam;	
 	};
 
-
 	ARToolKitTracker::ARToolKitTracker() : 
 #ifdef AR_TRACKER_PROFILER
-	ARToolKitTrackerProfiler("ARToolkit", AR_HEADER_VERSION_STRING),
+	ARToolKitTrackerProfiler<int>(),
 #else
-	ARToolKitTrackerProfiler(),
+	GenericTracker(),
 #endif
 			m_threshold(100),
 			m_debugmode(false),
 			m_marker_num(0),
 			m_cparam(new CameraParameter)
 	{
+		//version and name of the tracker
+		m_name		= "ARToolkit";
+		m_version	= AR_HEADER_VERSION_STRING;
+
 		//normal fields
 		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
 	

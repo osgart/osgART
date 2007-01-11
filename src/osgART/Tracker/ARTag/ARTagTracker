@@ -37,8 +37,12 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARTagTracker 
-		: public ARToolKitTrackerProfiler
+	class ARTagTracker :
+#ifdef AR_TRACKER_PROFILER
+		public ARToolKitTrackerProfiler<int>
+#else
+		public GenericTracker
+#endif	
 	{
 	public:        
 		#define AR_PIXEL_FORMAT_MONO 0

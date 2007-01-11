@@ -140,8 +140,14 @@ namespace osgART {
 		osg::notify() << "osgART::GenericTracker::PrintOptions() : No description available!" << std::endl;
 	}
 	
+	std::string GenericTracker::getLabel() const {
+		std::string Result = m_name;
+		Result += "-";
+		Result += m_version;
+		return Result;
+	}
 
-
+	
 
 
 	

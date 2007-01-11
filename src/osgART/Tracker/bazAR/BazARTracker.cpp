@@ -290,12 +290,12 @@ namespace osgART {
 				if(value = atof(line.c_str()))
 				{
 					bazconf->ransac_dist_threshold = value;
-					cout<<"BazARTracker: detector.ransac_dist_threshold = "<< right << bazconf->ransac_dist_threshold <<endl;
+					std::cout<<"BazARTracker: detector.ransac_dist_threshold = "<< right << bazconf->ransac_dist_threshold <<endl;
 				}
 				else
 				{
-					cout<<"BazARTracker: detector.ransac_dist_threshold = "<< bazconf->ransac_dist_threshold <<endl;
-					cout<<"BazARTracker: ---> possible read error, sure this is 0?" << endl;
+					std::cout<<"BazARTracker: detector.ransac_dist_threshold = "<< bazconf->ransac_dist_threshold <<endl;
+					std::cout<<"BazARTracker: ---> possible read error, sure this is 0?" << endl;
 				}
 				done = true;
 			}

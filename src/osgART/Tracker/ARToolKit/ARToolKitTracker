@@ -32,10 +32,11 @@
 
 #include <string>
 
+
 #ifdef AR_TRACKER_PROFILER
 #include "ARToolKitTrackerProfiler"
-#else
-typedef osgART::GenericTracker ARToolKitTrackerProfiler;
+//#else
+//typedef osgART::GenericTracker ARToolKitTrackerProfiler;
 #endif
 
 namespace osgART {
@@ -48,7 +49,11 @@ namespace osgART {
 	*
 	*/
 	class ARToolKitTracker	: 
-		public ARToolKitTrackerProfiler
+#ifdef AR_TRACKER_PROFILER
+		public ARToolKitTrackerProfiler<int>
+#else
+		public GenericTracker
+#endif		
 	{
 
 	public:        

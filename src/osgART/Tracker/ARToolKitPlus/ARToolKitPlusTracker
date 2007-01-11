@@ -208,10 +208,11 @@ protected:
 		
 };
 
-
+/*
 #ifndef AR_TOOLKIT_PROFILER
 typedef GenericTracker ARToolKitTrackerProfiler;
 #endif
+*/
 
 //==============================================================================
 //==============================================================================
@@ -232,8 +233,12 @@ typedef GenericTracker ARToolKitTrackerProfiler;
 * \todo Add setNumAutoThresholdRetries
 */
 
-	class ARToolKitTracker_Plus 
-		: public ARToolKitTrackerProfiler
+	class ARToolKitTracker_Plus :
+#ifdef AR_TRACKER_PROFILER
+		public ARToolKitTrackerProfiler<int>
+#else
+		public GenericTracker
+#endif	
 {
 public:       
 	/** 

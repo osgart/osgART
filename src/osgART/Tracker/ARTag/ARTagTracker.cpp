@@ -11,6 +11,7 @@
 
 #include "SingleMarker"
 #include "MultiMarker"
+#include "osgART/Utils"
 
 #include <osgART/GenericVideo>
 #include <osgART/VideoConfig>
@@ -68,12 +69,21 @@ int Observer2Ideal(	const T dist_factor[4],
 
 namespace osgART {
 
-	ARTagTracker::ARTagTracker() : ARToolKitTrackerProfiler("ARTag", "Rev.2"),
-		//	m_threshold(100),
+	ARTagTracker::ARTagTracker() : 
+#ifdef AR_TRACKER_PROFILER
+	ARToolKitTrackerProfiler<int>(),
+#else
+	GenericTracker(),
+#endif
 			m_debugmode(false)
 			//m_cparam(NULL)
 			//m_marker_num(0)
+
 	{
+		//version and name of the tracker
+		m_name		= "ARTag";
+		m_version	= "Rev.2.1.1";
+
 		//add callback fields
 		/*m_fields["threshold"] = new CallbackField<ARTagTracker,int>(this,
 			&ARTagTracker::getThreshold,
@@ -109,10 +119,10 @@ namespace osgART {
 		m_height = ysize, 
 
 		//rgb, 3 bytes per pixels??? change with real format..??
-		osg::notify() << "Init artag, res : " << xsize << ", " << ysize << endl;
+		osg::notify() << "Init artag, res : " << xsize << ", " << ysize << std::endl;
 		if(init_artag(xsize, ysize, 3))
 		{
-			osg::notify(osg::FATAL) << "Could not init ARTag!" << endl;
+			osg::notify(osg::FATAL) << "Could not init ARTag!" << std::endl;
 			exit(-1);
 		}
 
@@ -130,7 +140,7 @@ namespace osgART {
 
 		osg::notify() << "Camera params: focal fx/fy=" << camera_fx <<
 			"/" << camera_fy <<
-			" image center cx/cy=" << camera_cx << "/" << camera_cy << endl;
+			" image center cx/cy=" << camera_cx << "/" << camera_cy << std::endl;
 
 		if (!setupMarkers(pattlist_name)) {
 			osg::notify(osg::FATAL) << "ERROR: Marker setup failed." << std::endl;
@@ -315,10 +325,10 @@ namespace osgART {
 	void ARTagTracker::update()
 	{
 #if AR_TRACKER_PROFILE
-		osg::notify() << "Start->" << m_versionName << "::update()" << endl;
+		osg::notify() << "Start->" << getLabel() << "::update()" << std::endl;
 		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct		("arDetectMarker_TIME");		
 #endif
-		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
+//		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
 		int MarkerNum=0;//>????
 //	    register int             j, k;
 
@@ -331,7 +341,7 @@ namespace osgART {
 			artag_find_objects(m_imageptr,ConvertOSGARTPixelFormatToART(m_imageptr_format));//RGB 
 			
 		, 1 //pattern in memory, change it...???
-		, m_versionName
+		, getLabel()
 		, MarkerNum//what to put here...????
 		);
 #else
@@ -347,7 +357,7 @@ namespace osgART {
 			++iter)		
 		{
 			if (m_debugmode)
-				osg::notify() << endl << i++ << endl;
+				osg::notify() << std::endl << i++ << std::endl;
             SingleMarker*	singleMarker = dynamic_cast<SingleMarker*>((*iter).get());
 			MultiMarker*	multiMarker  = dynamic_cast<MultiMarker*>((*iter).get());
 
@@ -356,7 +366,7 @@ namespace osgART {
 				if (artag_is_object_found(singleMarker->getPatternID()))
 				{
 					if (m_debugmode)
-						osg::notify() << "Single Marker id : " << singleMarker->getARTagCode() << "found" << endl;
+						osg::notify() << "Single Marker id : " << singleMarker->getARTagCode() << "found" << std::endl;
 					singleMarker->update();
 				}
 			}
@@ -365,13 +375,13 @@ namespace osgART {
 				if (artag_is_object_found(multiMarker->getMultiPatternID()))
 				{
 					if (m_debugmode)
-						osg::notify() << "Multi Marker id : " << multiMarker->getMultiPatternID() << "found" << endl;\
+						osg::notify() << "Multi Marker id : " << multiMarker->getMultiPatternID() << "found" << std::endl;\
 					multiMarker->update();
 				}			
 			}								
 		}		
 	#if AR_TRACKER_PROFILE
-		osg::notify() << "<-Stop" << m_versionName << "::update()" << endl;
+		osg::notify() << "<-Stop" << getLabel() << "::update()" << std::endl;
 	#endif
 	}
 
@@ -424,8 +434,8 @@ namespace osgART {
 		if (m_debugmode)
 		{
 			osgART::PrintMatrix("ARTag projection Matrix :", tmp);
-			osg::notify() << "CamRight/left :" <<  camRight << "/"<<camLeft << endl;
-			osg::notify() << "CamTop/Bottom :" <<  camTop	<< "/"<<camBottom << endl;
+			osg::notify() << "CamRight/left :" <<  camRight << "/"<<camLeft << std::endl;
+			osg::notify() << "CamTop/Bottom :" <<  camTop	<< "/"<<camBottom << std::endl;
 		}
 	}
 

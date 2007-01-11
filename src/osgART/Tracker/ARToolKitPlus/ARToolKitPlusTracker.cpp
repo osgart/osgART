@@ -42,11 +42,11 @@ OSGART_PLUGIN_ENTRY()
 //==============================================================================
 //==============================================================================
 
-ARToolKitTracker_Plus::ARToolKitTracker_Plus() 
-#ifdef AR_TOOLKIT_PROFILER
-	: ARToolKitTrackerProfiler("ARTPlus", "2.1"),
+ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
+#ifdef AR_TRACKER_PROFILER
+	ARToolKitTrackerProfiler<int>(),
 #else
-	: ARToolKitTrackerProfiler(),
+	GenericTracker(),
 #endif
 			m_threshold		(_ART_PLUS_DFLT_THRESHOLD),
 			m_debugMode		(false),
@@ -61,6 +61,10 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus()
 			m_useDetectLite	(_ART_PLUS_DFLT_USE_LITE),
 			m_PlusTracker	(NULL)
 	{
+		//version and name of the tracker
+		m_name		= "ARToolkitPlus";
+		m_version	= "2.1";
+
 		//attach the field to the corresponding values
 		m_fields["nearclip"]	= new TypedField<float>(&m_NearClip);
 		m_fields["farclip"]		= new TypedField<float>(&m_FarClip);
@@ -424,8 +428,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	
 	void ARToolKitTracker_Plus::PrintOptions()const
 	{
-#if 0
-		std::cout << "===== TRACKER OPTIONS : " << m_versionName <<   std::endl;
+		std::cout << "===== TRACKER OPTIONS : " << getLabel() <<   std::endl;
 		std::cout << "* Threshold value	: " << m_threshold <<   std::endl;
 		std::cout << "* Threshold auto	: " ;
 			if (getAutoThreshold())
@@ -460,7 +463,6 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				std::cout << "UNDIST_STD"  <<   std::endl;
 			else
                 std::cout << "Unknown" <<   std::endl;
-#endif
 	}
 
 //++++++++++++++++++++++++++++++++++++
@@ -745,9 +747,9 @@ bool ARToolKitTracker_Plus::CreateTracker(
 
 	SingleMarker::~SingleMarker() {
 		// jcl64: Free the pattern
-		if (m_patt_id > 0) 
+		/*if (m_patt_id > 0) 
 			m_ParentTracker->arFreePatt(m_patt_id);
-		//m_ParentTracker sould be a osg_ref...???
+		*///m_ParentTracker sould be a osg_ref...???
 	}
 
 	Marker::MarkerType SingleMarker::getType() const {

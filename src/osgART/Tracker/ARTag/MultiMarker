@@ -17,6 +17,7 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Marker"
+#include "osgART/Utils"
 
 // ARToolKit multimarker include
 //#include <AR/arMulti.h>
