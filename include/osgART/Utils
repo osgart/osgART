@@ -1,31 +1,44 @@
 #ifndef OSGART_UTILS
 #define OSGART_UTILS
 
-
 #include <iomanip>
+#include "osgART/Export"
+#include <string>
+#include "osg/Notify"
+#include "osg/Matrix"
+#include "osgART/Field"
+
+#include <iostream>
+
 
 namespace osgART {
-
-	std::string trim(std::string& s,const std::string& drop = " ")
-	{
-		std::string r=s.erase(s.find_last_not_of(drop)+1);
-		return r.erase(0,r.find_first_not_of(drop));
-	}
+	OSGART_EXPORT std::string	trim		(std::string& s,const std::string& drop = " ");
+	OSGART_EXPORT void			PrintMatrix	(std::string name, const osg::Matrix &Transform);	
+	OSGART_EXPORT osg::Matrix	GenerateMatrix	(const osg::Vec3d & _trans, const osg::Vec3d & _rot);
+	OSGART_EXPORT osg::Matrix	DiffMatrix		(const osg::Matrix & _base, const osg::Matrix & _m2);
+	OSGART_EXPORT void			PrintVector3D	(std::string name, const osg::Vec3d &Vec3d);
 	
-	void PrintMatrix(std::string name, const osg::Matrix &Transform)
-	{
-		// Print it out
-		std::cout << "Matrix : " << name << std::endl;
-		for (int j = 0; j < 4; j++) {
-			for (int i = 0; i < 4; i++) {
-				std::cout << std::setw(10) << std::setprecision(5) << Transform(i, j) << "  ";
+	template <typename ContainerType, typename ObjType> 
+		osg::ref_ptr< osgART::TypedField<ObjType> >
+		SetField(osg::ref_ptr<ContainerType> Container, std::string Name, ObjType Value, std::string ErrorMsg="", bool ExitOnerror=false)
+		{
+			osg::ref_ptr< osgART::TypedField<ObjType> > _Field = 
+					dynamic_cast< osgART::TypedField<ObjType>* >(Container->get(Name));
+			
+			if (_Field.valid())
+			{	
+				_Field->set(Value);
 			}
-			std::cout  << std::endl;
+			else 
+			{
+				if (ErrorMsg!= "")
+					osg::notify(osg::WARN) << ErrorMsg << std::endl;
+				if (ExitOnerror)
+					exit(-1);
+			}
+			return _Field;
 		}
-		osg::notify() << " length : " << Transform.getTrans().length() << std::endl;
-		osg::notify() << std::endl;
-	}
 
-}
+};
 
 #endif
