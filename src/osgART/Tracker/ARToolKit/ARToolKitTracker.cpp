@@ -22,46 +22,6 @@
 
 
 
-#define PD_LOOP 3
-
-template <typename T> 
-int Observer2Ideal(	const T dist_factor[4], 
-					const T ox, 
-					const T oy,
-					T *ix, T *iy )
-{
-    T  z02, z0, p, q, z, px, py;
-    register int i = 0;
-
-    px = ox - dist_factor[0];
-    py = oy - dist_factor[1];
-    p = dist_factor[2]/100000000.0;
-    z02 = px*px+ py*py;
-    q = z0 = sqrt(px*px+ py*py);
-
-    for( i = 1; ; i++ ) {
-        if( z0 != 0.0 ) {
-            z = z0 - ((1.0 - p*z02)*z0 - q) / (1.0 - 3.0*p*z02);
-            px = px * z / z0;
-            py = py * z / z0;
-        }
-        else {
-            px = 0.0;
-            py = 0.0;
-            break;
-        }
-        if( i == PD_LOOP ) break;
-
-        z02 = px*px+ py*py;
-        z0 = sqrt(px*px+ py*py);
-    }
-
-    *ix = px / dist_factor[3] + dist_factor[0];
-    *iy = py / dist_factor[3] + dist_factor[1];
-
-    return(0);
-}
-
 
 namespace osgART {
 
@@ -71,7 +31,7 @@ namespace osgART {
 	};
 
 	ARToolKitTracker::ARToolKitTracker() : 
-#ifdef AR_TRACKER_PROFILER
+#if  AR_TRACKER_PROFILE
 	ARToolKitTrackerProfiler<int>(),
 #else
 	GenericTracker(),
@@ -84,6 +44,7 @@ namespace osgART {
 		//version and name of the tracker
 		m_name		= "ARToolkit";
 		m_version	= AR_HEADER_VERSION_STRING;
+		__AR_DO_PROFILE(m_version+="(Prf)");
 
 		//normal fields
 		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
@@ -100,7 +61,7 @@ namespace osgART {
 		//see SetImageRaw() for conversion
 		m_arInternalFormat	= ConvertARTPixelFormatToOSGART(AR_DEFAULT_PIXEL_FORMAT);
 #if AR_TRACKER_PROFILE
-		arLoadBench((std::string(AR_HEADER_VERSION_STRING) + std::string(".xml")).c_str());
+		arLoadBench((getLabel() + std::string(".xml")).c_str());
 #endif
 	}
 
@@ -108,7 +69,7 @@ namespace osgART {
 	{
 		delete m_cparam;
 #if AR_TRACKER_PROFILE
-		arSaveBench((std::string(AR_HEADER_VERSION_STRING) + std::string(".xml")).c_str());
+		arSaveBench((getLabel() + std::string(".xml")).c_str());
 #endif
 	}
 
@@ -327,8 +288,9 @@ namespace osgART {
 
 	void ARToolKitTracker::update()
 	{
+		if(m_debugmode)
+			osg::notify() << "Start->" << getLabel()  <<"::update()" << std::endl;
 #if AR_TRACKER_PROFILE
-		osg::notify() << "Start->" << m_versionName  <<"::update()" << endl;
 		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct		("arDetectMarker_TIME");		
 #endif
 		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
@@ -338,7 +300,7 @@ namespace osgART {
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
-#if  0//AR_TRACKER_PROFILE
+#if  AR_TRACKER_PROFILE
 		AR_BENCH_TIME(ThisFct, 
 			// Detect the markers in the video frame.
 			if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
@@ -347,7 +309,7 @@ namespace osgART {
 				return;
 			}
 		, m_markerlist.size()
-		, m_versionName
+			, std::string("test")//getLabel()
 		, m_marker_num
 		);
 #else
@@ -386,13 +348,12 @@ namespace osgART {
 				if(k != -1) 
 				{
 					singleMarker->update(&marker_info[k]);
-#if AR_TRACKER_PROFILE
-					RecordMarkerStats(marker_info[k].id, marker_info[k].cf, singleMarker->getTransform(), true);
-#endif// AR_TRACKER_PROFILE
+					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, true));
 				} 
 				else 
 				{
 					singleMarker->update(NULL);
+					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, false));
 				}
 			}
 			else if (multiMarker)
@@ -403,9 +364,9 @@ namespace osgART {
 				osg::notify(osg::WARN) << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
 			}
 		}
-#if AR_TRACKER_PROFILE
-		osg::notify() << "<-Stop" << m_versionName << "::update()" << endl;
-#endif
+		
+		if(m_debugmode)
+			osg::notify() << "<-Stop" <<  getLabel() << "::update()" << std::endl;
 	}
 
 	void ARToolKitTracker::setProjection(const double n, const double f) 

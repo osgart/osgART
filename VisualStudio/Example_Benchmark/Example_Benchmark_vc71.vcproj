@@ -83,7 +83,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib osgGA.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib osgVRPN.lib libar.lib"
+				AdditionalDependencies="osgart_tracker_profiler.lib osg.lib osgGA.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib osgVRPN.lib libar.lib libARgsub_lite.lib"
 				OutputFile="../../bin/Example_Benchmark.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../lib;&quot;$(ARTOOLKIT_2_ROOT)\lib&quot;"
@@ -124,99 +124,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
 				RelativePath="..\..\src\osgART_Benchmark\osgART_Benchmark.cpp">
-			</File>
-		</Filter>
-		<Filter
-			Name="Benchmarking"
-			Filter="">
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\ARTracerVal">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\CL_ARTracerVal.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\CvCamParam">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\CvCamParam.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\FrameRecord">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\FrameRecord.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\Keyboard">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\KeyBoard.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\PosRecord">
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\PosRecord.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\ProfilerTools">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\tools.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\VideoBench">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART_Benchmark\VideoBench.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

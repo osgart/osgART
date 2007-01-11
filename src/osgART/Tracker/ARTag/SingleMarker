@@ -42,18 +42,14 @@ namespace osgART {
 		bool initialise(const std::string& pattFile);//, double width, double center[2]);
 
 		virtual void setActive(bool a);
-
-		//void update(ARMarkerInfo* markerInfo);
 		void update();
 		
 		int getPatternID();
+		int getARTagCode(void);
 /*		double getPatternWidth();
 		double* getPatternCenter();
 */
-		
 		MarkerType getType() const;
-		
-		int getARTagCode(void);
 	
 	    
 	protected:
@@ -63,16 +59,13 @@ namespace osgART {
 		 */
 		virtual ~SingleMarker();	    
 
-	 
-	 
 	    int             m_patt_artag_code; //!< Contains the artag pattern code.
 	    int             m_patt_id; //!< Contains the pattern id, depending on the creation order, start from 0.
-	    
+	    //double			m_confidence;
 //		double          patt_width;
 //		double          patt_center[2];
 //		double          patt_trans[3][4];
 		
-		//double			m_confidence;
 		
 		friend class ARToolKitTracker;
 		

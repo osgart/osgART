@@ -17,6 +17,9 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Marker"
+#if AR_TRACKER_PROFILE
+	#include "ProfilerTools"
+#endif
 
 // AR ToolKit include
 #include <AR/ar.h>
@@ -33,19 +36,22 @@ namespace osgART {
     
 		/** 
 		 * \brief default constructor.
+		 * \param _PattMainHdle => Handle to the corresponding ARPattHandle* container to Marker is affected to.
 		 *
 		 */
-		SingleMarker();
+		SingleMarker(ARPattHandle  *_PattMainHdle);
 		
 	    
-		bool initialise(ARPattHandle *pattHandle, const std::string& pattFile, double width);
+		bool initialise(ARHandle		*_arHandle,const std::string& pattFile, double width, double center[2]);
 
 		virtual void setActive(bool a);
 
-		void update(AR3DHandle *handle, ARMarkerInfo* markerInfo);
+		void update(ARMarkerInfo* _markerInfo, AR3DHandle *_gAR3DHandle);
 		
 		int getPatternID();
 		double getPatternWidth();
+		double* getPatternCenter();
+
 		
 		MarkerType getType() const;
 	
@@ -57,14 +63,15 @@ namespace osgART {
 		 */
 		virtual ~SingleMarker();	    
 
+		ARPattHandle	*AR4_PattList;//struct to store a set of patterns...
+		ARHandle		*arHandle;//struct to store patterns info(new version of Armarker_info???)
 	 
 	    int             patt_id;
 		double          patt_width;
+		double          patt_center[2];
 		double          patt_trans[3][4];
 		
 		double			m_confidence;
-		
-		ARPattHandle*	m_arPattHandle;
 		
 		friend class ARToolKit4Tracker;
 		

@@ -60,10 +60,10 @@ namespace osgART {
 		virtual ~SingleMarker();	    
 
 	 
-	    int             patt_id;
-		double          patt_width;
-		double          patt_center[2];
-		double          patt_trans[3][4];
+	    int             m_patt_id;
+		double          m_patt_width;
+		double          m_patt_center[2];
+		double          m_patt_trans[3][4];
 		
 		double			m_confidence;
 		

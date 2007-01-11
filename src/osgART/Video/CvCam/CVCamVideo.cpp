@@ -49,8 +49,8 @@ using namespace osgART;
 #else //defined(NO_DEBUG)
 #define ASSERT(x) if(!(x)) \
     { cerr << "Assertion failed : (" << #x << ')' << endl \
-    << "In file : " << __FILE__ << "at line #" << __LINE__ << endl \
-    << "Compiled the " << __DATE__ << " at " << __TIME__ << endl; abort();}
+    << "In file : " << __FILE__ << "at line #" << __LINE__ << std::endl \
+    << "Compiled the " << __DATE__ << " at " << __TIME__ << std::endl; abort();}
 #endif // else defined(NO_DEBUG)
 
 const char* const Video_RCS_ID = "@(#)class Video definition.";

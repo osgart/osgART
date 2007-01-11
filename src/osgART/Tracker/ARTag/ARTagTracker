@@ -12,9 +12,9 @@
 
 /**
  * \file  ARTagTracker
- * \brief A wrapper class for ARToolkit tracking system.
+ * \brief A wrapper class for ARTag tracking system.
  *
- * Support Marker-Based tracking based on computer vision based on ARToolKit
+ * Support Marker-Based tracking based on computer vision based on ARTag
  * Algorithm. This class provided video/graphic independent marker detection and
  * support multiple marker tracking.
  *	
@@ -24,7 +24,6 @@
 #include "osgART/Marker"
 #include "osgART/GenericVideo"
 #include "osgART/GenericTracker"
-#include <string>
 #include "ARToolKitTrackerProfiler"
 #include "artag_rev2.h"
 
@@ -38,7 +37,7 @@ namespace osgART {
 	*
 	*/
 	class ARTagTracker :
-#ifdef AR_TRACKER_PROFILER
+#if	AR_TRACKER_PROFILE
 		public ARToolKitTrackerProfiler<int>
 #else
 		public GenericTracker

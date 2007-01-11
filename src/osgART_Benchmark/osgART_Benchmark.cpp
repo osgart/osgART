@@ -111,13 +111,14 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 //		ARTPlusMarkerList = "Data/markers_list.plus.multi_template.dat";//multiple template
 //		ARTPlusMarkerList = "Data/markers_list.plus.multi_id.dat";ARTPlusMode = "id";//multiple ID
 		ARTPlusMarkerList = WoWeeFile;
-//	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkitplus_tracker_profiler",ARTPlusMarkerList, "Data/camera_para.plus.2.1.dat", ARTPlusMode);
+	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkitplus_tracker_profiler",ARTPlusMarkerList, "Data/camera_para.plus.2.1.dat", ARTPlusMode);
 
 		//ARToolkit 4
-	//	std::string ARToolkit4MarkerList;// = "Data/multi_template_list.dat";
+		std::string ARToolkit4MarkerList;// = "Data/multi_template_list.dat";
 	//	ARToolkit4MarkerList = "Data/markers_list.4.dat";//single template
-	//	ARToolkit4MarkerList = "Data/markers_list.4.multi.dat";//single ID
-	//ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkit4_tracker_profiler",	ARToolkit4MarkerList, "Data/camera_para.4.dat", "");
+	//	ARToolkit4MarkerList = "Data/markers_list.4.multi.dat";//multi template
+		ARToolkit4MarkerList = WoWeeFile;
+	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkit4_tracker_profiler",	ARToolkit4MarkerList, "Data/camera_para.4.dat", "");
 		
 //==========================================================
 //	Init and load all the trackers

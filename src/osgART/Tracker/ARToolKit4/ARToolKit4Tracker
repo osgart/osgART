@@ -18,9 +18,7 @@
  * Algorithm. This class provided video/graphic independent marker detection and
  * support multiple marker tracking.
  *	
- * \author Philip Lamb philip.lamb@artoolworks.com
- * \author Julian Looser Julian.Looser@hitlabnz.org
- * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+* \author Yannick Allusse Yannick.Allusse@hitlabnz.org
  */
 
 #include "osgART/Export"
@@ -32,6 +30,8 @@
 
 #include <AR/ar.h>
 
+#include "ARToolKitTrackerProfiler"
+
 namespace osgART {
 
 	/**
@@ -41,7 +41,12 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARToolKit4Tracker : public GenericTracker
+	class ARToolKit4Tracker : public
+#if  AR_TRACKER_PROFILE
+	ARToolKitTrackerProfiler<int>
+#else
+	GenericTracker
+#endif
 	{
 
 	public:        
@@ -67,19 +72,19 @@ namespace osgART {
 		* Define the threshold used to binarize the image in ARToolKit4.
 		* \param thresh integer value between 0 (dark) and 255 (bright) 
 		*/
-		void setThreshold(int thresh);
+		void setThreshold(const int & thresh);
 		
 		/**
 		* \brief Get the current threshold value for the tracking algorithm.
 		*
 		* \return The current threshold.
 		*/
-		int getThreshold();	
+		int getThreshold(void)const;	
 		
 
 		unsigned char* getDebugImage();	
-		void setDebugMode(bool d);
-		bool getDebugMode();
+		void setDebugMode(const bool& d);
+		bool getDebugMode()const;
 		
 		
 		/** 
@@ -104,7 +109,8 @@ namespace osgART {
 		* \param center the x-y coordinates of the center of the marker (usually 0,0)
 		* \return the internal ID of the new marker, or -1 on failure 
 		*/
-		int addSingleMarker(const std::string& pattFile, double width);
+		int addSingleMarker(const std::string& pattFile, 
+			double width, double center[2]);
 		
 		/** 
 		* \brief Register a multi-marker with the tracker
@@ -123,6 +129,10 @@ namespace osgART {
 		*/
 		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
 		
+		
+		PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
+		int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
+
 		/** 
 		* \brief update the tracking.
 		* 
@@ -130,37 +140,33 @@ namespace osgART {
 		*/
 		void update();
 		
+		
+		//yannick>>>>>>>>>
+		ARPattHandle * CreateARPattHandle();
+		int DeleteARPattHandle(ARPattHandle *_Hdle);
+		int arMainPattListAttach();		
+		int arMainPattListDetach();
+		//=-------------------------
+		
 	protected:
 	
+		ARHandle * CreateARHandle(ART4_ARParam  *wparam);
 		/** 
 		 * \brief destructor.
 		 */
 		virtual ~ARToolKit4Tracker();
 		
-		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
-		
-		
 	private:
-		
-		struct				CameraParameter;
-		CameraParameter*	m_cparam;
+	
+		ARPattHandle		*MainAR4_PattList;//main list of patterns
+		ARHandle			*gARHandle;
+		AR3DHandle			*gAR3DHandle;
+		ARParam				m_cparam;
+		bool				m_debugmode;
 	
 		bool setupMarkers(const std::string& patternListFile);
-		void cleanupMarkers(void);
-
+		
 		std::string 		cparamName;
-		int					m_threshold;
-
-		bool 				m_debugmode;
-		
-		int					m_marker_num;
-		
-        int                 m_artoolkit_pixformat;
-        int                 m_artoolkit_pixsize;
-		ARHandle*			m_arhandle;
-		AR3DHandle*			m_ar3dhandle;
-		ARPattHandle*		m_arPattHandle;
-
 	};
 
 };

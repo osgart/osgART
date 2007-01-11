@@ -73,7 +73,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include"
+				AdditionalIncludeDirectories="..\..\include;&quot;$(ARTOOLKIT_4_ROOT)\include&quot;;&quot;$(ARTOOLKIT_2_ROOT)\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -88,7 +88,7 @@
 				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib garfeild_win32.lib starter_win32.lib cv.lib cxcore.lib highgui.lib cvaux.lib"
 				OutputFile="..\..\bin\osgart_bazar_tracker.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib"
+				AdditionalLibraryDirectories="..\..\lib;$(ARTOOLKIT_2_ROOT)\lib;$(ARTOOLKIT_4_ROOT)\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

@@ -2,6 +2,8 @@
 
 namespace osgART{
 
+
+
 std::string trim(std::string& s,const std::string& drop/* = " "*/)
 {
 	std::string r=s.erase(s.find_last_not_of(drop)+1);

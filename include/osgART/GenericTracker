@@ -118,6 +118,11 @@ namespace osgART {
 		*/
 		virtual int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
   
+
+		/**
+		* \brief Return a string that contains the tracker name and version.
+		*/	
+		std::string		getLabel()const;
 			
 	protected:		
 		/**
@@ -163,7 +168,7 @@ namespace osgART {
 		double m_projectionMatrix[16];
 		std::string		m_name;		//!< Store the name of the tracker.
 		std::string		m_version;	//!< Store the version of the tracker.
-		std::string		getLabel()const;
+		
 		
 		/**
 		 * Get the pixel size of the video format, see osgART::PixelFormatType.

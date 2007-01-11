@@ -3,16 +3,15 @@
 #include <artag_rev2.h>
 #include "osgART\Utils"
 
-
-#define NDEBUG
-
 namespace osgART {
 
 	SingleMarker::SingleMarker() : Marker(),
 		m_patt_artag_code(-1),
 		m_patt_id(-1)
 	{
-			//m_fields["confidence"] = new TypedField<double>(&m_confidence);
+		//m_fields["confidence"] = new TypedField<double>(&m_confidence);
+		m_fields["patt_id"] = new TypedField<int>(&m_patt_id);
+		m_fields["patt_code"] = new TypedField<int>(&m_patt_artag_code);
 	}
 
 	SingleMarker::~SingleMarker()

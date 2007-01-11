@@ -4,7 +4,11 @@
 
 namespace osgART {
 
-	MultiMarker::MultiMarker() : Marker() {
+	MultiMarker::MultiMarker() //ARPattHandle  *_PattHdl
+			: Marker()/*,
+			AR4_PattList(),
+			arHandle()*/
+	{
 	}
 
 	MultiMarker::~MultiMarker() {   
@@ -18,8 +22,8 @@ namespace osgART {
 	}
 
 	bool 
-	MultiMarker::initialise(const std::string& multiFile) {
-
+	MultiMarker::initialise(const std::string& multiFile)//ARHandle		*_arHandle,
+	{
 		// Check if multifile exists!!!
 		m_multi = arMultiReadConfigFile(multiFile.c_str());
 		if (m_multi == NULL) return false;
@@ -34,14 +38,15 @@ namespace osgART {
 	MultiMarker::setActive(bool a) {
 		m_active = a;
 		
-		//if (m_active) arMultiActivate(m_multi);
-		//else arMultiDeactivate(m_multi);
+	//	if (m_active) arMultiActivate(m_multi);
+	//	else arMultiDeactivate(m_multi);
+
 	}
 
 	void 
-	MultiMarker::update(AR3DHandle *handle, ARMarkerInfo* markerInfo, int markerCount) 
+	MultiMarker::update(AR3DHandle *_gAR3DHandle, ARMarkerInfo* markerInfo, int markerCount) 
 	{
-		m_valid = (arGetTransMatMultiSquare(handle, markerInfo, markerCount, m_multi) >= 0);
+		m_valid = (arGetTransMatMultiSquare(_gAR3DHandle, markerInfo, markerCount, m_multi) >= 0);
 		if (m_valid) {
 			double modelView[16];
 			arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
@@ -50,6 +55,15 @@ namespace osgART {
 		} else {
 			m_seen = false;
 		}
+		/*
+		arGetTransMatMultiSquare(
+		
+		m_valid = arMultiGetTransMat(markerInfo, markerCount, m_multi) >= 0);
+		double modelView[16];
+		arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
+		osg::Matrix tmp(modelView);
+		updateTransform(tmp);
+		*/
 	}
 	
 };

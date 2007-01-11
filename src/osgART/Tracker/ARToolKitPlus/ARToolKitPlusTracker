@@ -22,19 +22,18 @@
 #ifndef OSGART_ARTTOOLKITTRACKER_PLUS
 #define OSGART_ARTTOOLKITTRACKER_PLUS
 
-
 #include "osgART/Export"
 #include "osgART/Marker"
 #include "osgART/GenericVideo"
 #include "osgART/GenericTracker"
-
 #include <string>
 #include <vector>
 
+#include "Definition"
 
-#ifdef AR_TOOLKIT_PROFILER
-#include <ARToolKitTrackerProfiler>
-#endif
+//#if AR_TRACKER_PROFILE
+	#include <ARToolKitTrackerProfiler>
+//#endif
 
 #include <ARToolkitplus/ar.h>
 #include <ARToolkitplus/arMulti.h>
@@ -106,7 +105,6 @@ public:
 		* \todo Use ARToolkit plus activation.
 		*/
 	virtual void setActive(bool a);
-
 
 	/**
 		* \brief Update the pattern position.
@@ -234,7 +232,7 @@ typedef GenericTracker ARToolKitTrackerProfiler;
 */
 
 	class ARToolKitTracker_Plus :
-#ifdef AR_TRACKER_PROFILER
+#if AR_TRACKER_PROFILE
 		public ARToolKitTrackerProfiler<int>
 #else
 		public GenericTracker

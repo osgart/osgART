@@ -35,13 +35,13 @@ namespace osgART {
 		* \brief default constructor.
 		*
 		*/
-		MultiMarker();
+		MultiMarker();//ARPattHandle  *_PattHdle
 	    
-		bool initialise(const std::string& multiFile);
+		bool initialise(const std::string& multiFile);//ARHandle		*_arHandle
 		
 		virtual void setActive(bool a);
 		
-		void update(AR3DHandle *handle, ARMarkerInfo* markerInfo, int markerCount);
+		void update(AR3DHandle *_gAR3DHandle, ARMarkerInfo* markerInfo, int markerCount);//
 		
 		/**
 		* \brief return the type of the maker.
@@ -60,6 +60,9 @@ namespace osgART {
 		
 
 		ARMultiMarkerInfoT* m_multi;
+		ARPattHandle	*AR4_PattList;//struct to store a set of patterns...
+		ARHandle		*arHandle;//struct to store patterns info(new version of Armarker_info???)
+	 
 			
 	};
 };

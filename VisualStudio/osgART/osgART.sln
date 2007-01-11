@@ -72,10 +72,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkitplus_tracke
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit_tracker_profiler", "..\osgart_tracker_profiler\osgart_artoolkit_tracker_profiler.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -148,10 +144,6 @@ Global
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Debug.Build.0 = Debug|Win32
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.ActiveCfg = Release|Win32
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.Build.0 = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
-		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32

@@ -72,8 +72,8 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
+				AdditionalIncludeDirectories="..\..\include;&quot;$(ARTOOLKIT_4_ROOT)\include&quot;;..\..\src\osgART\Tracker\ARToolKitProfiler"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT;AR_TRACKER_PROFILE"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
@@ -84,10 +84,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib"
+				AdditionalDependencies="osgart_tracker_profiler.lib osgART.lib osg.lib AR.lib ARmulti.lib ARgsub_lite.lib opengl32.lib glu32.lib"
 				OutputFile="..\..\bin\osgart_artoolkit4_tracker_profiler.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib"
+				AdditionalLibraryDirectories="..\..\lib;$(ARTOOLKIT_4_ROOT)\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

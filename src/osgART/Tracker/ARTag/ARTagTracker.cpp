@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fstream>
 
+
 //#include <AR/gsub_lite.h> //add by yannick
 
 //remove it later ????
@@ -26,51 +27,10 @@
 #define DEFAULT_FOCAL_FY					700//	70 //about 400 for 320x240 webcam
 //=======================
 
-#define PD_LOOP 3
-
-template <typename T> 
-int Observer2Ideal(	const T dist_factor[4], 
-					const T ox, 
-					const T oy,
-					T *ix, T *iy )
-{
-    T  z02, z0, p, q, z, px, py;
-    register int i = 0;
-
-    px = ox - dist_factor[0];
-    py = oy - dist_factor[1];
-    p = dist_factor[2]/100000000.0;
-    z02 = px*px+ py*py;
-    q = z0 = sqrt(px*px+ py*py);
-
-    for( i = 1; ; i++ ) {
-        if( z0 != 0.0 ) {
-            z = z0 - ((1.0 - p*z02)*z0 - q) / (1.0 - 3.0*p*z02);
-            px = px * z / z0;
-            py = py * z / z0;
-        }
-        else {
-            px = 0.0;
-            py = 0.0;
-            break;
-        }
-        if( i == PD_LOOP ) break;
-
-        z02 = px*px+ py*py;
-        z0 = sqrt(px*px+ py*py);
-    }
-
-    *ix = px / dist_factor[3] + dist_factor[0];
-    *iy = py / dist_factor[3] + dist_factor[1];
-
-    return(0);
-}
-
-
 namespace osgART {
 
 	ARTagTracker::ARTagTracker() : 
-#ifdef AR_TRACKER_PROFILER
+#if AR_TRACKER_PROFILE
 	ARToolKitTrackerProfiler<int>(),
 #else
 	GenericTracker(),
@@ -83,6 +43,7 @@ namespace osgART {
 		//version and name of the tracker
 		m_name		= "ARTag";
 		m_version	= "Rev.2.1.1";
+		__AR_DO_PROFILE(m_version+="(Prf)");
 
 		//add callback fields
 		/*m_fields["threshold"] = new CallbackField<ARTagTracker,int>(this,
@@ -324,10 +285,13 @@ namespace osgART {
 
 	void ARTagTracker::update()
 	{
-#if AR_TRACKER_PROFILE
-		osg::notify() << "Start->" << getLabel() << "::update()" << std::endl;
-		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct		("arDetectMarker_TIME");		
-#endif
+		if(m_debugmode)
+			osg::notify() << "Start->" << getLabel() << "::update()" << std::endl;
+
+__AR_DO_PROFILE(
+		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct		("arDetectMarker_TIME");
+);
+
 //		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
 		int MarkerNum=0;//>????
 //	    register int             j, k;
@@ -335,7 +299,7 @@ namespace osgART {
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
-#if  AR_TRACKER_PROFILE
+//#if  AR_TRACKER_PROFILE
 		AR_BENCH_TIME(ThisFct, 
 			// Detect the markers in the video frame.
 			artag_find_objects(m_imageptr,ConvertOSGARTPixelFormatToART(m_imageptr_format));//RGB 
@@ -344,11 +308,12 @@ namespace osgART {
 		, getLabel()
 		, MarkerNum//what to put here...????
 		);
-#else
+/*#else
 			// Detect the markers in the video frame.
 			artag_find_objects(m_imageptr, ConvertOSGARTPixelFormatToART(m_imageptr_format));//RGB
 #endif
-			
+*/			
+
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
 		int i=0;
@@ -368,6 +333,9 @@ namespace osgART {
 					if (m_debugmode)
 						osg::notify() << "Single Marker id : " << singleMarker->getARTagCode() << "found" << std::endl;
 					singleMarker->update();
+					__AR_DO_PROFILE(
+						RecordMarkerStats(singleMarker, true);
+						);
 				}
 			}
 			else if (multiMarker)
@@ -380,9 +348,8 @@ namespace osgART {
 				}			
 			}								
 		}		
-	#if AR_TRACKER_PROFILE
-		osg::notify() << "<-Stop" << getLabel() << "::update()" << std::endl;
-	#endif
+		if(m_debugmode)
+			osg::notify() << "<-Stop" << getLabel() << "::update()" << std::endl;
 	}
 
 	void ARTagTracker::setProjection(const double n, const double f) 

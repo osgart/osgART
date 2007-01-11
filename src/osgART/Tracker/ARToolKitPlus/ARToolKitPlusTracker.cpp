@@ -17,10 +17,8 @@
 #include <iostream>
 #include <fstream>
 
-#ifdef AR_TOOLKIT_PROFILER
-#include <SG_TLS_exceptions.h>
-#include <SG_TLS_cl_base_obj.h>
-#include "ProfilerTools"
+#if AR_TRACKER_PROFILE
+	#include "ProfilerTools"
 #endif
 
 namespace osgART {
@@ -28,7 +26,7 @@ namespace osgART {
 	
 DLL_API osgART::GenericTracker* osgart_create_tracker()
 {
-	return new osgART::ARToolKitTracker_Plus();	
+	return new osgART::ARToolKitTracker_Plus();
 }
 
 OSGART_PLUGIN_ENTRY()
@@ -43,7 +41,7 @@ OSGART_PLUGIN_ENTRY()
 //==============================================================================
 
 ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
-#ifdef AR_TRACKER_PROFILER
+#if  AR_TRACKER_PROFILE
 	ARToolKitTrackerProfiler<int>(),
 #else
 	GenericTracker(),
@@ -64,6 +62,17 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 		//version and name of the tracker
 		m_name		= "ARToolkitPlus";
 		m_version	= "2.1";
+		__AR_DO_PROFILE(m_version+="(Prf)");
+
+#if	AR_TRACKER_PROFILE
+		{
+			std::cout << "Profiling Mode"<< std::endl;
+		}
+#endif
+
+		std::cout << std::endl << "should be : osgart_artoolkitplus_tracker_profiler.dll"<< std::endl;
+
+
 
 		//attach the field to the corresponding values
 		m_fields["nearclip"]	= new TypedField<float>(&m_NearClip);
@@ -611,8 +620,9 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	/*virtual*/ 	
 	void ARToolKitTracker_Plus::update()
 	{	
+		if(m_debugMode)
+			osg::notify() <<  "->" <<  getLabel() << "::update()" << std::endl;
 #if AR_TRACKER_PROFILE
-		osg::notify() <<  "->" << m_versionName << "::update()" << std::endl;
 		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct	("arDetectMarker_TIME");		
 #endif
 		
@@ -631,7 +641,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			return;
 		}
 	, 1, //pattern in memory
-	m_versionName, m_marker_num);
+	 getLabel(), m_marker_num);
 #else 
 		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imageptr), m_threshold, &marker_info, &m_marker_num) < 0)
 		{
@@ -667,15 +677,12 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				if(k != -1) 
 				{					
 					singleMarker->update(&marker_info[k]);
-			#if 0//AR_TRACKER_PROFILE // remove the 0 after????
-					double Coef = marker_info[k].cf;
-					RecordMarkerStats(marker_info[k].id, Coef, singleMarker->m_transform, true);
-			#endif// AR_TRACKER_PROFILE
+					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, true));
 				} 
 				else 
 				{
-					//PROFILE_ENDSEC(profiler, SINGLEMARKER_OVERALL)
 					singleMarker->update(NULL);
+					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, false));
 				}
 
 				confidence = marker_info[k].cf;
@@ -718,9 +725,8 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				}
 			}
 		
-#if AR_TRACKER_PROFILE
-		osg::notify() << "<-Stop" << m_versionName << "::update()" << std::endl;
-#endif//AR_TRACKER_PROFILE
+		if(m_debugMode)
+			osg::notify() << "<-Stop" <<  getLabel() << "::update()" << std::endl;
 	}
 
 //==============================================================================
@@ -743,6 +749,8 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			exit(-1);
 		}
 		m_fields["confidence"] = new TypedField<double>(&m_confidence);
+		m_fields["patt_id"] = new TypedField<int>(&m_patt_id);
+		//m_fields["patt_code"] = new TypedField<int>(&m_patt_artag_code);
 	}
 
 	SingleMarker::~SingleMarker() {
