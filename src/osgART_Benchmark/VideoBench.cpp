@@ -5,8 +5,6 @@
 #include <iomanip>
 #include <osgART/TrackerManager>
 #include <osgART/VideoManager>
-//#include "../../Video/DummyImage/DummyImageVideo"
-//#pragma comment(lib ,"osgart_DummyImage.lib")
 #include "../../src/osgART/Tracker/ARToolKitProfiler/ARToolKitTrackerProfiler"
 
 namespace osgART {
@@ -323,7 +321,7 @@ osgART::CL_FrameRecord * CL_VideoBench::GetFirstFrameRecord()
 	
 	if (FirstFrameGrp==FrameGrpMngr.GetLastIter())
 	{
-		osg::notify(osg::WARN) << "CL_VideoBench::GetFirstFrameRecord() : No FrameGrp to process." << endl;
+		osg::notify(osg::WARN) << "CL_VideoBench::GetFirstFrameRecord() : No FrameGrp to process." << std::endl;
 		return NULL;
 	}
 
@@ -489,7 +487,7 @@ CL_VideoBench::ConsoleInit(std::string &_XMLFileName, bool _KeepSettings)
 				IRFlyButton->update();
 				if (!IRTriggerDown && IRFlyButton->getButtonState(0)) 
 				{			
-					cout << "Flying Stick button pressed!! ======================" << endl;
+					cout << "Flying Stick button pressed!! ======================" << std::endl;
 					DoRecord = true;
 					IRCVMatrix = IRFlyCam->getMatrix();
 					IRTriggerDown = 1;
@@ -547,7 +545,7 @@ CL_VideoBench::ConsoleInit(std::string &_XMLFileName, bool _KeepSettings)
 		std::cout << "* Please calibrate the ARToolkit pattern."<< std::endl;
 		Current_IR_ARPattern_Mat = CalibrateSquarePattern(2);
 #else
-		osg::notify(osg::WARN) << endl << "NO VRPN support please set YCK_BENCH_IR_TRAKER to 1! Calibration can not be done..."<< endl;
+		osg::notify(osg::WARN) << std::endl << "NO VRPN support please set YCK_BENCH_IR_TRAKER to 1! Calibration can not be done..."<< std::endl;
 #endif
 
 		//=======================================
@@ -682,7 +680,7 @@ int
 void 
 	CL_VideoBench::SetMode(int mode)
 	{
-		//cout << "CL_VideoBench::SetMode()" << endl;
+		//cout << "CL_VideoBench::SetMode()" << std::endl;
 		BenchMode = mode;
 	#if YCK_BENCH_IR_TRAKER
 		if (IRFlyCam == NULL)
@@ -732,7 +730,7 @@ osg::ref_ptr<osgART::GenericVideo> CL_VideoBench::GetCurrentVideo()
 osg::ref_ptr<osgART::GenericVideo> CL_VideoBench::InitVideo(std::string _VideoConf)
 {
 	/* load a video plugin */
-	//	cout << "Start video plugin..." << endl;
+	//	cout << "Start video plugin..." << std::endl;
 		osgART::VideoConfiguration cfg;
 
 	//init video for mode BenchMarking
@@ -776,7 +774,7 @@ osg::ref_ptr<osgART::GenericVideo> CL_VideoBench::InitVideo(std::string _VideoCo
         
 	SG_Assert(m_video.valid(), "Video plugin not valid!");
 	/* open the video */
-	//cout << "Open video..." << endl;
+	//cout << "Open video..." << std::endl;
 
 	return m_video;
 }
@@ -803,7 +801,7 @@ CL_VideoBench::preUpdate()
 
 					if (!IRTriggerDown && IRFlyButton->getButtonState(0)) 
 					{			
-						cout << "Flying Stick button pressed!! ======================" << endl;
+						cout << "Flying Stick button pressed!! ======================" << std::endl;
 						CurrentTempScreenShotID = 0;//reset Frame Counter to 0, so we will record the next N frames
 					}
 					IRTriggerDown = IRFlyButton->getButtonState(0);
@@ -853,7 +851,7 @@ CL_VideoBench::postUpdate(void)
 					m_video->takeSnapShot(CurrentFrame->GetFileName());
 				//----------------------------------
 				#if YCK_BENCH_IR_TRAKER
-						cout << "Taking New Record!! ======================" << endl;
+						cout << "Taking New Record!! ======================" << std::endl;
 					//Add IR-TRACKER Camera val
 						FLyRecord = CurrentFrame->PosMngr.Add("IRTrackerCam");
 						IRFlyCam->update();
@@ -1052,7 +1050,7 @@ CL_VideoBench::CalibrateSquarePattern(int CalibrationNbr)
 			//take only he position
 
 			DoRecord = false;
-			cout << "Calibrate the corner '"<< j <<"'" << endl;
+			cout << "Calibrate the corner '"<< j <<"'" << std::endl;
 			while(!DoRecord)
 			{
 				IRFlyCam->update();
@@ -1060,7 +1058,7 @@ CL_VideoBench::CalibrateSquarePattern(int CalibrationNbr)
 				IRFlyButton->update();
 				if (!IRTriggerDown && IRFlyButton->getButtonState(0)) 
 				{			
-					cout << "Flying Stick button pressed!! ======================" << endl;
+					cout << "Flying Stick button pressed!! ======================" << std::endl;
 					DoRecord = true;
 				}
 				IRTriggerDown = IRFlyButton->getButtonState(0);
@@ -1076,7 +1074,7 @@ CL_VideoBench::CalibrateSquarePattern(int CalibrationNbr)
 	}
 
 	//make average of them
-	cout << "Process average!!"<< endl;
+	cout << "Process average!!"<< std::endl;
 	for(int i=0; i<4 ; i ++)
 	{
 		AvgVect[i] = SumVect[i]/CalibrationNbr;
@@ -1155,11 +1153,11 @@ template <typename ValType>void CL_VideoBench::SetTrackersValue(std::string ValN
 			if (_ValRef.valid())
 				_ValRef->set(_val);
 			else
-				cout << "Current val '" << ValName << " not found." << endl;
+				cout << "Current val '" << ValName << " not found." << std::endl;
 
 		}
 	}
-	cout << "Current val '" << ValName << "' set to "<< _val << endl;
+	cout << "Current val '" << ValName << "' set to "<< _val << std::endl;
 
 	NewFrame = true;//force the update
 

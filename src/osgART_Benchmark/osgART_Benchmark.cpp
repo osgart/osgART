@@ -31,7 +31,6 @@
 #include "VideoBench"
 #include "Keyboard"
 #include "ProfilerTools"
-//#pragma comment(lib ,"osgart_artoolkit_tracker_profiler.lib")
 
 #if AR_TRACKER_PROFILE
 	#define YCK_BENCH_VIDEO	1
@@ -87,8 +86,6 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 //==================================================
 //ADD the tracker settings to the ARPluginInfo table
 //==================================================		
-
-
 		std::string WoWeeFile = "WoWee/bench_multi.dat";
 		//ARToolkit 2.7 
 		std::string ART273MarkerList;
@@ -96,14 +93,14 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 		//ART273MarkerList = "Data/markers_list.2.71.3.dat";//single template
 		//ART273MarkerList = "Data/markers_list.plus.multi_template.dat";//multiple template
 		ART273MarkerList = WoWeeFile;
-	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkit_tracker", ART273MarkerList, "Data/camera_para.2.71.3.dat", "");
+	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkit_tracker_profiler", ART273MarkerList, "Data/camera_para.2.71.3.dat", "");
 		
 
 		//ARTAG has expired in end of 2006
 //		std::string ARTagMarkerList;
 //		ARTagMarkerList = "Data/markers_list.artag.dat";//single id
 		//ARTagMarkerList = "Data/markers_list.artag.multi.dat";//multiple id
-//	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artag_tracker",	ARTagMarkerList, "Data/camera_para.2.71.3.dat", "");
+//	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artag_tracker_profiler",	ARTagMarkerList, "Data/camera_para.2.71.3.dat", "");
 		
 
 		//ARTplus
@@ -114,18 +111,18 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 //		ARTPlusMarkerList = "Data/markers_list.plus.multi_template.dat";//multiple template
 //		ARTPlusMarkerList = "Data/markers_list.plus.multi_id.dat";ARTPlusMode = "id";//multiple ID
 		ARTPlusMarkerList = WoWeeFile;
-	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkitplus_tracker",ARTPlusMarkerList, "Data/camera_para.plus.2.1.dat", ARTPlusMode);
+//	ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkitplus_tracker_profiler",ARTPlusMarkerList, "Data/camera_para.plus.2.1.dat", ARTPlusMode);
 
 		//ARToolkit 4
 	//	std::string ARToolkit4MarkerList;// = "Data/multi_template_list.dat";
 	//	ARToolkit4MarkerList = "Data/markers_list.4.dat";//single template
 	//	ARToolkit4MarkerList = "Data/markers_list.4.multi.dat";//single ID
-	//ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkit4_tracker",	ARToolkit4MarkerList, "Data/camera_para.4.dat", "");
+	//ADD_AR_PLUGIN (ARPluginInfo, PlugInNbr, "osgart_artoolkit4_tracker_profiler",	ARToolkit4MarkerList, "Data/camera_para.4.dat", "");
 		
 //==========================================================
 //	Init and load all the trackers
 //==========================================================
-	std::cout <<"============== Start tracker(s)        =====================" << std::endl;
+	std::cout << std::endl <<"============== Start tracker(s)        =====================" << std::endl;
 	osg::ref_ptr<osgART::GenericTracker> tracker = NULL;
 		
 	for (int i =0; i < PlugInNbr; i++ )
@@ -133,15 +130,13 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 		std::cout << "===========================================================" << std::endl;
 		std::cout << "		Start tracker plugin :" <<  i +1 << std::endl;
 		SG_Assert(ARPluginInfo[i][0]!="", "Wrong plugin number or plugin name list to small!");
-		
+		std::cout << "Opening traker file : " << ARPluginInfo[i][0] << std::endl;
 		tracker = osgART::TrackerManager::createTrackerFromPlugin(ARPluginInfo[i][0]);
 		
-		SG_Assert(tracker.valid(),"Could not initialize tracker plugin!"); 
+		SG_Assert(tracker.valid(),std::string("Could not initialize tracker plugin! Plugin file is : ")+ ARPluginInfo[i][0]); 
 		std::cout << "Init tracker plugin settings :" <<  i +1 << std::endl;
 
-		osg::ref_ptr< osgART::TypedField<std::string> > _Version = 
-		dynamic_cast< osgART::TypedField<std::string>* >(tracker->get("version"));
-		if (_Version.valid()) std::cout << "plugin " << i+1 << " is version : '" << _Version.get()->get() << "'"<< std::endl;
+		std::cout << "plugin " << i+1 << " is : '" << tracker->getLabel() << "'"<< std::endl;
 
 		//process specific options...
 		if (ARPluginInfo[i][3]!="")
@@ -653,7 +648,7 @@ int main(int argc, char* argv[]) {
 #endif
 			//======================
 			
-			for(int j = 0; j < tracker->getMarkerCount(); j++)
+			for(unsigned int j = 0; j < tracker->getMarkerCount(); j++)
 			{
 				MarkerTrans = CreateMarkerTransform(j, i, boxSize, Color).get();
 				SG_Assert(MarkerTrans, "Could not get marker transformation!");

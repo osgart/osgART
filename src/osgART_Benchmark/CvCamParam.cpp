@@ -9,7 +9,7 @@
 #include <fstream>
 #include "ar\param.h"//used to get the ARParam struct
 #include "ar\gsub_lite.h"//used to get the arglCameraFrustumRH
-#pragma comment(lib ,"libARgsub_lite.lib")
+
 
 namespace osgART {
 
