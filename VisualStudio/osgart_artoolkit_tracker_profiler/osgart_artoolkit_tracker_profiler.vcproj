@@ -73,7 +73,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(ARTOOLKIT_2_ROOT)\include&quot;;..\..\src\osgART\Tracker\ARToolKitProfiler;.\;..\..\..\..\..\resources\include;..\..\..\..\..\Sugoitools\include;..\..\..\..\..\Sugoitracer\include;..\..\include"
+				AdditionalIncludeDirectories="&quot;$(ARTOOLKIT_2_ROOT)\include&quot;;..\..\src\osgART_Benchmark\;.\;..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_LIBRARY;_CPP"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -123,35 +123,6 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\ARToolKitTrackerProfiler.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\CL_ARTracerVal.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\CvCamParam.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\FrameRecord.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\KeyBoard.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\PosRecord.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\tools.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\VideoBench.cpp">
-			</File>
-		</Filter>
-		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
@@ -159,25 +130,7 @@
 				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\ARToolKitTrackerProfiler">
 			</File>
 			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\ARTracerVal">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\CvCamParam">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\FrameRecord">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\Keyboard">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\PosRecord">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\ProfilerTools">
-			</File>
-			<File
-				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\VideoBench">
+				RelativePath="..\..\src\osgART\Tracker\ARToolKitProfiler\Definition">
 			</File>
 		</Filter>
 		<Filter
