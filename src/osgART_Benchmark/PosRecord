@@ -1,0 +1,94 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_POSRECORD
+#define OSGART_POSRECORD
+
+/**
+ * \file  ARToolKitTrackerProfiler
+ * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ */
+
+#if AR_TRACKER_PROFILE
+
+#include "osgART/Export"
+#include <osg/vec3>
+#include <osg/quat>
+#include <osg/matrix>
+#include <string>
+#include <stdio.h>
+#include "ARTracerVal"
+
+namespace osgART {
+
+using namespace SGE;
+
+#define VIDEO_BENCH_MAX_LIB_RECORDS 1
+
+/*!\class CL_PosRecord 
+*\brief Store a matrix position of an object. Have an embedded manager to store information about marker detection(CL_ARTracerVal) .
+*/
+class OSGART_EXPORT CL_PosRecord 
+	:public	SGE::CL_XML_BASE_OBJ<std::string>
+{
+public :
+	CL_PosRecord(std::string _tagname);
+	~CL_PosRecord();
+
+	/*!\fn void SetTransform(const osg::Matrix &Transform)
+	*\brief Set the CL_PosRecord matrix.
+	*/
+	void SetTransform(const osg::Matrix &Transform);
+	/*!\fn void SetTransform(const osg::Vec3d  &Trans, const osg::Vec3d  &Rot)
+	*\brief Set the CL_PosRecord matrix.
+	*/
+	void SetTransform(const osg::Vec3d  &Trans, const osg::Vec3d  &Rot);
+	
+	/*!\fn osg::Matrix GetTransform()
+	*\brief Get the CL_PosRecord matrix.
+	*/
+	osg::Matrix GetTransform();
+	
+	/*!\fn SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> * AddARRecord(std::string _LibName)
+	*\brief Add a new record for the given library name.
+	*\param _LibName => Library name, ex:"ARTPlus.2" or "ART.2.7.3"
+	*/
+	SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> * AddARRecord(std::string _LibName);
+	
+	/*!\fn SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> * AddARRecord(std::string _LibName)
+	*\brief Get the record for the given library name.
+	*\param _LibName => Library name, ex:"ARTPlus.2" or "ART.2.7.3"
+	*/
+	SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> * GetARRecord(std::string _LibName);
+
+	CL_XML_MNGR<SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> ,std::string>::iterator GetFirstIter();
+	CL_XML_MNGR<SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> ,std::string>::iterator GetLastIter();
+
+	/*!\fn void Print(std::string _Header)
+	*\brief Print the matrix information with a first line labeled with _Header.
+	*/
+	void Print(std::string _Header);
+	
+protected:
+	osg::Vec3 m_storedPosition;
+	osg::Vec3 m_storedRotation;
+
+	CL_XML_MNGR<SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> ,std::string>	*	ARRecordsMngr;
+
+#if _SG_TLS_XML
+public:
+	virtual TiXmlElement* XMLLoad(TiXmlElement* _XML_ROOT);
+	virtual TiXmlElement* XMLSave(TiXmlElement* _XML_ROOT);
+#endif
+};
+
+
+};
+#endif //AR_TRACKER_PROFILE
+#endif //OSGART_POSRECORD

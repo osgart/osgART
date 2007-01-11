@@ -25,14 +25,13 @@
 #include <osgART/TrackerManager>
 #include <osgART/VideoBackground>
 #include <osgART/VideoPlane>
-#include "../../src/osgART/Video/DummyImage/DummyImageVideo"
-#pragma comment(lib ,"osgart_DummyImage.lib")
+//#include "../../src/osgART/Video/DummyImage/DummyImageVideo"
 
 #include "../../src/osgART/Tracker/ARToolKitProfiler/ARToolKitTrackerProfiler"
-#include "../../src/osgART/Tracker/ARToolKitProfiler/VideoBench"
-#include "../../src/osgART/Tracker/ARToolKitProfiler/Keyboard"
-#include "../../src/osgART/Tracker/ARToolKitProfiler/ProfilerTools"
-#pragma comment(lib ,"osgart_artoolkit_tracker_profiler.lib")
+#include "VideoBench"
+#include "Keyboard"
+#include "ProfilerTools"
+//#pragma comment(lib ,"osgart_artoolkit_tracker_profiler.lib")
 
 #if AR_TRACKER_PROFILE
 	#define YCK_BENCH_VIDEO	1
@@ -73,7 +72,8 @@
 #  define MY_VCONF ""
 #endif
 
-#define USE_VIRTUAL_CAM			1
+#define DRAW_WIREFRAME_CUBE		1
+#define USE_VIRTUAL_CAM			0	
 #define USE_OPENCV_PROJECTION	0
 #define SHARE_PROJECTION_MATRIX 0 //use the projection matrix of the first tracker
 
@@ -91,7 +91,8 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 
 		std::string WoWeeFile = "WoWee/bench_multi.dat";
 		//ARToolkit 2.7 
-		std::string ART273MarkerList = "Data/multi_template_list.dat";
+		std::string ART273MarkerList;
+		//ART273MarkerList= "Data/multi_template_list.dat";
 		//ART273MarkerList = "Data/markers_list.2.71.3.dat";//single template
 		//ART273MarkerList = "Data/markers_list.plus.multi_template.dat";//multiple template
 		ART273MarkerList = WoWeeFile;
@@ -108,7 +109,7 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 		//ARTplus
 		std::string ARTPlusMarkerList;
 		std::string ARTPlusMode = "template";
-		ARTPlusMarkerList = "Data/markers_list.plus.single_template.dat";//single template
+		//ARTPlusMarkerList = "Data/markers_list.plus.single_template.dat";//single template
 //		ARTPlusMarkerList = "Data/markers_list.plus.single_id.dat";ARTPlusMode = "id";//single ID
 //		ARTPlusMarkerList = "Data/markers_list.plus.multi_template.dat";//multiple template
 //		ARTPlusMarkerList = "Data/markers_list.plus.multi_id.dat";ARTPlusMode = "id";//multiple ID
@@ -124,28 +125,28 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 //==========================================================
 //	Init and load all the trackers
 //==========================================================
-	cout <<"============== Start tracker(s)        =====================" << endl;
+	std::cout <<"============== Start tracker(s)        =====================" << std::endl;
 	osg::ref_ptr<osgART::GenericTracker> tracker = NULL;
 		
 	for (int i =0; i < PlugInNbr; i++ )
 	{
-		cout << "===========================================================" << std::endl;
-		cout << "		Start tracker plugin :" <<  i +1 << endl;
+		std::cout << "===========================================================" << std::endl;
+		std::cout << "		Start tracker plugin :" <<  i +1 << std::endl;
 		SG_Assert(ARPluginInfo[i][0]!="", "Wrong plugin number or plugin name list to small!");
 		
 		tracker = osgART::TrackerManager::createTrackerFromPlugin(ARPluginInfo[i][0]);
 		
 		SG_Assert(tracker.valid(),"Could not initialize tracker plugin!"); 
-		cout << "Init tracker plugin settings :" <<  i +1 << endl;
+		std::cout << "Init tracker plugin settings :" <<  i +1 << std::endl;
 
 		osg::ref_ptr< osgART::TypedField<std::string> > _Version = 
 		dynamic_cast< osgART::TypedField<std::string>* >(tracker->get("version"));
-		if (_Version.valid()) cout << "plugin " << i+1 << " is version : '" << _Version.get()->get() << "'"<< endl;
+		if (_Version.valid()) std::cout << "plugin " << i+1 << " is version : '" << _Version.get()->get() << "'"<< std::endl;
 
 		//process specific options...
 		if (ARPluginInfo[i][3]!="")
 		{
-			cout << "We have options for the Tracker : " << ARPluginInfo[i][3] << endl; 
+			std::cout << "We have options for the Tracker : " << ARPluginInfo[i][3] << std::endl; 
 			//artoolkit Plus
 			if (ARPluginInfo[i][3]== "template")
 			{
@@ -177,11 +178,10 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 		if (_threshold.valid())
 			_threshold->set(100);
 		
-		cout << "Number of marker loaded(after init) : "<< tracker->getMarkerCount() <<  endl;
-		cout << "===========================================================" << std::endl <<std::endl<<std::endl;
+		std::cout << "Number of marker loaded(after init) : "<< tracker->getMarkerCount() <<  std::endl;
+		std::cout << "===========================================================" << std::endl <<std::endl<<std::endl;
 	}
 	SG_NOTICE_LOG("============== All tracker(s) initialised=====================\n");
-
 
 	return i;
 }
@@ -189,7 +189,7 @@ int InitARTracker(osg::ref_ptr<osgART::GenericVideo> _video)
 osg::ref_ptr<osgART::GenericVideo> InitVideo(std::string VideoConfig, int _BenchMode=0, osgART::CL_VideoBench * _Bench =NULL)
 {
 	/* load a video plugin */
-		cout << "Start video plugin..." << endl;
+		std::cout << "Start video plugin..." << std::endl;
 		osgART::VideoConfiguration cfg;
 		cfg.deviceconfig = (char*)VideoConfig.c_str();
 		osg::ref_ptr<osgART::GenericVideo> video = NULL;
@@ -209,11 +209,108 @@ osg::ref_ptr<osgART::GenericVideo> InitVideo(std::string VideoConfig, int _Bench
 		SG_Assert(video.valid(), "Video plugin not valid!");
 
 		/* open the video */
-		//cout << "Open video..." << endl;
+		//cout << "Open video..." << std::endl;
 		return video;
 }
 
+osg::Group* create3DText(const std::string & text, const osg::Vec3& center, const osg::Vec4& color, float radius)
+{
 
+    osg::Geode* geode  = new osg::Geode;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//    
+// Examples of how to set up axis/orientation alignments
+//
+
+    float characterSize=radius*0.2f;
+    
+    osg::Vec3 pos(center.x()-radius*.5f,center.y()-radius*.5f,center.z()-radius*.5f);
+
+    osgText::Text* text1 = new osgText::Text;
+    text1->setFont("fonts/times.ttf");
+    text1->setCharacterSize(characterSize);
+    text1->setPosition(pos);
+    text1->setAxisAlignment(osgText::Text::XY_PLANE);
+    text1->setText(text);
+	text1->setColor(color);
+    geode->addDrawable(text1);
+/*
+    osgText::Text* text2 = new osgText::Text;
+    text2->setFont("fonts/times.ttf");
+    text2->setCharacterSize(characterSize);
+    text2->setPosition(pos);
+    text2->setAxisAlignment(osgText::Text::YZ_PLANE);
+    text2->setText("YZ_PLANE");
+    geode->addDrawable(text2);
+
+    osgText::Text* text3 = new osgText::Text;
+    text3->setFont("fonts/times.ttf");
+    text3->setCharacterSize(characterSize);
+    text3->setPosition(pos);
+    text3->setAxisAlignment(osgText::Text::XZ_PLANE);
+    text3->setText("XZ_PLANE");
+    geode->addDrawable(text3);
+
+
+    osgText::Text* text4 = new osgText::Text;
+    text4->setFont("fonts/times.ttf");
+    text4->setCharacterSize(characterSize);
+    text4->setPosition(center);
+    text4->setAxisAlignment(osgText::Text::SCREEN);
+
+    osg::Vec4 characterSizeModeColor(1.0f,0.0f,0.5f,1.0f);
+
+    osgText::Text* text5 = new osgText::Text;
+    text5->setColor(characterSizeModeColor);
+    text5->setFont("fonts/times.ttf");
+    //text5->setCharacterSize(characterSize);
+    text5->setCharacterSize(32.0f); // medium
+    text5->setPosition(center - osg::Vec3(0.0, 0.0, 0.2));
+    text5->setAxisAlignment(osgText::Text::SCREEN);
+    text5->setCharacterSizeMode(osgText::Text::SCREEN_COORDS);
+    text5->setText("CharacterSizeMode SCREEN_COORDS(size 32.0)");
+    geode->addDrawable(text5);
+
+    osgText::Text* text6 = new osgText::Text;
+    text6->setColor(characterSizeModeColor);
+    text6->setFont("fonts/times.ttf");
+    text6->setCharacterSize(characterSize);
+    text6->setPosition(center - osg::Vec3(0.0, 0.0, 0.4));
+    text6->setAxisAlignment(osgText::Text::SCREEN);
+    text6->setCharacterSizeMode(osgText::Text::OBJECT_COORDS_WITH_MAXIMUM_SCREEN_SIZE_CAPPED_BY_FONT_HEIGHT);
+    text6->setText("CharacterSizeMode OBJECT_COORDS_WITH_MAXIMUM_SCREEN_SIZE_CAPPED_BY_FONT_HEIGHT");
+    geode->addDrawable(text6);
+
+    osgText::Text* text7 = new osgText::Text;
+    text7->setColor(characterSizeModeColor);
+    text7->setFont("fonts/times.ttf");
+    text7->setCharacterSize(characterSize);
+    text7->setPosition(center - osg::Vec3(0.0, 0.0, 0.6));
+    text7->setAxisAlignment(osgText::Text::SCREEN);
+    text7->setCharacterSizeMode(osgText::Text::OBJECT_COORDS);
+    text7->setText("CharacterSizeMode OBJECT_COORDS (default)");
+    geode->addDrawable(text7);
+
+#if 1
+    // reproduce outline bounding box compute problem with backdrop on.
+    text4->setBackdropType(osgText::Text::OUTLINE);
+    text4->setDrawMode(osgText::Text::TEXT | osgText::Text::BOUNDINGBOX);
+#endif
+
+    text4->setText("SCREEN");
+    geode->addDrawable(text4);
+*/
+/*
+    osg::ShapeDrawable* shape = new osg::ShapeDrawable(new osg::Sphere(center,characterSize*0.2f));
+    shape->getOrCreateStateSet()->setMode(GL_LIGHTING,osg::StateAttribute::ON);
+    geode->addDrawable(shape);
+*/
+    osg::Group* rootNode = new osg::Group;
+    rootNode->addChild(geode);
+
+    return rootNode;    
+}
 
 /**
 *\brief Create a cube and link it to the given transformation matrix.
@@ -235,6 +332,7 @@ bool MarkerTransformDrawCube(osg::ref_ptr<osgART::ARTTransform> MarkerTransForm,
 	WireFrameGrp->addChild(geode);
 	MarkerTransForm->addChild(WireFrameGrp);
 
+#if DRAW_WIREFRAME_CUBE
 	//set the wireframe	
 	osg::StateSet* stateset = new osg::StateSet;
     osg::PolygonOffset* polyoffset = new osg::PolygonOffset;
@@ -263,10 +361,12 @@ bool MarkerTransformDrawCube(osg::ref_ptr<osgART::ARTTransform> MarkerTransForm,
     stateset->setAttributeAndModes(material,osg::StateAttribute::OVERRIDE|osg::StateAttribute::ON);
     stateset->setMode(GL_LIGHTING,osg::StateAttribute::OVERRIDE|osg::StateAttribute::ON);
 #endif
-
     stateset->setTextureMode(0,GL_TEXTURE_2D,osg::StateAttribute::OVERRIDE|osg::StateAttribute::OFF);
   
     WireFrameGrp->setStateSet(stateset);
+
+#endif//draw wire frame
+
  	return true;
 }
 
@@ -283,9 +383,22 @@ osg::ref_ptr<osgART::ARTTransform> CreateMarkerTransform(int PatternID, int Trac
 		marker->setActive(true);
 
 	MarkerTransformDrawCube(markerTrans, boxSize, Color);
+
+	//add the label to the cube :
+		//remove the path of the name
+			std::string Name = marker->getName();
+			int StartNamePos = Name.find_last_of("\\");
+			if (StartNamePos==-1)
+				StartNamePos = Name.find_last_of("/");
+			
+			if (StartNamePos>0)
+				Name = Name.substr(StartNamePos+1, Name.length() - StartNamePos);
+
+
+		markerTrans->addChild(create3DText(Name, osg::Vec3(0,100,0), Color, 80.));
+	//================================
 	return markerTrans;
 }
-
 /**
 *\brief Create all the prejection/modelview matrix for the given tracker, create the corresponding scene graph.
 *
@@ -371,7 +484,7 @@ osg::CameraNode* createRearView(osg::Vec2s &Pos, osg::Vec2s &Size, osg::Matrix &
 #endif
 int main(int argc, char* argv[]) {
 
-	cout << "Start osgARTTest..." << endl;
+	std::cout << "Start osgARTTest..." << std::endl;
 	try
 	{
 #if YCK_BENCH_VIDEO
@@ -379,16 +492,16 @@ int main(int argc, char* argv[]) {
 	//Init benchmark system
 	//==================================================
 		//create VideoBench Object...
-		cout << "VideoBench: create obj..." << endl;
+		std::cout << "VideoBench: create obj..." << std::endl;
 		osgART::CL_VideoBench * Bench = new osgART::CL_VideoBench("BenchMark");
 		Bench->SetWorkingPath("bench");
 		//Bench->SetMode(osgART::CL_VideoBench::BenchMarking);
-		std::cout << endl << "Welcome to ARTXXX test-bed." << endl;
-		//\n Please choose wich running mode you want to use?" << endl;
-		std::cout << endl << "	f - Frame recording mode." << endl;
-		std::cout << endl << "	b - Benchmarking mode." << endl;
-		std::cout << endl << "	v - load a video file(avi)." << endl;
-		std::cout << endl << "	any key - Normal mode." << endl;		
+		std::cout << std::endl << "Welcome to ARTXXX test-bed." << std::endl;
+		//\n Please choose wich running mode you want to use?" << std::endl;
+		std::cout << std::endl << "	f - Frame recording mode." << std::endl;
+		std::cout << std::endl << "	b - Benchmarking mode." << std::endl;
+		std::cout << std::endl << "	v - load a video file(avi)." << std::endl;
+		std::cout << std::endl << "	any key - Normal mode." << std::endl;		
 
 		//default mode
 		Bench->SetMode(osgART::CL_VideoBench::Idle);//BenchMarking 
@@ -414,11 +527,11 @@ int main(int argc, char* argv[]) {
 			default :
 				Bench->SetMode(osgART::CL_VideoBench::Idle);//the bench object is idle
 		}        		
-		std::cout << endl << endl;
+		std::cout << std::endl << std::endl;
 		
 
 		if (!Bench->InitIRSpace())
-			osg::notify(osg::WARN) << "Could not init the VisionSpace Trackers" << endl;
+			osg::notify(osg::WARN) << "Could not init the VisionSpace Trackers" << std::endl;
 
 		std::string BenchFile = Bench->ConsoleInit(std::string("new.xml"), true);
 #endif
@@ -429,7 +542,7 @@ int main(int argc, char* argv[]) {
 	//==================================================
 		osgARTInit(&argc, argv);
 
-		cout << "Start viewer..." << endl;
+		std::cout << "Start viewer..." << std::endl;
 		osgProducer::Viewer viewer;
 		viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
 		viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
@@ -599,7 +712,7 @@ int main(int argc, char* argv[]) {
 	//==================================================
 	//Start MainLoop
 	//==================================================
-		cout << "Start main loop..." << endl;
+		std::cout << "Start main loop..." << std::endl;
 		int FrameID = -1;
 		
 		RUN_VIDEO_BENCH(
@@ -610,9 +723,11 @@ int main(int argc, char* argv[]) {
 
 		while (!viewer.done())
 		{
+#if AR_TRACKER_PROFILE
 			video = Bench->GetCurrentVideo();
 			if ((Bench->GetState() != osgART::CL_VideoBench::ACT_STOP)
 				&&(Bench->GetState() != osgART::CL_VideoBench::ACT_PAUSE))
+#endif
 				video->update();
 		
 			RUN_VIDEO_BENCH(
@@ -659,7 +774,7 @@ RUN_VIDEO_BENCH(
 		//SaveBench
 			if (BenchFile != "")
 			{
-				cout << "VideoBench: save..." << endl;
+				std::cout << "VideoBench: save..." << std::endl;
 				Bench->XMLSaveToFile("new.xml");
 			}
 		//=========================================
@@ -674,8 +789,8 @@ RUN_VIDEO_BENCH(
 
 	catch(CAssertException &e)
 	{
-		std::cerr << "=================== Exception catched Start ================="<< endl << e.what() << endl;
-		std::cerr << endl<< "=================== Exception catched End ================="<< endl;
+		std::cerr << "=================== Exception catched Start ================="<< std::endl << e.what() << std::endl;
+		std::cerr << std::endl<< "=================== Exception catched End ================="<< std::endl;
 		Sleep(10000);
 		Terminate(-1, "");
 	}	

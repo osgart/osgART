@@ -1,0 +1,159 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_FRAMERECORD
+#define OSGART_FRAMERECORD
+ 
+/**
+ * \file  FrameRecord
+ * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ */
+#include "Definition"
+
+
+#if AR_TRACKER_PROFILE
+#include "PosRecord"
+#include <osg/export>
+#include <osg/group>
+#include <osgText/text>
+#include <osg/LineSegment>
+#include <osg/geode>
+
+
+namespace osgART {
+/*!\class CL_FrameRecord
+*\brief 
+*/
+class OSGART_EXPORT CL_FrameRecord 
+	:public	CL_XML_BASE_OBJ<unsigned int>
+{
+public:
+	CL_XML_MNGR<CL_PosRecord ,std::string>	PosMngr;	//!< Manager to store all the different objects' positions relative to this frame.
+
+	/*\fn CL_FrameRecord(const unsigned int _FrameID, std::string _tagname, std::string _subtagname, std::string _IDtagname)
+	*\brief Default constructor.
+	*\param _FrameID => ID of the frame.
+	*\param _tagname => XML Tag name used for the PosMngr.
+	*\param _subtagname => XML sub Tag name used for the PosMngr.
+	*\param _IDtagname => XML ID Tag name used for the PosMngr.
+	*/
+		CL_FrameRecord(const unsigned int _FrameID, 
+						std::string _tagname="RecordMngr",
+						std::string _subtagname = "Record", 
+						std::string _IDtagname = XML_TAG_VAL_ID);
+
+	/*\fn ~CL_FrameRecord()
+	*\brief Default destructor.
+	*/
+		~CL_FrameRecord();
+
+	/*\fn void	SetFileName	(const std::string _FileName)
+	*\brief Set the filename of the screenshot file.
+	*/
+		void	SetFileName	(const std::string _FileName);
+	
+	/*\fn const std::string & GetFileName () const
+	*\brief Get the filename of the screenshot file.
+	*/
+		const std::string & GetFileName	() const;
+
+	/*\fn const SG_TRC::CL_TimerVal &	CalculateTime(const SG_TRC::CL_TimerVal & _StartTime)
+	*\brief Calculate the difference of time between right now and _StartTime, store it into Time member and return it.
+	*\param _StartTime => Starting time of the benchmark, see CL_VideoBench::StartTimer()
+	*/
+	const SG_TRC::CL_TimerVal &	CalculateTime(const SG_TRC::CL_TimerVal & _StartTime);
+
+	//???????????
+	void SetARmatrix(osg::Matrix _ArMatrix);
+	osg::Matrix CalculateIRTransform();
+	//osg::Matrix CalculateARTransform();
+	osg::Vec3d CL_FrameRecord::CalculateRMS(const std::string VersionName, osg::Matrix & _CamCalib);
+	//???????????
+
+
+	//==================================
+	//	Visualisation part
+	//==================================
+	//osg::Group* CreateViewerObjs();
+	//void ReleaseViewerObjs();
+	void Update(osg::Group* FrameNode);
+	//+++++++++++++++++++++++++++++++
+
+
+protected :
+	std::string FileName;	//!< Filename of the screenshot of this frame.
+	SG_TRC::CL_TimerVal		Time;	//!< Time of the frame relative to the starting time of the CL_VideoBench object.
+
+#if _SG_TLS_XML
+public:/*\fn TiXmlElement* XMLLoad(TiXmlElement* _XML_ROOT)
+	*\brief Load the frame XML data from the given XML stream.
+	*\param _XML_ROOT => XML input stream to read the data from.
+	*\return the XML element corresponding to this class.
+	*\sa SGE::CL_XML_OBJ::XMLLoadFromFile()
+	*/
+		virtual TiXmlElement* XMLLoad(TiXmlElement* _XML_ROOT);
+
+	/*\fn TiXmlElement* XMLSave(TiXmlElement* _XML_ROOT)
+	*\brief Save the frame XML data to the given XML stream.
+	*\param _XML_ROOT => XML input stream to save the data to.
+	*\return the XML element corresponding to this class.
+	*\sa SGE::CL_XML_OBJ::XMLSaveToFile()
+	*/
+		virtual TiXmlElement* XMLSave(TiXmlElement* _XML_ROOT);
+#endif
+};
+
+
+
+/*!\class CL_FrameRecordGrp
+*\brief This class is used to store a group of frame, it acts as a manager of frame.
+*\author Yannick ALLUSSE
+*/
+class OSGART_EXPORT CL_FrameRecordGrp 
+	:public	CL_XML_BASE_OBJ<unsigned int>
+{
+public:
+	/*\fn (unsigned int _ID)
+	*\brief Default constructor.
+	*\param _ID => ID of the frame group.
+	*/
+	CL_FrameRecordGrp(unsigned int _ID);
+	
+	/*\fn ~CL_FrameRecordGrp()
+	*\brief Default destructor.
+	*/
+		~CL_FrameRecordGrp();
+
+	
+
+	CL_XML_MNGR<CL_FrameRecord , unsigned int>	FrameMngr;
+#if _SG_TLS_XML
+	/*\fn TiXmlElement* XMLLoad(TiXmlElement* _XML_ROOT)
+	*\brief Load the frame manager XML data from the given XML stream.
+	*\param _XML_ROOT => XML input stream to read the data from.
+	*\return the XML element corresponding to this class.
+	*\sa SGE::CL_XML_OBJ::XMLLoadFromFile()
+	*/
+		virtual TiXmlElement* XMLLoad(TiXmlElement* _XML_ROOT);
+
+	/*\fn TiXmlElement* XMLSave(TiXmlElement* _XML_ROOT)
+	*\brief Save the frame manager XML data to the given XML stream.
+	*\param _XML_ROOT => XML input stream to save the data to.
+	*\return the XML element corresponding to this class.
+	*\sa SGE::CL_XML_OBJ::XMLSaveToFile()
+	*/
+		virtual TiXmlElement* XMLSave(TiXmlElement* _XML_ROOT);
+#endif
+};
+
+
+};//namespace osgART 
+
+#endif //AR_TRACKER_PROFILE
+#endif //OSGART_FRAMERECORD
