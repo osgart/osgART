@@ -15,17 +15,15 @@
  * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
  */
 
+#if AR_TRACKER_PROFILE
+
 #include "osgART/Export"
 #include <osg/vec3>
 #include <osg/quat>
 #include <osg/matrix>
 #include <string>
 #include <stdio.h>
-#include <SG_TLS_xml_container.h>
-#include <SG_TRC_appli.h>
-#include <SG_TRC_timer.h>
 #include "ARTracerVal"
-
 
 namespace osgART {
 
@@ -92,5 +90,5 @@ public:
 
 
 };
-
+#endif //AR_TRACKER_PROFILE
 #endif //OSGART_POSRECORD

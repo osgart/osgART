@@ -20,32 +20,48 @@
 * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
  */
 
-#include "osgART/Export"
+#include "Definition"
+#include <iostream>
+#include <fstream>
+
+//osg and osgART includes	==============
 #include "osgART/GenericVideo"
 #include "osgART/GenericTracker"
 #include "osgART/TrackerManager"
-#include <osg/Vec4>
-#include <string>
-#include "ProfilerTools"
-#include "ARTracerVal"
-#include "VideoBench"
-#include <SG_TRC_appli.h>
+
 
 #ifdef OSGART_ARTPLUS
-	#include <ARToolkitplus/ar.h>//cause some data structures are different.
+	#include <ARToolkitplus/ar.h>
 #else
-	#include <AR\ar.h>
+//include some ARToolkit 2.7 main header files to get the structs and definitions
+	#include "AR/ar.h"
+	#include <AR/config.h>
+	#include <AR/video.h>
+	#include <AR/gsub_lite.h>
 #endif
 
+//profiling includes ================
+#if AR_TRACKER_PROFILE
+	#include "ProfilerTools"
+	#include "ARTracerVal"
+	#include "FrameRecord"
+#endif
+
+
+
 namespace osgART {
-#define AR_TRACKER_PROFILE 0
-
-//#if AR_TRACKER_PROFILE		
-
-using namespace SG_TRC;
-
 //macros for ARToolkit profiling
 
+
+
+#if AR_TRACKER_PROFILE
+	#define __AR_DO_PROFILE(FCT) FCT
+#else
+	#define __AR_DO_PROFILE(FCT) 
+#endif
+
+
+#if AR_TRACKER_PROFILE
 #define AR_BENCH_TIME(TrcFct, CODE, MEMPATT, VERSION, MARKER_NUM){\
 		CL_TRACE_BASE_PARAMS * TempParams = new CL_TRACE_BASE_PARAMS("V", VERSION);/*create params using version name*/\
 		int PatternInMem = MEMPATT;/*we had the number of pattern in memory*/\
@@ -53,93 +69,315 @@ using namespace SG_TRC;
         CL_TEMP_TRACER<SG_TRC_Default_Trc_Type> Tracer(TrcFct, TempParams);\
 		CODE;\
 		TempParams->AddInt ("F", &MARKER_NUM,1,2);\
-}
+		}
+#else
+#define AR_BENCH_TIME(TrcFct, CODE, MEMPATT, VERSION, MARKER_NUM) CODE
+#endif
+
 		
 	/**
 	* \class ARToolKitTrackerProfiler
-	* \brief A tracker based on ARToolKit 2x. 
+	* \brief A tracker base used to profile all the ART tracker. 
 	* 
-	* This tracker supports single and multi-markers.
-	*
+	* \note This class is template to avoid any linking. The template type is not usefull, so always set it to int.
 	*/
-	class OSGART_EXPORT ARToolKitTrackerProfiler: public GenericTracker
+	template <typename TmplType>
+	class ARToolKitTrackerProfiler: public GenericTracker
 	{
 
 	public:        
 //===============================================
-//START Default members for artoolkit wrapping
+//START members for the commun tracker profiler
 //===============================================
 		/** 
 		* \brief constructor.
 		*/
-		//ARToolKitTrackerProfiler(void);
-		ARToolKitTrackerProfiler(std::string _Name, std::string _Version);
-
+		ARToolKitTrackerProfiler(std::string _Name="", std::string _Version="");
 		~ARToolKitTrackerProfiler();
 		
-		void	PrintVersion()const;
 		void	PrintOptions()const;
 		
 		osg::Vec4 getColor()const;
 		void setColor(const osg::Vec4 _color);
 		
+		bool				m_profilerDebug;
+		osg::Vec4			m_color;		//!< Color used as a legend for the plugin.
+
+//===============================================
+//START Profiler members for artoolkit profiling
+//===============================================
 #if AR_TRACKER_PROFILE		
+	public:
 		/*						
 		osg::ref_ptr<Field> get(const std::string& name);		
 		*/
 		Field*	get(const std::string& name);
 		
-		void	RecordMarkerStats(int & _PattID, double &_Coef, osg::Matrix _transform, bool _visible);
-		void	setCurrentBenchFrame(osgART::CL_FrameRecord * _CurrentFrame);
-#endif	
-	protected:		
-	
-#if AR_TRACKER_PROFILE			
-		void RecordDistance(void){};
+		void	RecordMarkerStats(osgART::Marker * marker, bool visible);//, ARMarkerInfo * markerInfo);
+		//void	RecordMarkerStats(int & _PattID, double &_Coef, osg::Matrix _transform, bool _visible);
 		
+		void	setCurrentBenchFrame(osgART::CL_FrameRecord * _CurrentFrame);
+	protected:		
+		void RecordDistance(void){};
 		osgART::CL_FrameRecord * CurrentFrame;
 	/*
 		void RecordDistance();
 		void RecordJittering();
 		void RecordConfident();
 	*/
-#endif			    
-		/** 
-		 * \brief destructor.
-		 *
-		 */
-
-	private:
-
-//===============================================
-//END Default members for artoolkit wrapping
-//===============================================
-
-//===============================================
-//START Profiler members for artoolkit profiling
-//===============================================
-public:
-		std::string			m_versionName;
-		bool				m_profilerDebug;
-		osg::Vec4		m_color;		//!< Color used as a legend for the plugin.
-
-#if AR_TRACKER_PROFILE		
-protected:
+		
 		TTCL_APPLI_TRACER<SG_TRC_Default_Trc_Type>		*LocalARTimeTracer;
 		TTCL_APPLI_TRACER<CL_ARTracerVal>				*LocalARConfidentTracer;
 private:
 		static TTCL_APPLI_TRACER<SG_TRC_Default_Trc_Type> *MainARTimeTracer;
 		static TTCL_APPLI_TRACER<CL_ARTracerVal>		  *MainARConfidentTracer;
 		static int NbrOfPluginProfiled; // used to know when to destroy and save the profilers
-private:
-		static CLoggerDebug		*Logger;
+		static CLoggerDebug		*Logger;		
+#endif
+};
+
+
+//=================================================
+//=================================================
+//			Definition of the class members
+//=================================================
+//=================================================
+
+
+#if AR_TRACKER_PROFILE
+	template <typename TmplType> TTCL_APPLI_TRACER<SG_TRC_Default_Trc_Type> 	*ARToolKitTrackerProfiler<TmplType>::MainARTimeTracer			= NULL;
+	template <typename TmplType> TTCL_APPLI_TRACER<CL_ARTracerVal> 			*ARToolKitTrackerProfiler<TmplType>::MainARConfidentTracer	= NULL;
+	template <typename TmplType> int ARToolKitTrackerProfiler<TmplType>::NbrOfPluginProfiled = 0;
+	template <typename TmplType> CLoggerDebug * ARToolKitTrackerProfiler<TmplType>::Logger = NULL;
+#endif
+
+
+	template <typename TmplType>
+		ARToolKitTrackerProfiler<TmplType>::ARToolKitTrackerProfiler(std::string Name, std::string Version):
+		GenericTracker(),
+		m_profilerDebug(false),
+		m_color(osg::Vec4(1.,1.,1.,1.))
+#if AR_TRACKER_PROFILE
+		,CurrentFrame(NULL)
 		
 #endif
-//===============================================
-//START Profiler members for artoolkit profiling
-//===============================================
-	};
-//#endif //AR_TRACKER_PROFILE
+	{
+		m_name		= Name;
+		m_version	= Version;
+
+#if AR_TRACKER_PROFILE
+		osg::notify() << "ARToolKitTrackerProfiler()" << std::endl;
+		if(!Logger)
+		{
+			Logger = new CLoggerDebug();
+			Logger->SetLogger(Logger);
+		}
+
+		if (!ARToolKitTrackerProfiler<TmplType>::MainARTimeTracer)
+		{
+			ARToolKitTrackerProfiler<TmplType>::MainARTimeTracer		=  CreateMainTracer<SG_TRC_Default_Trc_Type>();//new TTCL_APPLI_TRACER<SG_TRC_Default_Trc_Type>();
+			ARToolKitTrackerProfiler<TmplType>::MainARTimeTracer->XMLLoadFromFile("TimeBench.xml");
+		}
+			
+		if (!ARToolKitTrackerProfiler<TmplType>::MainARConfidentTracer)
+		{
+			ARToolKitTrackerProfiler<TmplType>::MainARConfidentTracer	=  CreateMainTracer<CL_ARTracerVal>();// new TTCL_APPLI_TRACER<CL_ARTracerVal>();
+			ARToolKitTrackerProfiler<TmplType>::MainARConfidentTracer->XMLLoadFromFile("ConfBench.xml");
+		}
+
+		//affect local one :
+		NbrOfPluginProfiled ++;
+		LocalARTimeTracer		= MainARTimeTracer;
+		LocalARConfidentTracer	= MainARConfidentTracer;
+		//===================
+#endif
+	}
+
+template <typename TmplType>
+	ARToolKitTrackerProfiler<TmplType>::~ARToolKitTrackerProfiler()
+	{
+#if AR_TRACKER_PROFILE
+		NbrOfPluginProfiled --;
+
+		if (NbrOfPluginProfiled <=0)
+		{//we save data and delete the profiler
+
+			osg::notify() << "Saving XML files\n" << std::endl;
+
+			LocalARTimeTracer->XMLSaveToFile("TimeBench.xml");
+			LocalARConfidentTracer->XMLSaveToFile("ConfBench.xml");
+			//ARConfidentTracer.XMLSaveToFile("ConfidentBench.xml");
+
+			if (ARToolKitTrackerProfiler<TmplType>::MainARTimeTracer)
+				delete ARToolKitTrackerProfiler<TmplType>::MainARTimeTracer;
+			if (ARToolKitTrackerProfiler<TmplType>::MainARConfidentTracer)
+				delete ARToolKitTrackerProfiler<TmplType>::MainARConfidentTracer;
+		}
+#endif
+	}
+
+#if AR_TRACKER_PROFILE
+template <typename TmplType>
+	void ARToolKitTrackerProfiler<TmplType>::
+	//RecordMarkerStats(int & _PattID, double &_Coef, osg::Matrix _transform, bool _visible)
+	RecordMarkerStats(osgART::Marker * marker, bool visible)
+	{
+//		if (!markerInfo)
+//			return;//marker not visible
+	
+		//if (m_profilerDebug)
+		//	PrintMatrix("RecordMarkerStats marker Matrix", _transform);
+
+
+		//prepare stats
+		int Coef = 0;
+			osg::ref_ptr< osgART::TypedField<double> > _CoefConf = 
+						dynamic_cast< osgART::TypedField<double>* >(marker->get("confidence"));
+			if (_CoefConf.valid())
+				Coef = _CoefConf->get();
+			
+		int PattID = 0;
+		osg::ref_ptr< osgART::TypedField<int> > _PattIdField = 
+						dynamic_cast< osgART::TypedField<int>* >(marker->get("patt_id"));
+			if (_PattIdField.valid())
+				PattID = _PattIdField->get();
+			
+				
+			
+		osg::Matrix MarkerTransform = marker->getTransform();
+		float dist = MarkerTransform.getTrans().length();
+		int dist2 = dist /100;	/*we are in mm*/
+		dist2 = dist2* 10;		/*to remove the last number...we are now in cm with a 10cm range*/
+		//============================
+
+#if 0
+		//get static pointer to function
+		static CL_FUNCT_TRC<CL_ARTracerVal>::TplFctHdle ThisFctConfident	= 
+			this->LocalARConfidentTracer->AddFunct	("AR_BENCH_CONFIDANT", 
+			CL_FUNCT_TRC<CL_ARTracerVal>::TplFctObj(new CL_FUNCT_TRC<CL_ARTracerVal>("AR_BENCH_CONFIDANT")));
+
+		//get a new parameter with the artoolkit version
+		CL_TRACE_BASE_PARAMS * Params = new CL_TRACE_BASE_PARAMS("V",  getLabel());/*create params using version name*/
+
+		//get a tracer
+		CL_TRACER<CL_ARTracerVal> *ConfidentTracer = new CL_TRACER<CL_ARTracerVal>(ThisFctConfident, Params);/*do not delete this*/
+
+		ThisFctConfident->AddTracerToProccess(ConfidentTracer);
+
+		//calculate values to trace
+		
+		Params->AddInt("ID", &_PattID, 1,2);
+		Params->AddInt("D", &dist2, 1,4);
+		//Params->AddInt("C", &Coef, 3);
+
+		CL_ARTracerVal	*Val = ConfidentTracer->GetResult();
+		Val->Distance	= dist2;
+		Val->Coef		= Coef;
+		Val->PattID		= _PattID;
+		ConfidentTracer->SetReady(true);
+
+		osg::notify() << "Dist : " << dist2 << " | Coef :" << Coef << " | ID : " << _PattID << std::endl;
+#endif	
+		//=======================================
+		//Add bench records into the main bench file
+		//=======================================
+		CL_ARTracerVal	*Val2 = NULL; //remove Val when the new benchmarks system is ready
+		
+		if (CurrentFrame)
+		{
+			std::string pattName = "patt_" + ToCharStr(PattID, std::string()); 
+			CL_PosRecord *PatternRecord = CurrentFrame->PosMngr.Get(pattName);
+			if (!PatternRecord)
+			{
+				osg::notify(osg::WARN) << "ARToolKitTrackerProfiler<TmplType>::RecordMarkerStats() : PatternRecord is empty." << std::endl;
+				return;
+			}
+
+			//we got a patternrecord from the prebench records.
+			//we add this AR library patternposition...
+			//the ARTLib record is equivalent to a function
+			std::string NameVersion = m_name;
+			NameVersion += "-";
+			NameVersion += m_version;
+			CL_FUNCT_TRC<CL_ARTracerVal>	*LibRecord = PatternRecord->AddARRecord(NameVersion);
+			if (!LibRecord)
+			{
+				osg::notify(osg::WARN) << "ARToolKitTrackerProfiler<TmplType>::RecordMarkerStats() : LibRecord is empty." << std::endl;
+				return;
+			}
+			//get a new parameter with the artoolkit version
+			CL_TRACE_BASE_PARAMS * Params = new CL_TRACE_BASE_PARAMS("Optim", std::string("0"));/*Create new parameters depending on the lib settings and optimisations*/
+			if (!Params)
+			{
+				osg::notify(osg::WARN) << "ARToolKitTrackerProfiler<TmplType>::RecordMarkerStats() : Params is empty." << std::endl;
+				return;
+			}
+
+			//create a tracer to store the record
+			CL_TRACER<CL_ARTracerVal> *ARPattTracer = new CL_TRACER<CL_ARTracerVal>(LibRecord, Params);/*do not delete this*/
+			if (!ARPattTracer)
+			{
+				osg::notify(osg::WARN) << "ARToolKitTrackerProfiler<TmplType>::RecordMarkerStats() : ARPattTracer is empty." << std::endl;
+				return;
+			}
+
+			//get the object to store the actual patt record
+			CL_ARTracerVal	* pattRecord =  ARPattTracer->GetResult();
+			if (!pattRecord)
+			{
+				osg::notify(osg::WARN) << "ARToolKitTrackerProfiler<TmplType>::RecordMarkerStats() : pattRecord is empty." << std::endl;
+				return;
+			}
+
+			ARPattTracer->SetReady(true);
+			
+			if (visible)
+			{
+				pattRecord->SetTransform(MarkerTransform);
+				pattRecord->Distance	= dist2;
+				pattRecord->Coef		= Coef;
+				pattRecord->PattID		= PattID;
+			}
+			else
+			{
+				pattRecord->Distance	= 0;
+				pattRecord->Coef		= -1;
+				pattRecord->PattID		= PattID;				
+			}
+			LibRecord->UseMinMaxTot = false;
+			LibRecord->AddTracerToProccess(ARPattTracer);
+
+			//..?? other value to record..?? like time spent in ardetectemarker???
+			//that 's all, record saved...
+		}
+		//=======================================
+		//=======================================
+	}
+
+template <typename TmplType>
+	void	ARToolKitTrackerProfiler<TmplType>::setCurrentBenchFrame(osgART::CL_FrameRecord * _CurrentFrame)
+	{
+		CurrentFrame = _CurrentFrame;
+	}
+
+#endif
+
+template <typename TmplType>
+	void ARToolKitTrackerProfiler<TmplType>::PrintOptions()const
+	{
+		std::cout << "Name : "		<< m_name <<  std::endl;
+		std::cout << "Version : "	<< m_version <<  std::endl;
+	}
+
+template <typename TmplType>
+	osg::Vec4 ARToolKitTrackerProfiler<TmplType>::getColor()const
+	{	return m_color;	}
+
+template <typename TmplType>
+	void ARToolKitTrackerProfiler<TmplType>:: setColor(const osg::Vec4 _color)
+	{
+		m_color = _color;
+	}
 };//namespace
 
 #endif 

@@ -1,16 +1,15 @@
 #include "CvCamParam"
+
+
+#if AR_TRACKER_PROFILE
 #include "PosRecord"
 #include <iomanip>
 
 #include <iostream>
 #include <fstream>
-#include <SG_TLS_cl_vectors_template.h>
-#include <SG_TLS_cl_vector4.h>
-#include <SG_TLS_cl_vector3.h>
-
 #include "ar\param.h"//used to get the ARParam struct
 #include "ar\gsub_lite.h"//used to get the arglCameraFrustumRH
-#pragma comment(lib ,"libARgsub_lite.lib")
+
 
 namespace osgART {
 
@@ -186,7 +185,7 @@ bool CL_OpenCVCamParam::ReadParamFile(std::string _FileName)
 	while(sectionNbr <4)
 	{
 		ParamFile >> Section;
-		cout << "Section is : " << Section << endl;
+		std::cout << "Section is : " << Section << std::endl;
 		SectionPart = "";
 		MatrixValue = 0;
 		MatrixName = "";
@@ -202,7 +201,7 @@ bool CL_OpenCVCamParam::ReadParamFile(std::string _FileName)
 */
 				//we have a matrix line, get the matrix value :
 				ParamFile >> MatrixName >> Mat[i];
-				cout << "Reading : " << MatrixName << " = " << Mat[i] <<endl;
+				std::cout << "Reading : " << MatrixName << " = " << Mat[i] <<endl;
 			}
 			m_CVMat.set(Mat);
 			sectionNbr++;
@@ -220,7 +219,7 @@ bool CL_OpenCVCamParam::ReadParamFile(std::string _FileName)
 */
 				//we have a matrix line, get the matrix value :
 				ParamFile >> MatrixName >> Mat4[i];
-				cout << "Reading : " << MatrixName << " = " << Mat4[i]<<endl;
+				std::cout << "Reading : " << MatrixName << " = " << Mat4[i]<<endl;
 			}
 			m_CVDistorsion.set(Mat4[0], Mat4[1], Mat4[2], Mat4[3]);
 			sectionNbr++;
@@ -237,7 +236,7 @@ bool CL_OpenCVCamParam::ReadParamFile(std::string _FileName)
 */
 				//we have a matrix line, get the matrix value :
 				ParamFile >> MatrixName >> Mat3[i];
-				cout << "Reading : " << MatrixName << " = " << Mat3[i]<<endl;
+				std::cout << "Reading : " << MatrixName << " = " << Mat3[i]<<endl;
 			}
 			CamTrans.set(Mat3[0], Mat3[1], Mat3[2]);
 			sectionNbr++;
@@ -255,14 +254,14 @@ bool CL_OpenCVCamParam::ReadParamFile(std::string _FileName)
 */
 				//we have a matrix line, get the matrix value :
 				ParamFile >> MatrixName >> Mat3[i];
-				cout << "Reading : " << MatrixName << " = " << Mat3[i]<<endl;
+				std::cout << "Reading : " << MatrixName << " = " << Mat3[i]<<endl;
 			}
 			CamRot.set(Mat3[0], Mat3[1], Mat3[2]);
 			sectionNbr++;
 		}
 		else
 		{
-			cout << "No Section available" << endl;
+			std::cout << "No Section available" << std::endl;
 		}
 	}
 
@@ -332,10 +331,11 @@ void CL_OpenCVCamParam::PrintAllMatrix()
 	osg::Matrix IRCamMatt		= IRCam->GetTransform();	//in m
 	osg::Matrix IRCVPattMatt	= IRCVPatt->GetTransform();	//in m
 
-	cout << "All matrix from OpenCVParam=========" << endl;
+	std::cout << "All matrix from OpenCVParam=========" << std::endl;
 	PrintMatrix	("CVCamMatt", CVCamMatt);
 	PrintMatrix	("IRCVPattMatt", IRCVPattMatt);
 	PrintMatrix	("IRCamMatt", IRCamMatt);
 }
 
 };//namespace osgART
+#endif //AR_TRACKER_PROFILE

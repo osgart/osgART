@@ -15,13 +15,19 @@
  * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
  */
 
+#include "Definition"
+
+
+#if AR_TRACKER_PROFILE
+
+#include "PosRecord"
 #include "osgART/Export"
 #include <osg/vec3>
 #include <osg/quat>
 #include <osg/matrix>
 #include <osg/uniform>
 #include <string>
-#include "PosRecord"
+
 #include <SG_TLS_xml_container.h>
 #include <osg\notify>
 
@@ -109,4 +115,5 @@ public:
 
 };//namespace
 
+#endif //AR_TRACKER_PROFILE
 #endif //OSGART_CVCAMPARAM

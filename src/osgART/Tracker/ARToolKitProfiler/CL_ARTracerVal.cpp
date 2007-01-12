@@ -1,6 +1,8 @@
 #include "ARTracerVal"
+#include "osgART/Utils"
+#if AR_TRACKER_PROFILE
 #include "math.h"
-#include <osg\notify>
+
 
 namespace osgART {
 
@@ -229,7 +231,7 @@ TiXmlElement* CL_ARTracerVal::XMLSave(TiXmlElement* _XML_ROOT, std::string _Name
 }
 #endif
 }; // namespace osgART
-
+#endif// AR_TRACKER_PROFILE
 
 
 

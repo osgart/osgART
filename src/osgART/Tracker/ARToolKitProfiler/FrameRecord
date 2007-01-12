@@ -14,8 +14,12 @@
  * \file  FrameRecord
  * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
  */
+#include "Definition"
 
+
+#if AR_TRACKER_PROFILE
 #include "PosRecord"
+#include <osg/export>
 #include <osg/group>
 #include <osgText/text>
 #include <osg/LineSegment>
@@ -149,5 +153,7 @@ public:
 };
 
 
-};//namespace osgART {
+};//namespace osgART 
+
+#endif //AR_TRACKER_PROFILE
 #endif //OSGART_FRAMERECORD

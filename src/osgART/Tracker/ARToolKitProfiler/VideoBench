@@ -42,7 +42,6 @@
 			#include <osgVRPN/AnalogTracker.h>
 			#include <osgVRPN/TrackerTransform.h>
 			#include <osgVRPN/TrackerManipulator.h>
-			#pragma comment(lib ,"osgVRPN.lib")
 #endif
 
 

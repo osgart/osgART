@@ -1,5 +1,6 @@
 #include "FrameRecord"
-#include <osg\notify>
+
+#if AR_TRACKER_PROFILE
 //#include <osgART\LineGeometry>
 
 
@@ -84,7 +85,7 @@ CL_FrameRecord::XMLLoad(TiXmlElement* _XML_ROOT)
 
 	XMLReadVal		(XML_Elm, "FrameFile", FileName);
 	_SG_DEBUG_XML(SG_NOTICE_LOG("Reading Frame " << FileName));
-	_SG_DEBUG_XML(cout << endl);
+	_SG_DEBUG_XML(cout << std::endl);
 	Time.XMLLoad	(XML_Elm,	"Time");
 
 	PosMngr.XMLLoad(XML_Elm);
@@ -107,7 +108,7 @@ CL_FrameRecord::XMLSave(TiXmlElement* _XML_ROOT)
 
 	XMLWriteVal		(XML_Elm, "FrameFile", FileName);
 	_SG_DEBUG_XML(SG_NOTICE_LOG("Writing Frame " << FileName));
-	_SG_DEBUG_XML(cout << endl);
+	_SG_DEBUG_XML(cout << std::endl);
 	PosMngr.XMLSave(XML_Elm);
 	Time.XMLSave	(XML_Elm,	"Time");
 
@@ -179,7 +180,7 @@ osg::Vec3d CL_FrameRecord::CalculateRMS(const std::string VersionName, osg::Matr
 	//get all the records for the parameter set.
 	//actually, only the first one to test...???
 	CL_ARTracerVal * CurrRecord = NULL;
-	for (int i = 0; i< Records->TimeRecorded.size(); i++)
+	for (unsigned int i = 0; i< Records->TimeRecorded.size(); i++)
 	{
 		CurrRecord = Records->TimeRecorded[i];
 		if (!CurrRecord)
@@ -333,3 +334,5 @@ void CL_FrameRecord::Update(osg::Group* FrameNode)
 *///create a title	
 }
 };//namespace osgART {
+
+#endif //AR_TRACKER_PROFILE

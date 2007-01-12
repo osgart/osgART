@@ -1,7 +1,8 @@
-#include "PosRecord"
+#include "Definition"
 
+#if AR_TRACKER_PROFILE
+#include "PosRecord"
 #include <iomanip>
-#include <osg\notify>
 
 namespace osgART {
 	
@@ -16,7 +17,7 @@ CL_PosRecord::~CL_PosRecord()
 
 void CL_PosRecord::Print(std::string _Header)
 {
-	cout << _Header << endl;
+	std::cout << _Header << std::endl;
 	PrintVector3D("VectorPos", m_storedPosition);
 	PrintVector3D("VectorRot", m_storedRotation);
 }
@@ -77,6 +78,7 @@ CL_XML_MNGR<SG_TRC::CL_FUNCT_TRC<osgART::CL_ARTracerVal> ,std::string>::iterator
 	return NULL;
 }
 
+#if _SG_TLS_XML
 TiXmlElement* 
 CL_PosRecord::XMLLoad(TiXmlElement* _XML_ROOT)
 {
@@ -116,5 +118,7 @@ CL_PosRecord::XMLSave(TiXmlElement* _XML_ROOT)
 	}
 	return XMLElem;
 }
+#endif //_SG_TLS_XML
 
 };//namespace osgART
+#endif //AR_TRACKER_PROFILE 

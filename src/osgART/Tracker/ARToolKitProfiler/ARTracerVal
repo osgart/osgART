@@ -15,6 +15,10 @@
  * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
  */
 
+#include "Definition"
+
+#if AR_TRACKER_PROFILE
+
 #include "osgART/Export"
 #include "osgART/Marker"
 #include "osgART/GenericVideo"
@@ -91,4 +95,5 @@ public:
 
 
 }; // namespace osgART
+#endif //AR_TRACKER_PROFILE
 #endif //OSGART_CL_ARTRACERVAL
