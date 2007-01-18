@@ -1,0 +1,127 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef TRANSFORMFILTER_H
+#define	TRANSFORMFILTER_H 1
+
+#include <osg/Referenced>
+#include <osg/Matrix>
+#include <osgUtil/SceneView>
+#include <osgUtil/IntersectVisitor>
+#include <osg/io_utils>
+
+#include <string>
+#include <Map>
+#include <List>
+
+#include "osgART/Export"
+
+
+
+namespace osgART {
+
+
+	/**
+	* \class TransformFilter
+	* \brief A filter for rejecting outliers and averaging/smoothing transformation matrices.
+	*/
+	class OSGART_EXPORT TransformFilter : public osg::Referenced {
+
+	public:
+
+		/** 
+		* \brief default constructor.
+		*
+		*/
+		TransformFilter();
+
+		/**
+		* Set size of buffer for storing matrices == number of matrices used for averaging.
+		* \param buffer size
+		*/
+		void setMatrixBufferSize(int size);
+		
+		/**
+		* Translational differences between previous and current matrix larger than this 
+		* value will lead to rejection of current matrix.
+		* \param distance in millimeters
+		*/
+		void setOutlierDistance(int dist);
+		
+		/**
+		* Max number of subsequent rejections
+		* \param num
+		*/
+		void setmaxNumofRejections(int num);
+		
+		/**
+		* Switch outlier rejection on/off
+		* \param true/false
+		*/
+		void enableOutlierRejection(bool val);
+
+		/**
+		* put a new matrix into filter
+		* \return current result of filter, i.e. averaging, outlier rejection
+		*/
+		osg::Matrix putTransformMatrix(osg::Matrix& matrix);
+		
+		
+
+	protected:
+
+		/** 
+		* \brief destructor.
+		*
+		*/
+		~TransformFilter();
+
+		/**
+		* test matrix for being a translational outlier
+		* \param matrix
+		* \return true if matrix is translational outlier
+		*/
+		bool checkForTransOutlier(osg::Matrix& matrix);
+		
+		/**
+		* experimental!
+		* test matrix for being a rotational outlier
+		* \param matrix
+		* \return true if matrix is rotational outlier
+		*/
+		bool checkForRotOutlier(osg::Matrix& matrix);
+
+		/**
+		* average over matrices in buffer
+		* \return average transformation matrix
+		*/
+		osg::Matrix averageTransformMatrices();
+
+
+		typedef std::vector< osg::Matrix* > MatrixList;
+		MatrixList m_matrixlist;
+		
+		int m_matrixBufferSize;		
+		int m_outlierDistance;
+		int m_RejectionCount;
+		int m_maxNumOfRejections;
+
+		bool m_OutlierRejection;
+
+	private:
+		TransformFilter(const TransformFilter& f) {
+		}
+
+		TransformFilter& operator = (const TransformFilter& f) {
+			return *this;
+		}
+
+	};
+};
+#endif
