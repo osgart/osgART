@@ -22,7 +22,12 @@
 #include <osg/Vec3>
 #include <osg/Referenced>
 
+#include "osgART/TransformFilter.h"
+
+
 namespace osgART {
+
+	class TransformFilter;
 
 	/**
 	* \class Marker
@@ -39,6 +44,9 @@ namespace osgART {
 			ART_MULTI,		//<! a multimarker
 			ART_NFT			//<! a natural feature		`			
 		};
+		
+		
+
 	    
 		/** 
 		* \brief default constructor.
@@ -118,6 +126,9 @@ namespace osgART {
 
 	protected: 
 	
+		Marker(const Marker& marker);
+	
+	
 		/**
 		* \brief destructor.
 		*/
@@ -137,17 +148,28 @@ namespace osgART {
 		bool m_active;
 		
 		osg::Matrix m_transform;
+		
+		std::string m_name;
+				
 
+		/**
+		* Filtering transformation matrices
+		*/
+		osg::ref_ptr<TransformFilter>	m_transFilter;
+		bool							m_doTransFiltering;
+
+
+		/**
+		* old transformation averaging
+		*/
 		osg::Vec3 m_storedPosition;
 		osg::Quat m_storedRotation;
 
 		float m_positionSmoothFactor;
 		float m_rotationSmoothFactor;
-
+				
 		bool m_seen;
-
-		std::string m_name;
-
+		
 	};
 
 };
