@@ -13,7 +13,9 @@
 namespace osgART {
 
 
-	Marker::Marker() : osg::Referenced() 
+	Marker::Marker() : osg::Referenced(),
+		m_doTransFiltering(false),
+		m_transFilter(new TransformFilter)
 	{
 		m_fields["name"] = new TypedField<std::string>(&m_name);
 		m_fields["active"] = new TypedField<bool>(&m_active);
@@ -21,12 +23,19 @@ namespace osgART {
 		m_transform.makeIdentity();
 		m_valid = false;
 
-		setRotationalSmoothing(0.15f);
-		setTranslationalSmoothing(0.15f);
+		// not used by new filter
+		//setRotationalSmoothing(0.15f);
+		//setTranslationalSmoothing(0.15f);
 
 		m_name = "marker";
+		
+		// not used by new filter
+		// m_seen = false;
+	}
 
-		m_seen = false;
+	Marker::Marker(const Marker& marker) 
+	{
+		std::cout << "Stuff it!" << std::endl;
 	}
 
 	Marker::~Marker() {	   
@@ -70,42 +79,27 @@ namespace osgART {
 		return (1.0f - m_positionSmoothFactor);
 	}
 
-	void 
-	Marker::updateTransform(const osg::Matrix& transform,
-		bool alternative /*= false*/) {
-		
-		if (m_valid) {
-
-			if (m_seen) {				
-				
-				osg::Vec3 newPosition;
-				osg::Quat newRotation;
-
-				newPosition = transform.getTrans();
-				transform.get(newRotation);
-				m_storedRotation.slerp(m_rotationSmoothFactor, 
-					m_storedRotation, newRotation);
-
-				osg::Vec3 a = newPosition - m_storedPosition;
-
-				osg::Vec3 b = a * m_positionSmoothFactor;
-				m_storedPosition += b;
-				
-			} else {	
-
-				m_storedPosition = transform.getTrans();
-				transform.get(m_storedRotation);
-				//m_seen = true;
-			}
-
-			m_transform=transform;
-			//m_transform.set(m_storedRotation);
-			//m_transform.setTrans(m_storedPosition);
-
-		} else {
-		
-			m_seen = false;
-
+	void Marker::updateTransform(const osg::Matrix& transform, bool alternative /*= false*/) 
+	{
+		// check for valid transform filter
+		if (!m_transFilter.valid())
+		{
+			std::cerr << "Marker::updateTransform: m_transFilter not valid!" << std::endl; 
+			return;
 		}
+
+		// if marker valid
+		if (m_valid) 
+		{
+			// filter for ouliers and do smoothing
+			if (m_doTransFiltering)
+			{
+				m_transform = m_transFilter->putTransformMatrix(osg::Matrix(transform));
+			}
+			else
+			{
+				m_transform = transform;
+			}
+		} 
 	}
 };
