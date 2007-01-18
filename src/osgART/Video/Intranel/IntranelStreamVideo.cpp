@@ -1,41 +1,14 @@
-///////////////////////////////////////////////////////////////////////////////
-// File name : IntranelStreamVideo.C
-//
-// Creation : YYY
-//
-// Version : YYY
-//
-// Author : Raphael Grasset
-//
-// email : Raphael.Grasset@imag.fr
-//
-// Purpose : ??
-//
-// Distribution :
-//
-// Use :
-//	??
-//
-// Todo :
-//	O problem with the GetPin: if I removed the MSG TXT, it can't find the pin..weird
-//    need replace static resolution with dynamic (because intranel box can change res)
-//	/
-//	X
-//
-// History :
-//	YYY : Mr Grasset : Creation of the file
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// include file
-///////////////////////////////////////////////////////////////////////////////
-
+/**
+ * 
+ */
 #include "IntranelStreamVideo"
 
 #include <osg/Notify>
 
 using namespace std;
 using namespace osgART;
+
+#include "DShowUtils.h"
 
 #include <dshow.h>
 
@@ -666,30 +639,47 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 	IPin* rtspPinOut;
 	IPin* ffdshowPinOut;
 	IPin* ffdshowPinIn;
-
-	if (FAILED(GetPin(myRTSPFilter, PINDIR_OUTPUT,"Video Out", &rtspPinOut))) {
+	IPin* rendererPinIn = 0;
+	
+	if (FAILED(GetPin(myRTSPFilter, PINDIR_OUTPUT, "Video Out", &rtspPinOut))) {
 		std::cout << "Can't find Video Out pin" << std::endl;
 	}
-	if (FAILED(GetPin(myFFDShowFilter, PINDIR_INPUT,"In", &ffdshowPinIn))) {
+	
+	if (FAILED(GetPin(myFFDShowFilter, PINDIR_INPUT, "In", &ffdshowPinIn))) {
 		std::cout << "Can't find In pin" << std::endl;
 	}
+	
 	if (FAILED(GetPin(myFFDShowFilter, PINDIR_OUTPUT,"Out", &ffdshowPinOut))) {
 		std::cout << "Can't find Out pin" << std::endl;
 	}
 
-	hr = m_pGB->Connect(rtspPinOut, ffdshowPinIn);
+	if (FAILED(GetPin(pRenderer, PINDIR_INPUT, "In", &ffdshowPinOut))) {
+		std::cout << "Can't find Out pin" << std::endl;
+	}
+
+    m_pGB->Connect(rtspPinOut,ffdshowPinIn);
 	if (FAILED(hr)) {
 		std::cout << "Failed to connect pin! (RTSP > ffdshow)" << std::endl;
         return hr;
     }
 
-	m_pFSrc = myFFDShowFilter;
+	m_pGB->Connect(ffdshowPinOut,rendererPinIn);
+	if (FAILED(hr)) {
+		std::cout << "Failed to connect pin! (ffdshow > renderer)" << std::endl;
+        return hr;
+    }
 
-	pSrcConfig = GetIAMStreamConfig(myRTSPFilter);
+	// DumpPins(pRenderer);
+
+	m_pFSrc = myFFDShowFilter;
+#if 0
+	pSrcConfig = GetIAMStreamConfig(myFFDShowFilter);
 	if (pSrcConfig) {
 		std::cout << "Failed to find a Stream config (RTSP)" << std::endl;
         // return hr;
 	}
+
+#endif
 
 	IPin *pIn = NULL;
 
@@ -699,7 +689,7 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
 	AM_MEDIA_TYPE am_media;
 	// GetMediaType(rtspPinOut,&am_media);
 	// GetMediaType(ffdshowPinIn,&am_media);
-	if (S_OK == GetMediaType(ffdshowPinOut,&am_media)) {
+	if (S_OK == GetMediaType(ffdshowPinIn,&am_media)) {
 		// pSrcConfig->SetFormat(&am_media);
 	} else {
 		std::cout << "Could not get media format." << std::endl;
@@ -714,8 +704,13 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
     // This will create and connect any necessary transform filters.
     // We pass a pointer to the IBaseFilter interface of our DSMemoryRendere
     // video renderer, which will draw store the frames in the dedicated memory.
+	/* 
 	hr = m_pCapture->RenderStream(NULL, &MEDIATYPE_Video,
-									myFFDShowFilter, NULL, pRenderer);
+		myRTSPSource, NULL, pRenderer);
+	*/
+
+	hr = m_pCapture->RenderStream(&PIN_CATEGORY_VBI, 
+		&MEDIATYPE_Stream, myRTSPFilter, NULL, pRenderer);
     
 	if (FAILED(hr))
     {

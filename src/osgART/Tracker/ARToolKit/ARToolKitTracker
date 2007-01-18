@@ -1,11 +1,15 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Tracker/ARToolKit/ARToolKitTracker
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
 
 #ifndef OSGART_ARTTOOLKITTRACKER
 #define OSGART_ARTTOOLKITTRACKER
@@ -21,8 +25,6 @@
  * \author Philip Lamb philip.lamb@artoolworks.com
  * \author Julian Looser Julian.Looser@hitlabnz.org
  * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
- * \author Yannick Allusse yannick.allusse@hitlabnz.org
-
  */
 
 #include "osgART/Export"
@@ -33,12 +35,6 @@
 #include <string>
 
 
-//#if  AR_TRACKER_PROFILE
-#include "ARToolKitTrackerProfiler"
-//#else
-//typedef osgART::GenericTracker ARToolKitTrackerProfiler;
-//#endif
-
 namespace osgART {
 
 	/**
@@ -48,12 +44,7 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARToolKitTracker	: 
-#if  AR_TRACKER_PROFILE
-		public ARToolKitTrackerProfiler<int>
-#else
-		public GenericTracker
-#endif		
+	class ARToolKitTracker : public GenericTracker
 	{
 
 	public:        
@@ -90,8 +81,8 @@ namespace osgART {
 		
 
 		unsigned char* getDebugImage();	
-		void	setDebugMode(const bool& d);
-		bool	getDebugMode()const;
+		void setDebugMode(bool d);
+		bool getDebugMode();
 		
 		
 		/** 
@@ -143,19 +134,6 @@ namespace osgART {
 		*/
 		void update();
 		
-		/**
-		* \brief Convert the ARToolkit format type to osgART format type.
-		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
-		*/
-		//virtual 
-		PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
-		
-		/**
-		* \brief Convert the osgART format type to ARToolkit format type.
-		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
-		*/
-		//virtual 
-		int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
 	protected:
 	
 		/** 

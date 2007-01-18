@@ -106,9 +106,6 @@ int main(int argc, char* argv[])
 
 		}
 
-
-
-
 	} else 
 	{
         // this example needs a tracker

@@ -1,12 +1,16 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Tracker/ARToolKit/SingleMarker
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
- 
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_SINGLEMARKER
 #define OSGART_SINGLEMARKER 1
 
@@ -29,7 +33,13 @@ namespace osgART {
 	*/
 	class SingleMarker : public Marker
 	{
-	public:       
+	public:	
+		
+        virtual bool isSameKindAs(const osg::Object* obj) const {
+            return dynamic_cast<const SingleMarker*>(obj) != 0L;
+        }
+        virtual const char* className() const { return "SingleMarker"; }
+        
     
 		/** 
 		 * \brief default constructor.
@@ -60,10 +70,10 @@ namespace osgART {
 		virtual ~SingleMarker();	    
 
 	 
-	    int             m_patt_id;
-		double          m_patt_width;
-		double          m_patt_center[2];
-		double          m_patt_trans[3][4];
+	    int             patt_id;
+		double          patt_width;
+		double          patt_center[2];
+		double          patt_trans[3][4];
 		
 		double			m_confidence;
 		
