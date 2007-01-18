@@ -22,7 +22,7 @@
 #include <osg/Vec3>
 #include <osg/Referenced>
 
-#include "osgART/TransformFilter.h"
+#include "osgART/TransformFilter"
 
 
 namespace osgART {
