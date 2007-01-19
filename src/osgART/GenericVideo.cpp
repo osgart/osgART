@@ -1,14 +1,22 @@
+/*
+ *	osgART/GenericVideo
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/GenericVideo"
 
-#include "OpenThreads/ScopedLock"
-//Yannick 31/10/06, to add take snapshot()
-#include <osgDB/Registry>
-#include <osgDB/ReadFile>
-#include <osgDB/WriteFile>
-#include <osg/Image>
-//===============================
-namespace osgART {
+#include <OpenThreads/ScopedLock>
+#include <osg/Notify>
 
+namespace osgART {
 
 	// static id counter
 	int GenericVideo::videoNum = 0;
@@ -16,21 +24,25 @@ namespace osgART {
 
 	GenericVideo::GenericVideo() 
 		: osg::Referenced(), 
+		m_image(new osg::Image),
 		xsize(-1), ysize(-1),
 		pixelsize(4), 
-		videoId(GenericVideo::videoNum++),
 		pixelformat(VIDEOFORMAT_RGB24),
 		framerate(VIDEOFRAMERATE_30),
-		m_image(new osg::Image)
+		m_video_id(GenericVideo::videoNum++)		
 	{
 	}
 
-	GenericVideo::GenericVideo(const GenericVideo &)
-	{	    
+	GenericVideo::GenericVideo(const GenericVideo& video) : 
+		osg::Referenced(),
+		FieldContainer<GenericVideo>(), 
+		m_image(video.m_image.get())
+	{
 	}
 
-	GenericVideo::~GenericVideo(void)
+	GenericVideo::~GenericVideo()
 	{	    
+		osg::notify(osg::INFO) << "Shut down video" << std::endl;
 	}
 
 	GenericVideo& 
@@ -40,23 +52,20 @@ namespace osgART {
 	}
 
 	int
-	GenericVideo::getId() const
+	GenericVideo::getID() const
 	{
-		return videoId;
+		return m_video_id;
 	}
 
 	unsigned char*
-	GenericVideo::getImageRaw() {
+	GenericVideo::getImageRaw() 
+	{
 		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
-		//update by yannick
-		if (m_image.valid())
-			return m_image->data();
-		else
-			return NULL;
-		//==================
+		return m_image->data();
 	}
 
-	osg::ref_ptr<osg::Image> GenericVideo::getImage() const {		
+	osg::ref_ptr<osg::Image> GenericVideo::getImage() const 
+	{		
 		return m_image;
 	}
 
@@ -66,31 +75,92 @@ namespace osgART {
 		m_image = image;
 	}
 
-//Yannick 31/10/06===	
-	bool 
-	GenericVideo::takeSnapShot(const std::string & filename)
-	{
-		if (!m_image.valid())
-			osg::notify(osg::WARN) << "GenericVideo::takeSnapShot(): Image object is not valid" << std::endl;
-		else if (filename == "")
-			osg::notify(osg::WARN) << "GenericVideo::takeSnapShot(): FileName is empty" << std::endl;	
-		else if (!m_image->data())
-			osg::notify(osg::WARN) << "GenericVideo::takeSnapShot(): Image object has no data" << std::endl;
-		else
-		{
-			m_image->flipVertical();
-			return osgDB::writeImageFile(*m_image,  filename);
-		}
-		return false;
-	}
-//yannick============
-
 	Field*
 	GenericVideo::get(const std::string& name)
 	{
 		FieldMap::iterator _found = m_fields.find(name);
+		// return 0 if the field is not existant
 		return (_found != m_fields.end()) ? _found->second.get() : 0L;
 	}
+
+	/* virtual */
+	VideoConfiguration* 
+	GenericVideo::getVideoConfiguration()
+	{
+		return 0L;
+	}
+
+	
+
+	VideoContainer::VideoContainer(GenericVideo* video) 
+		: GenericVideo(*video),
+		m_encapsulated(video)
+	{
+	}
+
+
+	VideoConfiguration* VideoContainer::getVideoConfiguration() 
+	{
+		return (m_encapsulated.valid()) ? m_encapsulated->getVideoConfiguration() : 0L;
+	}
+
+	    
+		
+	void 
+	VideoContainer::open() 
+	{
+		if (m_encapsulated.valid()) 
+		{			
+			m_encapsulated->open();	
+			this->xsize = m_encapsulated->getWidth();
+			this->ysize = m_encapsulated->getHeight();
+
+			this->pixelformat = m_encapsulated->getPixelFormat(false);
+			this->internalpixelformat = m_encapsulated->getPixelFormat(true);
+
+			this->setImage(m_encapsulated->getImage().get());
+		}
+	}
+		
+	void
+	VideoContainer::close() 
+	{
+		if (m_encapsulated.valid()) m_encapsulated->close();		
+	}
+		
+	void
+	VideoContainer::start()
+	{
+		if (m_encapsulated.valid()) m_encapsulated->start();		
+	}
+		
+
+	void
+	VideoContainer::stop() 
+	{
+		if (m_encapsulated.valid()) m_encapsulated->stop();		
+	}
+		
+	void
+	VideoContainer::update()
+	{
+		if (m_encapsulated.valid()) m_encapsulated->update();		
+	}
+
+	VideoContainer::VideoContainer() : GenericVideo()
+	{
+	}
+
+	VideoContainer::~VideoContainer()
+	{
+	}
+
+	void
+	VideoContainer::releaseImage() 
+	{
+	}
+
+	
 
 
 };

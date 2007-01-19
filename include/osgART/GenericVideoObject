@@ -1,11 +1,16 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/GenericVideoObject
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_GENERICVIDEOOBJECT
 #define OSGART_GENERICVIDEOOBJECT 1
 
@@ -24,6 +29,7 @@
 #include "osgART/Export"
 #include "osgART/VideoTexture"
 #include "osgART/GenericVideoShader"
+#include "osgART/GenericVideo"
 
 namespace osgART {
 
@@ -68,12 +74,9 @@ namespace osgART {
 		* \brief default constructor.
 		* @param videoId the number of the video used for the background
 		*/    
-		GenericVideoObject(int videoId = 0);
+		GenericVideoObject(GenericVideo* video);
 
-		/**
-		 * \brief destructor.
-		 */
-		virtual ~GenericVideoObject();
+	
 
 
 		/** 
@@ -119,10 +122,18 @@ namespace osgART {
 	protected:
 	
 	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~GenericVideoObject();
+	
+	
 		osg::ref_ptr<GenericVideoShader>	m_vShader;
 		osg::ref_ptr<osg::Texture>			m_vTexture;
 
-		int m_videoId;	
+	
+		osg::ref_ptr<GenericVideo>			m_video;
+		
 		
 		
 		DistortionCorrectionMode m_distortionMode;
@@ -133,6 +144,4 @@ namespace osgART {
 	};
 };
 
-
-/*----------------------------------------------------------------------------*/
 #endif // !defined GenericVideoObject_h

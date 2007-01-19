@@ -1,12 +1,23 @@
+/*
+ *	osgART/Video/ARToolKit/ARToolKitVideo
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "ARToolKitVideo"
 
 #include "osgART/VideoConfig"
 
 using namespace osgART;
 
-
-ARToolKitVideo::ARToolKitVideo(const char *name) : osgART::GenericVideo(),
-	videoName(name),
+ARToolKitVideo::ARToolKitVideo() : osgART::GenericVideo(),
 	video(0L)
 {
 
@@ -59,7 +70,13 @@ ARToolKitVideo::operator=(const ARToolKitVideo &)
 void
 ARToolKitVideo::open()
 {
-	video = ar2VideoOpen((char*)videoName.c_str());
+	char* config = 0;
+
+	if (m_config.deviceconfig != "") {
+		config = (char*)&m_config.deviceconfig.c_str()[0];
+	}
+
+	video = ar2VideoOpen(config);
 	if (video) {
 		ar2VideoInqSize(video, &xsize, &ysize);
 	}
@@ -99,7 +116,8 @@ ARToolKitVideo::update()
 {
 	unsigned char* newImage = NULL;
 
-	if (video) {
+	if (video) 
+	{
 
 		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 		
@@ -110,23 +128,17 @@ ARToolKitVideo::update()
 		if (newImage && m_image.valid())
 			m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 				GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);	
-
-		/*
-		if (!newImage) {
-			image = NULL;
-		} else {
-			image = newImage;
-		}
-		*/
-
-		// image = (unsigned char*)ar2VideoGetImage(video);
-
-		
+	
 	}
+}
+
+VideoConfiguration* 
+ARToolKitVideo::getVideoConfiguration() 
+{
+	return &m_config;
 }
 
 
 void ARToolKitVideo::releaseImage() 
 {
 }
-

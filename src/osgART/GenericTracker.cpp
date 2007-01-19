@@ -1,6 +1,21 @@
+/*
+ *	osgART/GenericTracker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/GenericTracker"
 #include "osgART/Marker"
 #include "osgART/GenericVideo"
+
+#include <osg/Notify>
 
 #include <iostream>
 
@@ -10,31 +25,11 @@ namespace osgART {
 	int GenericTracker::trackerNum = 0;
 
 
-	GenericTracker::GenericTracker() : osg::Referenced(),
-		trackerId(GenericTracker::trackerNum++),
-		//yannick
-		m_name(""),
-		m_version(""),
+	GenericTracker::GenericTracker() 
+		: osg::Referenced(),
 		m_imageptr(0L),
-		m_width(-1),
-		m_height(-1),
-		m_conversionBuff(NULL),
-		m_conversionBuffSize(0),
-		m_arInternalFormat(osgART::VIDEOFORMAT_ANY),
-		m_imageptr_format(osgART::VIDEOFORMAT_ANY)
-		//=============
+		trackerId(GenericTracker::trackerNum++)
 	{
-		//Add by Yannick
-		//Add fields
-		m_fields["name"]	= new TypedField<std::string>(&m_name);
-		m_fields["version"]	= new TypedField<std::string>(&m_version);
-		m_fields["width"]	= new TypedField<int>(&m_width);
-		m_fields["height"]	= new TypedField<int>(&m_height);
-
-		m_fields["arInternalFormat"]= new TypedField<PixelFormatType>(&m_arInternalFormat);
-		m_fields["imageptr_format"]	= new TypedField<PixelFormatType>(&m_imageptr_format);
-		m_fields["conversionBuffSize"]	= new TypedField<int>(&m_conversionBuffSize);
-		//===========================
 	}
 
 	GenericTracker::~GenericTracker() 
@@ -53,18 +48,16 @@ namespace osgART {
 	Marker* 
 	GenericTracker::getMarker(int id) 
 	{
-		// hse25: Bounds checked!
 		Marker *_m = (Marker*)0L;
 
-		try {
-			// get the marker with id (removed .at() method - not defined in STL
-			 _m = m_markerlist[id].get();
+		try 
+		{
+			_m = m_markerlist[id].get();
 
-		} catch(...) {
+		} catch(...) 
+		{
 
-			// Debug message
-			std::cerr << "No Marker with ID: " << id << std::endl;
-
+			osg::notify(osg::WARN) << "No Marker with ID: " << id << std::endl;
 		}
 
 		// return the Marker
@@ -78,9 +71,12 @@ namespace osgART {
 	}
 
 	/*virtual*/ 
-	void GenericTracker::createUndistortedMesh(int,int,
+	void 
+	GenericTracker::createUndistortedMesh(int,int,
 		float,float,osg::Geometry&)
 	{
+		osg::notify(osg::WARN) << "Warning: osgART::GenericTracker::createUndistortedMesh(): "
+			"Empty implementation called!" << std::endl;
 	}
 
 
@@ -96,60 +92,102 @@ namespace osgART {
 	void 
 	GenericTracker::setImage(GenericVideo* video)
 	{
-		if (video) this->setImageRaw(video->getImageRaw(),
+		if (video) 
+		{
+			this->setImageRaw(video->getImageRaw(),
 			video->getPixelFormat(false));
+
+		} else 
+		{
+			osg::notify(osg::WARN) << "Warning: osgART::GenericTracker::setImage(video) "
+				"should receive a valid video" << std::endl;
+		}
 	}
 
+	
 
+	/* virtual */
 	const double* 
 	GenericTracker::getProjectionMatrix() const 
 	{
 		return m_projectionMatrix;
 	}
 
-	//yannick
-	char GenericTracker::getPixelSize(PixelFormatType format) const 
+
+	// ------------------------------------------------
+
+	TrackerContainer::TrackerContainer(GenericTracker* tracker) : GenericTracker(), m_tracker(tracker) 
 	{
-		switch (format) 
+	}
+	
+	void 
+	TrackerContainer::createUndistortedMesh(int a,int b,
+		float c,float d,osg::Geometry& e)
+	{
+		if (m_tracker.valid()) m_tracker->createUndistortedMesh(a,b,c,d,e);
+	}
+
+	void
+	TrackerContainer::update()
+	{
+		if (m_tracker.valid()) 
 		{
-			case VIDEOFORMAT_RGB24:	
-			case VIDEOFORMAT_BGR24:		return 3;
-			case VIDEOFORMAT_BGRA32: 
-			case VIDEOFORMAT_RGBA32: 
-			case VIDEOFORMAT_ARGB32: 
-			case VIDEOFORMAT_ABGR32:	return 4;
-			case VIDEOFORMAT_YUV422:	return 2;
-			case VIDEOFORMAT_Y8:
-			case VIDEOFORMAT_GREY8:		return 1;
+			m_tracker->setImage(m_video.get());
+			m_tracker->update();
 		}
-		osg::notify() << "Error in GenericTracker::getPixelSize(), unknown pixel format" << std::endl;
-		return 0;
 	}
 
-	/*virtual*/
-	PixelFormatType GenericTracker::ConvertARTPixelFormatToOSGART(int format) const
-	{return VIDEOFORMAT_ANY;};
-	
-    /*virtual*/
-	int GenericTracker::ConvertOSGARTPixelFormatToART(PixelFormatType format) const
-	{return 0;};
-        //=======================
-
-
-	void GenericTracker::PrintOptions() const {
-		osg::notify() << "osgART::GenericTracker::PrintOptions() : No description available!" << std::endl;
-	}
-	
-	std::string GenericTracker::getLabel() const {
-		std::string Result = m_name;
-		Result += "-";
-		Result += m_version;
-		return Result;
+	TrackerContainer::~TrackerContainer()
+	{
 	}
 
-	
+	/*virtual*/ 
+	bool 
+	TrackerContainer::init(int xsize, int ysize, 
+			const std::string& pattlist_name/*="Data/markers_list.dat"*/,
+			const std::string& camera_name/*="Data/camera_para.dat"*/) 
+	{
+
+		bool _ret = false;
+
+		if (m_tracker.valid()) {
+
+			_ret = m_tracker->init(xsize,ysize,pattlist_name,camera_name);
+
+			this->m_markerlist = m_tracker->m_markerlist;
+			this->m_imageptr = m_tracker->m_imageptr;
+
+			memcpy(m_projectionMatrix,m_tracker->m_projectionMatrix,
+				sizeof(double) * 16);
+		}
+
+		return _ret; 
+	}
 
 
-	
+	/*virtual*/ 
+	bool 
+	TrackerContainer::init(GenericVideo* video, 
+			const std::string& pattlist_name/*="Data/markers_list.dat"*/,
+			const std::string& camera_name/*="Data/camera_para.dat"*/) 
+	{
+		m_video = video;
+
+		return (m_tracker.valid() && m_video.valid()) ? 
+			this->init(video->getWidth(),video->getHeight(),pattlist_name,camera_name) : false;
+	}
+
+	osg::Projection*
+	TrackerContainer::createProjection() const
+	{
+		osg::Projection *_projection = new osg::Projection();
+
+		if (m_tracker.valid()) 
+		{
+			_projection->setMatrix(osg::Matrix(m_tracker->getProjectionMatrix()));
+		}
+
+		return _projection;
+	}
 
 };

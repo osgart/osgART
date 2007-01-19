@@ -1,12 +1,16 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/ARTTransform
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
- 
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_ARTTRANSFORM
 #define OSGART_ARTTRANSFORM 1
 
@@ -29,13 +33,14 @@ namespace osgART {
 		 * \brief default constructor.
 		 * The default constructor. This transformation is automatically updated by
 		 * the actual position of the marker choosed in argument.
+		 * \param marker ??Doc must be updated?? yoa10
 		 * \param markerID the Marker identification.
 		 * \param trackerId the Tracker identification.
-		 */
-		ARTTransform(int markerID = 0, int trackerId = 0);
+		 */		
+		ARTTransform(Marker *marker);
 		
 		/** 
-		 * Assignemnt operator.
+		 * Assignment operator.
 		 *
 		 */
 		ARTTransform& operator=(const ARTTransform &);

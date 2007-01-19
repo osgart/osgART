@@ -1,33 +1,15 @@
-///////////////////////////////////////////////////////////////////////////////
-// File name : PlaneARShadowRenderer.C
-//
-// Creation : YYY
-//
-// Version : YYY
-//
-// Author : Raphael Grasset
-//
-// email : Raphael.Grasset@imag.fr
-//
-// Purpose : ??
-//
-// Distribution :
-//
-// Use :
-//	??
-//
-// Todo :
-//	O ??
-//	/
-//	X
-//
-// History :
-//	YYY : Mr Grasset : Creation of the file
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// include file
-///////////////////////////////////////////////////////////////////////////////
+/*
+ *	osgART/PlaneARShadowRenderer
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
 
 #include <osgART/PlaneARShadowRenderer>
 #include <osgART/VideoTexture>
@@ -63,28 +45,20 @@ ShadowRenderer(scene,light,marker),m_planeSize(size)
 
 	}
 
-	PlaneARShadowRenderer::~PlaneARShadowRenderer(void)
-	{
-	    
+	PlaneARShadowRenderer::~PlaneARShadowRenderer()
+	{	    
 	}
 
 	void 
 	PlaneARShadowRenderer::init()
 	{   
 		ShadowRenderer::init();
-	//HACK we need to construct a scene here from the size parameters
-		dynamic_cast<osg::Group*>(m_shadowedScene)->addChild(osgDB::readNodeFile("myplane.ive"));
+
+		// hse25: should be replaced with a generic plane. no osgDB and hard wired filenames
+		
+		//HACK we need to construct a scene here from the size parameters
+		dynamic_cast<osg::Group*>(m_shadowedScene)->addChild(osgDB::readNodeFile("models/myplane.ive"));
 		m_shadowedScene->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA));
 	}
-
-
-	///////////////////////////////////////////////////////////////////////////////
-	// PROTECTED : Services
-	///////////////////////////////////////////////////////////////////////////////
-
-
-	///////////////////////////////////////////////////////////////////////////////
-	// PRIVATE : Services
-	///////////////////////////////////////////////////////////////////////////////
 
 }

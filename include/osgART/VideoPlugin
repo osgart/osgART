@@ -1,10 +1,21 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/VideoPlugin
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+/**
+ *  \file  VideoPlugin
+ *  \brief Preprocessor macros to help with correct linkage of exported symbols in video plugins.
+ *
+ * Preprocessor macros to help with correct linkage of exported symbols in video plugins.
  */
 
 #ifndef OSGART_VIDEOPLUGIN
@@ -42,10 +53,6 @@ extern "C" int __stdcall DllMain(HINSTANCE hInst,DWORD reason,LPVOID reserved) {
 #else
 	#define OSGART_PLUGIN_ENTRY()
 #endif
-
-
-
-
 
 
 #endif

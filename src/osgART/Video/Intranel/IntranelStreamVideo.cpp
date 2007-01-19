@@ -8,7 +8,7 @@
 using namespace std;
 using namespace osgART;
 
-#include "DShowUtils.h"
+// #include "DShowUtils.h"
 
 #include <dshow.h>
 

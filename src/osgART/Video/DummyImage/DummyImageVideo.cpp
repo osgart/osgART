@@ -37,6 +37,8 @@
 #include <osgDB/Registry>
 #include <osgDB/ReadFile>
 
+#include <osg/Notify>
+
 using namespace std;
 using namespace osgART;
 

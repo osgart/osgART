@@ -1,3 +1,16 @@
+/*
+ *	osgART/ShadowRenderer
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/ShadowRenderer"
 #include "osgART/VideoTexture"
 #include "osgART/VideoManager"
@@ -39,12 +52,10 @@ namespace osgART {
 
 	ShadowRenderer::ShadowRenderer(const ShadowRenderer& srenderer)
 	{
-
 	}
 
-	ShadowRenderer::~ShadowRenderer(void)
-	{
-	    
+	ShadowRenderer::~ShadowRenderer()
+	{	    
 	}
 
 
@@ -154,11 +165,11 @@ class UpdateCameraAndTexGenCallback : public osg::NodeCallback
 		osg::Program* program = new osg::Program;   
 
 		osg::Shader* vertShader = new osg::Shader(osg::Shader::VERTEX);
-		vertShader->loadShaderSourceFromFile("shadow.vert");
+		vertShader->loadShaderSourceFromFile("shaders/shadow.vert");
 		program->addShader(vertShader);
 
 		osg::Shader* fragShader = new osg::Shader(osg::Shader::FRAGMENT);
-		fragShader->loadShaderSourceFromFile("shadow.frag");
+		fragShader->loadShaderSourceFromFile("shaders/shadow.frag");
 		program->addShader(fragShader);
 		
 		stateset->setAttribute(program);

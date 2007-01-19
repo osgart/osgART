@@ -1,38 +1,47 @@
+/*
+ *	osgART/VideoTexCallback
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/VideoTexCallback"
 
 #include "osgART/VideoManager"
 #include "osgART/TrackerManager"
 
+#include <osg/Notify>
 
 #include <iostream>
 
 namespace osgART {
 
-	VideoTexCallback::VideoTexCallback(int video,int vw, int vh, int tw, int th) :
-		m_alphabias(1.0f),
-		videoId(video),
+	VideoTexCallback::VideoTexCallback(VideoTextureBase* videotexture,
+		int vw, int vh, int tw, int th) :
 		m_vidWidth(vw),
 		m_vidHeight(vh),
 		m_texWidth(tw),
-		m_texHeight(th)	
+		m_texHeight(th),
+		m_video(videotexture->getVideo()),
+		m_videotexture(videotexture)
 	{
 	}
 	
-	void VideoTexCallback::setAlphaBias(float alphabias) {
-		m_alphabias = osg::clampBetween<float>(alphabias,0.0f,1.0f);
-	}
-	float VideoTexCallback::getAlphaBias() const {
-		return m_alphabias;
-	}
-
 	/*virtual*/ 
-	void VideoTexCallback::load(const osg::Texture2D& texture, osg::State& state) const {
+	void 
+	VideoTexCallback::load(const osg::Texture2D&, osg::State&) const {
 
-#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
-		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
-#endif
+		if (m_videotexture->getAlphaBias() >= 0.0f) 
+			glPixelTransferf(GL_ALPHA_BIAS, m_videotexture->getAlphaBias());
 
-	switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
+
+	switch (m_video->pixelFormat())
 	{
 		case VIDEOFORMAT_RGB24:
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_texWidth, m_texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
@@ -59,7 +68,7 @@ namespace osgART {
 #endif
 			break;
 		case VIDEOFORMAT_YUV422:
-			std::cerr<<"Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
+			osg::notify(osg::WARN) << "Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
 			/*
 #ifdef __APPLE__
 #ifdef __BIG_ENDIAN__
@@ -70,27 +79,30 @@ namespace osgART {
 #endif
 			 */
 			break;
-			default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
-			 break;
+		default: 
+			osg::notify(osg::WARN) << "VideoTexCallback::VideoTexCallback(): "
+				"format not supported for texture mapping.." << std::endl;
+
+			break;
 		}
-#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
-		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
-#endif
+		
+		if (m_videotexture->getAlphaBias() >= 0.0f) 
+			glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 	}
 	
 	/*virtual */ 
 	void 
-	VideoTexCallback::subload(const osg::Texture2D& texture, osg::State& state) const {
+	VideoTexCallback::subload(const osg::Texture2D&, osg::State&) const {
 	
-		unsigned char* frame = VideoManager::getInstance()->getVideo(videoId)->getImageRaw();
+		//IWA
+		unsigned char* frame = ((osgART::GenericVideo*)(m_video.get()))->getImageRaw();
 
-		if (frame == NULL) return;
+		if (frame == 0L) return;
 
-#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
-		glPixelTransferf(GL_ALPHA_BIAS, 1.0f);
-#endif
+		if (m_videotexture->getAlphaBias() >= 0.0f) 
+			glPixelTransferf(GL_ALPHA_BIAS, m_videotexture->getAlphaBias());
 
-	switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
+	switch (m_video->pixelFormat())
 	{
 		case VIDEOFORMAT_RGB24:
 			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_vidWidth, m_vidHeight, GL_RGB, GL_UNSIGNED_BYTE, frame);
@@ -121,7 +133,7 @@ namespace osgART {
 #endif
 			break;
 		case VIDEOFORMAT_YUV422:
-			std::cerr<<"Due tolack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
+			osg::notify(osg::WARN) << "Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n"<<std::endl;
 			/*
 #ifdef __APPLE__
 #ifdef __BIG_ENDIAN__
@@ -135,12 +147,15 @@ namespace osgART {
 			 */
 			break;
 	
-		default: std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
+
+		default: 
+			osg::notify(osg::WARN) << "osgART::VideoTexCallback::subload() format "
+				"not supported for texture mapping!" << std::endl;
+
 			break;
 	}
-#ifdef OSGART_PIXELBIAS_NO_PERFORMANCE
-		glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
-#endif
+		if (m_videotexture->getAlphaBias() >= 0.0f) 
+			glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 
 	}
 };

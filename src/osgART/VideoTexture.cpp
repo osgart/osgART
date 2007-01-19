@@ -1,84 +1,67 @@
-///////////////////////////////////////////////////////////////////////////////
-// File name : VideoTexture.C
-//
-// Creation : YYY
-//
-// Version : YYY
-//
-// Author : Raphael Grasset
-//
-// email : Raphael.Grasset@imag.fr
-//
-// Purpose : ??
-//
-// Distribution :
-//
-// Use :
-//	??
-//
-// Todo :
-//	O ??
-//	/
-//	X
-//
-// History :
-//	YYY : Mr Grasset : Creation of the file
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// include file
-///////////////////////////////////////////////////////////////////////////////
+/*
+ *	osgART/VideoTexture
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
 
 #include <osgART/VideoManager>
 #include <osgART/VideoTexture>
 #include <osgART/VideoTexCallback>
 #include <osgART/VideoBackground>
 
+#include <osg/Notify>
+
 
 // using namespace std;
 namespace osgART {
 
-	VideoTexture::VideoTexture(int video) {
-
-
+	VideoTexture::VideoTexture(GenericVideo* video) : VideoTextureBase(video) 
+	{
 		this->setDataVariance(osg::Object::DYNAMIC);
 
-		videoId = video;
-
-		m_vidWidth = VideoManager::getInstance()->getVideo(videoId)->getWidth();
-		m_vidHeight = VideoManager::getInstance()->getVideo(videoId)->getHeight();
+		m_vidWidth = m_video->getWidth();
+		m_vidHeight = m_video->getHeight();
 
 		m_texWidth = GenericVideoObject::mathNextPowerOf2(m_vidWidth);
 		m_texHeight = GenericVideoObject::mathNextPowerOf2(m_vidHeight);
 
-		switch (VideoManager::getInstance()->getVideo(videoId)->pixelFormat())
+		switch (m_video->pixelFormat())
 		{
 		case VIDEOFORMAT_RGB24:
-				this->setInternalFormat(GL_RGB);
-				break;
+			this->setInternalFormat(GL_RGB);
+			break;
 		case VIDEOFORMAT_BGR24:
-				this->setInternalFormat(GL_RGB);
-				break;
+			this->setInternalFormat(GL_RGB);
+			break;
 		case VIDEOFORMAT_RGBA32:
-				this->setInternalFormat(GL_RGBA);
-				break;
+			this->setInternalFormat(GL_RGBA);
+			break;
 		case VIDEOFORMAT_ABGR32:
-				this->setInternalFormat(GL_RGBA);
-				break;
+			this->setInternalFormat(GL_RGBA);
+			break;
 		case VIDEOFORMAT_BGRA32:
-				this->setInternalFormat(GL_RGBA);
-				break;
+			this->setInternalFormat(GL_RGBA);
+			break;
 		case VIDEOFORMAT_ARGB32:
-				this->setInternalFormat(GL_RGBA);
-				break;
+			this->setInternalFormat(GL_RGBA);
+			break;
 		case VIDEOFORMAT_YUV422:
-	#ifdef __APPLE__
-	//# error Due to lack of support in OpenSceneGraph, AR_PIX_FORMAT_2vuy is not supported in osgART yet. Use AR_PIX_FORMAT_ARGB instead.\n
-				this->setInternalFormat(GL_RGB);
-	#endif
+#ifdef __APPLE__
+			//# error Due to lack of support in OpenSceneGraph, 
+			// AR_PIX_FORMAT_2vuy is not supported in osgART yet. 
+			// Use AR_PIX_FORMAT_ARGB instead.\n
+			this->setInternalFormat(GL_RGB);
+#endif
 				break;
 		default: 
-			std::cerr<<"ERROR:format not supported for texture mapping.."<<std::endl;
+			osg::notify(osg::WARN) << "Warning: format not supported for texture mapping!" << std::endl;
 			break;
 		}
 
@@ -88,7 +71,7 @@ namespace osgART {
 		this->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::CLAMP);
 		this->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::CLAMP);
 
-		this->setSubloadCallback(new VideoTexCallback(videoId, 
+		this->setSubloadCallback(new VideoTexCallback(this, 
 			m_vidWidth, m_vidHeight, m_texWidth, m_texHeight));
 
 	}

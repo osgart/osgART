@@ -1,9 +1,20 @@
 /*
+ *	osgART/osgARTTest
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Simple Example to demonstrate OSGART
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
- * Copyright (c) 2005-2006
- * Julian Looser, Philip Lamb, Rapha‘l Grasset, Hartmut Seichter.
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+/*
+ *
+ * A simple example to demonstrate the most basic functionality of osgART.
+ * By Julian Looser, Philip Lamb, Raphael Grasset, Hartmut Seichter.
  *
  */
 
@@ -20,27 +31,21 @@
 #include <osg/Geometry>
 #include <osg/Image>
 
-
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
 #include <osgART/VideoBackground>
 #include <osgART/VideoPlane>
+#include <osgART/VideoForeground>
 
-
-#ifdef _WIN32
-#    define MY_VCONF "data/WDM_camera_flipV.xml"
-#else
 // Please read documentation for setting video parameters
-#  define MY_VCONF ""
-#endif
-
+#define MY_VCONF ""
 
 int main(int argc, char* argv[]) 
 {
 
-	osg::setNotifyLevel(osg::ALWAYS);
+	osg::setNotifyLevel(osg::NOTICE);
 
 	osgARTInit(&argc, argv);
 	
@@ -53,30 +58,38 @@ int main(int argc, char* argv[])
 	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
 #endif
 
-	osgART::VideoConfiguration cfg;
-	cfg.deviceconfig = MY_VCONF;
-
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
 
 	// check if loading the plugin was successful
 	if (!video.valid()) 
-	{
+	{        
 		// without video an AR application can not work
-		osg::notify(osg::FATAL) << "Could not initialize video!" << std::endl;
+		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 
 		// quit the program
 		exit(1);
 	}
+
+	//get the video configuration
+	osgART::VideoConfiguration* _config = 
+		video->getVideoConfiguration();
+
+	//update it with the configuration of our camera
+	if (_config)
+	{
+		_config->deviceconfig = MY_VCONF;
+	}
+
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");	// for ARToolkit 2.7
-		//osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkitplus_tracker"); // for ARToolkit PLUS
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
 
 	if (tracker.valid()) 
-	{		
+	{
+
 		// access a field within the tracker
 		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
 			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
@@ -95,17 +108,6 @@ int main(int argc, char* argv[])
 			osg::notify() << "Field 'threshold' supported for this tracker" << std::endl;
 		}		
 
-
-		// access a field within the tracker
-		osg::ref_ptr< osgART::TypedField<bool> > _debug = 
-			reinterpret_cast< osgART::TypedField<bool>* >(tracker->get("debug"));
-
-		if (_debug.valid()) {
-
-			_debug->set(true);
-
-		}
-
 	} else 
 	{
         // this example needs a tracker
@@ -121,30 +123,28 @@ int main(int argc, char* argv[])
 	video->open();
 
 	// Initialise the tracker with the dimensions of the video image
-	if(!tracker->init(video->getWidth(), video->getHeight()))
-	{
-		std::cerr << "Could not initialize tracker plugin!" << std::endl;
-		exit(-1);		
-	}
+	tracker->init(video->getWidth(), video->getHeight());
 
 	// From here on the scene is going to be built
 
 	// Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
-	//osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
-	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(0);
+	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
 
-
+	//specify a video texture rectangle (faster)
 	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
 
+	//initialize the video background
 	videoBackground->init();
 	
+	//adding it to the scene graph
 	foregroundGroup->addChild(videoBackground);
 
 	foregroundGroup->getOrCreateStateSet()->setRenderBinDetails(2, "RenderBin");
 
-
+	//use the projection matrix from the tracker (i.e. intrinsic camera parameters)
+	//for the projection matrix.
 	osg::Projection* projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 
 	// create marker with id number '0'
@@ -163,10 +163,9 @@ int main(int argc, char* argv[])
 
 	// create a matrix transform related to the marker
 	osg::ref_ptr<osg::MatrixTransform> markerTrans = 
-		//new osgART::ARTTransform(marker.get());
-		new osgART::ARTTransform(0,0);
+		new osgART::ARTTransform(marker.get());
 
-
+	//and simply create a blue cube object
 	float boxSize = 40.0f;
 	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, boxSize / 2.0f), boxSize));
 	sd->setColor(osg::Vec4(0, 0, 1, 1));
@@ -175,7 +174,7 @@ int main(int argc, char* argv[])
 	geode->addDrawable(sd);
 	markerTrans->addChild(geode);
 
-	// 
+	//assemble all things together
 	osg::Group* sceneGroup = new osg::Group();
 	sceneGroup->getOrCreateStateSet()->setRenderBinDetails(5, "RenderBin");
 	sceneGroup->addChild(markerTrans.get());
@@ -199,21 +198,25 @@ int main(int argc, char* argv[])
 		
 		viewer.sync();	
 		
+		//update the video (get new frame)
 		video->update();
 
+		//update the tracker with the new image
 		tracker->setImage(video.get());
 		tracker->update();
 		
         viewer.update();
         viewer.frame();
-
+	
     }
     
 	viewer.sync();
     viewer.cleanup_frame();
     viewer.sync();
 
+	//stop the video
 	video->stop();
+	//close the video
 	video->close();
 	
 }

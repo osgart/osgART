@@ -1,11 +1,16 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/VideoLayer
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/VideoLayer"
 #include "osgART/TrackerManager"
 #include "osgART/VideoTexture"
@@ -24,6 +29,7 @@
 #include <osg/Depth>
 #include <osg/Geometry>
 #include <osg/BlendFunc>
+#include <osg/Notify>
 
 namespace osgART {
 
@@ -38,7 +44,7 @@ namespace osgART {
 		{			
 		}
 
-		virtual void operator()(osg::Node*, osg::NodeVisitor* nv)
+		virtual void operator()(osg::Node*, osg::NodeVisitor*)
 		{
 			_texture->setImage(_video->getImage().get());        
 		}
@@ -49,16 +55,17 @@ namespace osgART {
 			
 	};
 
-	VideoLayer::VideoLayer(int videoId,int layerD)
-		: GenericVideoObject(videoId) ,
+	VideoLayer::VideoLayer(GenericVideo* video,int layerD)
+		: GenericVideoObject(video) ,
 		m_layerDepth(layerD),
+		m_alpha(-1),
 		m_trackerid_undistort(0)
 	{
 		// Should check whether it's a valid video id!
 		// m_videoId = videoId;
 		
-		m_width = VideoManager::getInstance()->getVideo(videoId)->getWidth();
-		m_height = VideoManager::getInstance()->getVideo(videoId)->getHeight();
+		m_width = video->getWidth();
+		m_height = video->getHeight();
 
 	}
 
@@ -80,7 +87,7 @@ namespace osgART {
 	VideoLayer::setTransparency(float alpha) 
 	{
 		m_alpha=alpha;
-		if (alpha<1.0f) //if no transparency, non activate blending op
+		if (alpha<1.0f) //if no transparency, non activate blending op (if already activate, override)
 		{
 			osg::BlendFunc* blendFunc = new osg::BlendFunc();
 			blendFunc->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA);
@@ -138,19 +145,19 @@ namespace osgART {
 			case USE_TEXTURE_RECTANGLE:
 				maxU = m_width;
 				maxV = m_height;
-				_texture = new VideoTextureRectangle(m_videoId);
+				_texture = new VideoTextureRectangle(m_video.get());
 				break;
 			case USE_TEXTURE_2D:
 				maxU = m_width / (float)mathNextPowerOf2((unsigned int)m_width);
 				maxV = m_height / (float)mathNextPowerOf2((unsigned int)m_height);
-				_texture = new VideoTexture(m_videoId);
+				_texture = new VideoTexture(m_video.get());
 				break;
 
 			case USE_TEXTURE_VIDEO:
 
 				_texture = new osg::TextureRectangle;
 				this->setUpdateCallback(new ImageUpdateCallback((osg::TextureRectangle*)_texture,
-					VideoManager::getInstance()->getVideo(m_videoId)));
+					m_video.get()));
 				
 				break;
 
@@ -182,77 +189,51 @@ namespace osgART {
 			{
 				// create grid with radial texture correction
 				TrackerManager::getInstance()->getTracker(this->m_trackerid_undistort)->
-					createUndistortedMesh(m_width, m_height, maxU, maxV, *m_geometry);
-
-#if 0
-				
-				unsigned int rows = 20, cols = 20;
-				float rowSize = m_height / (float)rows;
-				float colSize = m_width / (float)cols;
-				double x, y, px, py, u, v;
-
-				// new version by Hartmut, should work for both ARToolkit and ART4
-				const osgART::CameraParameter p = 
-					dynamic_cast<osgART::GenericTracker*>(osgART::TrackerManager::getInstance()->getTracker(this->m_trackerid_undistort))->getIntrinsicParameters();
-				
-
-				for (unsigned int r = 0; r < rows; r++) {
-					for (unsigned int c = 0; c <= cols; c++) {
-
-						x = c * colSize;
-						y = r * rowSize;
-
-						Observer2Ideal(p.dist_factor, x, y, &px, &py);
-						coords->push_back(osg::Vec3(px, py, 0.0f));
-
-						u = (c / (float)cols) * maxU;
-						v = (1.0f - (r / (float)rows)) * maxV;
-						tcoords->push_back(osg::Vec2(u, v));
-
-						x = c * colSize;
-						y = (r+1) * rowSize;
-
-						Observer2Ideal(p.dist_factor, x, y, &px, &py);
-						coords->push_back(osg::Vec3(px, py, 0.0f));
-
-						u = (c / (float)cols) * maxU;
-						v = (1.0f - ((r+1) / (float)rows)) * maxV;
-						tcoords->push_back(osg::Vec2(u, v));
-
-					}
-
-					m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 
-						r * 2 * (cols+1), 2 * (cols+1)));
-				}
-
-				break;
-#endif
+					createUndistortedMesh((int)m_width, (int)m_height, maxU, maxV, *m_geometry);
 			}
 
 
-		case NO_CORRECTION:
+			case NO_CORRECTION:
+			{
 
-			coords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-			coords->push_back(osg::Vec3(m_width, 0.0f, 0.0f));
-			coords->push_back(osg::Vec3(m_width, m_height, 0.0f));
-			coords->push_back(osg::Vec3(0.0f, m_height, 0.0f));
+				coords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+				coords->push_back(osg::Vec3(m_width, 0.0f, 0.0f));
+				coords->push_back(osg::Vec3(m_width, m_height, 0.0f));
+				coords->push_back(osg::Vec3(0.0f, m_height, 0.0f));
 
-			tcoords->push_back(osg::Vec2(0.0f, maxV));
-			tcoords->push_back(osg::Vec2(maxU, maxV));
-			tcoords->push_back(osg::Vec2(maxU, 0.0f));
-			tcoords->push_back(osg::Vec2(0.0f, 0.0f));
+				tcoords->push_back(osg::Vec2(0.0f, maxV));
+				tcoords->push_back(osg::Vec2(maxU, maxV));
+				tcoords->push_back(osg::Vec2(maxU, 0.0f));
+				tcoords->push_back(osg::Vec2(0.0f, 0.0f));
 
-			m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
+				m_geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
 
-			break;
+				break;
+			}
+			default:
+				osg::notify() << "osgART::VideoLayer::buildLayerGeometry()"
+					"Undefined distortion mode" << std::endl;
 		}
 	    
 		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, _texture, osg::StateAttribute::ON);
 		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
+		
+		//if we have transparency texture and we are not the background layer
+		if ((dynamic_cast<osgART::VideoTextureBase*>(_texture)->getVideo()->pixelSize()==4)&&(m_layerDepth!=1))
+		{
+			osg::BlendFunc* blendFunc = new osg::BlendFunc();
+			blendFunc->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA);
+		
+			m_geometry->getOrCreateStateSet()->setAttribute(blendFunc);
+			m_geometry->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
+			m_geometry->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+
+			dynamic_cast<osgART::VideoTextureBase*>(_texture)->setAlphaBias(0.0);	
+		}
 
 		if (m_vShader.valid())
 		{
-			m_vShader->Apply(*(m_geometry->getOrCreateStateSet()));	
+			m_vShader->apply(*(m_geometry->getOrCreateStateSet()));	
 		}
 		m_layerGeode->addDrawable(m_geometry.get());
 

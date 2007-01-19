@@ -6,7 +6,7 @@
 
 DLL_API osgART::GenericVideo* osgart_createvideo(const osgART::VideoConfiguration& config)
 {
-	return new VideoSourceVideo(config.deviceconfig);
+	return new VideoSourceVideo(config.deviceconfig.c_str());
 
 }
 

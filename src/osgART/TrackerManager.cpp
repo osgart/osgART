@@ -1,15 +1,34 @@
+/*
+ *	osgART/TrackerManager
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include <osgART/TrackerManager>
-
 #include <osgDB/DynamicLibrary>
-
-#include <iostream>
+#include <osg/Notify>
 
 namespace osgART {
 
-	TrackerManager* TrackerManager::s_instance = NULL;
+	TrackerManager* TrackerManager::s_instance = 0L;
 
-	TrackerManager* TrackerManager::getInstance() {
-		if (TrackerManager::s_instance == NULL) {
+
+	TrackerManager::TrackerManager() : m_trackercount(0)
+	{
+	}
+
+
+	TrackerManager* TrackerManager::getInstance() 
+	{
+		if (TrackerManager::s_instance == 0L) 
+		{
 			TrackerManager::s_instance = new TrackerManager();
 		}
 		return s_instance;
@@ -17,7 +36,10 @@ namespace osgART {
 
 	TrackerManager::~TrackerManager()
 	{	    
-		// hse25: remove all Tracker
+		osg::notify() << "TrackerManager::~TrackerManager(): " <<
+			"Deleting all tracker. Got " << m_trackermap.size() << " assigned tracker(s)"
+			<< std::endl;
+
 		this->m_trackermap.clear();
 	}
 
@@ -25,6 +47,10 @@ namespace osgART {
 	TrackerManager::addTracker(GenericTracker* tracker)
 	{
 		m_trackermap[tracker->getId()] = tracker;
+
+		osg::notify() << "osgART::TrackerManager::addTracker(tracker): " <<
+			"Added tracker with ID " << tracker->getId() << std::endl;
+
 		return m_trackercount++;
 	}
 
@@ -32,16 +58,21 @@ namespace osgART {
 	TrackerManager::removeTracker(GenericTracker* tracker)
 	{
 		if (tracker) {
-			try {
-				m_trackermap[tracker->getId()] = 0L;
-			} catch(...) {
 
-				std::cerr << "osgART::TrackerManager: could not unregister tracker" << std::endl;
+			try 
+			{			
+				m_trackermap[tracker->getId()] = 0L;
+			
+			} catch(...) 
+			{
+
+				osg::notify(osg::WARN) << "Warning! osgART::TrackerManager::removeTracker(tracker) "
+					<< "Could not unregister tracker with ID " << tracker->getId() << std::endl;
 
 				// return here
 				return;
 			}
-			
+	
 			m_trackercount--;
 
 		}
@@ -56,29 +87,22 @@ namespace osgART {
 		}
 		else
 		{
-			std::cerr << "osgART::TrackerManager: tracker with id:" << id << " doesn't exist" << std::endl;
-
-			return 0L;
+			osg::notify(osg::WARN) << "Warning! osgART::TrackerManager::getTracker(id)"
+				"tracker with ID:" << id << " doesn't exist" << std::endl;
 		}
+		return 0L;
 	}
 
 	/*static*/
 	void
 	TrackerManager::destroy()
 	{
+		osg::notify() << "osgART::TrackerManager::destroy() Delete the tracker manager"
+			<< std::endl;
+
 		delete s_instance;
-		s_instance = NULL;
-	}
-
-	int
-	TrackerManager::GetCount()
-	{
-		return m_trackercount;
-	}
-
-
-	TrackerManager::TrackerManager() : m_trackercount(0)
-	{
+		
+		s_instance = 0L;
 	}
 
 	/* static */
@@ -95,18 +119,22 @@ namespace osgART {
 
 		osgDB::DynamicLibrary *_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
 
-		if (_lib) {
+		if (_lib) 
+		{
 
 			p_TrackerCreateFunc _createfunc = (p_TrackerCreateFunc)_lib->getProcAddress("osgart_create_tracker");
 
 			_ret = (_createfunc) ? _createfunc() : 0L; 
 
-			if (_ret) {
+			if (_ret) 
+			{
 				
 				TrackerManager::getInstance()->addTracker(_ret);
 
-			} else {
-				std::cerr << "Could not create TrackerPlugin " << std::endl;
+			} else 
+			{
+				osg::notify(osg::WARN) << "Warning! osgART::TrackerManager::createTrackerFromPlugin(plugin): "
+					"Could not create Tracker from TrackerPlugin '" << plugin << "'" << std::endl;
 			}
 		}
 

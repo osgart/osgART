@@ -37,7 +37,7 @@
 				OutputFile="../../bin/osgARTd.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				IgnoreDefaultLibraryNames="libcmt.lib;libcmtd.lib"
+				IgnoreDefaultLibraryNames="LIBCMT;LIBCMTD"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgART.pdb"
 				SubSystem="2"
@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_EXPORTS;OSGART_LIBRARY;OSGART_PIXELBIAS_NO_PERFORMANCE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_EXPORTS;OSGART_LIBRARY"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
@@ -87,7 +87,7 @@
 				AdditionalDependencies="osg.lib opengl32.lib OpenThreadsWin32.lib osgDB.lib glu32.lib"
 				OutputFile="../../bin/osgART.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(OSG_ROOT)\lib"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -135,66 +135,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="VideoObject"
-				Filter="">
-				<File
-					RelativePath="..\..\src\osgART\GenericVideoObject.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\GenericVideoShader.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoAvatar.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoBillboard.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoLayer.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoLoadModel.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoPlane.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoPlaneMulti.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoTexCallback.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoTexRectCallback.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoTexture.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\VideoTextureRectangle.cpp">
-				</File>
-			</Filter>
-			<Filter
-				Name="VisualRegistration"
-				Filter="">
-				<File
-					RelativePath="..\..\src\osgART\PlaneARShadowRenderer.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\ShadowRenderer.cpp">
-				</File>
-			</Filter>
-			<Filter
-				Name="Core"
-				Filter="">
-				<File
-					RelativePath="..\..\src\osgART\Foundation.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgART\Utils.cpp">
-				</File>
-			</Filter>
-			<Filter
 				Name="SpatialRegistration"
 				Filter="">
 				<File
@@ -216,11 +156,63 @@
 					RelativePath="..\..\src\osgART\TrackerManager.cpp">
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<Filter
+				Name="VideoObject"
+				Filter="">
+				<File
+					RelativePath="..\..\src\osgART\GenericVideoObject.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\GenericVideoShader.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoBackground.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoBillboard.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoForeground.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoLayer.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoPlane.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoTexCallback.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoTexRectCallback.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoTexture.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoTextureBase.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoTextureRectangle.cpp">
+				</File>
+			</Filter>
+			<Filter
+				Name="VisualRegistration"
+				Filter="">
+				<File
+					RelativePath="..\..\src\osgART\PlaneARShadowRenderer.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\ShadowRenderer.cpp">
+				</File>
+			</Filter>
+			<Filter
+				Name="Core"
+				Filter="">
+				<File
+					RelativePath="..\..\src\osgART\Foundation.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -258,12 +250,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\ARTTransformCallback">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\CameraParameter">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\GenericMarkerTransform">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\GenericTracker">
@@ -306,9 +292,6 @@
 					RelativePath="..\..\include\osgART\GenericVideoShader">
 				</File>
 				<File
-					RelativePath="..\..\include\osgART\VideoAvatar">
-				</File>
-				<File
 					RelativePath="..\..\include\osgART\VideoBackground">
 					<FileConfiguration
 						Name="Release|Win32">
@@ -326,13 +309,7 @@
 					RelativePath="..\..\include\osgART\VideoLayer">
 				</File>
 				<File
-					RelativePath="..\..\include\osgART\VideoLoadModel">
-				</File>
-				<File
 					RelativePath="..\..\include\osgART\VideoPlane">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\VideoPlaneMulti">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoTexCallback">
@@ -342,6 +319,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoTexture">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\VideoTextureBase">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoTextureRectangle">
@@ -359,16 +339,12 @@
 				<File
 					RelativePath="..\..\include\osgART\Foundation">
 				</File>
-				<File
-					RelativePath="..\..\include\osgART\PluginBase">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\TrackerPlugin">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\Utils">
-				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 		</Filter>
 	</Files>
 	<Globals>

@@ -1,11 +1,15 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/GenericTracker
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
 
 
 #ifndef OSGART_GENERICTRACKER
@@ -17,6 +21,7 @@
 #include <iostream>
 
 #include <osg/Geometry>
+#include <osg/Projection>
 
 // local include
 #include "osgART/Export"
@@ -24,8 +29,7 @@
 #include "osgART/Marker"
 #include "osgART/Field"
 
-//yannick
-#include <osgART/VideoConfig>
+
 namespace osgART {
 
 	/* Forward declaration */
@@ -86,14 +90,14 @@ namespace osgART {
 		* 
 		* @param video the video object to use
 		*/
-		void setImage(GenericVideo* video);
+		virtual void setImage(GenericVideo* video);
 	    
 		/** 
 		* \brief XXX.
 		* 
 		* XXX.
 		*/
-		Marker* getMarker(int markerId);
+		virtual Marker* getMarker(int markerId);
 		
 		unsigned int getMarkerCount() const;
 		
@@ -104,27 +108,12 @@ namespace osgART {
 		* @param proj the openGL projection matrix computed
 		*/
 		virtual const double* getProjectionMatrix() const;
-	
-	    
-		/**
-		* \brief Convert the ARToolkit format type to osgART format type.
-		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
-		*/
-		virtual PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
 		
-		/**
-		* \brief Convert the osgART format type to ARToolkit format type.
-		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
-		*/
-		virtual int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
-  
-
-		/**
-		* \brief Return a string that contains the tracker name and version.
-		*/	
-		std::string		getLabel()const;
 			
+	    
 	protected:		
+	
+	
 		/**
 		 * Creates an undistorted mesh, according to the 
 		 * parameters know to the tracker
@@ -140,8 +129,9 @@ namespace osgART {
 			float maxU, float maxV,
 			osg::Geometry &geometry);
 		
-		/* only videolayer needs to access protected methods */	
+		/* only videolayer and the container needs to access protected methods */	
 		friend class VideoLayer;
+		friend class TrackerContainer;
 	
 		/** 
 		 * \brief destructor.
@@ -166,38 +156,7 @@ namespace osgART {
 		
 		
 		double m_projectionMatrix[16];
-		std::string		m_name;		//!< Store the name of the tracker.
-		std::string		m_version;	//!< Store the version of the tracker.
-		
-		
-		/**
-		 * Get the pixel size of the video format, see osgART::PixelFormatType.
-		 * \return from 4 to 1, or 0 if unknown pixel format.
-		 */ 
-		char getPixelSize(PixelFormatType format) const;
-		
-		
-		/**
-		 * Convert the input video frame into another format.
-		 * \note This conversion funcion is only used to ensure some compatibilities with ARToolkit 2.73 and the benchmarking mode.
-		 * \note By using this function you may experience some real performance issues. Avoid using it.
-		 * \return The pointer to the converted frame.
-		 */ 	
-		 //typedef unsigned char ArrayType;
-		template <typename ArrayType> 			
-			ArrayType *
-				ConvertImageFormat(const ArrayType * _src, const unsigned int _sizeX, const unsigned int _sizeY, const PixelFormatType _srcFormat, const PixelFormatType _dstFormat);
-		
-		unsigned char *		m_conversionBuff;		//!< Store a temp array used to do video frame conversion on the fly using ConvertImageFormat.
-		int					m_conversionBuffSize;	//!< Actual size of m_conversionBuff array.
-		PixelFormatType		m_arInternalFormat;
-			
-		//moved here by yannick, was in private
-		int		m_width; 
-		int		m_height;	  
-		//=====================
-	public:
-		virtual void PrintOptions() const;
+	  
 	private:
 
 		int trackerId;
@@ -205,144 +164,40 @@ namespace osgART {
 	};
 
 
+	class OSGART_EXPORT TrackerContainer : public GenericTracker {
+	public:
 
-//Yannick :  used to perform some format conversion on the fly, when the tracker is not compatible with the actual video format.
-//move in a ToolBox file..???	
-	//used to convert RGB to RGBA
-	//and BGR to BGRA	
-	template <typename ArrayType> inline void Copy3_To_4(const ArrayType * _src, ArrayType * _dst, ArrayType Val4=1 )
-	{
-		_dst[0]	= _src[0];
-		_dst[1]	= _src[1];
-		_dst[2]	= _src[2];
-		_dst[3]	= Val4;
-	}
-	
-	//used to copy RGB to BGR 
-	//and BGR to RGB
-	template <typename ArrayType> inline void Copy3_To_3_Twist(const ArrayType * _src, ArrayType * _dst)
-	{
-		_dst[0]	= _src[2];
-		_dst[1]	= _src[1];
-		_dst[2]	= _src[0];
-	}
-	
-	//used to copy RGB to BGRA 
-	//and BGR to RGBA
-	template <typename ArrayType>inline void Copy3_To_4_Twist(const ArrayType * _src, ArrayType * _dst, ArrayType Val4=1 )
-	{
-		_dst[0]	= _src[2];
-		_dst[1]	= _src[1];
-		_dst[2]	= _src[0];
-		_dst[3]	= Val4;
-	}
-	
-	template <typename ArrayType>inline void Copy4_To_3_Twist(const ArrayType * _src, ArrayType * _dst, ArrayType Val4=1 )
-	{
-		_dst[0]	= _src[2];
-		_dst[1]	= _src[1];
-		_dst[2]	= _src[0];
-	}
-	template <typename ArrayType>inline void Copy4_To_3(const ArrayType * _src, ArrayType * _dst, ArrayType Val4=1 )
-	{
-		_dst[0]	= _src[0];
-		_dst[1]	= _src[1];
-		_dst[2]	= _src[2];
-	}
-	
-#define COPY_BUFFER_FCT(_PIXEL_TYPE, _SRC, _DST, _SIZE_X, _SIZE_Y, _PIX_SIZE_SRC, _PIX_SIZE_DST, _FCT){\
-		int OffsetSrc = sizeof(_PIXEL_TYPE)*_PIX_SIZE_SRC;\
-		int OffsetDst = sizeof(_PIXEL_TYPE)*_PIX_SIZE_DST;\
-		const _PIXEL_TYPE * SrcPtr = _SRC;\
-		_PIXEL_TYPE * DstPtr = _DST;\
-		int Size = _sizeX * _sizeY;\
-		/*std::cout << " SrcSize =" << _PIX_SIZE_SRC << "|" <<OffsetSrc << std::endl <<" DstSize =" << _PIX_SIZE_DST << "|" <<OffsetDst << std::endl;*/\
-		/*std::cout << " i size = " << Size << std::endl;*/\
-		for( int i = 0; i < Size; i++)\
-		{\
-			_FCT<_PIXEL_TYPE>(SrcPtr, DstPtr);\
-			SrcPtr += OffsetSrc;\
-			DstPtr += OffsetDst;\
-		}\
-	}
-	//	osg::notify() << "Pixel : " << i << std::endl;
-	
-	template <typename ArrayType>	
-	ArrayType *
-		GenericTracker::ConvertImageFormat	(const ArrayType * _src, 
-											const unsigned int _sizeX, const unsigned int _sizeY, 
-											const PixelFormatType _srcFormat, const PixelFormatType _dstFormat)
-	{
-		if (!_src)
-			return NULL;
+		TrackerContainer(GenericTracker* tracker);
+
+		void update();
+
 		
-		if (_srcFormat == _dstFormat)
-			return (ArrayType *)_src;
+		virtual bool init(GenericVideo* video, 
+			const std::string& pattlist_name="Data/markers_list.dat",
+			const std::string& camera_name="Data/camera_para.dat");
 		
-		int DestSize = _sizeX * _sizeY * getPixelSize(_dstFormat);
 		
-		//check we have enought place
-		if (m_conversionBuffSize < DestSize) 
-		{
-			if (m_conversionBuffSize!=0)
-				delete []m_conversionBuff;
-			m_conversionBuffSize = 0;			
-		}
+		virtual osg::Projection* createProjection() const;
 		
-		//create a new storage array if needed
-		if (m_conversionBuffSize == 0)
-		{
-			m_conversionBuffSize = DestSize;
-			m_conversionBuff = new ArrayType[m_conversionBuffSize];			
-		}
-		
-		//std::cout << " m_conversionBuffSize = " << m_conversionBuffSize << std::endl;
-		if ((_srcFormat == VIDEOFORMAT_RGB24 && _dstFormat == VIDEOFORMAT_BGRA32) ||
-			(_srcFormat == VIDEOFORMAT_BGR24 && _dstFormat == VIDEOFORMAT_RGBA32))
-		{
-			//std::cout << "ConvertImageFormat() 3 To 4 twisted" << std::endl;  
-			COPY_BUFFER_FCT(ArrayType, _src, m_conversionBuff, 
-					_sizeX, _sizeY,  
-					3, 4, 
-					Copy3_To_4_Twist);
-			return m_conversionBuff;
-		}
-		else if ((_srcFormat == VIDEOFORMAT_RGB24 && _dstFormat == VIDEOFORMAT_RGBA32) ||
-			(_srcFormat == VIDEOFORMAT_BGR24 && _dstFormat == VIDEOFORMAT_BGRA32))
-		{
-			//std::cout << "ConvertImageFormat() 3 To 4" << std::endl;
-			COPY_BUFFER_FCT(ArrayType, _src, m_conversionBuff, 
-					_sizeX, _sizeY,  
-					3, 4,
-					Copy3_To_4);
-			return m_conversionBuff;
-		}
-		else if ((_srcFormat == VIDEOFORMAT_RGB24 && _dstFormat == VIDEOFORMAT_BGR24) ||
-			(_srcFormat == VIDEOFORMAT_BGR24 && _dstFormat == VIDEOFORMAT_RGB24))
-		{
-			//std::cout << "ConvertImageFormat() 3 To 3 twisted" << std::endl;  
-			COPY_BUFFER_FCT(ArrayType, _src, m_conversionBuff, 
-					_sizeX, _sizeY,  
-					3, 3,
-					Copy3_To_3_Twist);
-			return m_conversionBuff;
-		}
-		else if ((_srcFormat == VIDEOFORMAT_BGRA32 && _dstFormat == VIDEOFORMAT_RGB24) ||
-			(_srcFormat == VIDEOFORMAT_RGBA32 && _dstFormat == VIDEOFORMAT_BGR24))
-		{
-			//std::cout << "ConvertImageFormat() 4 To 3 twisted" << std::endl;  
-			COPY_BUFFER_FCT(ArrayType, _src, m_conversionBuff, 
-					_sizeX, _sizeY,  
-					4, 3,
-					Copy3_To_3_Twist);
-			return m_conversionBuff;
-		}
-		else
-		{
-			osg::notify(osg::WARN) << "GenericTracker::ConvertImageFormat(), format not supported yet!"<< std::endl;
-			return NULL;
-		}
-		return NULL;
-	}
+
+	protected:
+	
+		virtual bool init(int xsize, int ysize, 
+			const std::string& pattlist_name="Data/markers_list.dat",
+			const std::string& camera_name="Data/camera_para.dat");
+	
+
+		void createUndistortedMesh(int,int,
+			float,float,osg::Geometry&);
+
+		virtual ~TrackerContainer();
+
+		osg::ref_ptr<GenericTracker> m_tracker;		
+		osg::ref_ptr<GenericVideo> m_video;
+
+	};
+
+
 };
+
 #endif

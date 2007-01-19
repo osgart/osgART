@@ -1,26 +1,33 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/VideoTexRectCallback
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
- 
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_VIDEOTEXCALLBACK
 #define OSGART_VIDEOTEXCALLBACK 1
 
 #include <osg/TextureRectangle>
 
-#include "osgART/Export"
 
+
+#include "osgART/Export"
+#include "osgART/GenericVideo"
+#include "osgART/VideoTextureBase"
 
 namespace osgART {
 
 	class OSGART_EXPORT VideoTexRectCallback : public osg::TextureRectangle::SubloadCallback {
 	public:
 	
-		VideoTexRectCallback(int video, int vw, int vh);
+		VideoTexRectCallback(VideoTextureBase* video, int vw, int vh);
 
 		virtual void load(const osg::TextureRectangle& texture, osg::State& state) const;	
 		virtual void subload(const osg::TextureRectangle& texture, osg::State& state) const;
@@ -29,7 +36,11 @@ namespace osgART {
 	
 		int m_vidWidth;
 		int m_vidHeight;
-		int videoId;
+		
+		osg::ref_ptr<GenericVideo> m_video;
+	
+	private:
+		VideoTextureBase* m_videotexture;		
 	
 	};
 }

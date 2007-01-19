@@ -1,105 +1,195 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Marker
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/Marker"
-#include <iostream>
-#include <osg/io_utils>
+#include <osg/Notify>
 
 namespace osgART {
 
 
-	Marker::Marker() : osg::Referenced(),
-		m_doTransFiltering(false),
-		m_transFilter(new TransformFilter)
+	Marker::Marker() : osg::Referenced(), 
+		m_valid(false),
+		m_seen(false),
+		m_name("Marker")		
 	{
 		m_fields["name"] = new TypedField<std::string>(&m_name);
 		m_fields["active"] = new TypedField<bool>(&m_active);
 
-		m_transform.makeIdentity();
-		m_valid = false;
-
-		// not used by new filter
-		//setRotationalSmoothing(0.15f);
-		//setTranslationalSmoothing(0.15f);
-
-		m_name = "marker";
-		
-		// not used by new filter
-		// m_seen = false;
+		setRotationalSmoothing(0.15f);
+		setTranslationalSmoothing(0.15f);
 	}
 
-	Marker::Marker(const Marker& marker) 
-	{
-		std::cout << "Stuff it!" << std::endl;
-	}
-
-	Marker::~Marker() {	   
-#ifndef NDEBUG
-		osg::notify() << "Deleting marker" << std::endl;
-#endif
+	Marker::~Marker() 
+	{	   
+		osg::notify() << "osgART::Marker::~Marker() : Deleted marker " <<
+			m_name << " of type '" << typeid(*this).name() << "' " << std::endl; 
 	}
 
 	const 
-	osg::Matrix& Marker::getTransform() const {
+	osg::Matrix& Marker::getTransform() const 
+	{
 		return m_transform;
 	}
 
-	bool Marker::isValid() const {
+	bool
+	Marker::isValid() const
+	{
 		return m_valid;
 	}
 
-	bool Marker::isActive() const {
+	bool
+	Marker::isActive() const 
+	{
 		return m_active;
 	}
 
-	void Marker::setName(const std::string& name) {
+	void
+	Marker::setName(const std::string& name) 
+	{
 		m_name = name;
 	}
 
-	const std::string& Marker::getName() const {
+	const std::string&
+	Marker::getName() const 
+	{
 		return m_name;
 	}
 
-	void Marker::setRotationalSmoothing(float r) {
-		m_rotationSmoothFactor = 1.0f - osg::clampBetween<float>(r, 0, 1);
+	void
+	Marker::setRotationalSmoothing(float r) 
+	{
+		m_rotationSmoothFactor = 
+			1.0f - osg::clampBetween<float>(r, 0, 1);
 	}
-	float Marker::getRotationalSmoothing() const {
+	float
+	Marker::getRotationalSmoothing() const 
+	{
 		return (1.0f - m_rotationSmoothFactor);
 	}
-	void Marker::setTranslationalSmoothing(float t) {
-		m_positionSmoothFactor = 1.0f - osg::clampBetween<float>(t, 0, 1);
+
+	void
+	Marker::setTranslationalSmoothing(float t) {
+		m_positionSmoothFactor = 
+			1.0f - osg::clampBetween<float>(t, 0, 1);
 	}
 
-	float Marker::getTranslationalSmoothing() const {
+	float 
+	Marker::getTranslationalSmoothing() const 
+	{
 		return (1.0f - m_positionSmoothFactor);
 	}
 
-	void Marker::updateTransform(const osg::Matrix& transform, bool alternative /*= false*/) 
+	void 
+	Marker::updateTransform(const osg::Matrix& transform) 
 	{
-		// check for valid transform filter
-		if (!m_transFilter.valid())
-		{
-			std::cerr << "Marker::updateTransform: m_transFilter not valid!" << std::endl; 
-			return;
+		if (m_valid) {
+
+			if (m_seen) {				
+				
+				osg::Vec3 newPosition;
+				osg::Quat newRotation;
+
+				newPosition = transform.getTrans();
+				transform.get(newRotation);
+				m_storedRotation.slerp(m_rotationSmoothFactor, 
+					m_storedRotation, newRotation);
+
+				osg::Vec3 a = newPosition - m_storedPosition;
+
+				osg::Vec3 b = a * m_positionSmoothFactor;
+				m_storedPosition += b;
+				
+			} else {			
+			
+				m_storedPosition = transform.getTrans();
+				transform.get(m_storedRotation);
+				m_seen = true;
+
+			}
+
+			m_transform.set(m_storedRotation);
+			m_transform.setTrans(m_storedPosition);
+
+
+		} else {
+		
+			m_seen = false;
+
 		}
 
-		// if marker valid
-		if (m_valid) 
-		{
-			// filter for ouliers and do smoothing
-			if (m_doTransFiltering)
-			{
-				m_transform = m_transFilter->putTransformMatrix(osg::Matrix(transform));
-			}
-			else
-			{
-				m_transform = transform;
-			}
-		} 
+		if (m_updatecallback.valid()) (*m_updatecallback)(this);
+
 	}
+	
+	void 
+	Marker::copyData(const Marker& marker)
+	{
+		m_valid = marker.m_valid;
+		m_transform = marker.m_transform;
+		m_seen = marker.m_seen;
+	}
+
+	// ------------------------------------------
+
+	class MarkerContainerCallback : public Marker::Callback 
+	{
+	public:
+
+
+		osg::ref_ptr<MarkerContainer> m_container;
+		
+		MarkerContainerCallback(MarkerContainer* container) : 
+			m_container(container)
+		{			           
+		}
+
+		void operator()(Marker* marker)
+		{
+			m_container->copyData(*marker);
+		}
+	};
+
+	bool
+	MarkerContainer::isValid() const
+	{
+		return (m_marker.valid()) ? m_marker->isValid() : false;
+	}
+
+
+	MarkerContainer::MarkerContainer(Marker* marker) : Marker(), m_marker(marker)
+	{
+		if (m_marker.valid()) 
+		{
+			m_marker->m_updatecallback = new MarkerContainerCallback(this);
+		}
+	}
+	
+	/*virtual */
+	void 
+	MarkerContainer::setActive(bool active)
+	{
+		if (m_marker.valid()) 
+		{
+			m_marker->setActive(active);
+			m_active = m_marker->isActive();
+		}
+	}
+
+
+	Marker::MarkerType
+	MarkerContainer::getType() const
+	{
+		return (m_marker.valid()) ? m_marker->getType() : Marker::ART_UNKOWN;
+	}
+		
 };

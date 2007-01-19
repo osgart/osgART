@@ -1,3 +1,16 @@
+/*
+ *	osgART/GenericVideoObject
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/GenericVideoObject"
 
 #if defined(_WIN32)
@@ -28,11 +41,11 @@ namespace osgART {
 	#endif
 	}
 
-	GenericVideoObject::GenericVideoObject(int _videoId) :
+	GenericVideoObject::GenericVideoObject(GenericVideo* video) :
 		osg::Group(),
-		m_videoId(_videoId),
 		m_vShader(0L),
 		m_vTexture(0L),
+		m_video(video),
 		m_distortionMode(NO_CORRECTION),
 		m_textureMode(USE_TEXTURE_RECTANGLE),
 		m_videoimage(new osg::Image)

@@ -1,18 +1,31 @@
+/*
+ *	osgART/VideoManager
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/VideoManager"
 
+#include <osg/Notify>
 #include <OpenThreads/ScopedLock>
-
 #include <iostream>
 
 namespace osgART {
 
-	VideoManager* VideoManager::_instance = NULL;
+	VideoManager* VideoManager::_instance = 0L;
 	
 	VideoManager::PluginMap VideoManager::s_plugins;
 
 	VideoManager* VideoManager::getInstance() {
 		
-		if (_instance == NULL) {
+		if (_instance == 0L) {
 			_instance = new VideoManager();
 		}
 		return _instance;
@@ -30,8 +43,18 @@ namespace osgART {
 	int 
 	VideoManager::addVideoStream(GenericVideo* video)
 	{
-		m_videomap[video->getId()] = video;
-		return numVideoStream++;
+		if (video) 
+		{
+			m_videomap[video->getID()] = video;
+
+			osg::notify(osg::INFO) << "Added a osgART::GenericVideo with ID:" << video->getID() << " to the VideoManager" << std::endl;
+
+			return numVideoStream++;
+		}
+
+		osg::notify(osg::WARN) << "osgART::VideoManager::addVideoStream(video) should receive a valid video stream" << std::endl;
+
+		return -1;
 	}
 
 	void
@@ -41,15 +64,14 @@ namespace osgART {
 		{
 			try {
 			
-				m_videomap[video->getId()] = 0L;
+				m_videomap[video->getID()] = 0L;
 		
 			} catch (...) {
 
-				std::cerr << "osgART::VideoManager: Could not remove " << video->getId() << std::endl;
-				// return here! 
+				osg::notify(osg::WARN) << "osgART::VideoManager:removeVideoStream(video): "
+					"Could not remove video with ID:" << video->getID() << std::endl;				
 				return;
 			}
-
 			numVideoStream--;
 		}
 	}
@@ -58,7 +80,7 @@ namespace osgART {
 	void
 	VideoManager::destroy() {
 		delete VideoManager::_instance;
-		VideoManager::_instance = NULL;
+		VideoManager::_instance = 0L;
 	}
 
 	GenericVideo* 
@@ -71,7 +93,7 @@ namespace osgART {
 		}
 		else
 		{
-			std::cerr << "osgART::VideoManager: video with id:" << id << 
+			osg::notify(osg::WARN) << "osgART::VideoManager::getVideo(id): Video with ID:" << id << 
 				"doesn't exist." << std::endl;
 
 			// return here
@@ -97,8 +119,8 @@ namespace osgART {
 
 		PluginMap::iterator _plug = s_plugins.find(filename);
 
-		if (_plug == s_plugins.end()) {
-		
+		if (_plug == s_plugins.end()) 
+		{
 			_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
 
 			if (_lib) {
@@ -107,12 +129,15 @@ namespace osgART {
 
 			} else {
 				
-				std::cerr << "osgART::VideoManager could not open " << filename << std::endl;
+				osg::notify(osg::WARN) << "osgART::VideoManager::createFunc(fileName) could not open " << filename << std::endl;
 
 				return 0L;
 			}
-		} else {
+		} else 
+		{
+			osg::notify(osg::INFO) << "Video plugin '" << filename << "' was loaded in advance" << std::endl;
 
+			// reaccess 
 			_lib = (*_plug).second.get();
 
 		}
@@ -121,21 +146,27 @@ namespace osgART {
 		
 	}
 
-	GenericVideo* VideoManager::createVideoFromPlugin(const std::string& plugin,
-		const VideoConfiguration& config) {
-
-			GenericVideo* _ret = 0L;
-
+	GenericVideo* 
+	VideoManager::createVideoFromPlugin(const std::string& plugin) 
+	{
+			GenericVideo* _ret = 0L;			
+			
 			p_VideoCreateFunc _createfunc = createFunc(plugin);
 
-			_ret = (_createfunc) ? _createfunc(config) : 0L; 
+			_ret = (_createfunc) ? _createfunc() : 0L; 
 
-			if (_ret) {
-				
+			if (_ret) 
+			{		
+
+				osg::notify(osg::INFO) << "VideoManager::createVideoFromPlugin(plugin): " <<
+					"Plugin '" << plugin << "' successfully instantiated a video handler" << std::endl;
+
 				VideoManager::getInstance()->addVideoStream(_ret);
 
-			} else {
-				std::cerr << "Could not create VideoPlugin " << std::endl;
+			} else 
+			{
+				osg::notify(osg::WARN) << "VideoManager::createVideoFromPlugin(plugin): " <<
+					"Plugin '" << plugin << "' could not be loaded!" << std::endl;
 			}
 
 			return _ret;

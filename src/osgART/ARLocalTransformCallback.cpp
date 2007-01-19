@@ -1,8 +1,20 @@
+/*
+ *	osgART/ARLocalTransformCallback
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "osgART/ARLocalTransformCallback"
-
-
 #include "osgART/TrackerManager"
 
+#include <osg/Notify>
 
 namespace osgART {
 
@@ -42,8 +54,12 @@ namespace osgART {
 			
 			}
 
-		}
-    
+		} else {
+
+			osg::notify(osg::WARN) << "osgART::ARLocalTransformCallback(): " <<
+				"Invalid references to markers" << std::endl;
+
+		}    
 		// must traverse the Node's subgraph            
 		traverse(node,nv);
 

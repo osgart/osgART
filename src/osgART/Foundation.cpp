@@ -1,11 +1,19 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Foundation
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+
+#include <osg/Version>
+
 
 //
 // Includes.
@@ -27,14 +35,18 @@
 static 
 void osgARTGeneralFinaliser() 
 {
+    // from 05 December 2006 we only support OSG 1.1 and higher
+	// due to problems with texture handling
+#if (OSG_VERSION_MAJOR < 1) && (OSG_VERSION_MINOR < 1)
+	#error "Unsupported version of OpenSceneGraph"
+#endif
+
 	// TrackerManager Singleton needs an explicit D'tor
 	osgART::TrackerManager::destroy();
 	
 	
 	// VideoManager Singleton needs an explicit D'tor
 	osgART::VideoManager::destroy();
-
-
 }
 
 //
@@ -68,6 +80,10 @@ void osgARTInit(int *argcp, char **argv)
 {
 	// Register exit function before anything else.
 	atexit(osgARTFinal);
+
+	// silence the compiler
+	if ((argcp == 0) || (&argv[0] == 0)) {
+	};
 	
 	// Add OS-specific setup here.
 
@@ -115,6 +131,8 @@ void osgARTInit(int *argcp, char **argv)
 			}
 		}
 	}	
-#endif	
-}
+#else
 
+#endif
+
+}

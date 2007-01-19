@@ -1,11 +1,16 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/ShadowRenderer
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_SHADOWRENDERER
 #define OSGART_SHADOWRENDERER
 
@@ -58,13 +63,13 @@ namespace osgART {
 		osg::Node* m_shadowedScene;
 
 	private:
-	osg::MatrixTransform* m_lightTransform;
-	int m_markerId;
 
-	int m_shadowWidth;
-	int m_shadowHeight;
+		osg::MatrixTransform* m_lightTransform;
+		int m_markerId;
+
+		int m_shadowWidth;
+		int m_shadowHeight;
 	
 	};
 };
 #endif
-

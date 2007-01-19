@@ -1,43 +1,46 @@
-/*  --------------------------------------------------------------------------
-*   Copyright (C) 2004 Hitlab NZ.
-*   The distribution policy is describe on the Copyright.txt furnish 
-*    with this library.
-*   -------------------------------------------------------------------------*/
+/*
+ *	osgART/Video/ARToolKit/ARToolKitVideo
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 /**
-*  \file  Video
-*  \brief A video class for video input stream.
-*
-* 
-* A multiplatform video class mainly based on the ARToolKit Video Class
-* wrapped to be used with OpenScenegraph.
-*	
-*   \remark 
-*
-*   History :
-*
-*  \author Julian Looser Julian.Looser@hitlabnz.org
-*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
-*  \version 3.1
-*  \date 01/12/07
-**/
-/*  --------------------------------------------------------------------------
-*   History : 
-*   Rev		Date		Who		Changes
-*
-*----------------------------------------------------------------------------*/
+ *  \file  Video
+ *  \brief A video class for video input stream.
+ *
+ * 
+ * A multiplatform video class mainly based on the ARToolKit Video Class
+ * wrapped to be used with OpenScenegraph.
+ *	
+ *   \remark 
+ *
+ *   History :
+ *
+ *  \author Julian Looser Julian.Looser@hitlabnz.org
+ *  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+ *  \author Hartmut Seichter hartmut.seichter@hitlabnz.org
+ *  \version 3.1
+ *  \date 01/12/07
+ **/
 
 #ifndef OSGART_ARTOOLKITVIDEO
 #define OSGART_ARTOOLKITVIDEO
 
 /* --------------------------------------------------------------------------
-* include file
-*----------------------------------------------------------------------------*/
+ * include file
+ *----------------------------------------------------------------------------*/
 
 //standard include
 
 #include <iostream>
 #include <string>
-#include <osg/notify>
 
 //graphics include
 #include <AR/video.h>
@@ -45,6 +48,7 @@
 
 //personnal include
 #include "osgART/GenericVideo"
+#include "osgART/VideoConfig"
 
 
 class ARToolKitVideo : public osgART::GenericVideo
@@ -58,7 +62,7 @@ public:
 		* \param videoName a string definition of the video background. See documentation
 		* of ARToolKit for further details.
 		*/
-	ARToolKitVideo(const char *videoName);
+	ARToolKitVideo();
 	
 	/** 
 		* Copy constructor.
@@ -110,15 +114,21 @@ public:
 	
 
 	/** 
-		* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
-		* class.
-		*/		 
-		void releaseImage();
+	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
+	* class.
+	*/		 
+	void releaseImage();
+	
+	virtual osgART::VideoConfiguration* getVideoConfiguration();
+	
+	
 	
 private:
 
 	AR2VideoParamT *video;
-	std::string videoName;
+	
+	osgART::VideoConfiguration m_config;
+	
 };
 
 

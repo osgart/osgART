@@ -1,11 +1,15 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Foundation
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
 
 #ifndef __OSGART_FOUNDATION__
 #define __OSGART_FOUNDATION__
@@ -13,6 +17,16 @@
 /*! \mainpage OSGART
  *
  *  \htmlinclude main.html
+ */
+
+/**
+ *  \file  Foundation
+ *  \brief Setup and cleanup routines for the osgART library, including any platform-specific code.
+ *
+ * Setup and cleanup routines for the osgART library, including any platform-specific code.
+ * All applications, prior to using any osgART classes or functions, must call osgARTInit,
+ * passing in the applications argument list.
+ * An atexit() handler will be installed to handle cleanup at time of program exit.
  */
 
 /**

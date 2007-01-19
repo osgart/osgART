@@ -1,3 +1,16 @@
+/*
+ *	osgART/VideoTexCallback
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_VIDEOTEXCALLBACK
 #define OSGART_VIDEOTEXCALLBACK 1
 
@@ -6,30 +19,32 @@
 
 // local include
 #include "osgART/Export"
+#include "osgART/GenericVideo"
+#include "osgART/VideoTextureBase"
 
 namespace osgART {
 
 	class OSGART_EXPORT VideoTexCallback : public osg::Texture2D::SubloadCallback {
 	public:
 
-		VideoTexCallback(int video,int vw, int vh, int tw, int th);
+		VideoTexCallback(VideoTextureBase* videotexture,
+			int vw, int vh, int tw, int th);
 		
-		void setAlphaBias(float alphabias);
-		float getAlphaBias() const;
-		
-
 		virtual void load(const osg::Texture2D& texture, osg::State& state) const;	
 		virtual void subload(const osg::Texture2D& texture, osg::State& state) const;
 
 	protected:
 
-		float m_alphabias;
-
 		int m_vidWidth;
 		int m_vidHeight;
 		int m_texWidth;
 		int m_texHeight;
-		int videoId;
+		
+		osg::ref_ptr<GenericVideo> m_video;
+		
+	private:
+	
+		VideoTextureBase* m_videotexture;
 	};
 };
 

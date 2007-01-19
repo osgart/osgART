@@ -1,13 +1,21 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/VideoPlane
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_VIDEOPLANE
 #define OSGART_VIDEOPLANE
+
+// STL include
+#include <deque>
 
 // graphics include
 #include <osg/Node>
@@ -26,49 +34,56 @@ namespace osgART {
 
 	/**
 	* \class VideoPlane.
-	*
+	* A default video object displaying a video on a plane surface.
+	* The plane is centred in 0.0 in the XY Plane. the dimension of the plane is 2x2.
 	*/
 	class OSGART_EXPORT VideoPlane : public GenericVideoObject
 	{
 	public:        
 		/** 
 		 * \brief default constructor.
-		 * \param videoId the number of the video used for the background
+		 * \param width width of the texture
+		 * \param height of the texture
 		 */
-		VideoPlane(int videoId = 0);
+		VideoPlane(GenericVideo* video);
 		
-		
-		VideoPlane(const GenericVideo& video);
-	    
-		/**
-		 * \brief destructor.
-		 */
-		virtual ~VideoPlane();
 
 		/**
 		 * Initialize
 		 */    
 		virtual void init();
+		
+		/** 
+		 * Add a video
+		 * \param layerVideoID ID of the video that is to be added to the 
+		 * layered texture
+		 */
+		void addVideo(GenericVideo* video);
 
 	protected:
-		
-		osg::Node* buildPlane();
-		osg::Geode* buildGeometry();
-		
-		void setTransparency(float alpha);
-
-	private:
 	
-		osg::Group*	m_root;
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~VideoPlane();
 		
-		osg::MatrixTransform*	m_ModelMatrix;
-		osg::Geometry*			m_geometry;
-		osg::Geode*				m_backGeode;
+		virtual osg::Node* buildObject();
+		
+		virtual osg::Geode* buildGeometry();
+		
+		virtual void setTransparency(float alpha);
+		
+		osg::ref_ptr<osg::Geometry>	m_geometry;
 		
 		float m_width;
 		float m_height;
 		
+		typedef std::deque< osg::ref_ptr<GenericVideo> > VideoArray;
+		typedef std::deque< osg::ref_ptr<osg::Texture> > TextureArray;
+		
+		VideoArray m_layervideos;
+		TextureArray m_LayerTextures;
+
 	};
 };
 #endif
-

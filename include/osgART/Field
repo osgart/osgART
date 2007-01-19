@@ -1,12 +1,23 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Field
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
- 
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+/**
+ *  \file  Field
+ *  \brief Types and templates for passing data to and from plugins.
+ *
+ * Types and templates for passing data to and from plugins.
+ */
+
 #ifndef OSGART_FIELD
 #define OSGART_FIELD 1
 
@@ -17,7 +28,6 @@
 // include OSG
 #include <osg/Referenced>
 #include <osg/ref_ptr>
-#include <osg/notify>
 
 
 namespace osgART {
@@ -28,11 +38,14 @@ namespace osgART {
 		
 		inline virtual void operator = (const Field&);
 		
-		inline virtual void serialize(std::ostream& out) 
+		inline virtual void serialize(std::ostream&) 
 		{			
 		}
 	
 	protected:
+
+		Field(const Field&);
+
 		virtual ~Field();
 	};	
 
@@ -65,7 +78,7 @@ namespace osgART {
 		
 		virtual void serialize(std::ostream& out) 
 		{
-			out << *m_value;
+			// out << *m_value;
 		}
 		
 		void (TypedField<T>::*f_sethandler)(T&, const T&);	
@@ -149,6 +162,10 @@ namespace osgART {
 	{
 	}
 
+	inline Field::Field(const Field&) : osg::Referenced()
+	{
+	}
+
 	
 	template <typename T> class FieldContainer {
 	public:
@@ -196,7 +213,7 @@ namespace osgART {
 
 		for (;_i != m_fields.end(); ++_i) 
 		{
-			osg::notify() << "Field: " << (*_i).first << std::endl;
+			std::cout << "Field: " << (*_i).first << std::endl;
 		}
 
 	}
