@@ -23,8 +23,8 @@
 
 BEGIN_OBJECT_REFLECTOR(osgART::VideoPlane)
 	I_BaseType(osgART::GenericVideoObject);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
-	I_Constructor1(IN, const osgART::GenericVideo &, video);
+	I_Constructor1(IN, osgART::GenericVideo *, video);
 	I_Method0(void, init);
+	I_Method1(void, addVideo, IN, osgART::GenericVideo *, video);
 END_REFLECTOR
 

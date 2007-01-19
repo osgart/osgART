@@ -22,7 +22,7 @@
 
 BEGIN_OBJECT_REFLECTOR(osgART::Field)
 	I_Constructor0();
-	I_Method1(void, serialize, IN, std::ostream &, out);
+	I_Method1(void, serialize, IN, std::ostream &, x);
 END_REFLECTOR
 
 TYPE_NAME_ALIAS(std::map< std::string COMMA  osg::ref_ptr< osgART::Field > >, osgART::FieldMap);

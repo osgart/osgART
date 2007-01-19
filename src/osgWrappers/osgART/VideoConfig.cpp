@@ -27,7 +27,7 @@ BEGIN_VALUE_REFLECTOR(osgART::VideoConfiguration)
 	I_PublicMemberProperty(int, height);
 	I_PublicMemberProperty(osgART::FrameRateType, framerate);
 	I_PublicMemberProperty(osgART::PixelFormatType, type);
-	I_PublicMemberProperty(char *, deviceconfig);
+	I_PublicMemberProperty(std::string, deviceconfig);
 END_REFLECTOR
 
 BEGIN_ENUM_REFLECTOR(osgART::PixelFormatType)

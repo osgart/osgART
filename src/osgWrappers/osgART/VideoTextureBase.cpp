@@ -11,7 +11,7 @@
 #include <osgIntrospection/Attributes>
 
 #include <osgART/GenericVideo>
-#include <osgART/VideoTextureRectangle>
+#include <osgART/VideoTextureBase>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -21,8 +21,13 @@
 #undef OUT
 #endif
 
-BEGIN_OBJECT_REFLECTOR(osgART::VideoTextureRectangle)
-	I_BaseType(osgART::VideoTextureBase);
+BEGIN_OBJECT_REFLECTOR(osgART::VideoTextureBase)
 	I_Constructor1(IN, osgART::GenericVideo *, video);
+	I_Method1(void, setAlphaBias, IN, float, alphabias);
+	I_Method0(float, getAlphaBias);
+	I_Method0(osgART::GenericVideo *, getVideo);
+	I_Method1(void, setVideo, IN, osgART::GenericVideo *, video);
+	I_Property(float, AlphaBias);
+	I_Property(osgART::GenericVideo *, Video);
 END_REFLECTOR
 

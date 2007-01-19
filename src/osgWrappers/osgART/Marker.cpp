@@ -28,7 +28,7 @@ BEGIN_ENUM_REFLECTOR(osgART::Marker::MarkerType)
 END_REFLECTOR
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::Marker)
-	// I_BaseType(osgART::FieldContainer);
+//	I_BaseType(osgART::FieldContainer);
 	I_Constructor0();
 	I_Method0(osgART::Marker::MarkerType, getType);
 	I_Method0(bool, isValid);
@@ -49,3 +49,11 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::Marker)
 	I_ReadOnlyProperty(osgART::Marker::MarkerType, Type);
 END_REFLECTOR
 
+
+BEGIN_OBJECT_REFLECTOR(osgART::MarkerContainer)
+	I_BaseType(osgART::Marker);
+	I_Constructor1(IN, osgART::Marker*, marker);
+	I_Method1(void, setActive, IN, bool, active);
+	I_Method0(bool, isValid);
+	I_Method0(osgART::Marker::MarkerType, getType);
+END_REFLECTOR

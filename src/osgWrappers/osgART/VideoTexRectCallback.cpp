@@ -11,6 +11,7 @@
 #include <osgIntrospection/Attributes>
 
 #include <osgART/VideoTexRectCallback>
+#include <osgART/VideoTextureBase>
 
 // Must undefine IN and OUT macros defined in Windows headers
 #ifdef IN
@@ -21,7 +22,7 @@
 #endif
 
 BEGIN_VALUE_REFLECTOR(osgART::VideoTexRectCallback)
-	I_Constructor3(IN, int, video, IN, int, vw, IN, int, vh);
+	I_Constructor3(IN, osgART::VideoTextureBase *, video, IN, int, vw, IN, int, vh);
 	I_Method2(void, load, IN, const osg::TextureRectangle &, texture, IN, osg::State &, state);
 	I_Method2(void, subload, IN, const osg::TextureRectangle &, texture, IN, osg::State &, state);
 END_REFLECTOR

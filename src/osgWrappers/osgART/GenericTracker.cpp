@@ -24,7 +24,7 @@
 #endif
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericTracker)
-	// I_BaseType(osgART::FieldContainer);
+//	I_BaseType(osgART::FieldContainer);
 	I_Constructor0();
 	I_Method0(void, update);
 	I_MethodWithDefaults4(bool, init, IN, int, xsize, , IN, int, ysize, , IN, const std::string &, pattlist_name, "Data/markers_list.dat", IN, const std::string &, camera_name, "Data/camera_para.dat");
@@ -38,5 +38,13 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericTracker)
 	I_WriteOnlyProperty(osgART::GenericVideo *, Image);
 	I_ReadOnlyProperty(unsigned int, MarkerCount);
 	I_ReadOnlyProperty(const double *, ProjectionMatrix);
+END_REFLECTOR
+
+BEGIN_OBJECT_REFLECTOR(osgART::TrackerContainer)
+	I_BaseType(osgART::GenericTracker);
+	I_Constructor1(IN, osgART::GenericTracker *, tracker);
+	I_Method0(osg::Projection *, createProjection);
+	I_Method0(void, update);
+	I_MethodWithDefaults3(bool, init, IN, osgART::GenericVideo*, video, , IN, const std::string &, pattlist_name, "Data/markers_list.dat", IN, const std::string &, camera_name, "Data/camera_para.dat");
 END_REFLECTOR
 

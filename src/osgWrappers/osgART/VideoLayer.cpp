@@ -10,6 +10,7 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
+#include <osgART/GenericVideo>
 #include <osgART/VideoLayer>
 
 // Must undefine IN and OUT macros defined in Windows headers
@@ -22,7 +23,7 @@
 
 BEGIN_OBJECT_REFLECTOR(osgART::VideoLayer)
 	I_BaseType(osgART::GenericVideoObject);
-	I_ConstructorWithDefaults2(IN, int, videoId, 0, IN, int, layerDepth, 0);
+	I_ConstructorWithDefaults2(IN, osgART::GenericVideo *, video, , IN, int, layerDepth, 0);
 	I_Method0(void, init);
 	I_Method1(void, setTransparency, IN, float, alpha);
 	I_Method0(float, getTransparency);

@@ -161,9 +161,6 @@
 				RelativePath="..\..\src\osgWrappers\osgART\TrackerManager.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoAvatar.cpp">
-			</File>
-			<File
 				RelativePath="..\..\src\osgWrappers\osgART\VideoBackground.cpp">
 			</File>
 			<File
@@ -179,16 +176,10 @@
 				RelativePath="..\..\src\osgWrappers\osgART\VideoLayer.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoLoadModel.cpp">
-			</File>
-			<File
 				RelativePath="..\..\src\osgWrappers\osgART\VideoManager.cpp">
 			</File>
 			<File
 				RelativePath="..\..\src\osgWrappers\osgART\VideoPlane.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoPlaneMulti.cpp">
 			</File>
 			<File
 				RelativePath="..\..\src\osgWrappers\osgART\VideoTexCallback.cpp">

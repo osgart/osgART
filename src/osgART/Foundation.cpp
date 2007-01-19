@@ -22,7 +22,8 @@
 #include "osgART/VideoManager"
 #include "osgART/TrackerManager"
 
-#include <stdlib.h>
+
+#include <cstdlib>
 
 #ifdef __APPLE__
 #  include <Carbon/Carbon.h>

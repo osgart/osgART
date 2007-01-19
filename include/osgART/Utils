@@ -1,17 +1,39 @@
+/*
+ *	osgART/Video/ARToolKit/ARToolKitVideo
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+
 #ifndef OSGART_UTILS
-#define OSGART_UTILS
+#define OSGART_UTILS 1
 
-#include <iomanip>
-#include "osgART/Export"
-#include <string>
-#include "osg/Notify"
-#include "osg/Matrix"
-#include "osgART/Field"
-
+// General
 #include <iostream>
+
+// STL
+#include <string>
+#include <iomanip>
+
+// OpenSceneGraph
+#include <osg/Notify>
+#include <osg/Matrix>
+
+
+// OSGART
+#include "osgART/Export"
+#include "osgART/Field"
 
 
 namespace osgART {
+
 	OSGART_EXPORT std::string	trim		(std::string& s,const std::string& drop = " ");
 	OSGART_EXPORT void			PrintMatrix	(std::string name, const osg::Matrix &Transform);	
 	OSGART_EXPORT osg::Matrix	GenerateMatrix	(const osg::Vec3d & _trans, const osg::Vec3d & _rot);

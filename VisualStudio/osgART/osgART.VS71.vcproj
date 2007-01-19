@@ -212,6 +212,9 @@
 				<File
 					RelativePath="..\..\src\osgART\Foundation.cpp">
 				</File>
+				<File
+					RelativePath="..\..\src\osgART\Utils.cpp">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -338,6 +341,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\Foundation">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\Utils">
 				</File>
 			</Filter>
 		</Filter>

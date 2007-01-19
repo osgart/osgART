@@ -10,6 +10,7 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
+#include <osgART/GenericVideo>
 #include <osgART/VideoBackground>
 
 // Must undefine IN and OUT macros defined in Windows headers
@@ -22,6 +23,6 @@
 
 BEGIN_OBJECT_REFLECTOR(osgART::VideoBackground)
 	I_BaseType(osgART::VideoLayer);
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
+	I_Constructor1(IN, osgART::GenericVideo *, video);
 END_REFLECTOR
 

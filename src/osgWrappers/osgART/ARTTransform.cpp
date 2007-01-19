@@ -22,7 +22,8 @@
 #endif
 
 BEGIN_OBJECT_REFLECTOR(osgART::ARTTransform)
-	I_ConstructorWithDefaults2(IN, int, markerID, 0, IN, int, trackerId, 0);
+	I_BaseType(osg::MatrixTransform);
+	I_Constructor1(IN, osgART::Marker *, marker);
 	I_Method0(osgART::Marker *, getMarker);
 	I_ReadOnlyProperty(osgART::Marker *, Marker);
 END_REFLECTOR

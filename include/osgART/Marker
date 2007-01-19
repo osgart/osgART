@@ -14,8 +14,11 @@
 #ifndef OSGART_MARKER
 #define OSGART_MARKER 1
 
-// STL headers
+
+// General
 #include <string>
+
+// STL headers
 #include <vector>
 
 // local headers
@@ -131,7 +134,7 @@ namespace osgART {
             /** do customized update code.*/
             virtual void operator ()(Marker* m) = 0;	
 		};
-		
+				
 		
 		void copyData(const Marker& marker);
 	

@@ -11,7 +11,6 @@
 #include <osgIntrospection/Attributes>
 
 #include <osgART/GenericVideo>
-#include <osgART/VideoConfig>
 #include <osgART/VideoManager>
 
 // Must undefine IN and OUT macros defined in Windows headers
@@ -29,7 +28,7 @@ BEGIN_VALUE_REFLECTOR(osgART::VideoManager)
 	I_Method1(void, removeVideoStream, IN, osgART::GenericVideo *, video);
 	I_Method1(osgART::GenericVideo *, getVideo, IN, int, idVideo);
 	I_StaticMethod0(osgART::VideoManager *, getInstance);
-	I_StaticMethod2(osgART::GenericVideo *, createVideoFromPlugin, IN, const std::string &, plugin, IN, const osgART::VideoConfiguration &, config);
+	I_StaticMethod1(osgART::GenericVideo *, createVideoFromPlugin, IN, const std::string &, plugin);
 	I_StaticMethod0(void, destroy);
 END_REFLECTOR
 

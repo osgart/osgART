@@ -127,6 +127,7 @@ namespace osgART {
 
 		}
 
+		// update callback
 		if (m_updatecallback.valid()) (*m_updatecallback)(this);
 
 	}

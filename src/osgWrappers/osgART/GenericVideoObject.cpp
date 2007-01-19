@@ -10,6 +10,7 @@
 #include <osgIntrospection/StaticMethodInfo>
 #include <osgIntrospection/Attributes>
 
+#include <osgART/GenericVideo>
 #include <osgART/GenericVideoObject>
 #include <osgART/GenericVideoShader>
 
@@ -34,7 +35,7 @@ BEGIN_ENUM_REFLECTOR(osgART::GenericVideoObject::DistortionCorrectionMode)
 END_REFLECTOR
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideoObject)
-	I_ConstructorWithDefaults1(IN, int, videoId, 0);
+	I_Constructor1(IN, osgART::GenericVideo *, video);
 	I_Method0(void, init);
 	I_Method1(void, setTexture, IN, osg::Texture *, vt);
 	I_Method0(osg::ref_ptr< osg::Texture >, getTexture);

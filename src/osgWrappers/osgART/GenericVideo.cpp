@@ -23,6 +23,7 @@
 #endif
 
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideo)
+//	I_BaseType(osgART::FieldContainer);
 	I_Constructor0();
 	I_Constructor1(IN, const osgART::GenericVideo &, x);
 	I_Method0(int, getWidth);
@@ -31,7 +32,7 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideo)
 	I_Method0(osgART::PixelFormatType, pixelFormat);
 	I_Method0(osgART::PixelFormatType, pixelInternalFormat);
 	I_Method0(osgART::FrameRateType, frameRate);
-	I_Method0(int, getId);
+	I_Method0(int, getID);
 	I_Method0(void, open);
 	I_Method0(void, close);
 	I_Method0(void, start);
@@ -42,13 +43,27 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideo)
 	I_Method1(void, setImage, IN, osg::Image *, image);
 	I_Method0(void, releaseImage);
 	I_MethodWithDefaults1(osgART::PixelFormatType, getPixelFormat, IN, bool, internal, true);
-	// I_Method0(OpenThreads::Mutex &, getMutex);
+//	I_Method0(OpenThreads::Mutex &, getMutex);
 	I_Method1(osgART::Field *, get, IN, const std::string &, name);
+	I_Method0(osgART::VideoConfiguration *, getVideoConfiguration);
 	I_ReadOnlyProperty(int, Height);
-	I_ReadOnlyProperty(int, Id);
+	I_ReadOnlyProperty(int, ID);
 	I_WriteOnlyProperty(osg::Image *, Image);
 	I_ReadOnlyProperty(unsigned char *, ImageRaw);
-	// I_ReadOnlyProperty(OpenThreads::Mutex &, Mutex);
+//	I_ReadOnlyProperty(OpenThreads::Mutex &, Mutex);
+	I_ReadOnlyProperty(osgART::VideoConfiguration *, VideoConfiguration);
 	I_ReadOnlyProperty(int, Width);
+END_REFLECTOR
+
+BEGIN_OBJECT_REFLECTOR(osgART::VideoContainer)
+	I_BaseType(osgART::GenericVideo);
+	I_Constructor1(IN, osgART::GenericVideo *, video);
+	I_Method0(void, open);
+	I_Method0(void, close);
+	I_Method0(void, start);
+	I_Method0(void, stop);
+	I_Method0(void, update);
+	I_Method0(void, releaseImage);
+	I_ReadOnlyProperty(osgART::VideoConfiguration *, VideoConfiguration);
 END_REFLECTOR
 
