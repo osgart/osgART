@@ -21,6 +21,7 @@
 #include <Producer/RenderSurface>
 #include <osgProducer/Viewer>
 
+#include <osg/ArgumentParser>
 #include <osg/Notify>
 #include <osg/Node>
 #include <osg/Group>
@@ -48,6 +49,8 @@ int main(int argc, char* argv[])
 	osg::setNotifyLevel(osg::NOTICE);
 
 	osgARTInit(&argc, argv);
+
+	osg::ArgumentParser _parser(&argc,argv);
 
 
 	
