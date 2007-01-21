@@ -21,6 +21,8 @@
 	#include "ProfilerTools"
 #endif
 
+#define YCK_GENERIC_TRACKER 0
+
 namespace osgART {
 
 	
@@ -116,9 +118,12 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 			&ARToolKitTracker_Plus::getDebugMode,
 			&ARToolKitTracker_Plus::setDebugMode);
 
+
 		//set the internal format of ARToolkit Plus, defined at compile time
 		//see setImageRaw() for conversion
+#if YCK_GENERIC_TRACKER
 		m_arInternalFormat	= ConvertARTPixelFormatToOSGART( ARToolKitPlus::PIXEL_FORMAT_BGR);
+#endif
 	}
 
 	ARToolKitTracker_Plus::~ARToolKitTracker_Plus()
@@ -173,9 +178,10 @@ bool ARToolKitTracker_Plus::CreateTracker(
 
 		//init them
 			setMarkerMode(m_markerMode);
+#if YCK_GENERIC_TRACKER
 			setPixelFormat((ARToolKitPlus::PIXEL_FORMAT)
 					ConvertOSGARTPixelFormatToART(m_arInternalFormat));
-			
+#endif			
 			
 			//m_PlusTracker->setLoadUndistLUT(true);
 			
@@ -724,7 +730,6 @@ bool ARToolKitTracker_Plus::CreateTracker(
 					osg::notify(osg::WARN)<< "ARToolKitPlusTracker::update() : Unknown marker type id!" << std::endl;
 				}
 			}
-		
 		if(m_debugMode)
 			osg::notify() << "<-Stop" <<  getLabel() << "::update()" << std::endl;
 	}

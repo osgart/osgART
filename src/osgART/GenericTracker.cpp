@@ -28,8 +28,17 @@ namespace osgART {
 	GenericTracker::GenericTracker() 
 		: osg::Referenced(),
 		m_imageptr(0L),
-		trackerId(GenericTracker::trackerNum++)
+		trackerId(GenericTracker::trackerNum++),
+		m_enable(true)
+
 	{
+		m_fields["name"]	= new TypedField<std::string>(&m_name);
+		m_fields["version"]	= new TypedField<std::string>(&m_version);
+		m_fields["enable"]				= new CallbackField<GenericTracker,bool>(this,
+			GenericTracker::getEnable,
+			GenericTracker::setEnable);
+
+
 	}
 
 	GenericTracker::~GenericTracker() 
@@ -112,6 +121,23 @@ namespace osgART {
 	{
 		return m_projectionMatrix;
 	}
+
+	/* virtual */
+	void	GenericTracker::setEnable(const bool & _enable)
+	{	m_enable = _enable; }
+
+	/* virtual */
+	bool	GenericTracker::getEnable()const
+	{	return m_enable;}
+
+	std::string GenericTracker::getLabel() const {
+		std::string Result = m_name;
+		Result += "-";
+		Result += m_version;
+		return Result;
+	}
+
+
 
 
 	// ------------------------------------------------
