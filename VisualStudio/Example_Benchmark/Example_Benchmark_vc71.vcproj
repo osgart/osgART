@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include"
+				AdditionalIncludeDirectories="..\..\include;&quot;$(ARTOOLKIT_2_ROOT)\include&quot;;..\..\src\osgART\Tracker\ARToolKitProfiler\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libARd.lib glu32.lib libARgsub_lited.lib libARMultid.lib libARvideod.lib osgARTd.lib"
+				AdditionalDependencies="osgart_tracker_profiler.lib osg.lib osgGA.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib osgVRPN.lib libar.lib libARgsub_lite.lib"
 				OutputFile="../../bin/Example_Debug.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
@@ -123,9 +123,21 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath="..\..\src\osgART_Benchmark\definition">
+			</File>
+			<File
+				RelativePath="..\..\src\osgART_Benchmark\Graphic">
+			</File>
+			<File
+				RelativePath="..\..\src\osgART_Benchmark\Graphic.cpp">
+			</File>
+			<File
 				RelativePath="..\..\src\osgART_Benchmark\osgART_Benchmark.cpp">
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\src\osgART_Benchmark\FieldWrapper">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
