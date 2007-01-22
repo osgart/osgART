@@ -137,6 +137,10 @@ namespace osgART {
 				
 		
 		void copyData(const Marker& marker);
+		
+		void setFilterCallback(Callback* callback);
+		
+		Callback* getFilterCallback();
 	
 	protected: 
 	
@@ -149,6 +153,8 @@ namespace osgART {
 	protected:
 	
 		osg::ref_ptr<Callback> m_updatecallback;
+		
+		osg::ref_ptr<Callback> m_filtercallback;
 	
 		friend class MarkerContainer;
 		

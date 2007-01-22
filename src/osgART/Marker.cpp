@@ -89,6 +89,19 @@ namespace osgART {
 		return (1.0f - m_positionSmoothFactor);
 	}
 
+	void
+	Marker::setFilterCallback(Marker::Callback *callback)
+	{
+		this->m_filtercallback = callback;
+	}
+
+	Marker::Callback*
+	Marker::getFilterCallback()
+	{
+		return this->m_filtercallback.get();
+	}
+
+
 	void 
 	Marker::updateTransform(const osg::Matrix& transform) 
 	{
@@ -108,6 +121,10 @@ namespace osgART {
 
 				osg::Vec3 b = a * m_positionSmoothFactor;
 				m_storedPosition += b;
+
+				if (m_filtercallback.valid())(*m_filtercallback)(this);
+
+
 				
 			} else {			
 			
