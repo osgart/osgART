@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="osgwrapper_osgART"
+	Name="osgWrapper osgART"
 	ProjectGUID="{9FF3836F-BFC1-4C40-A96A-500ECC88440C}"
 	Keyword="Win32Proj">
 	<Platforms>
