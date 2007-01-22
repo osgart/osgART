@@ -55,7 +55,9 @@ namespace osgART {
 			
 	};
 
-	VideoLayer::VideoLayer(GenericVideo* video,int layerD)
+	VideoLayer::VideoLayer(
+		GenericVideo* video /* = 0L*/,
+		int layerD)
 		: GenericVideoObject(video) ,
 		m_layerDepth(layerD),
 		m_alpha(-1),

@@ -28,7 +28,7 @@ namespace osgART {
 	class OSGART_EXPORT ARTTransform : public osg::MatrixTransform
 	{
 	public:
-
+	
 		/** 
 		 * \brief default constructor.
 		 * The default constructor. This transformation is automatically updated by
@@ -37,8 +37,21 @@ namespace osgART {
 		 * \param markerID the Marker identification.
 		 * \param trackerId the Tracker identification.
 		 */		
-		ARTTransform(Marker *marker);
-		
+		ARTTransform(Marker *marker = 0L);
+	
+		/**
+		 * Copy constructor. 
+		 * \param trans transform to copy from
+		 * \param copyop depth of the copy
+		 * 
+		 */
+		ARTTransform(const ARTTransform& trans, 
+			const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
+	
+		META_Node(osgART, ARTTransform)
+
+	
 		/** 
 		 * Assignment operator.
 		 *

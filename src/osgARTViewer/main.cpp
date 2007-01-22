@@ -46,12 +46,21 @@
 int main(int argc, char* argv[]) 
 {
 
+	bool useFullscreen(false);
+
+
 	osg::setNotifyLevel(osg::NOTICE);
 
 	osgARTInit(&argc, argv);
 
+
 	osg::ArgumentParser _parser(&argc,argv);
 
+	while (_parser.read("-full")) useFullscreen = true;
+
+	osg::ArgumentParser::Parameter _p;
+
+	while (_parser.read("video","osgart_artoolkit"
 
 	
 	osgProducer::Viewer viewer;
@@ -60,7 +69,7 @@ int main(int argc, char* argv[])
 
 #ifndef __linux
 	// somehow on Ubuntu Dapper this ends up in a segmentation fault
-	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
+	viewer.getCamera(0)->getRenderSurface()->fullScreen(useFullscreen);
 #endif
 
 	// load a video plugin

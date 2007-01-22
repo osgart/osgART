@@ -50,7 +50,7 @@ namespace osgART {
 		* Default constructor. 
 		* \param videoId the number of the video used for the background
 		*/    
-		VideoForeground(GenericVideo* video);
+		VideoForeground(GenericVideo* video = 0L);
 
 	protected:		
 		/**

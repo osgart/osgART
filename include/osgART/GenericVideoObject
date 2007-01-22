@@ -72,11 +72,9 @@ namespace osgART {
 		
 		/** 
 		* \brief default constructor.
-		* @param videoId the number of the video used for the background
+		* \param videoId the number of the video used for the background
 		*/    
-		GenericVideoObject(GenericVideo* video);
-
-	
+		GenericVideoObject(GenericVideo* video = 0L);
 
 
 		/** 
@@ -117,6 +115,17 @@ namespace osgART {
 		inline DistortionCorrectionMode getDistorsionCorrectionMode() const {
 			return m_distortionMode;
 		}
+		
+		/**
+		 * Set the connected video stream
+		 */
+		 void setVideo(GenericVideo* video);
+		
+				
+		/**
+		 * Get the connected video stream
+		 */
+		 GenericVideo* getVideo() const;
 	    
 	    
 	protected:
@@ -134,8 +143,7 @@ namespace osgART {
 	
 		osg::ref_ptr<GenericVideo>			m_video;
 		
-		
-		
+	
 		DistortionCorrectionMode m_distortionMode;
 		TextureMode m_textureMode;
 		

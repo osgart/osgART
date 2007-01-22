@@ -17,7 +17,7 @@
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
-#include <osg/Referenced>
+#include <osg/Object>
 
 
 // Local include
@@ -31,7 +31,6 @@
 #include <OpenThreads/Mutex>
 
 
-
 namespace osgART {
 
 	/**
@@ -42,7 +41,6 @@ namespace osgART {
 		public FieldContainer<GenericVideo>
 	{
 	public:       
-
 		    
 		/** 
 		* \brief default constructor.
@@ -233,10 +231,15 @@ namespace osgART {
 	 * Its single purpose of existance is to get arround restrictions
 	 * within osgIntrospection and RTTI accross DLL boundaries.
 	 */
-	class OSGART_EXPORT VideoContainer : public GenericVideo {
+	class OSGART_EXPORT VideoContainer : public GenericVideo, public osg::Object {
 	public:
 	
-		VideoContainer(GenericVideo* video);
+		META_Object(osgART, VideoContainer)	
+		
+		VideoContainer(GenericVideo* video = 0L);
+		
+		VideoContainer(const VideoContainer& container,
+			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 
 		VideoConfiguration* getVideoConfiguration();
@@ -277,10 +280,15 @@ namespace osgART {
 		
 		virtual void releaseImage();
 		
+		
+		/**
+		 * Load a plugin in the video container.
+		 * \param plugin name of the plugin (excluding the extension)
+		 */
+		void load(const std::string& plugin);
+		
 
 	protected:
-
-		VideoContainer();
 
 		virtual ~VideoContainer();
 

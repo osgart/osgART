@@ -63,7 +63,9 @@ namespace osgART {
 		 * \param videoId the number of the video used for the background
 		 * \param layerDepth
 		 */
-		VideoLayer(GenericVideo* video , int layerDepth = 0);
+		VideoLayer(
+			GenericVideo* video = 0L, 
+			int layerDepth = 0);
 
 
 		/**

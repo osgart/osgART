@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="osgart_viewer"
-	ProjectGUID="{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
-	RootNamespace="Example"
+	Name="osg Plugin osgART"
+	ProjectGUID="{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+	RootNamespace="osgart_intranel"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -13,19 +13,17 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OSGART_DSVL_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="TRUE"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -34,13 +32,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libAR.lib glu32.lib libARgsub_lite.lib libARMulti.lib libARvideo.lib osgARTd.lib"
-				OutputFile="../../bin/osgart_example_debug.exe"
+				OutputFile="$(OutDir)/osgart_intranel.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Example.pdb"
-				SubSystem="1"
+				ProgramDatabaseFile="$(OutDir)/osgart_intranel.pdb"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/osgart_intranel.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -65,33 +62,33 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="Release"
 			IntermediateDirectory="Release"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\..\include;&quot;$(DXSDK_DIR)\Extras\DirectShow\Samples\C++\DirectShow\BaseClasses&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="0"/>
+				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib"
-				OutputFile="../../bin/osgart_viewer.exe"
+				AdditionalDependencies="osg.lib osgART.lib osgDB.lib"
+				OutputFile="..\..\..\bin\osgdb_osgART.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../lib"
-				IgnoreDefaultLibraryNames=""
+				AdditionalLibraryDirectories="..\..\..\lib"
 				GenerateDebugInformation="TRUE"
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/osgart_intranel.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -123,8 +120,21 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\src\osgARTViewer\main.cpp">
+				RelativePath="..\..\..\src\osgPlugins\osgART\IO_GenericVideo.cpp">
 			</File>
+			<File
+				RelativePath="..\..\..\src\osgPlugins\osgART\IO_VideoBackground.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd;"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 		</Filter>
 	</Files>
 	<Globals>

@@ -49,6 +49,8 @@ Must try the 2005 version with the DLL.
 */
 
 #define _ARTPLUS_MAX_MARKER 16				//!< Maximum number of marker the library will process per frame.
+//#define _ART_PLUS_TRACKER_PARAM_SIMPLE		6,6,6,(ARToolKitPlus::PIXEL_FORMAT)1,		_ARTPLUS_MAX_MARKER		//!< Main template values for the Simple ID marker mode.
+//#define _ART_PLUS_TRACKER_PARAM_TEMPLATE	16,16,64,(ARToolKitPlus::PIXEL_FORMAT)15,	_ARTPLUS_MAX_MARKER		//!< Main template values for the Template marker mode.
 #define _ART_PLUS_TRACKER_PARAM_SIMPLE		6,6,6,1,		_ARTPLUS_MAX_MARKER		//!< Main template values for the Simple ID marker mode.
 #define _ART_PLUS_TRACKER_PARAM_TEMPLATE	16,16,64,15,	_ARTPLUS_MAX_MARKER		//!< Main template values for the Template marker mode.
 #define _ART_PLUS_VERSION					ARTOOLKITPLUS_VERSION_MAJOR "." ARTOOLKITPLUS_VERSION_MINOR //!< Set the current version of ARToolkit plus.

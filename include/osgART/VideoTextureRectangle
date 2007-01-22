@@ -42,7 +42,7 @@ namespace osgART {
 		 * Default constructor.
 		 * \param video ID of the video been attached to the texture.
 		 */
-		VideoTextureRectangle(GenericVideo* video);
+		VideoTextureRectangle(GenericVideo* video = 0L);
 		
 				
 

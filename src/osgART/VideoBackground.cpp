@@ -16,7 +16,7 @@
 #include "osgART/VideoTextureRectangle"
 
 namespace osgART {
-	VideoBackground::VideoBackground(GenericVideo* video) 
+	VideoBackground::VideoBackground(GenericVideo* video /* = 0L */) 
 		: VideoLayer(video, 1)
 	{
 

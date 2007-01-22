@@ -35,6 +35,15 @@ namespace osgART {
 		}
 	}
 
+	ARTTransform::ARTTransform(const ARTTransform& trans, 
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
+		osg::MatrixTransform(trans,copyop),
+			m_marker(trans.m_marker)
+	{
+	}
+
+
+
 	/* virtual */
 	ARTTransform::~ARTTransform() 
 	{

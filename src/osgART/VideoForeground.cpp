@@ -17,7 +17,7 @@
 #include <osg/BlendFunc>
 
 namespace osgART {
-	VideoForeground::VideoForeground(GenericVideo* video) 
+	VideoForeground::VideoForeground(GenericVideo* video /* = 0L*/) 
 		: VideoLayer(video, 1000)
 	{
 	}

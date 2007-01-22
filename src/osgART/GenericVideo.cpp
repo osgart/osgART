@@ -13,6 +13,8 @@
 
 #include "osgART/GenericVideo"
 
+#include "osgART/VideoManager"
+
 #include <OpenThreads/ScopedLock>
 #include <osg/Notify>
 
@@ -98,6 +100,13 @@ namespace osgART {
 	{
 	}
 
+	VideoContainer::VideoContainer(const VideoContainer& container,
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
+		GenericVideo(*container.m_encapsulated.get())
+	{
+	}
+
+
 
 	VideoConfiguration* VideoContainer::getVideoConfiguration() 
 	{
@@ -147,9 +156,6 @@ namespace osgART {
 		if (m_encapsulated.valid()) m_encapsulated->update();		
 	}
 
-	VideoContainer::VideoContainer() : GenericVideo()
-	{
-	}
 
 	VideoContainer::~VideoContainer()
 	{
@@ -159,6 +165,19 @@ namespace osgART {
 	VideoContainer::releaseImage() 
 	{
 	}
+
+
+	void
+	VideoContainer::load(const std::string& plugin)
+	{
+		if (m_encapsulated.valid()) {
+			// do we need to stop?
+		}
+        
+		m_encapsulated = VideoManager::createVideoFromPlugin(plugin);
+
+	}
+
 
 	
 

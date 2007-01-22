@@ -41,7 +41,7 @@ namespace osgART {
 	#endif
 	}
 
-	GenericVideoObject::GenericVideoObject(GenericVideo* video) :
+	GenericVideoObject::GenericVideoObject(GenericVideo* video /* = 0L */) :
 		osg::Group(),
 		m_vShader(0L),
 		m_vTexture(0L),
@@ -54,6 +54,18 @@ namespace osgART {
 
 	GenericVideoObject::~GenericVideoObject()
 	{
+	}
+
+	void 
+	GenericVideoObject::setVideo(GenericVideo* video)
+	{
+		this->m_video = video;
+	}
+
+	GenericVideo*
+	GenericVideoObject::getVideo() const 
+	{
+		return this->m_video.get();
 	}
 
 }; // namespace osgART

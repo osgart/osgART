@@ -34,6 +34,11 @@ DLL_API osgART::GenericTracker* osgart_create_tracker()
 OSGART_PLUGIN_ENTRY()
 
 
+#if ((ARTOOLKITPLUS_VERSION_MAJOR != 2) && (ARTOOLKITPLUS_VERSION_MINOR != 1))
+# error "Plugin only works with ARToolKitPlus 2.1.x"
+#endif
+
+
 //==============================================================================
 //==============================================================================
 //==============================================================================
@@ -69,10 +74,13 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 #if	AR_TRACKER_PROFILE
 		{
 			std::cout << "Profiling Mode"<< std::endl;
+			std::cout << std::endl << "should be : osgart_artoolkitplus_tracker_profiler.dll"<< std::endl;
 		}
+#else
+		std::cout << std::endl << "should be : osgart_artoolkitplus_tracker.dll"<< std::endl;
+
 #endif
 
-		std::cout << std::endl << "should be : osgart_artoolkitplus_tracker_profiler.dll"<< std::endl;
 
 
 
@@ -178,10 +186,10 @@ bool ARToolKitTracker_Plus::CreateTracker(
 
 		//init them
 			setMarkerMode(m_markerMode);
-#if YCK_GENERIC_TRACKER
-			setPixelFormat((ARToolKitPlus::PIXEL_FORMAT)
-					ConvertOSGARTPixelFormatToART(m_arInternalFormat));
-#endif			
+// #if YCK_GENERIC_TRACKER
+			setPixelFormat(ARToolKitPlus::PIXEL_FORMAT_BGR);
+			// ConvertOSGARTPixelFormatToART(m_arInternalFormat));
+// #endif			
 			
 			//m_PlusTracker->setLoadUndistLUT(true);
 			
