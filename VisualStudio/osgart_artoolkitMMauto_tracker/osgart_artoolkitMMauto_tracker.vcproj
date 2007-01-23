@@ -86,7 +86,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="osgART.lib osg.lib libAR.lib libARmulti.lib libARgsub_lite.lib opengl32.lib glu32.lib"
-				OutputFile="D:\work\OpenSceneGraph\bin\osgart_artoolkitMMauto_tracker.dll"
+				OutputFile="..\..\bin\osgart_artoolkitMMauto_tracker.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"
 				GenerateDebugInformation="TRUE"
