@@ -58,10 +58,6 @@ int main(int argc, char* argv[])
 
 	while (_parser.read("-full")) useFullscreen = true;
 
-	osg::ArgumentParser::Parameter _p;
-
-	while (_parser.read("video","osgart_artoolkit"
-
 	
 	osgProducer::Viewer viewer;
 	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);

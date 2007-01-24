@@ -26,11 +26,16 @@ namespace osgART {
 		m_video(parent->getVideo()),
 		m_videotexture(parent)
 	{
+		std::cout << "-----------------------------------------" << std::endl;
+		std::cout << m_videotexture->getVideo()->getWidth() <<
+			"x" << m_videotexture->getVideo()->getHeight() << " : "
+			<< std::endl;
 	}
 
 	/* virtual*/
 	void VideoTexRectCallback::load(const osg::TextureRectangle&, 
-		osg::State&) const {
+		osg::State&) const 
+	{
 
 		if (m_videotexture->getAlphaBias() >= 0.0f) 
 			glPixelTransferf(GL_ALPHA_BIAS, m_videotexture->getAlphaBias());

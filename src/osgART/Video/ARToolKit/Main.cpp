@@ -19,7 +19,7 @@
 
 DLL_API osgART::GenericVideo* osgart_createvideo()
 {
-	return new ARToolKitVideo();
+	return new osgART::ARToolKitVideo();
 }
 
 OSGART_PLUGIN_ENTRY()

@@ -62,7 +62,9 @@ namespace osgART {
 #endif
 				break;
 		default: 
-			osg::notify() << "osgART::VideoTextureRectangle::VideoTextureRectangle(): format not supported for texture mapping!" << std::endl;
+			osg::notify(osg::WARN) << 
+				"osgART::VideoTextureRectangle::VideoTextureRectangle(): format not supported for texture mapping!" 
+				<< std::endl;
 		}
 
 		this->setTextureSize(m_vidWidth, m_vidHeight);

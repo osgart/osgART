@@ -16,7 +16,7 @@ RegisterDotOsgWrapperProxy g_artVideoBackgroundProxy
 (
     new osgART::VideoBackground,
     "VideoBackground",
-    "Object Node VideoBackground Group",
+    "Object Node Group VideoBackground",
     &VideoBackground_readLocalData,
     &VideoBackground_writeLocalData
 );

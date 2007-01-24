@@ -42,7 +42,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenThreadsWin32.lib osg.lib osgDB.lib osgART.lib"
+				AdditionalDependencies="osg.lib osgDB.lib osgART.lib"
 				OutputFile="../../../bin/osgdb_osgART2.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"

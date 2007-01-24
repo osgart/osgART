@@ -87,10 +87,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgPlugin osgART", "..\osgP
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgPlugin osgART2", "..\osgPlugins\osgART\dot_osgART.vcproj", "{2317F43F-D78A-417D-A624-C3E057ADF6B7}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkitMMauto_tracker", "..\osgart_artoolkitMMauto_tracker\osgart_artoolkitMMauto_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -101,6 +97,8 @@ Global
 		Debug Static = Debug Static
 		Release = Release
 		Release Static = Release Static
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
@@ -279,14 +277,6 @@ Global
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release Static.ActiveCfg = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release Static.Build.0 = Release|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Debug.ActiveCfg = Debug|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Debug.Build.0 = Debug|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Debug Static.ActiveCfg = Debug Static|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Debug Static.Build.0 = Debug Static|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Release.ActiveCfg = Release|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Release.Build.0 = Release|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Release Static.ActiveCfg = Release Static|Win32
-		{2317F43F-D78A-417D-A624-C3E057ADF6B7}.Release Static.Build.0 = Release Static|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug Static.ActiveCfg = Debug|Win32

@@ -131,6 +131,9 @@
 					RelativePath="..\..\src\osgART\GenericVideo.cpp">
 				</File>
 				<File
+					RelativePath="..\..\src\osgART\VideoImageStream.cpp">
+				</File>
+				<File
 					RelativePath="..\..\src\osgART\VideoManager.cpp">
 				</File>
 			</Filter>
@@ -229,6 +232,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoConfig">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\VideoImageStream">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoManager">

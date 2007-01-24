@@ -13,6 +13,8 @@
 
 #include "osgART/GenericVideoObject"
 
+#include <osg/Notify>
+
 #if defined(_WIN32)
 #include <windows.h>
 #endif
@@ -52,8 +54,23 @@ namespace osgART {
 	{
 	}
 
+	GenericVideoObject::GenericVideoObject(const GenericVideoObject& video,
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
+		osg::Group(video,copyop)
+	{
+
+	}
+
 	GenericVideoObject::~GenericVideoObject()
 	{
+	}
+
+	void 
+	GenericVideoObject::init() 
+	{
+		osg::notify(osg::WARN) << 
+			"osgART::GenericVideoObject::init(): Missing initialisation"
+			<< std::endl;
 	}
 
 	void 

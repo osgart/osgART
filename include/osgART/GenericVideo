@@ -17,11 +17,12 @@
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
+#include <osg/ImageStream>
 #include <osg/Object>
-
 
 // Local include
 #include "osgART/Export"
+#include "osgART/VideoImageStream"
 #include "osgART/VideoConfig"
 #include "osgART/Field"
 
@@ -30,30 +31,27 @@
 #include <OpenThreads/ScopedLock>
 #include <OpenThreads/Mutex>
 
-
 namespace osgART {
-
 	/**
 	 * GenericVideo encapsulates different capturing devices and sources. 
 	 * 
 	 */	
-	class OSGART_EXPORT GenericVideo : public osg::Referenced, 
+	class OSGART_EXPORT GenericVideo : public VideoImageStream, 
 		public FieldContainer<GenericVideo>
 	{
-	public:       
-		    
+	public:
+	
 		/** 
-		* \brief default constructor.
-		* The default constructor.
-		*/
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
 		GenericVideo();
 	    
 		/** 
-		* \brief copy constructor.
-		*
-		*/
-		GenericVideo(const GenericVideo &);
-	    
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+		GenericVideo(const GenericVideo& container,
+			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 	    
 		/** 
 		* \brief affectation operator.
@@ -65,17 +63,13 @@ namespace osgART {
 		* \brief x size of the GenericVideo.
 		* @return the width of the GenericVideo stream.
 		*/
-		inline int getWidth() const {
-			return xsize;
-		}
-		
+		int getWidth() const;
+
 		/**
 		* \brief y size of the GenericVideo.
 		* @return the height of the GenericVideo stream.
 		*/
-		inline int getHeight() const {
-			return ysize;
-		}
+		int getHeight() const;
 
 		/**
 		* \brief pixel size of the GenericVideo.
@@ -114,40 +108,6 @@ namespace osgART {
 		* @return a GenericVideo identifier.
 		*/
 		virtual int getID() const;
-
-		// services
-	    
-		/**
-		* \brief open the GenericVideo stream.
-		* Access the GenericVideo stream (hardware or file) and get an handle on it.
-		*/
-		virtual void open() = 0;
-		
-		/**
-		* \brief close the  video stream.
-		* Terminate the connection with the video stream and clean handle.
-		*/
-		virtual void close() = 0;
-		
-		/**
-		* \brief start the  video stream grabbing.
-		* Start to get image from the  video stream. In function of the implementation on different
-		* platform, this function can run a thread, signal or real-time function. 
-		*/
-		virtual void start() = 0;
-		
-		/**
-		* \brief stop the  video stream grabbing.
-		* Stop to get image from the  video stream. In function of the implementation on different
-		* platform, this function can stop a thread, signal or real-time function. 
-		*/
-		virtual void stop() = 0;
-		
-		/**
-		* \brief update the  video stream grabbing.
-		* Try to get an image of the  video instance, usable by your application.
-		*/
-		virtual void update() = 0;
 		
 		/**
 		 * \brief get an image.
@@ -155,27 +115,7 @@ namespace osgART {
 		 */
 		unsigned char* getImageRaw();
 		
-		/**
-		 * \brief get an image.
-		 * Get the last image retrieved since call of update.
-		 */
-		osg::ref_ptr<osg::Image> getImage() const;
-		
-		/**
-		 * \brief set an image.
-		 * \param image set the internal image 
-		 * Get the last image retrieved since call of update.
-		 */
-		void setImage(osg::Image* image);
-		
-		
-		/**
-		* \brief force a release of the frame.
-		* Use when user explicitly want to release the memory area of the grabbed GenericVideo. Otherwise
-		* generally release at the next call of update.
-		*/
-		virtual void releaseImage() = 0;
-		
+	
 		
 		inline PixelFormatType getPixelFormat(bool internal = true) {
 			return (internal) ? internalpixelformat : pixelformat;
@@ -199,20 +139,20 @@ namespace osgART {
 		virtual VideoConfiguration* getVideoConfiguration();
 		
 	   
-	protected:		
+	protected:
 	
-
 		/** 
 		 * \brief destructor.
 		 *
 		 */
 		virtual ~GenericVideo();   
  
-		osg::ref_ptr<osg::Image> m_image;
-
+		/* 
 		int xsize;
 		int ysize;	
+		*/
 		int pixelsize;
+		
 		PixelFormatType pixelformat;
 		PixelFormatType internalpixelformat;
 		FrameRateType framerate;
@@ -231,7 +171,7 @@ namespace osgART {
 	 * Its single purpose of existance is to get arround restrictions
 	 * within osgIntrospection and RTTI accross DLL boundaries.
 	 */
-	class OSGART_EXPORT VideoContainer : public GenericVideo, public osg::Object {
+	class OSGART_EXPORT VideoContainer : public GenericVideo {
 	public:
 	
 		META_Object(osgART, VideoContainer)	

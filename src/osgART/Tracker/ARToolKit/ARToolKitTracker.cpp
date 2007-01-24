@@ -100,7 +100,9 @@ namespace osgART {
 
 	ARToolKitTracker::~ARToolKitTracker()
 	{
-		delete m_cparam;
+		std::cout << "ARToolKitTracker::~ARToolKitTracker()"
+			<< std::endl;
+		// if (m_cparam) delete m_cparam;
 	}
 
 

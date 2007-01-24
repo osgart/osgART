@@ -46,7 +46,7 @@ namespace osgART {
 
 		virtual void operator()(osg::Node*, osg::NodeVisitor*)
 		{
-			_texture->setImage(_video->getImage().get());        
+			_texture->setImage(_video.get());        
 		}
 	    
 		protected:

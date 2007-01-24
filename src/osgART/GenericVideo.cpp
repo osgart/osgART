@@ -12,7 +12,6 @@
 // @@OSGART_LICENSE_HEADER_END@@
 
 #include "osgART/GenericVideo"
-
 #include "osgART/VideoManager"
 
 #include <OpenThreads/ScopedLock>
@@ -22,12 +21,10 @@ namespace osgART {
 
 	// static id counter
 	int GenericVideo::videoNum = 0;
-
-
+	
 	GenericVideo::GenericVideo() 
-		: osg::Referenced(), 
-		m_image(new osg::Image),
-		xsize(-1), ysize(-1),
+		: VideoImageStream(), 
+		FieldContainer<GenericVideo>(),
 		pixelsize(4), 
 		pixelformat(VIDEOFORMAT_RGB24),
 		framerate(VIDEOFRAMERATE_30),
@@ -35,12 +32,14 @@ namespace osgART {
 	{
 	}
 
-	GenericVideo::GenericVideo(const GenericVideo& video) : 
-		osg::Referenced(),
-		FieldContainer<GenericVideo>(), 
-		m_image(video.m_image.get())
+	GenericVideo::GenericVideo(const GenericVideo& container,
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
+		VideoImageStream(),
+		FieldContainer<GenericVideo>()
 	{
 	}
+
+	
 
 	GenericVideo::~GenericVideo()
 	{	    
@@ -63,19 +62,9 @@ namespace osgART {
 	GenericVideo::getImageRaw() 
 	{
 		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
-		return m_image->data();
+		return this->data();
 	}
 
-	osg::ref_ptr<osg::Image> GenericVideo::getImage() const 
-	{		
-		return m_image;
-	}
-
-	void
-	GenericVideo::setImage(osg::Image* image) 
-	{
-		m_image = image;
-	}
 
 	Field*
 	GenericVideo::get(const std::string& name)
@@ -92,10 +81,20 @@ namespace osgART {
 		return 0L;
 	}
 
-	
+	int GenericVideo::getWidth() const 
+	{
+		return this->s();
+	}
 
+	int GenericVideo::getHeight() const 
+	{
+		return this->t();
+	}
+
+
+	// -----------------------------------------------------------------------
 	VideoContainer::VideoContainer(GenericVideo* video) 
-		: GenericVideo(*video),
+		: GenericVideo(),
 		m_encapsulated(video)
 	{
 	}
@@ -121,13 +120,18 @@ namespace osgART {
 		if (m_encapsulated.valid()) 
 		{			
 			m_encapsulated->open();	
+			/*
 			this->xsize = m_encapsulated->getWidth();
 			this->ysize = m_encapsulated->getHeight();
 
 			this->pixelformat = m_encapsulated->getPixelFormat(false);
 			this->internalpixelformat = m_encapsulated->getPixelFormat(true);
+			*/
 
-			this->setImage(m_encapsulated->getImage().get());
+			/* hse25: following line needs a replacement! 
+			   No need to encapsulate!
+			  */
+			// this->setImage(m_encapsulated.get());
 		}
 	}
 		
@@ -173,7 +177,6 @@ namespace osgART {
 		if (m_encapsulated.valid()) {
 			// do we need to stop?
 		}
-        
 		m_encapsulated = VideoManager::createVideoFromPlugin(plugin);
 
 	}

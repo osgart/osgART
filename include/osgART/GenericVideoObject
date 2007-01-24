@@ -42,6 +42,23 @@ namespace osgART {
 	{
 	public:
 	
+		/** 
+		 * \brief default constructor.
+		 * \param videoId the number of the video used for the background
+		 */    
+		GenericVideoObject(GenericVideo* video = 0L);
+		
+		/** 
+		 * \brief Copy constructor.
+		 * \param video
+		 * \param copyop
+		 */
+		GenericVideoObject(const GenericVideoObject& video,
+			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+			
+		
+		META_Node(osgART, GenericVideoObject);
+	
 	
 		/**
 		 * Calculate power of two for OpenGL textures
@@ -68,20 +85,13 @@ namespace osgART {
 			NO_CORRECTION,			/**< No correction is applied to the Texture */
 			CAMERA_PARAM_CORRECTION	/**< The texture is being corrected from camera parameters */
 		};
-		
-		
-		/** 
-		* \brief default constructor.
-		* \param videoId the number of the video used for the background
-		*/    
-		GenericVideoObject(GenericVideo* video = 0L);
 
 
 		/** 
 		 * All initialisation needs to be done within here.
 		 * 
 		 */
-		virtual void init() = 0;
+		virtual void init();
 	    
 	    
 		inline void setTexture(osg::Texture* vt) {

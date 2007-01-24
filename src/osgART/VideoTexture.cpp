@@ -76,9 +76,8 @@ namespace osgART {
 
 	}
 
-	VideoTexture::~VideoTexture(void)
-	{
-	    
-	};
+	VideoTexture::~VideoTexture()
+	{	    
+	}
 
 };

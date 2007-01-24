@@ -129,6 +129,9 @@
 			<File
 				RelativePath="..\..\..\src\osgPlugins\osgART\IO_GenericVideo.cpp">
 			</File>
+			<File
+				RelativePath="..\..\..\src\osgPlugins\osgART\IO_VideoBackground.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

@@ -40,6 +40,10 @@ namespace osgART {
 		if (m_videotexture->getAlphaBias() >= 0.0f) 
 			glPixelTransferf(GL_ALPHA_BIAS, m_videotexture->getAlphaBias());
 
+		osg::notify(osg::WARN) << m_videotexture->getVideo()->getWidth() <<
+			"x" << m_videotexture->getVideo()->getHeight() << " : "
+			<< std::endl;
+
 
 	switch (m_video->pixelFormat())
 	{
