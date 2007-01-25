@@ -72,7 +72,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\include;$(ARTOOLKIT_4_ROOT)\include"
+				AdditionalIncludeDirectories="..\..\include;..\..\..\ARToolKit_includes;..\..\..\JpegLib\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -84,10 +84,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib AR.lib ARMulti.lib ARgsub.lib AR2.lib opengl32.lib glu32.lib libARgsub_lite.lib"
+				AdditionalDependencies="osgART.lib osg.lib AR.lib AR2.lib opengl32.lib ARgsub.lib ARMulti.lib"
 				OutputFile="..\..\bin\osgart_artoolkit4nft_tracker.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=";$(ARTOOLKIT_4_ROOT)\lib"
+				AdditionalLibraryDirectories="..\..\lib;&quot;$(ARTOOLKIT_4_ROOT)\lib&quot;;..\..\..\TexTracking\Ver.3.20\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
