@@ -73,7 +73,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="D:\work\osgart\trunk\src\osgART\Interaction\osgartGazeInteraction\include;..\..\include"
+				AdditionalIncludeDirectories="C:\work\osgart_trunk\src\osgART\Interaction\osgartGazeInteraction\include;..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OSGART_PLUGIN_EXPORT"
 				RuntimeLibrary="2"
 				RuntimeTypeInfo="TRUE"
@@ -85,7 +85,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="libARgsub_lite.lib libAR.lib"
 				OutputFile="$(OutDir)/osgARTGazeInteraction.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
