@@ -35,7 +35,7 @@
 #include <AR2/tracking.h>    
 #include <AR2/coord.h>    
 #include <AR2/template.h>    
-#include <AR2/util.h>    
+#include <AR2/util.h>
 
 #include "osgART/Export"
 #include "osgART/Marker"

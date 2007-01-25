@@ -1,3 +1,5 @@
+typedef int AR_PIXEL_FORMAT;
+
 #include "ARToolKit4NFTTracker"
 
 #include "SingleMarker"
@@ -7,8 +9,12 @@
 #include <iostream>
 #include <fstream>
 
-typedef int AR_PIXEL_FORMAT;
-#include <AR/gsub_lite.h>
+
+
+// #include <AR/gsub_lite.h>
+#include <AR4/AR/gsub.h>
+
+
 
 /* JENS MODIF
 .dat configuration file format

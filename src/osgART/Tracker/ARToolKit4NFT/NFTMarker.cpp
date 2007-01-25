@@ -1,7 +1,7 @@
 #include "NFTMarker"
-#include <AR/config.h>
-#include <AR/ar.h>
-#include <AR/gsub_lite.h>
+#include <AR/AR/config.h>
+#include <AR/AR/ar.h>
+#include <AR/AR/gsub_lite.h>
 
 namespace osgART {
 

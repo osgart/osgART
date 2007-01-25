@@ -1,7 +1,7 @@
 #include "SingleMarker"
 
 typedef int AR_PIXEL_FORMAT;
-#include <AR/gsub_lite.h>
+#include <AR/AR/gsub_lite.h>
 #include <iostream>
 
 namespace osgART {
