@@ -5,10 +5,6 @@
 #include <osgUtil/SceneView>
 #include <osgUtil/IntersectVisitor>
 
-#include <AR/ar.h>		// ARUint8, AR_PIXEL_FORMAT
-#include <AR/param.h>	
-#include <AR/gsub_lite.h>
-
 #include "GazeInteractionTarget.h"
 #include "GazeInteractionSphereTarget.h"
 #include "GazeInteractionHit.h"
