@@ -393,58 +393,58 @@ ARToolKit4NFTTracker::update()
 	//JENS
 	static int active_surface = 0;
 
-	// declare all markers as not beeing updated nor valid
-	//for (MarkerList::iterator iter = m_markerlist.begin(); 
-	//		iter != m_markerlist.end(); 
-	//		iter++)	
-	//{
-	//			Marker* currentMarker=(*iter);
-//				currentMarker->m_updated=false;
-//				currentMarker->m_valid=false;				
-	//}
+	// declare all markers as invalid
+	for (MarkerList::iterator iter = m_markerlist.begin(); 
+			iter != m_markerlist.end(); 
+			iter++)	
+	{
+				NFTMarker* currentMarker=(NFTMarker*)(*iter).get();
+				currentMarker->update(NULL);
+	}
 	
 	// Do not update with a null image
 	if (m_imageptr == NULL) return;
 
-		//NFT TRACKING
+	//NFT TRACKING
 	static double		patt_trans1[3][4]; 
 	static double		patt_trans2[3][4]; 
 	static double		patt_trans3[3][4];
 	static int			contF = 0; 
 	double				new_trans[3][4];
 	double				err;
-	int mode;			//JENS this variable seems to be a leftover to me, doesn't do no harm, may be removed, check later
+	//int mode;			//JENS this variable seems to be a leftover to me, doesn't do no harm, may be removed
 
-		// try NFT
-		if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
+	// try NFT
+	if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
 		|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
 		|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
-		&& err < 10.0 ) {
-			std::cerr<<"features found.."<<std::endl;
-			for(int  j = 0; j < 3; j++ ) {
-				for(int  i = 0; i < 4; i++ ) patt_trans3[j][i] = patt_trans2[j][i];
-			}
-			for(int  j = 0; j < 3; j++ ) {
-				for(int  i = 0; i < 4; i++ ) patt_trans2[j][i] = patt_trans1[j][i];
-			}
-			for(int  j = 0; j < 3; j++ ) {
-				for(int  i = 0; i < 4; i++ ) patt_trans1[j][i] = new_trans[j][i];
-			}
-			contF++;
-			if( contF > 3) contF = 3;
-			mode = 1;
+		&& err < 10.0 ) 
+	{
+		std::cerr<<"features found.."<<std::endl;
+		for(int  j = 0; j < 3; j++ ) {
+			for(int  i = 0; i < 4; i++ ) patt_trans3[j][i] = patt_trans2[j][i];
 		}
-		// NFT failed, try normal marker tracking
+		for(int  j = 0; j < 3; j++ ) {
+			for(int  i = 0; i < 4; i++ ) patt_trans2[j][i] = patt_trans1[j][i];
+		}
+		for(int  j = 0; j < 3; j++ ) {
+			for(int  i = 0; i < 4; i++ ) patt_trans1[j][i] = new_trans[j][i];
+		}
+		contF++;
+		if( contF > 3) contF = 3;
+		//mode = 1;
+	}
+	// NFT failed, try normal marker tracking
+	else {
+		if( (active_surface = square_tracking(m_imageptr, patt_trans1 )) < 0 ){
+			contF = 0;
+		}
 		else {
-			if( (active_surface = square_tracking(m_imageptr, patt_trans1 )) < 0 ){
-				contF = 0;
-			}
-			else {
-				std::cerr<<"marker found on surface "<< active_surface <<std::endl;
-				contF = 1;
-				mode = 2;
-			}
+			std::cerr<<"marker found on surface "<< active_surface <<std::endl;
+			contF = 1;
+			//mode = 2;
 		}
+	}
 					
 		// apply transformation matrix and activate the right pattern
 		if (active_surface >= 0){
