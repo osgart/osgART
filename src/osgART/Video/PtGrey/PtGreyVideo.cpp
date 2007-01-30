@@ -244,6 +244,8 @@ PtGreyVideo::configure()
 	}
 	isRunning=false;
 
+	camIndex = m_config.id;
+
 	//we are using ART so we are converting the video to the readable ART format
 	pixelformat=VIDEOFORMAT_BGRA32;
 
@@ -267,7 +269,7 @@ PtGreyVideo::open()
 	{
 		std::cerr<<"ERROR:1"<<flycaptureErrorToString( error );
 	}
-	if ((error = flycaptureInitialize( context,camIndex ))!= FLYCAPTURE_OK )
+	if ((error = flycaptureInitialize( context, camIndex ))!= FLYCAPTURE_OK )
 	{
 		std::cerr<<"ERROR:"<<flycaptureErrorToString( error );
 	}
