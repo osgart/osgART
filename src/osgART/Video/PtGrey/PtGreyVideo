@@ -36,18 +36,9 @@ public:
     /** 
     * \brief default constructor.
     */
-    PtGreyVideo(int id_cam, 
-		osgART::PixelFormatType pft=osgART::VIDEOFORMAT_RGB24,
-		int _xsize=640,
-		int _ysize=480,
-		osgART::FrameRateType frame_rate = osgART::VIDEOFRAMERATE_30);
+    PtGreyVideo();
 
-    
-    /** 
-     * \brief affectation operator.
-     *
-     */
-    PtGreyVideo& operator=(const PtGreyVideo &);
+   
     
     /**
      * \brief open the Video stream.
@@ -111,8 +102,14 @@ public:
 	unsigned char** getRefImage() {return &newImage;};
 	
 	bool haveNewImage;
+	
+	osgART::VideoConfiguration* getVideoConfiguration();
     
 protected:
+
+	void configure();
+	
+	osgART::VideoConfiguration m_config;
 
 	int xsize, ysize;
 

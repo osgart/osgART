@@ -15,6 +15,7 @@
 using namespace std;
 using namespace osgART;
 
+#include <osg/Notify>
 
 class PtGreyVideoThread: public OpenThreads::Thread
 {
@@ -78,7 +79,6 @@ void PtGreyVideoThread::run()
 	}
 }
 
-
 PtGreyVideoThread::PtGreyVideoThread(FlyCaptureContext _context,PtGreyVideo* _ptgrey)
 {
 	context=_context;
@@ -92,38 +92,39 @@ PtGreyVideoThread::~PtGreyVideoThread()
 }
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Static variable
-///////////////////////////////////////////////////////////////////////////////
-
-
-///////////////////////////////////////////////////////////////////////////////
-// PUBLIC: Standard services 
-///////////////////////////////////////////////////////////////////////////////
-
-PtGreyVideo::PtGreyVideo(int id_cam,
-	PixelFormatType pf, 
-	int _xsize,
-	int _ysize,
-	FrameRateType fr) : 
+PtGreyVideo::PtGreyVideo() : 
 	GenericVideo(),
-	camIndex(id_cam),
+	xsize(0),
+	ysize(0),
+	camIndex(0),
 	newImage(0L),
-	isRoi(false)
+	isRoi(false),
+	isRunning(false)
 {
-
 
 	m_fields["ROI"] = new TypedField<bool>(&isRoi);
 	m_fields["setROI"] = new TypedField<osg::Vec4s>(&m_roi);
+}
+
+PtGreyVideo::~PtGreyVideo()
+{
+}
 
 
-	xsize = _xsize;
-	ysize = _ysize;
+VideoConfiguration* 
+PtGreyVideo::getVideoConfiguration() 
+{
+	return &m_config;
+}
 
+void 
+PtGreyVideo::configure()
+{
+	framerate = this->getVideoConfiguration()->framerate;
+	pixelsize = 4;
 
-	pixelformat=pf;
-	framerate=fr;
-	pixelsize=4;//RGBA returned
+	xsize = m_config.width;
+	ysize = m_config.height;
 
 	if ((xsize==160)&&(ysize==120)||
 		(xsize==320)&&(ysize==240)||
@@ -135,7 +136,7 @@ PtGreyVideo::PtGreyVideo(int id_cam,
 	{
 
 		///Pixel Format type: use internally but also for the type of image returned
-		switch (fr)
+		switch (this->getVideoConfiguration()->framerate)
 		{
 			case VIDEOFRAMERATE_1_875:videoSpeed=FLYCAPTURE_FRAMERATE_1_875;break;
 			case VIDEOFRAMERATE_3_75:videoSpeed=FLYCAPTURE_FRAMERATE_3_75;break;
@@ -152,7 +153,7 @@ PtGreyVideo::PtGreyVideo(int id_cam,
 				exit(-1);
 				break;
 		}
-		switch (pf)
+		switch (this->getVideoConfiguration()->type)
 		{
 		case VIDEOFORMAT_RGB24:
 			switch (xsize)
@@ -208,16 +209,16 @@ PtGreyVideo::PtGreyVideo(int id_cam,
 		case VIDEOFORMAT_YUV422:
 			switch (xsize)
 			{
-			case 320:videoMode=FLYCAPTURE_VIDEOMODE_320x240YUV422;break;
-			case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV422;break;
-			case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600YUV422;break;
-			case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768YUV422;break;
-			case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960YUV422;break;
-			case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200YUV422;break;
-			default:
-				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-				exit(-1);
-				break;
+				case 320:videoMode=FLYCAPTURE_VIDEOMODE_320x240YUV422;break;
+				case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV422;break;
+				case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600YUV422;break;
+				case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768YUV422;break;
+				case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960YUV422;break;
+				case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200YUV422;break;
+				default:
+					std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+					exit(-1);
+					break;
 			}
 			break;
 		case VIDEOFORMAT_YUV411:
@@ -237,41 +238,22 @@ PtGreyVideo::PtGreyVideo(int id_cam,
 	}
 	else
 	{
-		std::cerr<<"OSGART->ERROR:image dimensions incorrect !!!"<<std::endl;
+		osg::notify(osg::FATAL) << "osgART::PtGreyVideo::configure() image dimensions: " <<
+			this->xsize << "x" << this->ysize << " incorrect!" << std::endl;
 		exit(-1);
 	}
 	isRunning=false;
 
 	//we are using ART so we are converting the video to the readable ART format
 	pixelformat=VIDEOFORMAT_BGRA32;
+
 }
-
-/*
-PtGreyVideo::PtGreyVideo(const PtGreyVideo &)
-{
-    
-}*/
-
-PtGreyVideo::~PtGreyVideo(void)
-{
-    
-}
-
-PtGreyVideo& 
-PtGreyVideo::operator=(const PtGreyVideo &)
-{
-    return *this;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// PUBLIC : Interface 
-///////////////////////////////////////////////////////////////////////////////
 
 void
 PtGreyVideo::open()
 {
 
-	int xsize, ysize = 0;
+	this->configure();
 
 	if (isRoi) 
 	{
@@ -279,9 +261,6 @@ PtGreyVideo::open()
 		xsize = m_roi[2] - m_roi[0];
 		ysize = m_roi[3] - m_roi[1];
 	}
-
-
-
 
     FlyCaptureError   error;
 	if ((error = flycaptureCreateContext( &context ))!= FLYCAPTURE_OK )
@@ -293,8 +272,11 @@ PtGreyVideo::open()
 		std::cerr<<"ERROR:"<<flycaptureErrorToString( error );
 	}
 
+	// 
+	osg::notify() << "Create Image " << xsize << "x" << ysize << std::endl;
+
 	// create an image that same size (packing set to 1)
-	this->allocateImage(xsize,ysize,1,
+	this->allocateImage(xsize,ysize, 1,
 			GL_BGRA,GL_UNSIGNED_BYTE, 1);
 }
 
@@ -315,7 +297,6 @@ PtGreyVideo::start()
 	FlyCaptureError   error;
 
 	if (isRoi) {
-
 
 		if ((error = flycaptureStartCustomImage(context,0,
 				m_roi[0],m_roi[1],m_roi[2],m_roi[3],

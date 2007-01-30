@@ -4,9 +4,9 @@
 #include "PtGreyVideo"
 
 
-DLL_API osgART::GenericVideo* osgart_createvideo(const osgART::VideoConfiguration& config)
+DLL_API osgART::GenericVideo* osgart_createvideo()
 {
-	return new PtGreyVideo(config.id,config.type,config.width,config.height,config.framerate);
+	return new PtGreyVideo();
 }
 
 OSGART_PLUGIN_ENTRY()
