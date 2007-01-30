@@ -227,7 +227,6 @@ namespace osgART {
 		 */
 		void load(const std::string& plugin);
 		
-
 	protected:
 
 		virtual ~VideoContainer();

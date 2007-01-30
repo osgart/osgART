@@ -42,42 +42,30 @@ public:
 		int _ysize=480,
 		osgART::FrameRateType frame_rate = osgART::VIDEOFRAMERATE_30);
 
-    /** 
-    * \brief copy constructor.
-    *
-    // PtGreyVideo(const PtGreyVideo &);
-    
- 
     
     /** 
-    * \brief affectation operator.
-    *
-    */
+     * \brief affectation operator.
+     *
+     */
     PtGreyVideo& operator=(const PtGreyVideo &);
     
-// Interface
-
-    // mutator
-
-    // services
-    
     /**
-    * \brief open the Video stream.
-    * Access the Video stream (hardware or file) and get an handle on it.
-    */
+     * \brief open the Video stream.
+     * Access the Video stream (hardware or file) and get an handle on it.
+     */
 	void open();
 	
 	/**
-    * \brief close the Video stream.
-    * Terminate the connection with the Video stream and clean handle.
-    */
+     * \brief close the Video stream.
+     * Terminate the connection with the Video stream and clean handle.
+     */
 	void close();
 	
 	/**
-    * \brief start the Video stream grabbing.
-    * Start to get image from the Video stream. In function of the implementation on different
-    * platform, this function can run a thread, signal or real-time function. 
-    */
+     * \brief start the Video stream grabbing.
+     * Start to get image from the Video stream. In function of the implementation on different
+     * platform, this function can run a thread, signal or real-time function. 
+     */
 	void start();
 	
 	/**
@@ -88,17 +76,17 @@ public:
 	void stop();
 	
 	/**
-    * \brief update the Video stream grabbing.
-    * Try to get an image of the Video instance, usable by your application.
-    */
+     * \brief update the Video stream grabbing.
+     * Try to get an image of the Video instance, usable by your application.
+     */
 	void update();
 
-	inline virtual void releaseImage() {};
+
 
 	/**
-	* \brief get information from the camera.
-	*
-	*/
+	 * \brief get information from the camera.
+	 *
+	 */
 	void getInfo();
 	
 	/** 
@@ -126,18 +114,14 @@ public:
     
 protected:
 
+	int xsize, ysize;
 
     /** 
     * \brief destructor.
     *
     */
     virtual ~PtGreyVideo();   
-    
-//Protected Services
-
-//Protected Type
-
-//Protected Data
+   
 	
 private:
 

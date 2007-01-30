@@ -101,132 +101,139 @@ PtGreyVideoThread::~PtGreyVideoThread()
 // PUBLIC: Standard services 
 ///////////////////////////////////////////////////////////////////////////////
 
-PtGreyVideo::PtGreyVideo(int id_cam,PixelFormatType pf,int _xsize,int _ysize,FrameRateType fr) : 
+PtGreyVideo::PtGreyVideo(int id_cam,
+	PixelFormatType pf, 
+	int _xsize,
+	int _ysize,
+	FrameRateType fr) : 
 	GenericVideo(),
 	camIndex(id_cam),
 	newImage(0L),
 	isRoi(false)
 {
 
+
 	m_fields["ROI"] = new TypedField<bool>(&isRoi);
 	m_fields["setROI"] = new TypedField<osg::Vec4s>(&m_roi);
 
 
-	xsize=_xsize;
-	ysize=_ysize;
+	xsize = _xsize;
+	ysize = _ysize;
+
+
 	pixelformat=pf;
 	framerate=fr;
 	pixelsize=4;//RGBA returned
 
 	if ((xsize==160)&&(ysize==120)||
-(xsize==320)&&(ysize==240)||
-(xsize==640)&&(ysize==480)||
-(xsize==800)&&(ysize==600)||
-(xsize==1024)&&(ysize==768)||
-(xsize==1280)&&(ysize==960)||
-(xsize==1600)&&(ysize==1200))
+		(xsize==320)&&(ysize==240)||
+		(xsize==640)&&(ysize==480)||
+		(xsize==800)&&(ysize==600)||
+		(xsize==1024)&&(ysize==768)||
+		(xsize==1280)&&(ysize==960)||
+		(xsize==1600)&&(ysize==1200))
 	{
 
-	///Pixel Format type: use internally but also for the type of image returned
-	switch (fr)
-	{
-	case VIDEOFRAMERATE_1_875:videoSpeed=FLYCAPTURE_FRAMERATE_1_875;break;
-	case VIDEOFRAMERATE_3_75:videoSpeed=FLYCAPTURE_FRAMERATE_3_75;break;
-	case VIDEOFRAMERATE_7_5:videoSpeed=FLYCAPTURE_FRAMERATE_7_5;break;
-	case VIDEOFRAMERATE_15:videoSpeed=FLYCAPTURE_FRAMERATE_15;break;
-	case VIDEOFRAMERATE_30:videoSpeed=FLYCAPTURE_FRAMERATE_30;break;
-	case VIDEOFRAMERATE_50:videoSpeed=FLYCAPTURE_FRAMERATE_50;break;	
-	case VIDEOFRAMERATE_60:videoSpeed=FLYCAPTURE_FRAMERATE_60;break;
-	case VIDEOFRAMERATE_120:videoSpeed=FLYCAPTURE_FRAMERATE_120;break;
-	case VIDEOFRAMERATE_240:videoSpeed=FLYCAPTURE_FRAMERATE_240;break;
-	case VIDEOFRAMERATE_ANY:videoSpeed=FLYCAPTURE_FRAMERATE_ANY;break;
-	default:
-		std::cerr<<"OSGART->ERROR:frame speed not supported !!!"<<std::endl;
-		exit(-1);
-		break;
-	}
-	switch (pf)
-	{
-	case VIDEOFORMAT_RGB24:
-		switch (xsize)
+		///Pixel Format type: use internally but also for the type of image returned
+		switch (fr)
 		{
-		case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480RGB;break;
-		case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600RGB;break;
-		case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768RGB;break;
-		case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960RGB;break;
-		case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200RGB;break;
+			case VIDEOFRAMERATE_1_875:videoSpeed=FLYCAPTURE_FRAMERATE_1_875;break;
+			case VIDEOFRAMERATE_3_75:videoSpeed=FLYCAPTURE_FRAMERATE_3_75;break;
+			case VIDEOFRAMERATE_7_5:videoSpeed=FLYCAPTURE_FRAMERATE_7_5;break;
+			case VIDEOFRAMERATE_15:videoSpeed=FLYCAPTURE_FRAMERATE_15;break;
+			case VIDEOFRAMERATE_30:videoSpeed=FLYCAPTURE_FRAMERATE_30;break;
+			case VIDEOFRAMERATE_50:videoSpeed=FLYCAPTURE_FRAMERATE_50;break;	
+			case VIDEOFRAMERATE_60:videoSpeed=FLYCAPTURE_FRAMERATE_60;break;
+			case VIDEOFRAMERATE_120:videoSpeed=FLYCAPTURE_FRAMERATE_120;break;
+			case VIDEOFRAMERATE_240:videoSpeed=FLYCAPTURE_FRAMERATE_240;break;
+			case VIDEOFRAMERATE_ANY:videoSpeed=FLYCAPTURE_FRAMERATE_ANY;break;
+			default:
+				std::cerr<<"OSGART->ERROR:frame speed not supported !!!"<<std::endl;
+				exit(-1);
+				break;
+		}
+		switch (pf)
+		{
+		case VIDEOFORMAT_RGB24:
+			switch (xsize)
+			{
+			case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480RGB;break;
+			case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600RGB;break;
+			case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768RGB;break;
+			case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960RGB;break;
+			case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200RGB;break;
+			default:
+				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				exit(-1);
+				break;
+			}
+			break;
+		case VIDEOFORMAT_Y8:
+			switch (xsize)
+			{
+			case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480Y8;break;
+			case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600Y8;break;
+			case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768Y8;break;
+			case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960Y8;break;
+			case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200Y8;break;
+			default:
+				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				exit(-1);
+				break;
+			}
+			break;
+		case VIDEOFORMAT_Y16:
+			switch (xsize)
+			{
+			case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480Y16;break;
+			case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600Y16;break;
+			case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768Y16;break;
+			case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960Y16;break;
+			case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200Y16;break;
+			default:
+				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				exit(-1);
+				break;
+			}
+			break;
+		case VIDEOFORMAT_YUV444:
+			if (xsize==160)
+			videoMode=FLYCAPTURE_VIDEOMODE_160x120YUV444;
+			else
+			{
+				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				exit(-1);
+			}
+			break;
+		case VIDEOFORMAT_YUV422:
+			switch (xsize)
+			{
+			case 320:videoMode=FLYCAPTURE_VIDEOMODE_320x240YUV422;break;
+			case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV422;break;
+			case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600YUV422;break;
+			case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768YUV422;break;
+			case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960YUV422;break;
+			case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200YUV422;break;
+			default:
+				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				exit(-1);
+				break;
+			}
+			break;
+		case VIDEOFORMAT_YUV411:
+			if (xsize==640)
+			videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV411;
+			else
+			{
+				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				exit(-1);
+			}
+			break;
 		default:
 			std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
 			exit(-1);
 			break;
 		}
-		break;
-	case VIDEOFORMAT_Y8:
-		switch (xsize)
-		{
-		case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480Y8;break;
-		case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600Y8;break;
-		case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768Y8;break;
-		case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960Y8;break;
-		case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200Y8;break;
-		default:
-			std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-			exit(-1);
-			break;
-		}
-		break;
-	case VIDEOFORMAT_Y16:
-		switch (xsize)
-		{
-		case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480Y16;break;
-		case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600Y16;break;
-		case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768Y16;break;
-		case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960Y16;break;
-		case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200Y16;break;
-		default:
-			std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-			exit(-1);
-			break;
-		}
-		break;
-	case VIDEOFORMAT_YUV444:
-		if (xsize==160)
-		videoMode=FLYCAPTURE_VIDEOMODE_160x120YUV444;
-		else
-		{
-			std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-			exit(-1);
-		}
-		break;
-	case VIDEOFORMAT_YUV422:
-		switch (xsize)
-		{
-		case 320:videoMode=FLYCAPTURE_VIDEOMODE_320x240YUV422;break;
-		case 640:videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV422;break;
-		case 800:videoMode=FLYCAPTURE_VIDEOMODE_800x600YUV422;break;
-		case 1024:videoMode=FLYCAPTURE_VIDEOMODE_1024x768YUV422;break;
-		case 1280:videoMode=FLYCAPTURE_VIDEOMODE_1280x960YUV422;break;
-		case 1600:videoMode=FLYCAPTURE_VIDEOMODE_1600x1200YUV422;break;
-		default:
-			std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-			exit(-1);
-			break;
-		}
-		break;
-	case VIDEOFORMAT_YUV411:
-		if (xsize==640)
-		videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV411;
-		else
-		{
-			std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-			exit(-1);
-		}
-		break;
-	default:
-		std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
-		exit(-1);
-		break;
-	}
 	}
 	else
 	{
@@ -264,12 +271,17 @@ void
 PtGreyVideo::open()
 {
 
-	if (isRoi) {
-		// capture with Region of Interest
+	int xsize, ysize = 0;
 
+	if (isRoi) 
+	{
+		// capture with Region of Interest
 		xsize = m_roi[2] - m_roi[0];
 		ysize = m_roi[3] - m_roi[1];
 	}
+
+
+
 
     FlyCaptureError   error;
 	if ((error = flycaptureCreateContext( &context ))!= FLYCAPTURE_OK )
@@ -280,6 +292,10 @@ PtGreyVideo::open()
 	{
 		std::cerr<<"ERROR:"<<flycaptureErrorToString( error );
 	}
+
+	// create an image that same size (packing set to 1)
+	this->allocateImage(xsize,ysize,1,
+			GL_BGRA,GL_UNSIGNED_BYTE, 1);
 }
 
 void
@@ -348,8 +364,9 @@ PtGreyVideo::update()
 {
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 	
-	if (haveNewImage && m_image.valid()) { 
-		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+	if (haveNewImage) 
+	{ 
+		this->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);
 
 		haveNewImage = false;

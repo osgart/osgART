@@ -180,8 +180,6 @@ namespace osgART {
 		m_encapsulated = VideoManager::createVideoFromPlugin(plugin);
 
 	}
-
-
 	
 
 
