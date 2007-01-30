@@ -138,19 +138,20 @@ namespace osgART {
 		
 		virtual VideoConfiguration* getVideoConfiguration();
 		
+		
+		void setFlip(bool horizontal, bool vertical);
+		
 	   
 	protected:
+	
+		bool m_vertical_flip;
+		bool m_horizontal_flip;
 	
 		/** 
 		 * \brief destructor.
 		 *
 		 */
 		virtual ~GenericVideo();   
- 
-		/* 
-		int xsize;
-		int ysize;	
-		*/
 		int pixelsize;
 		
 		PixelFormatType pixelformat;

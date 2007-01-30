@@ -120,6 +120,9 @@ PtGreyVideo::getVideoConfiguration()
 void 
 PtGreyVideo::configure()
 {
+
+	camIndex = m_config.id;
+
 	framerate = this->getVideoConfiguration()->framerate;
 	pixelsize = 4;
 
@@ -223,10 +226,13 @@ PtGreyVideo::configure()
 			break;
 		case VIDEOFORMAT_YUV411:
 			if (xsize==640)
-			videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV411;
+				videoMode=FLYCAPTURE_VIDEOMODE_640x480YUV411;
 			else
 			{
-				std::cerr<<"OSGART->ERROR:video mode not supported !!!"<<std::endl;
+				std::cerr << 
+					"OSGART->ERROR:video mode not supported !!!" 
+					<< std::endl;
+
 				exit(-1);
 			}
 			break;
@@ -244,7 +250,6 @@ PtGreyVideo::configure()
 	}
 	isRunning=false;
 
-	camIndex = m_config.id;
 
 	//we are using ART so we are converting the video to the readable ART format
 	pixelformat=VIDEOFORMAT_BGRA32;
@@ -351,6 +356,13 @@ PtGreyVideo::update()
 	{ 
 		this->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);
+
+		if (m_horizontal_flip || m_vertical_flip) 
+		{
+			if (m_horizontal_flip) this->flipHorizontal();
+			if (m_vertical_flip) this->flipVertical();
+		}
+
 
 		haveNewImage = false;
 

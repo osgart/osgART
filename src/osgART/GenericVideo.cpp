@@ -91,6 +91,14 @@ namespace osgART {
 		return this->t();
 	}
 
+	void GenericVideo::setFlip(bool horizontal,
+		bool vertical) 
+	{
+		m_horizontal_flip = horizontal;
+		m_vertical_flip = vertical;
+	}
+
+
 
 	// -----------------------------------------------------------------------
 	VideoContainer::VideoContainer(GenericVideo* video) 

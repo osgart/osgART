@@ -14,11 +14,6 @@ DSVLVideo::DSVLVideo(const char *name) :
 	pixelformat=VIDEOFORMAT_BGRA32;
 }
 
-/*DSVLVideo::DSVLVideo(const DSVLVideo &dshow)
-{
-    
-}*/
-
 DSVLVideo::~DSVLVideo(void)
 {	
 	this->close();    
