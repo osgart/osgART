@@ -125,7 +125,11 @@ int main(int argc, char* argv[])
 	video->open();
 
 	// Initialise the tracker with the dimensions of the video image
-	tracker->init(video->getWidth(), video->getHeight());
+	if (!tracker->init(video->getWidth(), video->getHeight()))
+	{
+		osg::notify(osg::FATAL) << "Error initialising tracker!" << std::endl;
+		exit(-1);
+	}
 
 	// From here on the scene is going to be built
 
@@ -154,9 +158,7 @@ int main(int argc, char* argv[])
 		
 	// check before accessing the linked marker
 	if (!marker.valid()) {
-        
 		osg::notify(osg::FATAL) << "No Marker defined!" << std::endl;
-
 		exit(-1);
 	}
 

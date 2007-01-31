@@ -168,6 +168,7 @@ namespace osgART {
 
 		int patternNum = 0;
 		markerFile >> patternNum;
+		//std::cout << "Loading " << patternNum << " patterns." << std::endl;
 
 		std::string patternName, patternType;
 
