@@ -34,9 +34,10 @@ namespace osgART {
 	{
 		m_fields["name"]	= new TypedField<std::string>(&m_name);
 		m_fields["version"]	= new TypedField<std::string>(&m_version);
+		/* gcc is choking on this declaration with "no matching function call"
 		m_fields["enable"]	= new CallbackField<GenericTracker,bool>(this,
 			GenericTracker::getEnable,
-			GenericTracker::setEnable);
+			GenericTracker::setEnable);*/
 
 
 	}
