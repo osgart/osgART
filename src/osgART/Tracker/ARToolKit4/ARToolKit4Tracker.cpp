@@ -1,3 +1,16 @@
+/*
+ *	osgART/Tracker/ARToolKit4/ARToolKit4Tracker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #include "ARToolKit4Tracker"
 
 #include <AR/config.h>
@@ -26,9 +39,13 @@ namespace osgART {
 
 	ARToolKit4Tracker::ARToolKit4Tracker() : 
 #if  AR_TRACKER_PROFILE
+
 	ARToolKitTrackerProfiler<int>(),
+
 #else
+
 	GenericTracker(),
+
 #endif
 		MainAR4_PattList(CreateARPattHandle()),
 		gARHandle(NULL),
@@ -36,8 +53,11 @@ namespace osgART {
 		m_debugmode(false)
 	{
 		//version and name of the tracker
+
 		m_name		= "ARToolkit";
+
 		m_version	= AR_HEADER_VERSION_STRING;
+
 		__AR_DO_PROFILE(m_version+="(Prf)");
 		//other attached field are set into the createARHandle()
 	}
@@ -60,11 +80,16 @@ namespace osgART {
 		}
 
 		//callback fields
+
 		m_fields["threshold"]	= new CallbackField<ARToolKit4Tracker,int>(this,
+
 			&ARToolKit4Tracker::getThreshold,
+
 			&ARToolKit4Tracker::setThreshold);
 		m_fields["debug"]		= new CallbackField<ARToolKit4Tracker,bool>(this,
+
 			&ARToolKit4Tracker::getDebugMode,
+
 			&ARToolKit4Tracker::setDebugMode);
 		
 		// attach a new field to the name "markercount"
@@ -100,8 +125,11 @@ namespace osgART {
 		const std::string& camera_name)
 	{
 		
+
 		m_width = xsize;
+
 		m_height = ysize, 
+
 
 		cout << "ARToolKit4Tracker::init()..." << endl;
 		ART4_ARParam  wparam;
@@ -291,43 +319,81 @@ namespace osgART {
 		return gARHandle->arDebug;
 	}
 	
+
 	int ARToolKit4Tracker::ConvertOSGARTPixelFormatToART(PixelFormatType format)const
+
 	{
+
 		switch (format)
+
 		{
+
 			case VIDEOFORMAT_RGB24: return AR_PIXEL_FORMAT_RGB;
+
 			case VIDEOFORMAT_BGR24:	return AR_PIXEL_FORMAT_BGR;
+
 			case VIDEOFORMAT_BGRA32:return AR_PIXEL_FORMAT_BGRA;
+
 			case VIDEOFORMAT_RGBA32:return AR_PIXEL_FORMAT_RGBA;
+
 			case VIDEOFORMAT_ARGB32:return AR_PIXEL_FORMAT_ARGB;
+
 			case VIDEOFORMAT_ABGR32:return AR_PIXEL_FORMAT_ABGR;
+
 			case VIDEOFORMAT_YUV422:return AR_PIXEL_FORMAT_2vuy;
+
 			case VIDEOFORMAT_Y8:
+
 			case VIDEOFORMAT_GREY8:
+
 									return AR_PIXEL_FORMAT_MONO;
+
 			default:
+
 				osg::notify() << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << std::endl;
+
 				return 0;
+
 		}        
+
 		return 0;
+
 	}
 
+
+
 	PixelFormatType ARToolKit4Tracker::ConvertARTPixelFormatToOSGART(int format)const
+
 	{
+
 		switch (format)
+
 		{
+
 			case AR_PIXEL_FORMAT_RGB : return VIDEOFORMAT_RGB24;
+
 			case AR_PIXEL_FORMAT_BGR : return VIDEOFORMAT_BGR24;
+
 			case AR_PIXEL_FORMAT_BGRA :return VIDEOFORMAT_BGRA32;
+
 			case AR_PIXEL_FORMAT_RGBA :return VIDEOFORMAT_RGBA32;
+
 			case AR_PIXEL_FORMAT_ARGB :return VIDEOFORMAT_ARGB32;
+
 			case AR_PIXEL_FORMAT_ABGR :return VIDEOFORMAT_ABGR32;
+
 			case AR_PIXEL_FORMAT_2vuy :return VIDEOFORMAT_YUV422;
+
 			case AR_PIXEL_FORMAT_MONO :return VIDEOFORMAT_Y8;//or VIDEOFORMAT_GREY8:
+
 			default:
+
 				osg::notify() << "ConvertARTPixelFormatToOSGART() : Unknown pixel format!" << std::endl;
+
 		}        
+
 		return VIDEOFORMAT_ANY;
+
 	}
 
 	 /*virtual*/ 
@@ -335,10 +401,15 @@ namespace osgART {
     {	
 		// We are only augmenting method in parent class.
 		if (format != m_imageptr_format)
+
 		{
+
 			arSetPixelFormat(gARHandle, ConvertOSGARTPixelFormatToART(format));
+
 			osg::notify() <<  "osgart_artoolkit_tracker::setImageRaw() Incompatible pixelformat! Changing to a compatible format." << endl;
+
 		}
+
 		GenericTracker::setImageRaw(image, format);
 	}
 
