@@ -34,7 +34,7 @@ namespace osgART {
 	{
 		m_fields["name"]	= new TypedField<std::string>(&m_name);
 		m_fields["version"]	= new TypedField<std::string>(&m_version);
-		m_fields["enable"]				= new CallbackField<GenericTracker,bool>(this,
+		m_fields["enable"]	= new CallbackField<GenericTracker,bool>(this,
 			GenericTracker::getEnable,
 			GenericTracker::setEnable);
 
