@@ -53,7 +53,13 @@ namespace osgART {
 		 * Default constructor. 
 		 * \param video pointer to a video stream
 		 */    
-		VideoBackground(GenericVideo* video = 0L);	
+		VideoBackground(GenericVideo* video = 0L);
+		
+		// VideoBackground(GenericVideo* video = 0L);
+		
+			
+		
+		META_Node(osgART,VideoBackground)
 
 	protected:		
 		
