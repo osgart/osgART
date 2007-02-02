@@ -45,14 +45,12 @@
 
 int main(int argc, char* argv[]) 
 {
-
+	// fullscreen mode
 	bool useFullscreen(false);
 
-
-	osg::setNotifyLevel(osg::NOTICE);
+	std::string video_plugin = "osgart_artoolkit";
 
 	osgARTInit(&argc, argv);
-
 
 	osg::ArgumentParser _parser(&argc,argv);
 
@@ -70,7 +68,7 @@ int main(int argc, char* argv[])
 
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
+		osgART::VideoManager::createVideoFromPlugin(video_plugin);
 
 	// check if loading the plugin was successful
 	if (!video.valid()) 

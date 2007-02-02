@@ -30,17 +30,18 @@ namespace osgART {
 		framerate(VIDEOFRAMERATE_30),
 		m_video_id(GenericVideo::videoNum++)		
 	{
+		osg::notify(osg::INFO) << "Main C'tor" << std::endl;
 	}
 
 	GenericVideo::GenericVideo(const GenericVideo& container,
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
-		VideoImageStream(),
+		VideoImageStream(container),
 		FieldContainer<GenericVideo>()
 	{
+		osg::notify(osg::INFO) << "Copy C'tor" << std::endl;
 	}
 
 	
-
 	GenericVideo::~GenericVideo()
 	{	    
 		osg::notify(osg::INFO) << "Shut down video" << std::endl;

@@ -85,7 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib osgART.lib osgDB.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib osgDB.lib  osgART.lib  OpenThreadsWin32.lib"
 				OutputFile="..\..\..\bin\osgdb_osgART.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -128,9 +128,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
 				RelativePath="..\..\..\src\osgPlugins\osgART\IO_GenericVideo.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\src\osgPlugins\osgART\IO_VideoBackground.cpp">
 			</File>
 		</Filter>
 		<Filter

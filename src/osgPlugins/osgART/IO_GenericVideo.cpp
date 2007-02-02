@@ -1,10 +1,13 @@
+#include <osgART/GenericVideo>
+#include <osgART/VideoManager>
+
+#include <osg/Notify>
 #include <osg/Object>
+#include <osg/io_utils>
+
 #include <osgDB/Registry>
 #include <osgDB/Input>
 #include <osgDB/Output>
-
-#include <osgART/GenericVideo>
-#include <osgART/VideoManager>
 
 // forward declare functions to use later.
 bool GenericVideo_readLocalData(osg::Object& obj, osgDB::Input& fr);
@@ -13,37 +16,37 @@ bool GenericVideo_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
 // register the read and write functions with the osgDB::Registry.
 osgDB::RegisterDotOsgWrapperProxy GenericVideo_Proxy
 (
-	0L,
-    "GenericVideo",
-    "Object ImageStream VideoImageStream GenericVideo",
-    &GenericVideo_readLocalData,
-    &GenericVideo_writeLocalData,
-	osgDB::DotOsgWrapper::READ_AND_WRITE
-
+	new osgART::GenericVideo,
+	"GenericVideo",
+	"Object Image ImageStream VideoImageStream GenericVideo",
+    GenericVideo_readLocalData,
+    GenericVideo_writeLocalData
 );
 
 bool GenericVideo_readLocalData(osg::Object& obj, osgDB::Input& fr)
 {
+	
+	osgART::GenericVideo &myobj = static_cast<osgART::GenericVideo&>(obj); 
 
-	std::cout << "Loading something" << std::endl;
+	osg::notify() << "Loading something" << std::endl;
 
     bool iteratorAdvanced = false;
-	
-	if (fr.matchSequence("Source %s"))
-    {
-        const char* _plugin = fr[1].getStr();
-        fr+=2;
+	//
+	//if (fr.matchSequence("Source %s"))
+ //   {
+ //       const char* _plugin = fr[1].getStr();
+ //       fr+=2;
 
-		/*
-		sw.load(_plugin);	
+	//	/*
+	//	sw.load(_plugin);	
 
-		sw.start();
-		*/
+	//	sw.start();
+	//	*/
 
-		std::cout << "Loading '" << _plugin << "'" << std::endl;
+	//	std::cout << "Loading '" << _plugin << "'" << std::endl;
 
-		iteratorAdvanced = true;
-    }
+	//	iteratorAdvanced = true;
+ //   }
 
     return iteratorAdvanced;
 }
@@ -51,6 +54,10 @@ bool GenericVideo_readLocalData(osg::Object& obj, osgDB::Input& fr)
 
 bool GenericVideo_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 {
+
+	osg::notify() << "Saving something" << std::endl;
+
+
 	/* implement stuff here :) */
     return true;
 }

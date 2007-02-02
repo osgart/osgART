@@ -17,7 +17,7 @@
 // STL
 #include <map>
 
-// OSG.DB include (for plugins)
+// osgDB include (for plugins)
 #include <osgDB/DynamicLibrary>
 
 // graphics include

@@ -22,7 +22,9 @@
 // using namespace std;
 namespace osgART {
 
-	VideoTexture::VideoTexture(GenericVideo* video) : VideoTextureBase(video) 
+	VideoTexture::VideoTexture(GenericVideo* video) : 
+		VideoTextureBase(video),
+		osg::Texture2D(video)
 	{
 		this->setDataVariance(osg::Object::DYNAMIC);
 
@@ -70,10 +72,13 @@ namespace osgART {
 		this->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
 		this->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::CLAMP);
 		this->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::CLAMP);
+#if 0
+		this->setResizeNonPowerOfTwoHint(false);
+#else
 
 		this->setSubloadCallback(new VideoTexCallback(this, 
 			m_vidWidth, m_vidHeight, m_texWidth, m_texHeight));
-
+#endif
 	}
 
 	VideoTexture::~VideoTexture()
