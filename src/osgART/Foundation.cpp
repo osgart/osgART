@@ -30,7 +30,6 @@
 #  include <unistd.h>
 #  include <sys/param.h>
 #  include <OpenGL/OpenGL.h>
-#  include <osgText/Version>
 #endif
 
 static 
@@ -121,7 +120,7 @@ void osgARTInit(int *argcp, char **argv)
 			if (Gestalt(gestaltSystemVersion, &MacVersion) == noErr) {
 				if (MacVersion == 0x1047) { // Mac OS X 10.4.7.
 					printf("WARNING: Found a dodgy OpenGL driver for this CPU and Mac OS X version.\n");
-					if (strncmp(osgTextGetVersion(), "1.1", 3) == 0) {
+					if (strncmp(osgGetVersion(), "1.1", 3) == 0) {
 						printf("You MUST upgrade to OpenSceneGraph version 1.2 to avoid a crash in osgText!!\n");
 						sleep(10);
 					} else {

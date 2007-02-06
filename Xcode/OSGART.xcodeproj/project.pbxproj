@@ -186,20 +186,9 @@
 		7842DB8409184AA900414BD5 /* VideoTexCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4409182F8200414BD5 /* VideoTexCallback.cpp */; };
 		7842DB8509184AA900414BD5 /* VideoTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4509182F8200414BD5 /* VideoTexture.cpp */; };
 		7842DB8609184AA900414BD5 /* VideoTextureRectangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4609182F8200414BD5 /* VideoTextureRectangle.cpp */; };
-		7842DE8709184F6100414BD5 /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		7842DE8809184F6100414BD5 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		7842DE8909184F6100414BD5 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		7842DE8A09184F6100414BD5 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		7842DE8B09184F6100414BD5 /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		7842DE8C09184F6100414BD5 /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		7842DE8D09184F6100414BD5 /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		7842DE8E09184F6100414BD5 /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		7842DE8F09184F6100414BD5 /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		7842DE9009184F6100414BD5 /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		7842DE9109184F6100414BD5 /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		7842DE9209184F6100414BD5 /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		7842DE9309184F6100414BD5 /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		7842DE9409184F6100414BD5 /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
 		7842DEA709184FA400414BD5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
 		7842DEEA0918503000414BD5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
 		78BDBFB7091B012400D9D0B9 /* gdal.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
@@ -596,7 +585,7 @@
 		7842DEB40918502F00414BD5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		7842DEB50918502F00414BD5 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		7842DFB60918505900414BD5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BDBDDE091B00CA00D9D0B9 /* osgARTTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgARTTest-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
 		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../bin/Data; sourceTree = "<group>"; };
@@ -744,20 +733,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7842DE8709184F6100414BD5 /* gdal.framework in Frameworks */,
 				7842DE8809184F6100414BD5 /* OpenThreads.framework in Frameworks */,
 				7842DE8909184F6100414BD5 /* osg.framework in Frameworks */,
 				7842DE8A09184F6100414BD5 /* osgDB.framework in Frameworks */,
-				7842DE8B09184F6100414BD5 /* osgFX.framework in Frameworks */,
-				7842DE8C09184F6100414BD5 /* osgGA.framework in Frameworks */,
-				7842DE8D09184F6100414BD5 /* osgIntrospection.framework in Frameworks */,
-				7842DE8E09184F6100414BD5 /* osgParticle.framework in Frameworks */,
-				7842DE8F09184F6100414BD5 /* osgProducer.framework in Frameworks */,
-				7842DE9009184F6100414BD5 /* osgSim.framework in Frameworks */,
-				7842DE9109184F6100414BD5 /* osgTerrain.framework in Frameworks */,
-				7842DE9209184F6100414BD5 /* osgText.framework in Frameworks */,
-				7842DE9309184F6100414BD5 /* osgUtil.framework in Frameworks */,
-				7842DE9409184F6100414BD5 /* Producer.framework in Frameworks */,
 				7842DEA709184FA400414BD5 /* OpenGL.framework in Frameworks */,
 				7842DEEA0918503000414BD5 /* Carbon.framework in Frameworks */,
 			);

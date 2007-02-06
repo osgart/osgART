@@ -16,10 +16,16 @@
 #include "osgART/VideoTextureRectangle"
 
 namespace osgART {
+	
 	VideoBackground::VideoBackground(GenericVideo* video /* = 0L */) 
 		: VideoLayer(video, 1)
 	{
-
+	}
+	
+	VideoBackground::VideoBackground(
+		const VideoBackground& videoback, 
+		const osg::CopyOp& op)
+	{
 	}
 
 	VideoBackground::~VideoBackground() 

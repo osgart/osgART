@@ -55,6 +55,10 @@ namespace osgART {
 		 */    
 		VideoBackground(GenericVideo* video = 0L);
 		
+		
+		VideoBackground(const VideoBackground&, 
+			const osg::CopyOp&);
+		
 		// VideoBackground(GenericVideo* video = 0L);
 		
 			
