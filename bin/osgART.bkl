@@ -8,7 +8,7 @@
 		<include>../include</include>
 		<include>/home/seichter/Projects/artoolkit/include</include>
 
-		<sources> $(addPrefixToList('../src/osgART/','Foundation.cpp Marker.cpp VideoBillboard.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp PhantomModel.cpp VideoPlane.cpp VideoTexCallback.cpp VideoTexture.cpp GenericTracker.cpp VideoTextureRectangle.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp VideoTexRectCallback.cpp ARTTransformCallback.cpp'))</sources>
+		<sources> $(addPrefixToList('../src/osgART/','Foundation.cpp Marker.cpp VideoBillboard.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp VideoPlane.cpp VideoTexCallback.cpp VideoTexture.cpp GenericTracker.cpp VideoTextureRectangle.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp VideoTexRectCallback.cpp ARTTransformCallback.cpp Utils.cpp VideoImageStream.cpp VideoTextureBase.cpp VideoBackground.cpp'))</sources>
 
 		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
 

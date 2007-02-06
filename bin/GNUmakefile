@@ -44,7 +44,6 @@ OSGART_OBJECTS =  \
 	osgART_VideoLayer.o \
 	osgART_ARTTransform.o \
 	osgART_VideoManager.o \
-	osgART_PhantomModel.o \
 	osgART_VideoPlane.o \
 	osgART_VideoTexCallback.o \
 	osgART_VideoTexture.o \
@@ -55,7 +54,11 @@ OSGART_OBJECTS =  \
 	osgART_GenericVideoObject.o \
 	osgART_GenericVideoShader.o \
 	osgART_VideoTexRectCallback.o \
-	osgART_ARTTransformCallback.o
+	osgART_ARTTransformCallback.o \
+	osgART_Utils.o \
+	osgART_VideoImageStream.o \
+	osgART_VideoTextureBase.o \
+	osgART_VideoBackground.o
 OSGART_EXAMPLE_CXXFLAGS =  -I../include   $(CPPFLAGS) $(CXXFLAGS)
 OSGART_EXAMPLE_OBJECTS =  \
 	osgART_Example_osgARTTest.o
@@ -150,9 +153,6 @@ osgART_ARTTransform.o: ./../src/osgART/ARTTransform.cpp
 osgART_VideoManager.o: ./../src/osgART/VideoManager.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
-osgART_PhantomModel.o: ./../src/osgART/PhantomModel.cpp
-	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
-
 osgART_VideoPlane.o: ./../src/osgART/VideoPlane.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
@@ -184,6 +184,18 @@ osgART_VideoTexRectCallback.o: ./../src/osgART/VideoTexRectCallback.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_ARTTransformCallback.o: ./../src/osgART/ARTTransformCallback.cpp
+	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
+
+osgART_Utils.o: ./../src/osgART/Utils.cpp
+	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
+
+osgART_VideoImageStream.o: ./../src/osgART/VideoImageStream.cpp
+	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
+
+osgART_VideoTextureBase.o: ./../src/osgART/VideoTextureBase.cpp
+	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
+
+osgART_VideoBackground.o: ./../src/osgART/VideoBackground.cpp
 	$(CXX) -c -o $@ $(OSGART_CXXFLAGS) $(CPPDEPS) $<
 
 osgART_Example_osgARTTest.o: ./../src/osgARTTest/osgARTTest.cpp
