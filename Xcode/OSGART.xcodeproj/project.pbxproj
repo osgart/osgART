@@ -31,24 +31,9 @@
 		4A133C360A8BBEA100C95219 /* VideoTexRectCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3209182F8200414BD5 /* VideoTexRectCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C370A8BBEA100C95219 /* VideoTexture in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3309182F8200414BD5 /* VideoTexture */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C380A8BBEA100C95219 /* VideoTextureRectangle in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3409182F8200414BD5 /* VideoTextureRectangle */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A174BB50AD9D66000B9FC9B /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		4A174BB60AD9D66000B9FC9B /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		4A174BB70AD9D66000B9FC9B /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		4A174BB80AD9D66000B9FC9B /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		4A174BB90AD9D66000B9FC9B /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		4A174BBA0AD9D66000B9FC9B /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		4A174BBB0AD9D66000B9FC9B /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		4A174BBC0AD9D66000B9FC9B /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		4A174BBD0AD9D66000B9FC9B /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		4A174BBE0AD9D66000B9FC9B /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		4A174BBF0AD9D66000B9FC9B /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		4A174BC00AD9D66000B9FC9B /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		4A174BC10AD9D66000B9FC9B /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		4A174BC20AD9D66000B9FC9B /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
-		4A174BC30AD9D66000B9FC9B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
-		4A174BC40AD9D66000B9FC9B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
-		4A174BC50AD9D66000B9FC9B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
-		4A174BC60AD9D66000B9FC9B /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
 		4A174BC70AD9D66000B9FC9B /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A174BD00AD9D6AD00B9FC9B /* ARToolKit4Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A174B8A0AD9D01900B9FC9B /* ARToolKit4Tracker.cpp */; };
 		4A174BD10AD9D6AF00B9FC9B /* MultiMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A174B8D0AD9D01900B9FC9B /* MultiMarker.cpp */; };
@@ -62,47 +47,17 @@
 		4A38FA8F0AD5EB78006DC8DB /* libAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAA09184FDD00414BD5 /* libAR.a */; };
 		4A38FA900AD5EB78006DC8DB /* libARgsub_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */; };
 		4A38FA910AD5EB78006DC8DB /* libARMulti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAC09184FDD00414BD5 /* libARMulti.a */; };
-		4A38FA930AD5EB78006DC8DB /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
-		4A38FA940AD5EB78006DC8DB /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		4A38FA950AD5EB78006DC8DB /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		4A38FA960AD5EB78006DC8DB /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		4A38FA970AD5EB78006DC8DB /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		4A38FA980AD5EB78006DC8DB /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		4A38FA990AD5EB78006DC8DB /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		4A38FA9A0AD5EB78006DC8DB /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		4A38FA9B0AD5EB78006DC8DB /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		4A38FA9C0AD5EB78006DC8DB /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		4A38FA9D0AD5EB78006DC8DB /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		4A38FA9E0AD5EB78006DC8DB /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		4A38FA9F0AD5EB78006DC8DB /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		4A38FAA00AD5EB78006DC8DB /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
-		4A38FAA10AD5EB78006DC8DB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
-		4A38FAA20AD5EB78006DC8DB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
-		4A38FAA30AD5EB78006DC8DB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
-		4A38FAA40AD5EB78006DC8DB /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
 		4A38FAA50AD5EB78006DC8DB /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A38FAAC0AD5EBAD006DC8DB /* ARToolKitTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA310AD5E077006DC8DB /* ARToolKitTracker.cpp */; };
 		4A38FAAD0AD5EBAF006DC8DB /* SingleMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA360AD5E077006DC8DB /* SingleMarker.cpp */; };
 		4A38FAAE0AD5EBB0006DC8DB /* MultiMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA340AD5E077006DC8DB /* MultiMarker.cpp */; };
 		4A38FAAF0AD5EBB1006DC8DB /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A38FA320AD5E077006DC8DB /* Main.cpp */; };
-		4A38FABE0AD5EC05006DC8DB /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		4A38FABF0AD5EC05006DC8DB /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		4A38FAC00AD5EC05006DC8DB /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		4A38FAC10AD5EC05006DC8DB /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		4A38FAC20AD5EC05006DC8DB /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		4A38FAC30AD5EC05006DC8DB /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		4A38FAC40AD5EC05006DC8DB /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		4A38FAC50AD5EC05006DC8DB /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		4A38FAC60AD5EC05006DC8DB /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		4A38FAC70AD5EC05006DC8DB /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		4A38FAC80AD5EC05006DC8DB /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		4A38FAC90AD5EC05006DC8DB /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		4A38FACA0AD5EC05006DC8DB /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		4A38FACB0AD5EC05006DC8DB /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
 		4A38FACC0AD5EC05006DC8DB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
-		4A38FACD0AD5EC05006DC8DB /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
-		4A38FACE0AD5EC05006DC8DB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
-		4A38FACF0AD5EC05006DC8DB /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
 		4A38FAD00AD5EC05006DC8DB /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A38FAE70AD5EE25006DC8DB /* osgart_artoolkit_tracker.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A38FAA90AD5EB78006DC8DB /* osgart_artoolkit_tracker.so */; };
 		4A55A7240AA78988005EDC69 /* VideoConfig in Headers */ = {isa = PBXBuildFile; fileRef = 4A55A7120AA78803005EDC69 /* VideoConfig */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -113,24 +68,6 @@
 		4A55AB400AA7AD90005EDC69 /* libARgsub_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAB09184FDD00414BD5 /* libARgsub_lite.a */; };
 		4A55AB410AA7AD90005EDC69 /* libARMulti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAC09184FDD00414BD5 /* libARMulti.a */; };
 		4A55AB420AA7AD90005EDC69 /* libARvideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEAD09184FDD00414BD5 /* libARvideo.a */; };
-		4A55AB430AA7AD90005EDC69 /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
-		4A55AB440AA7AD90005EDC69 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
-		4A55AB450AA7AD90005EDC69 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
-		4A55AB460AA7AD90005EDC69 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		4A55AB470AA7AD90005EDC69 /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		4A55AB480AA7AD90005EDC69 /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		4A55AB490AA7AD90005EDC69 /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		4A55AB4A0AA7AD90005EDC69 /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		4A55AB4B0AA7AD90005EDC69 /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		4A55AB4C0AA7AD90005EDC69 /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		4A55AB4D0AA7AD90005EDC69 /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		4A55AB4E0AA7AD90005EDC69 /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		4A55AB4F0AA7AD90005EDC69 /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		4A55AB500AA7AD90005EDC69 /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
-		4A55AB510AA7AD90005EDC69 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
-		4A55AB520AA7AD90005EDC69 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
-		4A55AB530AA7AD90005EDC69 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
-		4A55AB540AA7AD90005EDC69 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
 		4A55AB560AA7AD9F005EDC69 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A55ABB40AA7B65A005EDC69 /* osgart_artoolkit.so in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4A55AB1F0AA7A376005EDC69 /* osgart_artoolkit.so */; };
 		4A5E72530ADDE57500A8249D /* Field in Headers */ = {isa = PBXBuildFile; fileRef = 4A5E72520ADDE57500A8249D /* Field */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -148,24 +85,33 @@
 		4A99698F0AC783A20068A373 /* PlaneARShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */; };
 		4A9969900AC783A20068A373 /* ShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969890AC783A20068A373 /* ShadowRenderer.cpp */; };
 		4A9969930AC783A20068A373 /* VideoTexRectCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A99698C0AC783A20068A373 /* VideoTexRectCallback.cpp */; };
-		4A9969B70AC785D10068A373 /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
-		4A9969B80AC785D10068A373 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
-		4A9969B90AC785D10068A373 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
-		4A9969BA0AC785D10068A373 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		4A9969BB0AC785D10068A373 /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		4A9969BC0AC785D10068A373 /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		4A9969BD0AC785D10068A373 /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		4A9969BE0AC785D10068A373 /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		4A9969BF0AC785D10068A373 /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		4A9969C00AC785D10068A373 /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		4A9969C10AC785D10068A373 /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		4A9969C20AC785D10068A373 /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		4A9969C30AC785D10068A373 /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		4A9969C40AC785D10068A373 /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
-		4A9969C50AC785D10068A373 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
 		4A9969C90AC785D10068A373 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A996A340AC786950068A373 /* DummyImageVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A996A220AC7865B0068A373 /* DummyImageVideo.cpp */; };
 		4A996A350AC786950068A373 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A996A230AC7865B0068A373 /* Main.cpp */; };
+		4AA81EE70B812E6F00BA6D59 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
+		4AA81EE80B812E6F00BA6D59 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
+		4AA81EE90B812E6F00BA6D59 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
+		4AA81EEA0B812E6F00BA6D59 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
+		4AA81EEB0B812E6F00BA6D59 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
+		4AA81EEE0B812E9000BA6D59 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
+		4AA81EF30B8130F600BA6D59 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
+		4AA81EF40B8130F600BA6D59 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
+		4AA81EF80B81311E00BA6D59 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
+		4AA81EF90B81311E00BA6D59 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
+		4AA81EFA0B81311E00BA6D59 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
+		4AA81EFB0B81311E00BA6D59 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
+		4AA81EFD0B8131BC00BA6D59 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
+		4AA81EFE0B8131BC00BA6D59 /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
+		4AA81EFF0B8131D200BA6D59 /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
+		4AA81F000B8131F300BA6D59 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
+		4AA81F010B81321200BA6D59 /* osgProducer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
+		4AA81F040B81326D00BA6D59 /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
+		4AA81F060B81328300BA6D59 /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
+		4AA81F080B81328C00BA6D59 /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
+		4AA81F0A0B81329B00BA6D59 /* osgGA.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
+		4AA81F0B0B8132A100BA6D59 /* osgText.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
+		4AA81F0C0B8132A100BA6D59 /* osgUtil.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
+		4AA81F290B81336700BA6D59 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
 		4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */; };
 		4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */; };
 		4AE1D4880B701A80001CB3B5 /* VideoTextureBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4850B701A80001CB3B5 /* VideoTextureBase.cpp */; };
@@ -191,39 +137,12 @@
 		7842DE8A09184F6100414BD5 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
 		7842DEA709184FA400414BD5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
 		7842DEEA0918503000414BD5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
-		78BDBFB7091B012400D9D0B9 /* gdal.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
 		78BDBFB8091B012400D9D0B9 /* OpenThreads.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		78BDBFB9091B012400D9D0B9 /* osg.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		78BDBFBA091B012400D9D0B9 /* osgDB.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		78BDBFBB091B012400D9D0B9 /* osgFX.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		78BDBFBC091B012400D9D0B9 /* osgGA.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		78BDBFBD091B012400D9D0B9 /* osgIntrospection.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		78BDBFBE091B012400D9D0B9 /* osgParticle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		78BDBFBF091B012400D9D0B9 /* osgProducer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		78BDBFC0091B012400D9D0B9 /* osgSim.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		78BDBFC1091B012400D9D0B9 /* osgTerrain.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		78BDBFC2091B012400D9D0B9 /* osgText.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		78BDBFC3091B012400D9D0B9 /* osgUtil.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
 		78BDBFC4091B012400D9D0B9 /* Producer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
 		78BDBFC8091B012E00D9D0B9 /* osgART.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
-		78BDC0AA091B013900D9D0B9 /* gdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8B09184F5F00414BD5 /* gdal.framework */; };
-		78BDC0AB091B013900D9D0B9 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		78BDC0AC091B013900D9D0B9 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
-		78BDC0AD091B013900D9D0B9 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
-		78BDC0AE091B013900D9D0B9 /* osgFX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8F09184F5F00414BD5 /* osgFX.framework */; };
-		78BDC0AF091B013900D9D0B9 /* osgGA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9009184F5F00414BD5 /* osgGA.framework */; };
-		78BDC0B0091B013900D9D0B9 /* osgIntrospection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9109184F5F00414BD5 /* osgIntrospection.framework */; };
-		78BDC0B1091B013900D9D0B9 /* osgParticle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9209184F5F00414BD5 /* osgParticle.framework */; };
-		78BDC0B2091B013900D9D0B9 /* osgProducer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9309184F5F00414BD5 /* osgProducer.framework */; };
-		78BDC0B3091B013900D9D0B9 /* osgSim.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9409184F5F00414BD5 /* osgSim.framework */; };
-		78BDC0B4091B013900D9D0B9 /* osgTerrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9509184F5F00414BD5 /* osgTerrain.framework */; };
-		78BDC0B5091B013900D9D0B9 /* osgText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9609184F5F00414BD5 /* osgText.framework */; };
-		78BDC0B6091B013900D9D0B9 /* osgUtil.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9709184F5F00414BD5 /* osgUtil.framework */; };
-		78BDC0B7091B013900D9D0B9 /* Producer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC9809184F5F00414BD5 /* Producer.framework */; };
-		78BDC0B8091B013900D9D0B9 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
-		78BDC0B9091B013900D9D0B9 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB40918502F00414BD5 /* Carbon.framework */; };
-		78BDC0BA091B013900D9D0B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DFB60918505900414BD5 /* Cocoa.framework */; };
-		78BDC0BB091B013900D9D0B9 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DEB50918502F00414BD5 /* QuickTime.framework */; };
 		78BDC0BE091B014900D9D0B9 /* osgARTTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */; };
 		78BDC1AA091B030100D9D0B9 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 78BDC1A5091B030100D9D0B9 /* Data */; };
 		78BDC1CD091B041F00D9D0B9 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
@@ -307,19 +226,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				78BDBFB7091B012400D9D0B9 /* gdal.framework in CopyFiles */,
 				78BDBFB8091B012400D9D0B9 /* OpenThreads.framework in CopyFiles */,
+				4AA81F010B81321200BA6D59 /* osgProducer.framework in CopyFiles */,
 				78BDBFB9091B012400D9D0B9 /* osg.framework in CopyFiles */,
 				78BDBFBA091B012400D9D0B9 /* osgDB.framework in CopyFiles */,
-				78BDBFBB091B012400D9D0B9 /* osgFX.framework in CopyFiles */,
-				78BDBFBC091B012400D9D0B9 /* osgGA.framework in CopyFiles */,
-				78BDBFBD091B012400D9D0B9 /* osgIntrospection.framework in CopyFiles */,
-				78BDBFBE091B012400D9D0B9 /* osgParticle.framework in CopyFiles */,
-				78BDBFBF091B012400D9D0B9 /* osgProducer.framework in CopyFiles */,
-				78BDBFC0091B012400D9D0B9 /* osgSim.framework in CopyFiles */,
-				78BDBFC1091B012400D9D0B9 /* osgTerrain.framework in CopyFiles */,
-				78BDBFC2091B012400D9D0B9 /* osgText.framework in CopyFiles */,
-				78BDBFC3091B012400D9D0B9 /* osgUtil.framework in CopyFiles */,
+				4AA81F0A0B81329B00BA6D59 /* osgGA.framework in CopyFiles */,
+				4AA81F0B0B8132A100BA6D59 /* osgText.framework in CopyFiles */,
+				4AA81F0C0B8132A100BA6D59 /* osgUtil.framework in CopyFiles */,
 				78BDBFC4091B012400D9D0B9 /* Producer.framework in CopyFiles */,
 				78BDBFC8091B012E00D9D0B9 /* osgART.framework in CopyFiles */,
 			);
@@ -585,7 +498,7 @@
 		7842DEB40918502F00414BD5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		7842DEB50918502F00414BD5 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		7842DFB60918505900414BD5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BDBDDE091B00CA00D9D0B9 /* osgARTTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgARTTest-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
 		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../bin/Data; sourceTree = "<group>"; };
@@ -599,25 +512,11 @@
 				4A0B2D500AE4A08A00F4E8A3 /* libARgsub_lite.a in Frameworks */,
 				4A0B2D510AE4A08A00F4E8A3 /* libARMulti.a in Frameworks */,
 				4A0B2D4F0AE4A08A00F4E8A3 /* libAR.a in Frameworks */,
-				4A174BB50AD9D66000B9FC9B /* gdal.framework in Frameworks */,
 				4A174BB60AD9D66000B9FC9B /* OpenThreads.framework in Frameworks */,
 				4A174BB70AD9D66000B9FC9B /* osg.framework in Frameworks */,
 				4A174BB80AD9D66000B9FC9B /* osgDB.framework in Frameworks */,
-				4A174BB90AD9D66000B9FC9B /* osgFX.framework in Frameworks */,
-				4A174BBA0AD9D66000B9FC9B /* osgGA.framework in Frameworks */,
-				4A174BBB0AD9D66000B9FC9B /* osgIntrospection.framework in Frameworks */,
-				4A174BBC0AD9D66000B9FC9B /* osgParticle.framework in Frameworks */,
-				4A174BBD0AD9D66000B9FC9B /* osgProducer.framework in Frameworks */,
-				4A174BBE0AD9D66000B9FC9B /* osgSim.framework in Frameworks */,
-				4A174BBF0AD9D66000B9FC9B /* osgTerrain.framework in Frameworks */,
-				4A174BC00AD9D66000B9FC9B /* osgText.framework in Frameworks */,
-				4A174BC10AD9D66000B9FC9B /* osgUtil.framework in Frameworks */,
-				4A174BC20AD9D66000B9FC9B /* Producer.framework in Frameworks */,
-				4A174BC30AD9D66000B9FC9B /* OpenGL.framework in Frameworks */,
-				4A174BC40AD9D66000B9FC9B /* Carbon.framework in Frameworks */,
-				4A174BC50AD9D66000B9FC9B /* Cocoa.framework in Frameworks */,
-				4A174BC60AD9D66000B9FC9B /* QuickTime.framework in Frameworks */,
 				4A174BC70AD9D66000B9FC9B /* osgART.framework in Frameworks */,
+				4AA81F290B81336700BA6D59 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,24 +527,10 @@
 				4A38FA900AD5EB78006DC8DB /* libARgsub_lite.a in Frameworks */,
 				4A38FA910AD5EB78006DC8DB /* libARMulti.a in Frameworks */,
 				4A38FA8F0AD5EB78006DC8DB /* libAR.a in Frameworks */,
-				4A38FA930AD5EB78006DC8DB /* gdal.framework in Frameworks */,
-				4A38FA940AD5EB78006DC8DB /* OpenThreads.framework in Frameworks */,
 				4A38FA950AD5EB78006DC8DB /* osg.framework in Frameworks */,
 				4A38FA960AD5EB78006DC8DB /* osgDB.framework in Frameworks */,
-				4A38FA970AD5EB78006DC8DB /* osgFX.framework in Frameworks */,
-				4A38FA980AD5EB78006DC8DB /* osgGA.framework in Frameworks */,
-				4A38FA990AD5EB78006DC8DB /* osgIntrospection.framework in Frameworks */,
-				4A38FA9A0AD5EB78006DC8DB /* osgParticle.framework in Frameworks */,
-				4A38FA9B0AD5EB78006DC8DB /* osgProducer.framework in Frameworks */,
-				4A38FA9C0AD5EB78006DC8DB /* osgSim.framework in Frameworks */,
-				4A38FA9D0AD5EB78006DC8DB /* osgTerrain.framework in Frameworks */,
-				4A38FA9E0AD5EB78006DC8DB /* osgText.framework in Frameworks */,
-				4A38FA9F0AD5EB78006DC8DB /* osgUtil.framework in Frameworks */,
-				4A38FAA00AD5EB78006DC8DB /* Producer.framework in Frameworks */,
-				4A38FAA10AD5EB78006DC8DB /* OpenGL.framework in Frameworks */,
-				4A38FAA20AD5EB78006DC8DB /* Carbon.framework in Frameworks */,
-				4A38FAA30AD5EB78006DC8DB /* Cocoa.framework in Frameworks */,
-				4A38FAA40AD5EB78006DC8DB /* QuickTime.framework in Frameworks */,
+				4AA81EF30B8130F600BA6D59 /* OpenThreads.framework in Frameworks */,
+				4AA81EF40B8130F600BA6D59 /* OpenGL.framework in Frameworks */,
 				4A38FAA50AD5EB78006DC8DB /* osgART.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -654,24 +539,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A38FABE0AD5EC05006DC8DB /* gdal.framework in Frameworks */,
 				4A38FABF0AD5EC05006DC8DB /* OpenThreads.framework in Frameworks */,
 				4A38FAC00AD5EC05006DC8DB /* osg.framework in Frameworks */,
 				4A38FAC10AD5EC05006DC8DB /* osgDB.framework in Frameworks */,
-				4A38FAC20AD5EC05006DC8DB /* osgFX.framework in Frameworks */,
-				4A38FAC30AD5EC05006DC8DB /* osgGA.framework in Frameworks */,
-				4A38FAC40AD5EC05006DC8DB /* osgIntrospection.framework in Frameworks */,
-				4A38FAC50AD5EC05006DC8DB /* osgParticle.framework in Frameworks */,
-				4A38FAC60AD5EC05006DC8DB /* osgProducer.framework in Frameworks */,
-				4A38FAC70AD5EC05006DC8DB /* osgSim.framework in Frameworks */,
-				4A38FAC80AD5EC05006DC8DB /* osgTerrain.framework in Frameworks */,
-				4A38FAC90AD5EC05006DC8DB /* osgText.framework in Frameworks */,
-				4A38FACA0AD5EC05006DC8DB /* osgUtil.framework in Frameworks */,
-				4A38FACB0AD5EC05006DC8DB /* Producer.framework in Frameworks */,
 				4A38FACC0AD5EC05006DC8DB /* OpenGL.framework in Frameworks */,
-				4A38FACD0AD5EC05006DC8DB /* Carbon.framework in Frameworks */,
-				4A38FACE0AD5EC05006DC8DB /* Cocoa.framework in Frameworks */,
-				4A38FACF0AD5EC05006DC8DB /* QuickTime.framework in Frameworks */,
 				4A38FAD00AD5EC05006DC8DB /* osgART.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -684,24 +555,12 @@
 				4A55AB400AA7AD90005EDC69 /* libARgsub_lite.a in Frameworks */,
 				4A55AB410AA7AD90005EDC69 /* libARMulti.a in Frameworks */,
 				4A55AB420AA7AD90005EDC69 /* libARvideo.a in Frameworks */,
-				4A55AB430AA7AD90005EDC69 /* gdal.framework in Frameworks */,
-				4A55AB440AA7AD90005EDC69 /* OpenThreads.framework in Frameworks */,
-				4A55AB450AA7AD90005EDC69 /* osg.framework in Frameworks */,
-				4A55AB460AA7AD90005EDC69 /* osgDB.framework in Frameworks */,
-				4A55AB470AA7AD90005EDC69 /* osgFX.framework in Frameworks */,
-				4A55AB480AA7AD90005EDC69 /* osgGA.framework in Frameworks */,
-				4A55AB490AA7AD90005EDC69 /* osgIntrospection.framework in Frameworks */,
-				4A55AB4A0AA7AD90005EDC69 /* osgParticle.framework in Frameworks */,
-				4A55AB4B0AA7AD90005EDC69 /* osgProducer.framework in Frameworks */,
-				4A55AB4C0AA7AD90005EDC69 /* osgSim.framework in Frameworks */,
-				4A55AB4D0AA7AD90005EDC69 /* osgTerrain.framework in Frameworks */,
-				4A55AB4E0AA7AD90005EDC69 /* osgText.framework in Frameworks */,
-				4A55AB4F0AA7AD90005EDC69 /* osgUtil.framework in Frameworks */,
-				4A55AB500AA7AD90005EDC69 /* Producer.framework in Frameworks */,
-				4A55AB510AA7AD90005EDC69 /* OpenGL.framework in Frameworks */,
-				4A55AB520AA7AD90005EDC69 /* Carbon.framework in Frameworks */,
-				4A55AB530AA7AD90005EDC69 /* Cocoa.framework in Frameworks */,
-				4A55AB540AA7AD90005EDC69 /* QuickTime.framework in Frameworks */,
+				4AA81EE70B812E6F00BA6D59 /* OpenThreads.framework in Frameworks */,
+				4AA81EE80B812E6F00BA6D59 /* osg.framework in Frameworks */,
+				4AA81EE90B812E6F00BA6D59 /* osgDB.framework in Frameworks */,
+				4AA81EEA0B812E6F00BA6D59 /* Carbon.framework in Frameworks */,
+				4AA81EEE0B812E9000BA6D59 /* Cocoa.framework in Frameworks */,
+				4AA81EEB0B812E6F00BA6D59 /* QuickTime.framework in Frameworks */,
 				4A55AB560AA7AD9F005EDC69 /* osgART.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -710,21 +569,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A9969B70AC785D10068A373 /* gdal.framework in Frameworks */,
-				4A9969B80AC785D10068A373 /* OpenThreads.framework in Frameworks */,
-				4A9969B90AC785D10068A373 /* osg.framework in Frameworks */,
-				4A9969BA0AC785D10068A373 /* osgDB.framework in Frameworks */,
-				4A9969BB0AC785D10068A373 /* osgFX.framework in Frameworks */,
-				4A9969BC0AC785D10068A373 /* osgGA.framework in Frameworks */,
-				4A9969BD0AC785D10068A373 /* osgIntrospection.framework in Frameworks */,
-				4A9969BE0AC785D10068A373 /* osgParticle.framework in Frameworks */,
-				4A9969BF0AC785D10068A373 /* osgProducer.framework in Frameworks */,
-				4A9969C00AC785D10068A373 /* osgSim.framework in Frameworks */,
-				4A9969C10AC785D10068A373 /* osgTerrain.framework in Frameworks */,
-				4A9969C20AC785D10068A373 /* osgText.framework in Frameworks */,
-				4A9969C30AC785D10068A373 /* osgUtil.framework in Frameworks */,
-				4A9969C40AC785D10068A373 /* Producer.framework in Frameworks */,
-				4A9969C50AC785D10068A373 /* OpenGL.framework in Frameworks */,
+				4AA81EF80B81311E00BA6D59 /* OpenThreads.framework in Frameworks */,
+				4AA81EF90B81311E00BA6D59 /* osg.framework in Frameworks */,
+				4AA81EFA0B81311E00BA6D59 /* osgDB.framework in Frameworks */,
+				4AA81EFB0B81311E00BA6D59 /* Carbon.framework in Frameworks */,
 				4A9969C90AC785D10068A373 /* osgART.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -745,25 +593,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78BDC0AA091B013900D9D0B9 /* gdal.framework in Frameworks */,
-				78BDC0AB091B013900D9D0B9 /* OpenThreads.framework in Frameworks */,
+				4AA81EFD0B8131BC00BA6D59 /* OpenThreads.framework in Frameworks */,
+				4AA81F000B8131F300BA6D59 /* osgDB.framework in Frameworks */,
+				4AA81F040B81326D00BA6D59 /* osgGA.framework in Frameworks */,
+				4AA81EFE0B8131BC00BA6D59 /* osgProducer.framework in Frameworks */,
+				4AA81F080B81328C00BA6D59 /* osgText.framework in Frameworks */,
+				4AA81F060B81328300BA6D59 /* osgUtil.framework in Frameworks */,
 				78BDC0AC091B013900D9D0B9 /* osg.framework in Frameworks */,
-				78BDC0AD091B013900D9D0B9 /* osgDB.framework in Frameworks */,
-				78BDC0AE091B013900D9D0B9 /* osgFX.framework in Frameworks */,
-				78BDC0AF091B013900D9D0B9 /* osgGA.framework in Frameworks */,
-				78BDC0B0091B013900D9D0B9 /* osgIntrospection.framework in Frameworks */,
-				78BDC0B1091B013900D9D0B9 /* osgParticle.framework in Frameworks */,
-				78BDC0B2091B013900D9D0B9 /* osgProducer.framework in Frameworks */,
-				78BDC0B3091B013900D9D0B9 /* osgSim.framework in Frameworks */,
-				78BDC0B4091B013900D9D0B9 /* osgTerrain.framework in Frameworks */,
-				78BDC0B5091B013900D9D0B9 /* osgText.framework in Frameworks */,
-				78BDC0B6091B013900D9D0B9 /* osgUtil.framework in Frameworks */,
-				78BDC0B7091B013900D9D0B9 /* Producer.framework in Frameworks */,
+				4AA81EFF0B8131D200BA6D59 /* Producer.framework in Frameworks */,
 				78BDC1CD091B041F00D9D0B9 /* osgART.framework in Frameworks */,
-				78BDC0B8091B013900D9D0B9 /* OpenGL.framework in Frameworks */,
-				78BDC0B9091B013900D9D0B9 /* Carbon.framework in Frameworks */,
-				78BDC0BA091B013900D9D0B9 /* Cocoa.framework in Frameworks */,
-				78BDC0BB091B013900D9D0B9 /* QuickTime.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1949,8 +1787,12 @@
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
-				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1973,8 +1815,12 @@
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
-				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2045,8 +1891,12 @@
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
-				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2069,8 +1919,12 @@
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
-				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2093,8 +1947,12 @@
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
-				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = ../include;
@@ -2112,8 +1970,12 @@
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
-				FRAMEWORK_SEARCH_PATHS = "$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_2)",
+				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../OpenSceneGraph/Frameworks\"";
 				GCC_PREPROCESSOR_DEFINITIONS = __USE_OSX_AGL_IMPLEMENTATION__;
 				GENERATE_MASTER_OBJECT_FILE = YES;
 				HEADER_SEARCH_PATHS = ../include;
