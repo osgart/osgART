@@ -82,6 +82,14 @@ namespace osgART {
 		* \return a 4x4 matrix
 		*/
 		const osg::Matrix& getTransform() const;
+		
+		
+		/**
+		 * Obtain the transformation of the marker.
+		 * Return return a 4x4 transformation of the marker (european order).
+		 * \return a 4x4 matrix
+		 */
+		osg::Matrix& getTransform();
 
 
 		/**
@@ -133,9 +141,8 @@ namespace osgART {
 		struct Callback : public osg::Referenced
 		{
             /** do customized update code.*/
-            virtual void operator ()(Marker* m) = 0;	
-		};
-				
+            virtual void operator ()(Marker* m, const osg::Matrix&) = 0;	
+		};				
 		
 		void copyData(const Marker& marker);
 		
