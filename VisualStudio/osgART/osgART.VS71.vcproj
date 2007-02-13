@@ -158,6 +158,9 @@
 				<File
 					RelativePath="..\..\src\osgART\TrackerManager.cpp">
 				</File>
+				<File
+					RelativePath="..\..\src\osgART\TransformFilterCallback.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="VideoObject"
@@ -273,6 +276,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\TrackerManager">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\TransformFilterCallback">
 				</File>
 			</Filter>
 			<Filter
