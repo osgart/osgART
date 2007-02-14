@@ -114,18 +114,17 @@ namespace osgART {
 
 			if (m_seen) {				
 				
-				//osg::Vec3 newPosition;
-				//osg::Quat newRotation;
+				osg::Vec3 newPosition;
+				osg::Quat newRotation;
 
-				//newPosition = transform.getTrans();
-				//transform.get(newRotation);
-				//m_storedRotation.slerp(m_rotationSmoothFactor, 
-				//	m_storedRotation, newRotation);
+				newPosition = transform.getTrans();
+				transform.get(newRotation);
+				m_storedRotation.slerp(m_rotationSmoothFactor, m_storedRotation, newRotation);
 
-				//osg::Vec3 a = newPosition - m_storedPosition;
+				osg::Vec3 a = newPosition - m_storedPosition;
 
-				//osg::Vec3 b = a * m_positionSmoothFactor;
-				//m_storedPosition += b;
+				osg::Vec3 b = a * m_positionSmoothFactor;
+				m_storedPosition += b;
 
 				if (m_filtercallback.valid())(*m_filtercallback)(this,transform);
 
