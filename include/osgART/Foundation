@@ -36,7 +36,7 @@
 
 #include <osgART/Export>
 
-// Keep a C interface for now.
+// Maintain a C interface please.
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
