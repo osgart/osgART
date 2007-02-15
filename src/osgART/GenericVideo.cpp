@@ -25,6 +25,7 @@ namespace osgART {
 	GenericVideo::GenericVideo() 
 		: VideoImageStream(), 
 		FieldContainer<GenericVideo>(),
+		m_isupdated(false),
 		pixelsize(4), 
 		pixelformat(VIDEOFORMAT_RGB24),
 		framerate(VIDEOFRAMERATE_30),
@@ -92,11 +93,24 @@ namespace osgART {
 		return this->t();
 	}
 
-	void GenericVideo::setFlip(bool horizontal,
+	void 
+	GenericVideo::setFlip(bool horizontal,
 		bool vertical) 
 	{
 		m_horizontal_flip = horizontal;
 		m_vertical_flip = vertical;
+	}
+
+	bool
+	GenericVideo::getFrame()
+	{
+		try {
+			this->update();
+		} catch(...) {
+            m_isupdated = false;
+		}
+
+		return m_isupdated;
 	}
 
 
@@ -120,7 +134,6 @@ namespace osgART {
 	{
 		return (m_encapsulated.valid()) ? m_encapsulated->getVideoConfiguration() : 0L;
 	}
-
 	    
 		
 	void 

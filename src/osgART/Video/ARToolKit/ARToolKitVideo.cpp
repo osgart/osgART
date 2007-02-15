@@ -138,9 +138,16 @@ namespace osgART {
 			newImage = (unsigned char*)ar2VideoGetImage(video);
 
 			if (newImage)
-				dynamic_cast<osg::Image*>(this)->setImage(this->s(), this->t(), 
+			{
+
+				m_isupdated = true;
+				this->setImage(this->s(), this->t(), 
 				1, GL_BGRA, GL_BGRA, GL_UNSIGNED_BYTE, newImage, 
 				osg::Image::NO_DELETE, 1);	
+			} else 
+			{
+				m_isupdated = false;
+			}
 
 		}
 	}
