@@ -41,6 +41,7 @@ namespace osgART {
 	{
 	public:
 	
+		
 		/** 
 		 * Default constructor. Initializes also the FieldContainer 
 		 * explicitly.
@@ -136,16 +137,35 @@ namespace osgART {
 		Field* get(const std::string& name);
 		
 		
+		/**
+		 * Get the video configuration struct
+		 * \return struct VideoConfiguration
+		 */
 		virtual VideoConfiguration* getVideoConfiguration();
 		
 		
+		/**
+		 * Set internal flipping. 
+		 * \param horizontal switch on and off horizontal flipping
+		 * \param vertical switch on and off vertical flipping
+		 */
 		void setFlip(bool horizontal, bool vertical);
+		
+		
+		/**
+		 * For on demand update. It will try to call update and 
+		 * return true if this is a new frame.
+		 * \return true if a new frame has been captured
+		 */
+		bool getFrame();
 		
 	   
 	protected:
 	
 		bool m_vertical_flip;
 		bool m_horizontal_flip;
+		
+		bool m_isupdated;
 	
 		/** 
 		 * \brief destructor.
