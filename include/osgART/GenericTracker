@@ -59,7 +59,7 @@ namespace osgART {
 		 * This core function apply the Generic algorithm on the last 
 		 * image defined by setImage.
 		 */
-		virtual void update() = 0;
+		virtual void update();
 
 	
 		/**
@@ -170,8 +170,6 @@ namespace osgART {
 		bool			m_enable;//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
 
 		
-
-	  
 	private:
 
 		int trackerId;

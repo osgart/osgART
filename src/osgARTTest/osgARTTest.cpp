@@ -38,19 +38,16 @@
 #include <osgART/VideoBackground>
 #include <osgART/VideoPlane>
 #include <osgART/VideoForeground>
+#include <osgART/ARSceneNode>
 
-// Please read documentation for setting video parameters
-#define MY_VCONF ""
 
 int main(int argc, char* argv[]) 
 {
 
-	osg::setNotifyLevel(osg::NOTICE);
+	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	osgARTInit(&argc, argv);
 
-
-	
 	osgProducer::Viewer viewer;
 	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
 	viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
@@ -59,6 +56,12 @@ int main(int argc, char* argv[])
 	// somehow on Ubuntu Dapper this ends up in a segmentation fault
 	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
 #endif
+
+	osg::ref_ptr<osgART::ARSceneNode> root = new osgART::ARSceneNode;
+
+	viewer.setSceneData(root.get());
+
+	viewer.realize();
 
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
@@ -71,20 +74,10 @@ int main(int argc, char* argv[])
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 
 		// quit the program
-		exit(1);
+		exit(-1);
 	}
 
-	//get the video configuration
-	osgART::VideoConfiguration* _config = 
-		video->getVideoConfiguration();
 
-	//update it with the configuration of our camera
-	if (_config)
-	{
-		_config->deviceconfig = MY_VCONF;
-	}
-
-	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
@@ -119,19 +112,21 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}	
 	
+	// flipping the video can be done on the fly or in advance
+	video->setFlip(true,true);
+
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
 	video->open();
 
-	// Initialise the tracker with the dimensions of the video image
-	if (!tracker->init(video->getWidth(), video->getHeight()))
+	// Connect the video to a tracker
+	if (!root->connect(tracker.get(),video.get())) 
 	{
-		osg::notify(osg::FATAL) << "Error initialising tracker!" << std::endl;
+		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
 		exit(-1);
 	}
-
-	// From here on the scene is going to be built
+	
 
 	// Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
@@ -157,7 +152,8 @@ int main(int argc, char* argv[])
 	osg::ref_ptr<osgART::Marker> marker = tracker->getMarker(0);
 		
 	// check before accessing the linked marker
-	if (!marker.valid()) {
+	if (!marker.valid()) 
+	{
 		osg::notify(osg::FATAL) << "No Marker defined!" << std::endl;
 		exit(-1);
 	}
@@ -188,30 +184,15 @@ int main(int argc, char* argv[])
 	modelViewMatrix->addChild(foregroundGroup);
 	projectionMatrix->addChild(modelViewMatrix);
 	
-	osg::ref_ptr<osg::Group> root = new osg::Group;
 	root->addChild(projectionMatrix);
-
-	viewer.setSceneData(root.get());
-
-	viewer.realize();
 	
 	video->start();
 	
     while (!viewer.done()) 
 	{
-		
 		viewer.sync();	
-		
-		//update the video (get new frame)
-		video->update();
-
-		//update the tracker with the new image
-		tracker->setImage(video.get());
-		tracker->update();
-		
         viewer.update();
-        viewer.frame();
-	
+        viewer.frame();	
     }
     
 	viewer.sync();

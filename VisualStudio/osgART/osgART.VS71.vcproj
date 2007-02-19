@@ -89,7 +89,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBCMT"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -142,6 +142,9 @@
 				Filter="">
 				<File
 					RelativePath="..\..\src\osgART\ARLocalTransformCallback.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\ARSceneNode.cpp">
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\ARTTransform.cpp">
@@ -345,6 +348,9 @@
 			<Filter
 				Name="Core"
 				Filter="">
+				<File
+					RelativePath="..\..\include\osgART\ARSceneNode">
+				</File>
 				<File
 					RelativePath="..\..\include\osgART\Export">
 				</File>

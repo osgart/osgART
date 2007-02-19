@@ -40,7 +40,7 @@ namespace osgART {
 		int m_texWidth;
 		int m_texHeight;
 		
-		osg::ref_ptr<GenericVideo> m_video;
+		GenericVideo* m_video;
 		
 	private:
 	

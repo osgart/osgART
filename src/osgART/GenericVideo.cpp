@@ -114,8 +114,8 @@ namespace osgART {
 	}
 
 
-
 	// -----------------------------------------------------------------------
+	
 	VideoContainer::VideoContainer(GenericVideo* video) 
 		: GenericVideo(),
 		m_encapsulated(video)
@@ -196,7 +196,8 @@ namespace osgART {
 	void
 	VideoContainer::load(const std::string& plugin)
 	{
-		if (m_encapsulated.valid()) {
+		if (m_encapsulated.valid()) 
+		{
 			// do we need to stop?
 		}
 		m_encapsulated = VideoManager::createVideoFromPlugin(plugin);

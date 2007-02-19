@@ -125,21 +125,29 @@ namespace osgART {
 
 	/* virtual */
 	void	GenericTracker::setEnable(const bool & _enable)
-	{	m_enable = _enable; }
+	{
+		m_enable = _enable;
+	}
 
 	/* virtual */
-	bool	GenericTracker::getEnable()const
-	{	return m_enable;}
+	bool	GenericTracker::getEnable() const
+	{
+		return m_enable;
+	}
 
-	std::string GenericTracker::getLabel() const {
+	std::string GenericTracker::getLabel() const 
+	{
 		std::string Result = m_name;
 		Result += "-";
 		Result += m_version;
 		return Result;
 	}
-
-
-
+	
+	/*virtual*/
+	void 
+	GenericTracker::update()
+	{
+	}
 
 	// ------------------------------------------------
 
@@ -203,6 +211,7 @@ namespace osgART {
 		return (m_tracker.valid() && m_video.valid()) ? 
 			this->init(video->getWidth(),video->getHeight(),pattlist_name,camera_name) : false;
 	}
+
 
 	osg::Projection*
 	TrackerContainer::createProjection() const

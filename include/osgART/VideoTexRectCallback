@@ -37,7 +37,7 @@ namespace osgART {
 		int m_vidWidth;
 		int m_vidHeight;
 		
-		osg::ref_ptr<GenericVideo> m_video;
+		GenericVideo* m_video;
 	
 	private:
 		VideoTextureBase* m_videotexture;		
