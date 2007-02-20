@@ -14,6 +14,8 @@
 #include "osgART/Marker"
 #include <osg/Notify>
 
+#include "osgART/TransformFilterCallback"
+
 namespace osgART {
 
 
@@ -27,6 +29,8 @@ namespace osgART {
 
 		setRotationalSmoothing(0.15f);
 		setTranslationalSmoothing(0.15f);
+
+		m_updatecallback = new TransformFilterCallback();
 	}
 
 	Marker::~Marker() 
@@ -41,9 +45,9 @@ namespace osgART {
 		return m_transform;
 	}
 
-	osg::Matrix& Marker::getTransform()
+	osg::Matrix* Marker::getTransformMatrix()
 	{
-		return m_transform;
+		return &m_transform;
 	}
 
 	bool

@@ -89,7 +89,7 @@ namespace osgART {
 		 * Return return a 4x4 transformation of the marker (european order).
 		 * \return a 4x4 matrix
 		 */
-		osg::Matrix& getTransform();
+		osg::Matrix* getTransformMatrix();
 
 
 		/**
