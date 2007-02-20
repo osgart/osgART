@@ -26,8 +26,7 @@ namespace osgART {
 		m_video(parent->getVideo()),
 		m_videotexture(parent)
 	{
-		std::cout << "-----------------------------------------" << std::endl;
-		std::cout << m_videotexture->getVideo()->getWidth() <<
+		osg::notify(osg::NOTICE) << m_videotexture->getVideo()->getWidth() <<
 			"x" << m_videotexture->getVideo()->getHeight() << " : "
 			<< std::endl;
 	}
@@ -94,7 +93,7 @@ namespace osgART {
 		osg::State&) const {
 
 		//IWA
-		unsigned char* frame = ((osgART::GenericVideo*)(m_video.get()))->getImageRaw();
+		unsigned char* frame = m_video->getImageRaw();
 
 		if (frame == 0L) return;
 
@@ -155,8 +154,8 @@ namespace osgART {
 	}
 
 
-	if (m_videotexture->getAlphaBias() >= 0.0f) 
-			glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
+		if (m_videotexture->getAlphaBias() >= 0.0f) 
+				glPixelTransferf(GL_ALPHA_BIAS, 0.0f);
 
 	};
 

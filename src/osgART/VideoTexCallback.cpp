@@ -40,9 +40,10 @@ namespace osgART {
 		if (m_videotexture->getAlphaBias() >= 0.0f) 
 			glPixelTransferf(GL_ALPHA_BIAS, m_videotexture->getAlphaBias());
 
-		osg::notify(osg::WARN) << m_videotexture->getVideo()->getWidth() <<
+		/*osg::notify(osg::WARN) << m_videotexture->getVideo()->getWidth() <<
 			"x" << m_videotexture->getVideo()->getHeight() << " : "
 			<< std::endl;
+		*/
 
 
 	switch (m_video->pixelFormat())
@@ -99,7 +100,7 @@ namespace osgART {
 	VideoTexCallback::subload(const osg::Texture2D&, osg::State&) const {
 	
 		//IWA
-		unsigned char* frame = ((osgART::GenericVideo*)(m_video.get()))->getImageRaw();
+		unsigned char* frame = m_video->getImageRaw();
 
 		if (frame == 0L) return;
 
