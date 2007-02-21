@@ -2,7 +2,7 @@
  *	osgART/TransformFilterCallback
  *	osgART: AR ToolKit for OpenSceneGraph
  *
- *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	Jens Hopfer, Hartmut Seichter
  *	
  *	Rev		Date		Who		Changes
  *  1.0   	2006-12-08  ---     Version 1.0 release.
@@ -23,12 +23,116 @@ namespace osgART {
 	class OSGART_EXPORT TransformFilterCallback : public Marker::Callback 
 	{
 	public:
-		
+		/**
+		 * \brief Constructor.
+		 */
 		TransformFilterCallback();
 
+		/**
+		 * \brief The operator is called in osgART::Marker::update(), filtering is done in here
+		 * \param marker the marker associated with this filter
+		 * \param osg::Matrix& current transformation matrix received from tracker
+		 */
 		void operator()(Marker* marker, const osg::Matrix&);
+		
+		/**
+		 * \brief enable/ disable rotational smoothing
+		 * \param true to enable, false to disable
+		 */
+		void	enableRotationalSmoothing(bool);
+		/**
+		 * \brief test if rotational smoothing is enabled/disabled
+		 * \return true if enabled, false if disabled
+		 */
+		bool	RotationalSmoothing();
+		/**
+		 * \brief set rotational smoothing factor
+		 * \param slerp parameter between 0.0 and 1.0 
+		 */
+		void	setRotationalSmoothingFactor(float);
+		/**
+		 * \brief get current rotational smoothing factor
+		 * \return current slerp parameter
+		 */
+		float	getRotationalSmoothingFactor();
+		
+		/**
+		 * \brief enable/disable translational smoothing
+		 * \param true to enable, false to disable
+		 */
+		void	enableTranslationalSmoothing(bool);
+		/**
+		 * \brief test if translational smoothing is enabled/disabled
+		 * \return true if enabled, false if disabled
+		 */
+		bool	TranslationalSmoothing();
+		/**
+		 * \brief set translational smoothing factor
+		 * \param bias toward previous translation between 0.0 and 1.0 
+		 */
+		void	setTranslationalSmoothingFactor(float);
+		/**
+		 * \brief get current translational smoothing factor
+		 * \return current translational smoothing parameter
+		 */
+		float	getTranslationalSmoothingFactor();
+		
+		
+		/**
+		 * \brief enable/disable translational outlier rejection
+		 * \param true to enable, false to disable
+		 */
+		void			enableTransOutlierRejection(bool);
+		/**
+		 * \brief test if translational outlier rejection is enabled/disabled
+		 * \return true if enabled, false if disabled
+		 */
+		bool			TransOutlierRejection();
+		/**
+		 * \brief set max number of consequent rejections
+		 * \param number
+		 */
+		void			setTransOutlierMaxNumber(unsigned int);
+		/**
+		 * \brief get current max number of consequent rejections
+		 * \return current max number of consequent rejections
+		 */
+		unsigned int	getTransOutlierMaxNumber();
+		/**
+		 * \brief set translational distance that characteristics rejections
+		 * \param distance in millimeters
+		 */
+		void			setTransOutlierDist(float);
+		/**
+		 * \brief get translational distance that characteristics rejections
+		 * \return distance in millimeters
+		 */
+		float			getTransOutlierDist();
+		/**
+		 * \brief test if outlier rejection is enabled/disabled
+		 * \return true if enabled, false if disabled
+		 */
+		bool			isTransOutlier(const osg::Matrix&);
 	
+	
+	protected:
+	
+		osg::Vec3	m_storedTranslation;
+		osg::Quat	m_storedRotation;
+		osg::Matrix m_storedMatrix;
+
+		float	m_translationSmoothFactor;
+		float	m_rotationSmoothFactor;
+		
+		float			m_TransOutlierDistance;
+		unsigned int	m_maxNumOfTransRejections;
+		unsigned int	m_TransRejectionCount;
+		
+		bool	m_doRotationalSmoothing;
+		bool	m_doTranslationalSmoothing;
+		bool	m_doTransOutlierRejection;
 		
 	};
+	
 };
 #endif

@@ -179,25 +179,6 @@ namespace osgART {
 		osg::Matrix m_transform;
 		
 		std::string m_name;
-				
-
-		/**
-		* Filtering transformation matrices
-		*/
-		bool							m_doTransFiltering;
-
-
-		/**
-		* old transformation averaging
-		*/
-		osg::Vec3 m_storedPosition;
-		osg::Quat m_storedRotation;
-
-		float m_positionSmoothFactor;
-		float m_rotationSmoothFactor;
-				
-		bool m_seen;
-		
 	};
 	
 	class MarkerContainerCallback;

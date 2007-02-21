@@ -21,16 +21,10 @@ namespace osgART {
 
 	Marker::Marker() : osg::Referenced(), 
 		m_valid(false),
-		m_seen(false),
 		m_name("Marker")		
 	{
 		m_fields["name"] = new TypedField<std::string>(&m_name);
 		m_fields["active"] = new TypedField<bool>(&m_active);
-
-		setRotationalSmoothing(0.15f);
-		setTranslationalSmoothing(0.15f);
-
-		m_updatecallback = new TransformFilterCallback();
 	}
 
 	Marker::~Marker() 
@@ -75,30 +69,6 @@ namespace osgART {
 	}
 
 	void
-	Marker::setRotationalSmoothing(float r) 
-	{
-		m_rotationSmoothFactor = 
-			1.0f - osg::clampBetween<float>(r, 0, 1);
-	}
-	float
-	Marker::getRotationalSmoothing() const 
-	{
-		return (1.0f - m_rotationSmoothFactor);
-	}
-
-	void
-	Marker::setTranslationalSmoothing(float t) {
-		m_positionSmoothFactor = 
-			1.0f - osg::clampBetween<float>(t, 0, 1);
-	}
-
-	float 
-	Marker::getTranslationalSmoothing() const 
-	{
-		return (1.0f - m_positionSmoothFactor);
-	}
-
-	void
 	Marker::setFilterCallback(Marker::Callback *callback)
 	{
 		this->m_filtercallback = callback;
@@ -116,44 +86,15 @@ namespace osgART {
 	{
 		if (m_valid) {
 
-			if (m_seen) {				
-				
-				osg::Vec3 newPosition;
-				osg::Quat newRotation;
-
-				newPosition = transform.getTrans();
-				transform.get(newRotation);
-				m_storedRotation.slerp(m_rotationSmoothFactor, m_storedRotation, newRotation);
-
-				osg::Vec3 a = newPosition - m_storedPosition;
-
-				osg::Vec3 b = a * m_positionSmoothFactor;
-				m_storedPosition += b;
-
-				if (m_filtercallback.valid())(*m_filtercallback)(this,transform);
-
-
-			} else {			
-			
-				m_storedPosition = transform.getTrans();
-				transform.get(m_storedRotation);
-				m_seen = true;
-
+			if (m_filtercallback.valid()){
+				(*m_filtercallback)(this,transform);
 			}
-
-			m_transform.set(m_storedRotation);
-			m_transform.setTrans(m_storedPosition);
-
-
-		} else {
-		
-			m_seen = false;
-
+			 else {			
+				m_transform = transform;
+			}
 		}
-
 		// update callback
 		if (m_updatecallback.valid()) (*m_updatecallback)(this,transform);
-
 	}
 	
 	void 
@@ -161,7 +102,6 @@ namespace osgART {
 	{
 		m_valid = marker.m_valid;
 		m_transform = marker.m_transform;
-		m_seen = marker.m_seen;
 	}
 
 	// ------------------------------------------
