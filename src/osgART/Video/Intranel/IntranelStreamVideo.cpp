@@ -142,7 +142,7 @@ HRESULT DSMemoryRenderer::CheckMediaType(const CMediaType *pmt)
             hr = S_OK;
 
 			if( IsEqualGUID( *pmt->Subtype(), MEDIASUBTYPE_RGB32) )
-            {
+            {				
               //  m_frame->format = TP_RGBA;
 				//m_frame->width = pvi->bmiHeader.biWidth;
 				//m_frame->height = pvi->bmiHeader.biHeight;
@@ -570,7 +570,7 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
         return hr;
     }
 	
-	// DisplayFilter(myFFDShowFilter);
+	DisplayFilter(myFFDShowFilter);
 
 	IPin *pIn = NULL;
 
@@ -632,12 +632,11 @@ HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 
 			VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;
 
-				std::cout << "Using Size: " << 
-					pvi->bmiHeader.biWidth << "x" << pvi->bmiHeader.biHeight
-					<< std::endl;
-
 			if (n_mt->subtype==MEDIASUBTYPE_RGB32)
 			{
+				osg::notify() << "osgart_intranel: Using Size: " << 
+					pvi->bmiHeader.biWidth << "x" << pvi->bmiHeader.biHeight
+					<< std::endl;
 
 				this->allocateImage(pvi->bmiHeader.biWidth,pvi->bmiHeader.biHeight,1,
 					GL_RGBA,GL_UNSIGNED_BYTE, 1);
