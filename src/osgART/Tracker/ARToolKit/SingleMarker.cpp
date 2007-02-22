@@ -53,8 +53,7 @@ namespace osgART {
 		if (markerInfo == 0L) {
 			m_valid = false;
 			// We won't call update in the parent class if marker is not
-			// valid. So set m_seen to false here instead.
-			m_seen = false;
+			// valid.
 		} else {
 			m_valid = true;
 			//arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);

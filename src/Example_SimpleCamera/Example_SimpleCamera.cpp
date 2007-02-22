@@ -1,5 +1,5 @@
 /*
- *	osgART/osgARTTest
+ *	osgART/Example_SimpleCamera
  *	osgART: AR ToolKit for OpenSceneGraph
  *
  *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
@@ -18,6 +18,11 @@
  *
  */
 
+#include <osg/Version>
+#if (OSG_VERSION_MAJOR == 1 && OSG_VERSION_MINOR < 3)
+#error OSG version 1.3 or later is required.
+#endif
+
 #include <Producer/RenderSurface>
 #include <osgProducer/Viewer>
 
@@ -30,7 +35,7 @@
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
 #include <osg/Image>
-
+#include <osg/Camera>
 
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
