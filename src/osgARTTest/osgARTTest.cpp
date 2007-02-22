@@ -61,23 +61,19 @@ int main(int argc, char* argv[])
 
 	viewer.setSceneData(root.get());
 
-	viewer.realize();
-
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
 		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
 
 	// check if loading the plugin was successful
 	if (!video.valid()) 
-	{        
+	{   
 		// without video an AR application can not work
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 
 		// quit the program
 		exit(-1);
 	}
-
-
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
@@ -93,7 +89,7 @@ int main(int argc, char* argv[])
 		if (_threshold.valid()) 
 		{			
 			// set the threshold
-			_threshold->set(100);
+			_threshold->set(150);
 
 			/* check what we actually get */
 			osg::notify() << "Field 'threshold' = " << _threshold->get() << std::endl;
@@ -113,7 +109,7 @@ int main(int argc, char* argv[])
 	}	
 	
 	// flipping the video can be done on the fly or in advance
-	video->setFlip(true,true);
+	video->setFlip(false,true);
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
@@ -187,6 +183,9 @@ int main(int argc, char* argv[])
 	root->addChild(projectionMatrix);
 	
 	video->start();
+
+	viewer.realize();
+
 	
     while (!viewer.done()) 
 	{
