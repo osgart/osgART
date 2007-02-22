@@ -53,7 +53,10 @@
 * class IntranelStreamVideo.
 *----------------------------------------------------------------------------*/
 
-struct tpVideoFrame;
+typedef struct {
+	int width;
+	int height;
+} tpVideoFrame;
 	
 class IntranelStreamVideo: public osgART::GenericVideo
 {
@@ -80,11 +83,6 @@ public:
     */
     IntranelStreamVideo& operator=(const IntranelStreamVideo &);
     
-// Interface
-
-    // mutator
-    
-    // services
     
     /**
     * \brief open the IntranelStreamVideo stream.
@@ -96,7 +94,7 @@ public:
     * \brief close the IntranelStreamVideo stream.
     * Terminate the connection with the IntranelStreamVideo stream and clean handle.
     */
-	void close();
+	void close(bool waitforthread = true);
 	
 	/**
     * \brief start the IntranelStreamVideo stream grabbing.
@@ -132,11 +130,6 @@ public:
 	
 protected:
 
-//Protected Services
-
-//Protected Type
-
-//Protected Data
 		int updated;
 private:
 
@@ -164,9 +157,6 @@ private:
     CComPtr<IPin>					m_pFSrcPinOut;	// Source Filter Output Pin   
 	CComPtr<IMediaControl>			m_pMC;
     CComPtr<IMediaEvent>			m_pME;			// Media Event
-    
-    // for external access
-    DWORD m_dwRegister;
     
     protected:
     

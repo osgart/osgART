@@ -1,59 +1,41 @@
-/**
- * 
- */
-#include "IntranelStreamVideo"
+///////////////////////////////////////////////////////////////////////////////
+// File name : IntranelStreamVideo.C
+//
+// Creation : YYY
+//
+// Version : YYY
+//
+// Author : Raphael Grasset
+//
+// email : Raphael.Grasset@imag.fr
+//
+// Purpose : ??
+//
+// Distribution :
+//
+// Use :
+//	??
+//
+// Todo :
+//	O problem with the GetPin: if I removed the MSG TXT, it can't find the pin..weird
+//    need replace static resolution with dynamic (because intranel box can change res)
+//	/
+//	X
+//
+// History :
+//	YYY : Mr Grasset : Creation of the file
+///////////////////////////////////////////////////////////////////////////////
 
-#include <osg/Notify>
+///////////////////////////////////////////////////////////////////////////////
+// include file
+///////////////////////////////////////////////////////////////////////////////
+
+#include "IntranelStreamVideo"
 
 using namespace std;
 using namespace osgART;
 
-// #include "DShowUtils.h"
-
-#include <dshow.h>
-
-#include <string>
-#include <tchar.h>
-
-HRESULT AddToRot(IUnknown *pUnkGraph, DWORD *pdwRegister) 
-{
-    IMoniker * pMoniker;
-    IRunningObjectTable *pROT;
-    if (FAILED(GetRunningObjectTable(0, &pROT))) {
-        return E_FAIL;
-    }
-    WCHAR wsz[256];
-
-	// std::wstring wsz = L"FilterGraph " + (DWORD_PTR)pUnkGraph + L" ID: " << GetCurrentProcessId();
-
-    HRESULT hr = CreateItemMoniker(L"!", L"Whatever", &pMoniker);
-    if (SUCCEEDED(hr)) {
-        hr = pROT->Register(ROTFLAGS_REGISTRATIONKEEPSALIVE, pUnkGraph,
-            pMoniker, pdwRegister);
-        pMoniker->Release();
-    }
-    pROT->Release();
-    return hr;
-}
-
-
-void RemoveFromRot(DWORD pdwRegister)
-{
-    IRunningObjectTable *pROT;
-    if (SUCCEEDED(GetRunningObjectTable(0, &pROT))) {
-        pROT->Revoke(pdwRegister);
-        pROT->Release();
-    }
-}
-
-
- struct tpVideoFrame {
-	unsigned char* buffer;
-	int width;
-	int height;
-	long buffersize;
-};
-
+#include <osg/Notify>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Macro 
@@ -87,7 +69,7 @@ void Msg(TCHAR *szFormat, ...)
 
 	// MessageBox(NULL,szBuffer,"tpDS Message",MB_OK | MB_ICONERROR);
 
-	osg::notify() << "osg_intranel: " << szBuffer << std::endl;
+	osg::notify() << szBuffer << std::endl;
 
 }
 
@@ -100,7 +82,7 @@ struct __declspec(uuid("{D7A2CE2F-8221-4b80-B086-B795D9C845F5}")) CLSID_DSMemory
 class DSMemoryRenderer : public CBaseVideoRenderer
 {
 public:
-    DSMemoryRenderer(tpVideoFrame* , IntranelStreamVideo* , LPUNKNOWN pUnk,HRESULT *phr);
+    DSMemoryRenderer(IntranelStreamVideo* , LPUNKNOWN pUnk,HRESULT *phr);
     ~DSMemoryRenderer();
 
 public:
@@ -114,22 +96,16 @@ private:
                                                     // then we will use Blt from m_pSurfBuf to 
                                                     // m_pTexture to provide format translation
 	IntranelStreamVideo* m_base;
-    tpVideoFrame* m_frame;
 
 	bool m_updated;		// Check 
-
-    LONG m_lVidWidth;   // Video width
-    LONG m_lVidHeight;  // Video Height
-    LONG m_lVidPitch;   // Video Pitch
 };
 
 
-DSMemoryRenderer::DSMemoryRenderer(tpVideoFrame* frame,IntranelStreamVideo* base , 
+DSMemoryRenderer::DSMemoryRenderer(IntranelStreamVideo* base , 
 								   LPUNKNOWN pUnk, HRESULT *phr )
 	: CBaseVideoRenderer(__uuidof(CLSID_DSMemoryRenderer), 
 		NAME("DSMemoryRenderer"), 
 		pUnk, phr),
-		m_frame(frame),
 		m_base(base)
 {
 }
@@ -139,9 +115,7 @@ CCritSec g_cs;
 
 DSMemoryRenderer::~DSMemoryRenderer()
 {
-    // delete [] m_frame->buffer;
-	// m_frame->buffersize = 0;
-};
+}
 
 HRESULT DSMemoryRenderer::CheckMediaType(const CMediaType *pmt)
 {
@@ -170,11 +144,8 @@ HRESULT DSMemoryRenderer::CheckMediaType(const CMediaType *pmt)
 			if( IsEqualGUID( *pmt->Subtype(), MEDIASUBTYPE_RGB32) )
             {
               //  m_frame->format = TP_RGBA;
-				m_frame->width = pvi->bmiHeader.biWidth;
-				m_frame->height = pvi->bmiHeader.biHeight;
-
-				fprintf(stdout, "Subtype %dx%d\n", m_frame->width, m_frame->height);
-
+				//m_frame->width = pvi->bmiHeader.biWidth;
+				//m_frame->height = pvi->bmiHeader.biHeight;
             }
             else
             {
@@ -185,7 +156,7 @@ HRESULT DSMemoryRenderer::CheckMediaType(const CMediaType *pmt)
     }// try
     catch(...)
     {
-		std::cerr << "Failed to check media type in the renderer. Unhandled exception!" << std::endl;
+       // Msg(TEXT("Failed to check media type in the renderer. Unhandled exception hr=0x%x"), E_UNEXPECTED);
         hr = E_UNEXPECTED;
     };
 	
@@ -209,19 +180,19 @@ HRESULT DSMemoryRenderer::SetMediaType(const CMediaType *pmt)
         // Retreive the size of this media type
         pviBmp = (VIDEOINFO *)pmt->Format();
 
-        m_lVidWidth  = pviBmp->bmiHeader.biWidth;
+   /*     m_lVidWidth  = pviBmp->bmiHeader.biWidth;
         m_lVidHeight = abs(pviBmp->bmiHeader.biHeight);
-        // m_lVidPitch  = (m_lVidWidth * 3 + 3) & ~(3); // We are forcing RGB24
+  */      // m_lVidPitch  = (m_lVidWidth * 3 + 3) & ~(3); // We are forcing RGB24
 
 
-		m_frame->width = m_lVidWidth;
-		m_frame->height = m_lVidHeight;
+		//m_frame->width = m_lVidWidth;
+		//m_frame->height = m_lVidHeight;
 
 
     }// try
     catch(...)
     {
-		std::cout << "Failed to set media type in the renderer. Unhandled exception" << std::endl;
+        //Msg(TEXT("Failed to set media type in the renderer. Unhandled exception hr=0x%x"), E_UNEXPECTED);
         return hr;
     }
 
@@ -270,59 +241,41 @@ HRESULT DSMemoryRenderer::DoRenderSample( IMediaSample * pSample )
 
 	BYTE* pSampleBuffer = 0;
 
-    try
-    {
-		//Msg(TEXT("yoyo..\n"));   
+    try {
+
+		hr = pSample->GetPointer( &pSampleBuffer );
 		long sampleSize = pSample->GetSize();
 
-		//fprintf(stderr,"before get pointer..\n");
-		hr = pSample->GetPointer( &pSampleBuffer );
-		// fprintf(stderr,"get image..");
-		// fprintf(stderr,"get buffer=%i size=%i\n",pSampleBuffer,sampleSize);
-		if ((!m_frame->buffer) || ((long)m_frame->buffersize < sampleSize))
+		if (S_OK == hr) 
 		{
-			if (m_frame->buffer) delete [] m_frame->buffer;
-			m_frame->buffer = new unsigned char[sampleSize];
-			m_frame->buffersize = sampleSize;
-		};
 
-		// Tests witch MMX enabled memcpy have unveiled that
-		// there is no reason to clutter the sources with
-		// those things - the gain is minimal
-		
-		m_base->CheckOut();
-		memcpy(m_frame->buffer,pSampleBuffer,sampleSize);
-		//tpFlipRGB(m_frame->buffer,m_frame->width * m_frame->height,4);
-		m_base->CheckIn();
+			m_base->CheckOut();
+
+			m_base->setImage(m_base->s(), m_base->t(), 1, GL_BGRA, GL_BGRA, 
+				GL_UNSIGNED_BYTE, pSampleBuffer, osg::Image::NO_DELETE, 1);
+
+			m_base->CheckIn();
+
+
+		}
 		
     }
     catch(...)
     {
+		osg::notify(osg::WARN) << "Exception capturing the video sample!" << std::endl;
     
     }
     return hr;
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////////
-// PUBLIC: Standard services 
-///////////////////////////////////////////////////////////////////////////////
-
-
-IntranelStreamVideo::IntranelStreamVideo(): GenericVideo(), 
-	m_frame(new tpVideoFrame),
+IntranelStreamVideo::IntranelStreamVideo():m_frame(0),
 	managed(false),
 	m_pCapture(NULL)
 {
-	m_frame->buffer=NULL;
-	m_frame->buffersize=0;
+	//m_frame->buffer=NULL;
+	//m_frame->buffersize=0;
 	pixelsize=4;
 	pixelformat=VIDEOFORMAT_BGRA32;
-	xsize=720;
-	ysize=576;
-	m_frame->width = xsize;
-	m_frame->height = ysize;
 }
 
 IntranelStreamVideo::IntranelStreamVideo(const IntranelStreamVideo &)
@@ -357,19 +310,19 @@ IntranelStreamVideo::open()
 
 	hr = CoCreateInstance((REFCLSID)CLSID_FilterGraph, NULL, CLSCTX_INPROC,
 		IID_IGraphBuilder,(void**)&m_pGB);
+
 	if( FAILED(hr))
 	{
-		//Msg(TEXT("Failed to create filter graph.\nhr = 0x%08x"), hr);
+		osg::notify() << "Failed to create filter graph." << std::endl;
+
 		exit(-1);
 	}
 
-	AddToRot(m_pGB,&this->m_dwRegister);
-
-	pDMR = new DSMemoryRenderer(m_frame,this,NULL,&hr);
+	pDMR = new DSMemoryRenderer(this,NULL,&hr);
 
 	if (FAILED(hr) || !pDMR)
 	{
-		std::cerr<<"ERROR:Can't create a DsMemoryRenderer.."<<std::endl;
+		std::cerr<<"Can't create a memory renderer.."<<std::endl;
 		exit(-1);
 	}
 
@@ -378,7 +331,8 @@ IntranelStreamVideo::open()
 	hr = m_pGB->AddFilter(m_pRenderer, L"Memory Renderer");
 	if (FAILED(hr))
 	{
-		//Msg(TEXT("Could not add renderer filter to graph.  hr=0x%x"), hr);
+		osg::notify(osg::FATAL) << "Could not add renderer filter to graph."
+			<< std::endl;
 		exit(-1);
 	};
 
@@ -387,7 +341,7 @@ IntranelStreamVideo::open()
 }
 
 void
-IntranelStreamVideo::close()
+IntranelStreamVideo::close(bool waitforthread /*= true*/)
 {
 
 	OAFilterState _filter_state;
@@ -397,12 +351,7 @@ IntranelStreamVideo::close()
 	if (FAILED(_r) || _filter_state != State_Stopped)
 	{
 		if (FAILED(_r = m_pMC->StopWhenReady())) _r = m_pMC->Stop();
-	};
-
-	
-	//	The following code is needed to get rid of all filters in
-	//	the graph. 
-	 
+	}
 
 	// Enumerate the filters in the graph.
 	IEnumFilters *pEnum = NULL;
@@ -419,18 +368,16 @@ IntranelStreamVideo::close()
 			 pFilter->Release();
 		}
 		pEnum->Release();
-	}
-
-	RemoveFromRot(this->m_dwRegister);
+	};
 	
 }
 
 void
 IntranelStreamVideo::start()
 {
-
 	int repeatCount(0);
-	int timeOut(20);
+	int timeOut(50);
+	int maxRepeatCount(50);
 
 	if (m_pMC)
 	{
@@ -440,7 +387,7 @@ IntranelStreamVideo::start()
 			OAFilterState _pfs;
 			HRESULT _res;
 
-			while (repeatCount < 20) 
+			while (repeatCount < maxRepeatCount) 
 			{
 				
 				_res = m_pMC->GetState(timeOut,&_pfs);
@@ -455,7 +402,7 @@ IntranelStreamVideo::start()
 				if (VFW_S_STATE_INTERMEDIATE == _res) 
 				{
 
-					std::cout << "Waiting for filtergraph (" << repeatCount << ")" << std::endl;
+					osg::notify() << "osgart_intranel: Waiting for filtergraph (" << repeatCount << ")" << std::endl;
 
 					repeatCount++;
 
@@ -464,7 +411,7 @@ IntranelStreamVideo::start()
 				} else 
 				{
 
-					std::cout << "Error starting filtergraph ..." << std::endl;
+					osg::notify() << "osgart_intranel: Error starting filtergraph!" << std::endl;
 					break;
 				}
 			}
@@ -477,9 +424,10 @@ void
 IntranelStreamVideo::stop()
 {
 	if (m_pMC)
-		while (m_pMC->Stop() != S_OK)
+		if (m_pMC->StopWhenReady() != S_OK)
 		{
-			std::cerr << "Trying to stop the stream!" << std::endl;
+			osg::notify(osg::WARN) << "Can't stop the video stream." << std::endl;
+			exit(-1);
 		}
 }
 
@@ -496,7 +444,7 @@ IBaseFilter *GetFilter(const char* name_filter)
     IID_ICreateDevEnum, (void **)&pSysDevEnum);
 	if (FAILED(hr))
 	{
-		osg::notify(osg::WARN) << "osg_intranel: Error can't create sys enumerator!" << std::endl;
+		Msg(TEXT("Error can't create sys enumerator.."));
 	} 
 	// Obtain a class enumerator for the video compressor category.
 	IEnumMoniker *pEnumCat = NULL;
@@ -524,8 +472,7 @@ IBaseFilter *GetFilter(const char* name_filter)
 				WideCharToMultiByte(CP_ACP, 0, varName.bstrVal, -1, szName, 64, 0, 0);
 				if (strcmp(szName,name_filter)==0)
 				{
-					osg::notify() << "osgart_intranel: Found `" << szName << "'" << std::endl;
-
+					fprintf(stderr,"%s found..\n",szName);
 					hr = pMoniker->BindToObject(NULL, NULL, IID_IBaseFilter,(void**)&myFilter);
 					if (SUCCEEDED(hr))
 					{
@@ -533,7 +480,7 @@ IBaseFilter *GetFilter(const char* name_filter)
 					}
 					else
 					{
-						osg::notify() << "osgart_intranel: Can't bind to " << szName << std::endl ;
+						Msg(TEXT("Stupid code.."));
 					}
 				}
             }
@@ -549,33 +496,6 @@ pSysDevEnum->Release();
 return myFilter;
 
 }
-
-IAMStreamConfig* GetIAMStreamConfig(IBaseFilter* pFilter)
-{
-	IAMStreamConfig *_result = 0;
-	IEnumPins *_enum = 0;
-	IPin *_pin = 0;
-
-	HRESULT _hr = pFilter->EnumPins(&_enum);
-	if (FAILED(_hr)) {
-		std::cerr << "Filter Enumeration failed" << std::endl;
-		return 0;
-	}
-
-	while (_enum->Next(1, &_pin, 0) == S_OK) {
-
-		_hr = _pin->QueryInterface(IID_IAMStreamConfig, (void**)&_result);
-		if (S_OK == _hr) {
-			return _result;
-		}
-		_pin->Release();
-	}
-	_enum->Release();
-
-	return 0;
-}
-
-
 
 
 HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
@@ -614,120 +534,89 @@ HRESULT IntranelStreamVideo::CaptureVideo(IBaseFilter *pRenderer)
     hr = m_pCapture->SetFiltergraph(m_pGB);
     if (FAILED(hr))
     {
-		std::cout << "Failed to set capture filter graph!" << std::endl;
+        Msg(TEXT("Failed to set capture filter graph!  hr=0x%x\0"), hr);
         return hr;
     }
 
 	IBaseFilter *myRTSPFilter=GetFilter("RTSP Source");
-	
 	hr = m_pGB->AddFilter(myRTSPFilter, L"Video Network Proxy");
-    if (FAILED(hr)) {
-		std::cout << "Failed to add filter!" << std::endl;
+    if (FAILED(hr))
+    {
+        Msg(TEXT("Failed to add filter.. hr=0x%x\0"), hr);
         return hr;
     }
-
 	DisplayFilter(myRTSPFilter);
 
-	IBaseFilter *myFFDShowFilter = GetFilter("ffdshow MPEG-4 Video Decoder");
-	
+	IBaseFilter *myFFDShowFilter=GetFilter("ffdshow MPEG-4 Video Decoder");
 	hr = m_pGB->AddFilter(myFFDShowFilter, L"Video Conversion");
-    if (FAILED(hr)) {
-		std::cout << "Failed to add filter!" << std::endl;
+    if (FAILED(hr))
+    {
+        Msg(TEXT("Failed to add filter.. hr=0x%x\0"), hr);
         return hr;
     }
 
 	IPin* rtspPinOut;
 	IPin* ffdshowPinOut;
 	IPin* ffdshowPinIn;
-	IPin* rendererPinIn = 0;
-	
-	if (FAILED(GetPin(myRTSPFilter, PINDIR_OUTPUT, "Video Out", &rtspPinOut))) {
-		std::cout << "Can't find Video Out pin" << std::endl;
-	}
-	
-	if (FAILED(GetPin(myFFDShowFilter, PINDIR_INPUT, "In", &ffdshowPinIn))) {
-		std::cout << "Can't find In pin" << std::endl;
-	}
-	
-	if (FAILED(GetPin(myFFDShowFilter, PINDIR_OUTPUT,"Out", &ffdshowPinOut))) {
-		std::cout << "Can't find Out pin" << std::endl;
-	}
 
-	if (FAILED(GetPin(pRenderer, PINDIR_INPUT, "In", &ffdshowPinOut))) {
-		std::cout << "Can't find Out pin" << std::endl;
-	}
+	GetPin(myRTSPFilter, PINDIR_OUTPUT,"Video Out", &rtspPinOut);
+	GetPin(myFFDShowFilter, PINDIR_INPUT,"In", &ffdshowPinIn);
+	GetPin(myFFDShowFilter, PINDIR_OUTPUT,"Out", &ffdshowPinOut);
 
-    m_pGB->Connect(rtspPinOut,ffdshowPinIn);
-	if (FAILED(hr)) {
-		std::cout << "Failed to connect pin! (RTSP > ffdshow)" << std::endl;
+	hr=m_pGB->Connect(rtspPinOut, ffdshowPinIn);
+	if (FAILED(hr))
+    {
+		Msg(TEXT("DEBUG:Failed to connect pin..  hr=0x%x\0"), hr);
         return hr;
     }
-
-	m_pGB->Connect(ffdshowPinOut,rendererPinIn);
-	if (FAILED(hr)) {
-		std::cout << "Failed to connect pin! (ffdshow > renderer)" << std::endl;
-        return hr;
-    }
-
-	// DumpPins(pRenderer);
-
-	m_pFSrc = myFFDShowFilter;
-#if 0
-	pSrcConfig = GetIAMStreamConfig(myFFDShowFilter);
-	if (pSrcConfig) {
-		std::cout << "Failed to find a Stream config (RTSP)" << std::endl;
-        // return hr;
-	}
-
-#endif
+	
+	// DisplayFilter(myFFDShowFilter);
 
 	IPin *pIn = NULL;
 
-	pIn = ffdshowPinOut;
-
-
+	pIn=ffdshowPinOut;
+	
 	AM_MEDIA_TYPE am_media;
-	// GetMediaType(rtspPinOut,&am_media);
-	// GetMediaType(ffdshowPinIn,&am_media);
-	if (S_OK == GetMediaType(ffdshowPinIn,&am_media)) {
-		// pSrcConfig->SetFormat(&am_media);
-	} else {
-		std::cout << "Could not get media format." << std::endl;
-	}
-
+	//GetMediaType(rtspPinOut,&am_media);
+	//GetMediaType(ffdshowPinIn,&am_media);
+	GetMediaType(ffdshowPinOut,&am_media);
+//	if (S_OK == GetMediaType(pIn,&am_media,srcinfo)) 
+	//	pSrcConfig->SetFormat(&am_media);
+	//else 
+	//	m_src->show_source = TRUE;
+	
+	//if (m_src->show_source) 
+	
 	DisplayProperties(ffdshowPinOut);
-
-	DisplayFilter(myFFDShowFilter);
-
-
+	
     // Render the preview pin on the video capture filter.
     // This will create and connect any necessary transform filters.
     // We pass a pointer to the IBaseFilter interface of our DSMemoryRendere
     // video renderer, which will draw store the frames in the dedicated memory.
-	/* 
-	hr = m_pCapture->RenderStream(NULL, &MEDIATYPE_Video,
-		myRTSPSource, NULL, pRenderer);
-	*/
-
-	hr = m_pCapture->RenderStream(&PIN_CATEGORY_VBI, 
-		&MEDIATYPE_Stream, myRTSPFilter, NULL, pRenderer);
-    
-	if (FAILED(hr))
+   // hr = m_pCapture->RenderStream (NULL, &MEDIATYPE_Video,
+   //                                m_pFSrc, NULL, NULL);
+    hr = m_pCapture->RenderStream (NULL, &MEDIATYPE_Video,
+									myFFDShowFilter, NULL, pRenderer);
+    if (FAILED(hr))
     {
-		std::cout << "Could not render the capture stream." << std::endl;
+        Msg(TEXT("Could not render the capture stream.  hr=0x%x\r\n\r\n"), hr);
         return hr;
     }
 	else
 	{
-		std::cout << "All components are connected." << std::endl;
+		//Msg(TEXT("Connected !!!"));
 	}
+
+
+	//if (m_src->show_filter) 
+//		DisplayFilter();
 
     return S_OK;
 }
 
-
-
 HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
+
+//	if (!srcinfo) return E_FAIL;
 
 	CComPtr<IEnumMediaTypes> e_mt;
 	pin->EnumMediaTypes(&e_mt);
@@ -736,34 +625,36 @@ HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 
 	AM_MEDIA_TYPE *n_mt = 0;
 	
-	while (S_OK == e_mt->Next(1, &n_mt, NULL)) {
-
-		if (n_mt->majortype == MEDIATYPE_Video)
+	while (S_OK == e_mt->Next(1, &n_mt,NULL)) 
+	{	
+		if (n_mt->majortype==MEDIATYPE_Video)
 		{
-			if (n_mt->subtype == MEDIASUBTYPE_RGB32)
+
+			VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;
+
+				std::cout << "Using Size: " << 
+					pvi->bmiHeader.biWidth << "x" << pvi->bmiHeader.biHeight
+					<< std::endl;
+
+			if (n_mt->subtype==MEDIASUBTYPE_RGB32)
 			{
-				VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;
 
-				if ((pvi->bmiHeader.biWidth == m_frame->width) && 
-				  	(pvi->bmiHeader.biHeight == m_frame->height)) 
-				{
+				this->allocateImage(pvi->bmiHeader.biWidth,pvi->bmiHeader.biHeight,1,
+					GL_RGBA,GL_UNSIGNED_BYTE, 1);
 
-					std::cout << "Using RGB32 " <<
-						pvi->bmiHeader.biWidth << "x" << 
-						pvi->bmiHeader.biHeight << std::endl;
+				CopyMediaType(mt,n_mt);
+				DeleteMediaType(n_mt);				
 
-					CopyMediaType(mt,n_mt);
-					DeleteMediaType(n_mt);
-					return S_OK;
-
-				} else {
-
-					fprintf(stderr,"Skip Type=Video RGB32 %dx%d\n",
-						pvi->bmiHeader.biWidth, pvi->bmiHeader.biHeight);
-				}
+				return S_OK;
 			}
 		}
-		DeleteMediaType(n_mt);
+		else 
+			DeleteMediaType(n_mt);
+
+		//VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;		
+		//if ((pvi->bmiHeader.biWidth == srcinfo->width) && 
+		//	(pvi->bmiHeader.biHeight == srcinfo->height)) {
+		
 	}
 
 	return E_FAIL;
@@ -793,9 +684,10 @@ HRESULT IntranelStreamVideo::GetPin(IBaseFilter *pFilter,
 
 		if ((PinInfo.dir == PinDir)&&(strcmp(szName,name)==0))
 		{
-			fprintf(stderr,"pin %d id=%d pin name=%s\n",PinDir,PinInfo.dir,szName);
+			fprintf(stderr,"pin %i id=%i pin name=%s\n",PinDir,PinInfo.dir,szName);
+
 			//HACK
-			// Msg(TEXT("DEBUG:Find Pin.."));
+			Msg(TEXT("DEBUG:Find Pin.."));
             pEnum->Release();
 
             *ppPin = pPin;
@@ -997,20 +889,14 @@ const int& IntranelStreamVideo::IsUpdated() const {
 void
 IntranelStreamVideo::update()
 {
-	// OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
+	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
-	if (m_frame->buffer && m_image.valid()) {
-		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_RGBA, 
+	/*
+	if (m_frame->buffer) 
+	{
+		this->setImage(this->s(), this->t(), 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, m_frame->buffer, osg::Image::NO_DELETE, 1);
         
 	}
+	*/
 }
-
-
-///////////////////////////////////////////////////////////////////////////////
-// PROTECTED : Services
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// PRIVATE : Services
-///////////////////////////////////////////////////////////////////////////////
