@@ -1956,6 +1956,7 @@
 		4A174BC90AD9D66000B9FC9B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARTOOLKIT_4_ROOT = "$(SRCROOT)/../../ARToolKit4";
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
@@ -1968,10 +1969,10 @@
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4_tracker;
 			};
@@ -1980,6 +1981,7 @@
 		4A174BCA0AD9D66000B9FC9B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARTOOLKIT_4_ROOT = "$(SRCROOT)/../../ARToolKit4";
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
@@ -1992,10 +1994,10 @@
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4_tracker;
 			};
@@ -2060,6 +2062,8 @@
 		4A38FAD20AD5EC05006DC8DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARTOOLKIT_4_NFT_ROOT = "$(SRCROOT)/../../ARToolKitNFT";
+				ARTOOLKIT_4_ROOT = "$(SRCROOT)/../../ARToolKit4";
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
@@ -2072,10 +2076,10 @@
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4nft_tracker;
 			};
@@ -2084,6 +2088,8 @@
 		4A38FAD30AD5EC05006DC8DB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARTOOLKIT_4_NFT_ROOT = "$(SRCROOT)/../../ARToolKitNFT";
+				ARTOOLKIT_4_ROOT = "$(SRCROOT)/../../ARToolKit4";
 				DYLIB_COMPATIBILITY_VERSION = "";
 				DYLIB_CURRENT_VERSION = "";
 				EXECUTABLE_EXTENSION = so;
@@ -2096,10 +2102,10 @@
 					../include,
 					"$(HEADER_SEARCH_PATHS_QUOTED_1)",
 				);
-				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/include\"";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/include\"";
 				INSTALL_PATH = "\"$(SRCROOT)/../bin\"";
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
-				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit4/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(ARTOOLKIT_4_ROOT)/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				PRODUCT_NAME = osgart_artoolkit4nft_tracker;
 			};
