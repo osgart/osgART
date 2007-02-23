@@ -888,7 +888,11 @@ const int& IntranelStreamVideo::IsUpdated() const {
 void
 IntranelStreamVideo::update()
 {
-	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
+
+	m_isupdated = true;
+
+
+	// OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
 
 	/*
 	if (m_frame->buffer) 
