@@ -448,23 +448,8 @@ ARToolKit4NFTTracker::update()
 					
 		// apply transformation matrix and activate the right pattern
 		if (active_surface >= 0){
-
 			(static_cast<NFTMarker*>(m_markerlist[active_surface].get()))->update(patt_trans1);
-			//(static_cast<NFTART4Marker*>(pattList[active_surface]))->m_valid=true;
 		}
-		else
-		{
-			(static_cast<NFTMarker*>(m_markerlist[active_surface].get()))->update(NULL);
-		}
-		// tell nodes about update
-		//for (MarkerList::iterator iter = m_markerlist.begin(); 
-		//	iter != m_markerlist.end(); 
-		//	iter++)		
-		//{
-		//	Marker* currentMarker=(*iter);
-		//	currentMarker->m_updated=true;			
-		//}
-
 }
 
 
