@@ -1,30 +1,32 @@
-#include "osgART/VideoBackground"
+#include <osgART/VideoBackground>
 
-#include "osgDB/Registry"
-#include "osgDB/Input"
-#include "osgDB/Output"
+#include <osg/Notify>
+#include <osg/Object>
+#include <osg/io_utils>
 
-using namespace osg;
-using namespace osgDB;
+#include <osgDB/Registry>
+#include <osgDB/Input>
+#include <osgDB/Output>
 
 // forward declare functions to use later.
-bool VideoBackground_readLocalData(Object& obj, Input& fr);
-bool VideoBackground_writeLocalData(const Object& obj, Output& fw);
+bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr);
+bool VideoBackground_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
 
 // register the read and write functions with the osgDB::Registry.
-RegisterDotOsgWrapperProxy g_artVideoBackgroundProxy
+osgDB::RegisterDotOsgWrapperProxy VideoBackground_Proxy
 (
-    new osgART::VideoBackground,
+    0L,
     "VideoBackground",
     "Object Node Group VideoBackground",
-    &VideoBackground_readLocalData,
-    &VideoBackground_writeLocalData
+    VideoBackground_readLocalData,
+    VideoBackground_writeLocalData
 );
 
-bool VideoBackground_readLocalData(Object& obj, Input& fr) {
-    bool iteratorAdvanced = false;
+bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 
-	osgART::VideoBackground& sw = static_cast<osgART::VideoBackground&>(obj);
+	bool iteratorAdvanced = false;
+
+	std::cout << "\a\b" << std::endl;
 
 	/*
     if (fr[0].matchWord("NewChildDefaultValue"))
@@ -95,7 +97,7 @@ bool VideoBackground_readLocalData(Object& obj, Input& fr) {
 }
 
 
-bool VideoBackground_writeLocalData(const Object& obj, Output& fw)
+bool VideoBackground_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 {
     /*
 	const MultiSwitch& sw = static_cast<const MultiSwitch&>(obj);
