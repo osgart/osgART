@@ -120,6 +120,13 @@ namespace osgART {
 		inline void setUndistortionTrackerID(int trackerID) {
 			m_trackerid_undistort = trackerID;
 		}
+
+
+		/**
+ 		 * Set the connected video on the fly.
+		 * \param video an initialised video
+		 */
+		virtual void setVideo(GenericVideo* video);
 		
 	    
 	protected: 

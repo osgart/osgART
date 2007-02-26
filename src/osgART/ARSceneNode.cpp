@@ -1,6 +1,6 @@
 #include "osgART/ARSceneNode"
 
-#include <osg/Framestamp>
+#include <osg/FrameStamp>
 #include <osg/Notify>
 
 namespace osgART 
@@ -33,7 +33,6 @@ namespace osgART
 							(*i).first->setImage((*i).second);
 							(*i).first->update();
 						}
-
 					}
 					
 					i++;
@@ -67,7 +66,7 @@ namespace osgART
 	}
 
 	ARSceneNode::ARSceneNode(const ARSceneNode& node, 
-		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/)
+		const osg::CopyOp& copyop /* = osg::CopyOp::SHALLOW_COPY*/)
 		: Group(node,copyop)
 	{
 	}
@@ -79,7 +78,7 @@ namespace osgART
 	void 
 	ARSceneNode::add(GenericVideo* video)
 	{
-		if (_videomap.size() == 0 || _connectionmap.size() == 0) 
+		if (_videomap.size() == 0 && _connectionmap.size() == 0) 
 		{			
 			this->setUpdateCallback(new ARSceneNodeCallback(this));
 		}
@@ -91,17 +90,21 @@ namespace osgART
 	ARSceneNode::connect(GenericTracker* tracker,
 		GenericVideo* video) 
 	{
-		if (video == 0L || tracker == 0L) return false;
-
-        if (_videomap.size() == 0 || _connectionmap.size() == 0) 
-		{			
-			this->setUpdateCallback(new ARSceneNodeCallback(this));
+		if (video == 0L || tracker == 0L) 
+		{
+			return false;
 		}
 
 		if (!tracker->init(video->getWidth(),
 			video->getHeight())) 
 		{
+			osg::notify(osg::WARN) << "osgART::ARSceneNode::connect(tracker,video): Can not connect video and tracker, initialisation failed!" << std::endl;
 			return false;
+		}
+			
+        if (_videomap.size() == 0 && _connectionmap.size() == 0) 
+		{			
+			this->setUpdateCallback(new ARSceneNodeCallback(this));
 		}
 
 		_connectionmap[tracker] = video;

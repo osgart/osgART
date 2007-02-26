@@ -1,5 +1,7 @@
 #include <osgART/VideoBackground>
 
+#include <osgART/VideoManager>
+
 #include <osg/Notify>
 #include <osg/Object>
 #include <osg/io_utils>
@@ -15,9 +17,9 @@ bool VideoBackground_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
 // register the read and write functions with the osgDB::Registry.
 osgDB::RegisterDotOsgWrapperProxy VideoBackground_Proxy
 (
-	new osgART::VideoBackground,
+	new osgART::VideoBackground /* 0L */,
     "VideoBackground",
-    "Object Node Group VideoBackground",
+    "Object Node Group GenericVideoObject VideoLayer VideoBackground",
     VideoBackground_readLocalData,
     VideoBackground_writeLocalData
 );
@@ -26,9 +28,44 @@ bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 
 	bool iteratorAdvanced = false;
 
-	std::cout << "\a\b" << std::endl;
+	osgART::VideoBackground &node = 
+		static_cast<osgART::VideoBackground&>(obj);
+	
+	/*osg::notify() */ std::cerr << "Loading VideoBackground" << std::endl;
+
+	int _video_id;
+
+	
+	if (fr[0].matchWord("connected_video")) {
+
+        if (fr[1].getInt(_video_id))
+		{
+	
+			osg::ref_ptr<osgART::GenericVideo> _video = 
+				osgART::VideoManager::getInstance()->getVideo(_video_id);
+
+			if (_video.valid()) 
+			{
+
+				node.setVideo(_video.get());
+
+				node.init();
+
+				_video->start();
+			} else 
+			{
+				std::cout << "Error getting the video!" << std::endl;
+			}
+		
+			fr += 2;
+
+            iteratorAdvanced = true;
+        }
+    }
 
 	/*
+
+	
     if (fr[0].matchWord("NewChildDefaultValue"))
     {
         if (fr[1].matchWord("TRUE")) 

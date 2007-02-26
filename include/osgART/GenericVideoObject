@@ -129,13 +129,13 @@ namespace osgART {
 		/**
 		 * Set the connected video stream
 		 */
-		 void setVideo(GenericVideo* video);
+		 virtual void setVideo(GenericVideo* video);
 		
 				
 		/**
 		 * Get the connected video stream
 		 */
-		 GenericVideo* getVideo() const;
+		 virtual GenericVideo* getVideo() const;
 	    
 	    
 	protected:

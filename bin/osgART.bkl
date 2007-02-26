@@ -8,13 +8,13 @@
 		<include>../include</include>
 		<include>/home/seichter/Projects/artoolkit/include</include>
 
-		<sources> $(addPrefixToList('../src/osgART/','Foundation.cpp Marker.cpp VideoBillboard.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp VideoPlane.cpp VideoTexCallback.cpp VideoTexture.cpp GenericTracker.cpp VideoTextureRectangle.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp VideoTexRectCallback.cpp ARTTransformCallback.cpp Utils.cpp VideoImageStream.cpp VideoTextureBase.cpp VideoBackground.cpp'))</sources>
+		<sources> $(addPrefixToList('../src/osgART/','ARSceneNode.cpp Foundation.cpp Marker.cpp VideoBillboard.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp VideoPlane.cpp VideoTexCallback.cpp VideoTexture.cpp GenericTracker.cpp VideoTextureRectangle.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp VideoTexRectCallback.cpp ARTTransformCallback.cpp TransformFilterCallback.cpp Utils.cpp VideoImageStream.cpp VideoTextureBase.cpp VideoBackground.cpp'))</sources>
 
 		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
 
 	</dll>
 
-	<exe id="osgART_Example">
+	<exe id="osgart_example">
 
 		<cxx-rtti>on</cxx-rtti>
 		<app-type>console</app-type>
@@ -66,6 +66,24 @@
 		
 	</module>
 
+	<module id="osgart_artoolkitMMauto_tracker">
+		<cxx-rtti>on</cxx-rtti>
+		<sources>$(addPrefixToList('../src/osgART/Tracker/ARToolKitMMAuto/','ARToolKitMMAutoTracker.cpp MultiMarker.cpp SingleMarker.cpp Main.cpp'))</sources>
+		<include>/home/seichter/Projects/artoolkit/include</include>
+
+		<include>../include</include>
+		<include>.</include>
+		
+		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
+
+		<library>osgART</library>
+
+		<sys-lib>osg</sys-lib>
+		<sys-lib>ARgsub_lite</sys-lib>
+		<sys-lib>AR</sys-lib>
+		<sys-lib>ARMulti</sys-lib>
+		
+	</module>
 
 	<module id="osgart_dummyimage">
 		<cxx-rtti>on</cxx-rtti>
@@ -81,5 +99,21 @@
 		<sys-lib>osg</sys-lib>
 		<sys-lib>osgDB</sys-lib>
 	</module>
+
+	<module id="osgdb_osgART">
+		<cxx-rtti>on</cxx-rtti>
+		<sources>$(addPrefixToList('../src/osgPlugins/osgART/','IO_ARSceneNode.cpp  IO_GenericVideo.cpp  IO_VideoBackground.cpp'))</sources>
+		<include>../include</include>
+		<include>.</include>
+		
+		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
+
+		<library>osgART</library>
+
+		<sys-lib>osg</sys-lib>
+		<sys-lib>osgDB</sys-lib>
+	</module>
+
+	
 
 </makefile>

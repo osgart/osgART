@@ -33,7 +33,7 @@ bool ARSceneNode_readLocalData(osg::Object& obj, osgDB::Input& fr)
 		static_cast<osgART::ARSceneNode&>(obj);
 
 	
-	/*osg::notify() */ std::cerr << "Loading something" << std::endl;
+	/*osg::notify() */ std::cerr << "Loading ARSceneNode" << std::endl;
 	
 	if (fr[0].matchWord("video_plugin")) {
 
@@ -66,7 +66,9 @@ bool ARSceneNode_readLocalData(osg::Object& obj, osgDB::Input& fr)
 		}
 	}
 
-	if (fr[0].matchWord("connect")) {
+	if (fr[0].matchWord("tracker_connect")) {
+
+		std::cerr << "found ARSceneNode::connect" << std::endl;
 
         if (fr[1].getStr()) {
 
@@ -81,7 +83,13 @@ bool ARSceneNode_readLocalData(osg::Object& obj, osgDB::Input& fr)
 				osg::ref_ptr<osgART::GenericTracker> _tracker = 
 					osgART::TrackerManager::getInstance()->getTracker(_tracker_id);
 
-				node.connect(_tracker.get(),_video.get());
+				if (_tracker.valid() && _video.valid()) 
+				{
+					node.connect(_tracker.get(),_video.get());
+				} else 
+				{
+					std::cerr << "Error either tracker or video not available" << std::endl;
+				}
                 
 			}
 

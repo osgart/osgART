@@ -58,17 +58,13 @@ namespace osgART {
 	VideoLayer::VideoLayer(
 		GenericVideo* video /* = 0L*/,
 		int layerD)
-		: GenericVideoObject(video) ,
+		: GenericVideoObject(video),
+		m_width(video ? video->getWidth() : 0),
+		m_height(video ? video->getHeight() : 0),
 		m_layerDepth(layerD),
 		m_alpha(-1),
 		m_trackerid_undistort(0)
 	{
-		// Should check whether it's a valid video id!
-		// m_videoId = videoId;
-		
-		m_width = video->getWidth();
-		m_height = video->getHeight();
-
 	}
 
 
@@ -81,6 +77,17 @@ namespace osgART {
 
 	VideoLayer::~VideoLayer()
 	{	    
+	}
+
+
+	/* virtual */
+	void
+	VideoLayer::setVideo(GenericVideo* video)
+	{
+		GenericVideoObject::setVideo(video);
+
+		m_width = (video) ? video->getWidth() : 0;
+		m_height = (video) ? video->getHeight() : 0;
 	}
 
 	/* virtual */
