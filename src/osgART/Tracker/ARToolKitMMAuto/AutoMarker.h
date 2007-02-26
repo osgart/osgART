@@ -35,15 +35,12 @@ public:
 	osg::Matrixd	getCATransMatVariance();
     		
 	int				getNumberOfCATransMatSamples();
-	
-	bool			isSeen();
-	
+			
 	double			getConfidence();
 	void			setConfidence(double cf);
 	void			addCATransMat(osg::Matrixd*);
 
 	void			setValid();
-	void			setSeen();
 	
 	void			overrideupdateTransform(const osg::Matrix& transform);
 

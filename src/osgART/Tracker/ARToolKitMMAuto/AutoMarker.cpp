@@ -104,11 +104,6 @@ int AutoMarker::getNumberOfCATransMatSamples()
 	return m_caTransMatList.size();
 }
 
-bool AutoMarker::isSeen()
-{
-	return m_seen;
-}
-
 double AutoMarker::getConfidence()
 {
 	return m_confidence;
@@ -136,22 +131,16 @@ void AutoMarker::setValid()
 {
 	m_valid = true;
 }
-void AutoMarker::setSeen()
-{
-	m_seen = true;
-}
-
 
 void AutoMarker::overrideupdateTransform(const osg::Matrix& transform){
 	m_valid = true;
-	m_seen = true;
 	m_active = true;
 	
-	//updateTransform(transform); // directly update transform
+	updateTransform(transform); // directly update transform
 	// working code up to here
 	
 	// experimental - filter transform before update
-	filteredUpdate(osg::Matrix(transform));
+	//filteredUpdate(osg::Matrix(transform));
 	
 }
 

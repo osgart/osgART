@@ -45,7 +45,6 @@ namespace osgART {
 		virtual void setActive(bool a);
 
 		void update(ARMarkerInfo* markerInfo);
-		void filteredUpdate(osg::Matrixd& matrix);
 		
 		int getPatternID();
 		double getPatternWidth();
@@ -71,8 +70,6 @@ namespace osgART {
 		double          patt_trans[3][4];
 		
 		double			m_confidence;
-		
-		SmoothAs*		m_smoothAs;
 		
 		friend class ARToolKitTracker;
 		friend class ARToolKitMMAutoTracker;

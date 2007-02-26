@@ -407,14 +407,14 @@ void ARToolKitMMAutoTracker::update()
 				//std::cout << "MMTRacker autoMarker identified" << std::endl;
 				
 				//if (autoMarker->isValid()) std::cout << "valid yes" << std::endl;
-				//if (autoMarker->isSeen()) std::cout << "seen yes" << std::endl;
+				
 				//if (autoMarker->isActive()) std::cout << "active yes" << std::endl;
 
 				use_autoMarker = true;
 				autoMarker->update(&marker_info[k]);
 				//std::cout << "updated marker id: " <<  marker_info[k].id << std::endl;
 				//if (autoMarker->isValid()) std::cout << "valid yes" << std::endl;
-				//if (autoMarker->isSeen()) std::cout << "seen yes" << std::endl;
+				
 				//if (autoMarker->isActive()) std::cout << "active yes" << std::endl;
 				//std::cout << "********" << std::endl;
 			} 
