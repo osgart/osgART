@@ -17,7 +17,7 @@ bool GenericVideo_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
 osgDB::RegisterDotOsgWrapperProxy GenericVideo_Proxy
 (
 	new osgART::GenericVideo,
-	"GenericVideo",
+	"osgART::GenericVideo",
 	"Object Image ImageStream VideoImageStream GenericVideo",
     GenericVideo_readLocalData,
     GenericVideo_writeLocalData
@@ -54,9 +54,7 @@ bool GenericVideo_readLocalData(osg::Object& obj, osgDB::Input& fr)
 
 bool GenericVideo_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 {
-
 	osg::notify() << "Saving something" << std::endl;
-
 
 	/* implement stuff here :) */
     return true;

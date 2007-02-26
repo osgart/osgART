@@ -28,13 +28,21 @@
 namespace osgART 
 {
 
-
 	class ARSceneNodeCallback;
 
 	class OSGART_EXPORT ARSceneNode : public osg::Group
 	{
 	public:
+	
+		typedef std::map<GenericTracker*, GenericVideo*> ConnectionMap;
+		typedef std::deque<GenericVideo*>  VideoMap;
+	
 		ARSceneNode();
+		
+        ARSceneNode(const ARSceneNode&, 
+			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+		
+		META_Node(osgART,ARSceneNode)
 		
 		void add(GenericVideo* video);		
 		
@@ -44,10 +52,6 @@ namespace osgART
 	protected:
 	
 		friend class ARSceneNodeCallback;
-		
-		
-		typedef std::map<GenericTracker*, GenericVideo*> ConnectionMap;
-		typedef std::deque<GenericVideo*>  VideoMap;
 		
 		ConnectionMap _connectionmap;
 		VideoMap _videomap;

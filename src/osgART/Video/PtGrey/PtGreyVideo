@@ -103,7 +103,7 @@ public:
 	
 	bool haveNewImage;
 	
-	osgART::VideoConfiguration* getVideoConfiguration();
+	virtual osgART::VideoConfiguration* getVideoConfiguration();
     
 protected:
 

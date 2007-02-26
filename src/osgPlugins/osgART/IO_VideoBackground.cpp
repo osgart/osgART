@@ -21,8 +21,7 @@ RegisterDotOsgWrapperProxy g_artVideoBackgroundProxy
     &VideoBackground_writeLocalData
 );
 
-bool VideoBackground_readLocalData(Object& obj, Input& fr)
-{
+bool VideoBackground_readLocalData(Object& obj, Input& fr) {
     bool iteratorAdvanced = false;
 
 	osgART::VideoBackground& sw = static_cast<osgART::VideoBackground&>(obj);

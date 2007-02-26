@@ -368,8 +368,7 @@ IntranelStreamVideo::close(bool waitforthread /*= true*/)
 			 pFilter->Release();
 		}
 		pEnum->Release();
-	};
-	
+	}	
 }
 
 void
@@ -445,7 +444,7 @@ IBaseFilter *GetFilter(const char* name_filter)
 	if (FAILED(hr))
 	{
 		Msg(TEXT("Error can't create sys enumerator.."));
-	} 
+	}
 	// Obtain a class enumerator for the video compressor category.
 	IEnumMoniker *pEnumCat = NULL;
 	hr = pSysDevEnum->CreateClassEnumerator(CLSID_LegacyAmFilterCategory, &pEnumCat, 0);

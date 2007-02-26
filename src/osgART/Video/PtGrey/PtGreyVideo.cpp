@@ -357,6 +357,8 @@ PtGreyVideo::update()
 		this->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);
 
+		this->m_isupdated = true;
+
 		if (m_horizontal_flip || m_vertical_flip) 
 		{
 			if (m_horizontal_flip) this->flipHorizontal();
@@ -366,7 +368,11 @@ PtGreyVideo::update()
 
 		haveNewImage = false;
 
-	} 
+	} else {
+
+		m_isupdated = false;
+
+	}
 }
 
 void

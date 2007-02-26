@@ -83,7 +83,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgART.lib osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib"
+				AdditionalDependencies="osgART.lib osg.lib osgGA.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib"
 				OutputFile="../../bin/osgart_example.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../lib"

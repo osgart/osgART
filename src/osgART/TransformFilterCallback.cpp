@@ -1,3 +1,6 @@
+
+#include <osg/io_utils>
+
 #include "osgART/TransformFilterCallback"
 
 namespace osgART {

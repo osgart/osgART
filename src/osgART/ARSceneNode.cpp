@@ -14,6 +14,7 @@ namespace osgART
 		{
 		}
 
+	
 		void ARSceneNodeCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
 		{
 		
@@ -63,6 +64,12 @@ namespace osgART
 	ARSceneNode::ARSceneNode() :
 		osg::Group()		
 	{		
+	}
+
+	ARSceneNode::ARSceneNode(const ARSceneNode& node, 
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/)
+		: Group(node,copyop)
+	{
 	}
 
 	ARSceneNode::~ARSceneNode()
