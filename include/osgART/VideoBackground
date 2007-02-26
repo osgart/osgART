@@ -56,11 +56,11 @@ namespace osgART {
 		VideoBackground(GenericVideo* video = 0L);
 		
 		
+		/**
+		 * Copy c'tor
+		 */
 		VideoBackground(const VideoBackground&, 
-			const osg::CopyOp&);
-		
-		// VideoBackground(GenericVideo* video = 0L);
-		
+			const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
 			
 		
 		META_Node(osgART,VideoBackground)

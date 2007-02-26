@@ -72,6 +72,12 @@ namespace osgART {
 	}
 
 
+	VideoLayer::VideoLayer(const VideoLayer& videolayer,
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : 
+		GenericVideoObject(videolayer,copyop)
+	{
+	}
+
 
 	VideoLayer::~VideoLayer()
 	{	    

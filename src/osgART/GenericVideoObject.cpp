@@ -58,7 +58,6 @@ namespace osgART {
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osg::Group(video,copyop)
 	{
-
 	}
 
 	GenericVideoObject::~GenericVideoObject()

@@ -63,11 +63,20 @@ namespace osgART {
 		 * \param videoId the number of the video used for the background
 		 * \param layerDepth
 		 */
-		VideoLayer(
-			GenericVideo* video = 0L, 
+		VideoLayer(GenericVideo* video = 0L, 
 			int layerDepth = 0);
-
-
+			
+	
+		/**
+		 * Copy c'tor
+		 */
+		VideoLayer(const VideoLayer&, 
+			const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
+			
+			
+		META_Node(osgART,VideoLayer)
+			
+		
 		/**
 		 * Initialize the video layer
 		 */

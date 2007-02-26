@@ -99,13 +99,28 @@ namespace osgART {
 	{
 		m_horizontal_flip = horizontal;
 		m_vertical_flip = vertical;
+
 	}
 
 	bool
 	GenericVideo::getFrame()
 	{
 		try {
+
 			this->update();
+	
+
+            // \TODO: implement locking better!
+
+			//
+			//if (this->m_isupdated) 
+			//{
+
+			//	if (this->m_horizontal_flip) this->flipHorizontal();
+			//	if (this->m_vertical_flip) this->flipVertical();
+			//}
+
+
 		} catch(...) {
             m_isupdated = false;
 		}

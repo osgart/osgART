@@ -14,8 +14,11 @@
 /**
  *  \file  Field
  *  \brief Types and templates for passing data to and from plugins.
+ *  \author Hartmut Seichter <hartmut@technotecture.com>
+ *  \version 1.0
  *
- * Types and templates for passing data to and from plugins.
+ *  A generic system for passing data to and from plugins into the 
+ *  main application.
  */
 
 #ifndef OSGART_FIELD
@@ -38,9 +41,7 @@ namespace osgART {
 		
 		inline virtual void operator = (const Field&);
 		
-		inline virtual void serialize(std::ostream&) 
-		{			
-		}
+		inline virtual void serialize(std::ostream&) = 0;
 	
 	protected:
 
@@ -209,9 +210,11 @@ namespace osgART {
 
 	template <typename T> void FieldContainer<T>::dump()
 	{
-		FieldMap::iterator _i = m_fields.begin();
+		
 
-		for (;_i != m_fields.end(); ++_i) 
+		for (FieldMap::iterator _i = m_fields.begin();
+			_i != m_fields.end(); 
+			++_i) 
 		{
 			std::cout << "Field: " << (*_i).first << std::endl;
 		}

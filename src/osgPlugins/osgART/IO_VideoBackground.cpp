@@ -15,7 +15,7 @@ bool VideoBackground_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
 // register the read and write functions with the osgDB::Registry.
 osgDB::RegisterDotOsgWrapperProxy VideoBackground_Proxy
 (
-    0L,
+	new osgART::VideoBackground,
     "VideoBackground",
     "Object Node Group VideoBackground",
     VideoBackground_readLocalData,
