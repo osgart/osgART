@@ -375,8 +375,8 @@ void
 IntranelStreamVideo::start()
 {
 	int repeatCount(0);
-	int timeOut(50);
-	int maxRepeatCount(50);
+	int timeOut(100);
+	int maxRepeatCount(100);
 
 	if (m_pMC)
 	{
@@ -405,12 +405,12 @@ IntranelStreamVideo::start()
 
 					repeatCount++;
 
-					Sleep(10);
+					Sleep(100);
 
 				} else 
 				{
 
-					osg::notify() << "osgart_intranel: Error starting filtergraph!" << std::endl;
+					osg::notify(osg::FATAL) << "osgart_intranel: Error starting filtergraph!" << std::endl;
 					break;
 				}
 			}
@@ -631,8 +631,14 @@ HRESULT IntranelStreamVideo::GetMediaType(IPin *pin, AM_MEDIA_TYPE *mt) {
 
 			VIDEOINFOHEADER *pvi = (VIDEOINFOHEADER*)n_mt->pbFormat;
 
-			if (n_mt->subtype==MEDIASUBTYPE_RGB32)
-			{
+			if ((n_mt->subtype==MEDIASUBTYPE_RGB32) &&
+				/*
+				 * following test is needed due to bugs in FFDShow
+				 *
+			     */
+				(pvi->bmiHeader.biWidth) > 0 && 
+				(pvi->bmiHeader.biHeight) > 0 )
+			{				
 				osg::notify() << "osgart_intranel: Using Size: " << 
 					pvi->bmiHeader.biWidth << "x" << pvi->bmiHeader.biHeight
 					<< std::endl;
