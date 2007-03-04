@@ -4,7 +4,7 @@
 	Version="7.10"
 	Name="osgPlugin osgART"
 	ProjectGUID="{076A3DF8-75F0-485C-887C-4487AFD8F057}"
-	RootNamespace="osgart_intranel"
+	RootNamespace="osgdb_osgART"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -32,12 +32,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/osgart_intranel.dll"
+				OutputFile="$(OutDir)/osgdb_osgARTd.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_intranel.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgdb_osgART.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/osgart_intranel.lib"
+				ImportLibrary="$(OutDir)/osgdb_osgARTd.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -95,7 +95,7 @@
 				SubSystem="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/osgart_intranel.lib"
+				ImportLibrary="$(OutDir)/osgdb_osgART.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>

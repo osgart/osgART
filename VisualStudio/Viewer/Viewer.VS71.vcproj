@@ -35,11 +35,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib libAR.lib glu32.lib libARgsub_lite.lib libARMulti.lib libARvideo.lib osgARTd.lib"
-				OutputFile="../../bin/osgart_example_debug.exe"
+				OutputFile="../../bin/osgart_viewerd.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Example.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_viewer.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool

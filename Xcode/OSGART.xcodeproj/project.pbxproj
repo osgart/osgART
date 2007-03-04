@@ -549,6 +549,7 @@
 		4AE1ED5A0A630FD8007D0FA4 /* GenericVideoShader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = GenericVideoShader.cpp; sourceTree = "<group>"; };
 		4AE1ED600A630FD8007D0FA4 /* TrackerManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = TrackerManager.cpp; sourceTree = "<group>"; };
 		4AE1ED630A630FD8007D0FA4 /* VideoLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoLayer.cpp; sourceTree = "<group>"; };
+		4AE2653C0B9B830700B69343 /* IO_ARSceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = IO_ARSceneNode.cpp; sourceTree = "<group>"; };
 		4AECD6F10ACA2C2800527735 /* Foundation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Foundation.cpp; sourceTree = "<group>"; };
 		4AECD6F50ACA2C7F00527735 /* Foundation */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Foundation; sourceTree = "<group>"; };
 		4AECD75F0ACA341400527735 /* GNUmakefile */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = GNUmakefile; sourceTree = "<group>"; };
@@ -936,6 +937,7 @@
 		4A4F699B0B8E4B3500275FD1 /* osgART */ = {
 			isa = PBXGroup;
 			children = (
+				4AE2653C0B9B830700B69343 /* IO_ARSceneNode.cpp */,
 				4A4F699C0B8E4B3500275FD1 /* IO_GenericVideo.cpp */,
 				4A4F699D0B8E4B3500275FD1 /* IO_VideoBackground.cpp */,
 			);
