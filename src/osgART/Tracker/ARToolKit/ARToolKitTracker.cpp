@@ -81,6 +81,7 @@ namespace osgART {
 
 
 	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
+		m_debugimage(new osg::Image),
 		m_threshold(100),
 		m_debugmode(false),
 		m_marker_num(0),
@@ -90,6 +91,9 @@ namespace osgART {
 		m_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
 			&ARToolKitTracker::getThreshold,
 			&ARToolKitTracker::setThreshold);
+
+		// create a field for the debug image
+		m_fields["debug_image"] = new TypedField<osg::ref_ptr<osg::Image> >(&m_debugimage);
 		
 		// attach a new field to the name "debug"
 		m_fields["debug"] = new TypedField<bool>(&m_debugmode);
@@ -111,7 +115,15 @@ namespace osgART {
 		const std::string& camera_name)
 	{
 		ARParam  wparam;
-		
+
+		// Debug Image
+		if (!m_debugimage->valid())
+		{
+
+			m_debugimage->allocateImage(xsize,ysize,1,GL_BGRA,GL_UNSIGNED_BYTE, 1);
+
+		} 
+
 	    // Set the initial camera parameters.
 		cparamName = camera_name;
 	    if(arParamLoad((char*)cparamName.c_str(), 1, &wparam) < 0) {
@@ -333,25 +345,41 @@ namespace osgART {
 
 		ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
 		
-		
 	    register int             j, k;
 
 		// Do not update with a null image
-		if (m_imageptr == NULL) return;
+		if (m_imageptr == NULL) 
+		{
+			osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image"
+				<< std::endl;
 
-#if 0
+			return;
+		}
+
         // Check that the format matches the one passed in.
 		if (AR_PIX_SIZE_DEFAULT != m_artoolkit_pixsize || AR_DEFAULT_PIXEL_FORMAT != m_artoolkit_pixformat) {
 			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
-#endif
+
 		// Detect the markers in the video frame.
 		if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
 		{
 			std::cerr << "Error detecting markers in image." << std::endl;
 			return;
 		}
+
+		
+		// Debug Image
+		if (m_debugimage->valid())
+		{
+
+			m_debugimage->setImage(m_debugimage->s(), m_debugimage->t(), 
+				1, GL_BGRA, GL_BGRA, GL_UNSIGNED_BYTE, arImage, 
+				osg::Image::NO_DELETE, 1);
+
+		} 
+
 
 		MarkerList::iterator _end = m_markerlist.end();
 			

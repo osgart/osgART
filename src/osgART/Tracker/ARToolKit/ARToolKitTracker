@@ -144,6 +144,8 @@ namespace osgART {
 		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
 				
 	private:
+	
+		osg::ref_ptr<osg::Image> m_debugimage;
 		
 		struct				CameraParameter;
 		CameraParameter*	m_cparam;
