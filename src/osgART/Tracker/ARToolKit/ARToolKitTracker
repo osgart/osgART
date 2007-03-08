@@ -79,11 +79,21 @@ namespace osgART {
 		*/
 		int getThreshold() const;	
 		
-
-		unsigned char* getDebugImage();	
-		void setDebugMode(bool d);
-		bool getDebugMode();
 		
+		
+		/** 
+		* \brief Switch on or off the debug mode in ARToolKit
+		* 
+		* \param b true = debug mode on/ false debug mode of
+		*/
+		void setDebugMode(const bool& b);
+		
+		/**
+		* \brief Query if debug mode is switched on or off.
+		*
+		* \return Current state of debug mode.
+		*/
+		bool getDebugMode() const;
 		
 		/** 
 		* \brief Initialize ARToolKit.
@@ -156,8 +166,7 @@ namespace osgART {
 		std::string 		cparamName;
 		int					m_threshold;
 
-		bool 				m_debugmode;
-		
+	
 		int					m_marker_num;
 		
         int                 m_artoolkit_pixformat;

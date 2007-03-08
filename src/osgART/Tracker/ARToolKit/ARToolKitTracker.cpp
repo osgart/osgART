@@ -81,11 +81,20 @@ namespace osgART {
 		ARParam cparam;	
 	};
 
+	void ARToolKitTracker::setDebugMode(const bool& b)
+	{
+		arDebug = (int)b;
+	}
+
+	bool ARToolKitTracker::getDebugMode() const
+	{
+		return (arDebug == 1);
+	}
+
 
 	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
 		m_debugimage(new osg::Image),
 		m_threshold(100),
-		m_debugmode(false),
 		m_marker_num(0),
 		m_cparam(new CameraParameter)
 	{		
@@ -98,7 +107,10 @@ namespace osgART {
 		m_fields["debug_image"] = new TypedField<osg::ref_ptr<osg::Image> >(&m_debugimage);
 		
 		// attach a new field to the name "debug"
-		m_fields["debug"] = new TypedField<bool>(&m_debugmode);
+		m_fields["debug"] = new CallbackField<ARToolKitTracker,bool>
+			(this,
+			&ARToolKitTracker::getDebugMode,
+			&ARToolKitTracker::setDebugMode);
 
 		// for statistics
 		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
@@ -139,7 +151,6 @@ namespace osgART {
 	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;
 
 		setProjection(10.0f, 8000.0f);
-		setDebugMode(m_debugmode);
 		setThreshold(m_threshold);
 
 
@@ -269,21 +280,6 @@ namespace osgART {
 	int ARToolKitTracker::getThreshold() const 
 	{
 		return m_threshold;
-	}
-
-	unsigned char* ARToolKitTracker::getDebugImage() {
-		return arImage;
-	}
-		
-	void ARToolKitTracker::setDebugMode(bool d) 
-	{
-		m_debugmode = d;
-		arDebug = (m_debugmode) ? 1 : 0;
-	}
-
-	bool ARToolKitTracker::getDebugMode() 
-	{
-		return m_debugmode;
 	}
 
     /*virtual*/ 
