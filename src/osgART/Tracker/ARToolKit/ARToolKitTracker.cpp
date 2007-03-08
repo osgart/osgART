@@ -13,6 +13,8 @@
 
 #include "ARToolKitTracker"
 
+
+#include <osgDB/ReadFile>
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/ar.h>
@@ -116,13 +118,6 @@ namespace osgART {
 	{
 		ARParam  wparam;
 
-		// Debug Image
-		if (!m_debugimage->valid())
-		{
-
-			m_debugimage->allocateImage(xsize,ysize,1,GL_BGRA,GL_UNSIGNED_BYTE, 1);
-
-		} 
 
 	    // Set the initial camera parameters.
 		cparamName = camera_name;
@@ -362,6 +357,23 @@ namespace osgART {
 			return;
 		}
 
+
+		if (arDebug)		
+		{
+			// Debug Image
+			if (!m_debugimage->valid())
+			{
+				osg::notify() << "ARToolKitTracker::init() Create Debug Image: " << m_cparam->cparam.xsize << " x " << m_cparam->cparam.ysize  << std::endl;
+
+				m_debugimage->allocateImage(m_cparam->cparam.xsize,m_cparam->cparam.ysize,1,GL_RGBA,GL_UNSIGNED_BYTE, 1);
+			} 
+		
+			m_debugimage->setImage(m_debugimage->s(), m_debugimage->t(), 
+					1, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, arImage, 
+					osg::Image::NO_DELETE, 1);
+		}
+
+
 		// Detect the markers in the video frame.
 		if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
 		{
@@ -369,16 +381,6 @@ namespace osgART {
 			return;
 		}
 
-		
-		// Debug Image
-		if (m_debugimage->valid())
-		{
-
-			m_debugimage->setImage(m_debugimage->s(), m_debugimage->t(), 
-				1, GL_BGRA, GL_BGRA, GL_UNSIGNED_BYTE, arImage, 
-				osg::Image::NO_DELETE, 1);
-
-		} 
 
 
 		MarkerList::iterator _end = m_markerlist.end();
