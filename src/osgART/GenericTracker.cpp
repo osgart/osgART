@@ -28,26 +28,23 @@ namespace osgART {
 	GenericTracker::GenericTracker() 
 		: osg::Referenced(),
 		m_imageptr(0L),
-		trackerId(GenericTracker::trackerNum++),
-		m_enable(true)
-
+		m_enable(true),
+		trackerId(GenericTracker::trackerNum++)
 	{
 		m_fields["name"]	= new TypedField<std::string>(&m_name);
 		m_fields["version"]	= new TypedField<std::string>(&m_version);
 		/* gcc is choking on this declaration with "no matching function call"
 		m_fields["enable"]	= new CallbackField<GenericTracker,bool>(this,
 			GenericTracker::getEnable,
-			GenericTracker::setEnable);*/
-
-
+			GenericTracker::setEnable); */
 	}
 
 	GenericTracker::~GenericTracker() 
 	{
-		// hse25: delete markers
+		// Markers are associated with a specific tracker instance,
+		// so will be deleted when the tracker is deleted.
 		m_markerlist.clear();		
 	}
-
 
 	int
 	GenericTracker::getId()
@@ -92,29 +89,30 @@ namespace osgART {
 
 	/*virtual*/ 
 	void 
-	GenericTracker::setImageRaw(unsigned char* grabbed_image,
+	GenericTracker::setImageRaw(unsigned char *image,
 		PixelFormatType format)
 	{
-		m_imageptr = grabbed_image;
+		m_imageptr = image;
 		m_imageptr_format = format;
 	}
 
+	/*virtual*/ 
 	void 
 	GenericTracker::setImage(GenericVideo* video)
 	{
-		if (video) 
-		{
+		if (video) {
 			this->setImageRaw(video->getImageRaw(),
 			video->getPixelFormat(false));
-
-		} else 
-		{
-			osg::notify(osg::WARN) << "Warning: osgART::GenericTracker::setImage(video) "
-				"should receive a valid video" << std::endl;
+		} else {
+			osg::notify(osg::WARN) << "Warning: invalid video object supplied to osgART::GenericTracker::setImage(video)." << std::endl;
 		}
 	}
 
-	
+	/*virtual*/
+	void 
+	GenericTracker::update()
+	{
+	}
 
 	/* virtual */
 	const double* 
@@ -143,12 +141,6 @@ namespace osgART {
 		return Result;
 	}
 	
-	/*virtual*/
-	void 
-	GenericTracker::update()
-	{
-	}
-
 	// ------------------------------------------------
 
 	TrackerContainer::TrackerContainer(GenericTracker* tracker) : GenericTracker(), m_tracker(tracker) 
@@ -165,8 +157,7 @@ namespace osgART {
 	void
 	TrackerContainer::update()
 	{
-		if (m_tracker.valid()) 
-		{
+		if (m_tracker.valid()) {
 			m_tracker->setImage(m_video.get());
 			m_tracker->update();
 		}
@@ -218,8 +209,7 @@ namespace osgART {
 	{
 		osg::Projection *_projection = new osg::Projection();
 
-		if (m_tracker.valid()) 
-		{
+		if (m_tracker.valid()) {
 			_projection->setMatrix(osg::Matrix(m_tracker->getProjectionMatrix()));
 		}
 

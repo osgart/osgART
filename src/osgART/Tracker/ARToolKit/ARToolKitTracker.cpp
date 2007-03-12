@@ -162,7 +162,6 @@ namespace osgART {
 		setProjection(10.0f, 8000.0f);
 		setThreshold(m_threshold);
 
-
 		if (!setupMarkers(pattlist_name)) {
 			std::cerr << "ERROR: Marker setup failed." << std::endl;
 			return false;

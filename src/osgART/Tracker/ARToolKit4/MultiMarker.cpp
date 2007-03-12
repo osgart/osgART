@@ -65,8 +65,6 @@ namespace osgART {
 			arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
 			osg::Matrix tmp(modelView);
 			updateTransform(tmp);
-		} else {
-			m_seen = false;
 		}
 		/*
 		arGetTransMatMultiSquare(

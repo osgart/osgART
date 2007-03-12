@@ -23,8 +23,8 @@
 namespace osgART {
 
 	VideoTexture::VideoTexture(GenericVideo* video) : 
-		VideoTextureBase(video),
-		osg::Texture2D(video)
+		osg::Texture2D(video),
+		VideoTextureBase(video)
 	{
 		this->setDataVariance(osg::Object::DYNAMIC);
 

@@ -44,7 +44,7 @@
 int main(int argc, char* argv[]) 
 {
 
-	osg::setNotifyLevel(osg::DEBUG_INFO);
+	osg::setNotifyLevel(osg::NOTICE);
 
 	osgARTInit(&argc, argv);
 

@@ -14,9 +14,7 @@
 #include "SingleMarker"
 
 #include <AR/gsub_lite.h>
-//#include "ar/ar.h"
 
-//#include <SG_TLS_exceptions.h>
 
 namespace osgART {
 
@@ -70,8 +68,7 @@ namespace osgART {
 		if (_markerInfo == NULL || _gAR3DHandle == NULL || _markerInfo->id ==-1) {
 			m_valid = false;
 			// We won't call update in the parent class if marker is not
-			// valid. So set m_seen to false here instead.
-			m_seen = false;
+			// valid.
 		} else {
 			m_valid = true;
 			arGetTransMatSquare(_gAR3DHandle, _markerInfo, patt_width, patt_trans);

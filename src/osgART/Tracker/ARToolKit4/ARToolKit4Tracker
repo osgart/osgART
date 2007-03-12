@@ -18,7 +18,8 @@
  * Algorithm. This class provided video/graphic independent marker detection and
  * support multiple marker tracking.
  *	
-* \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ * \author Philip Lamb phil@eden.net.nz
  */
 
 #include "osgART/Export"
@@ -29,8 +30,9 @@
 #include <string>
 
 #include <AR/ar.h>
-
-#include "ARToolKitTrackerProfiler"
+#if (AR_HEADER_VERSION_MAJOR < 4)
+#error ARToolKit v4.x is required to build this plugin.
+#endif
 
 namespace osgART {
 
@@ -42,11 +44,7 @@ namespace osgART {
 	*
 	*/
 	class ARToolKit4Tracker : public
-#if  AR_TRACKER_PROFILE
-	ARToolKitTrackerProfiler<int>
-#else
 	GenericTracker
-#endif
 	{
 
 	public:        
@@ -150,7 +148,7 @@ namespace osgART {
 		
 	protected:
 	
-		ARHandle * CreateARHandle(ART4_ARParam  *wparam);
+		ARHandle * CreateARHandle(ARParam  *wparam);
 		/** 
 		 * \brief destructor.
 		 */
@@ -171,6 +169,6 @@ namespace osgART {
 
 };
 
-#endif 
+#endif // !OSGART_ARTTOOLKIT4TRACKER
 
 

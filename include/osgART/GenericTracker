@@ -52,78 +52,76 @@ namespace osgART {
 		 */
 		GenericTracker();
 
-
-		/** 
-		 * \brief update the tracking.
-		 * 
-		 * This core function apply the Generic algorithm on the last 
-		 * image defined by setImage.
-		 */
-		virtual void update();
-
-	
 		/**
-		 *
+		 * \brief Initialise a tracker.
+		 * \param pattlist_name Pathname to a file containing a list of
+		 *		markers to be tracked. Default value is "Data/markers_list.dat".
+		 * \param camera_name Pathname to a file containing calibrated
+		 *		camera parameters. Default value is "Data/camera_para.dat".
 		 */
 		virtual bool init(int xsize, int ysize, 
 			const std::string& pattlist_name="Data/markers_list.dat",
 			const std::string& camera_name="Data/camera_para.dat") = 0;
-	  
 
 		/**
-		* \brief get GenericVideo id.
-		* \return a GenericVideo identifier.
-		*/
+		 * \brief Get a unique identifier for this tracker instance.
+		 * \return An int representing this particular tracker instance.
+		 */
 		int getId();
 
 		/** 
-		* \brief Set the image to analyzed.
-		* 
-		* \param image the new image for the tracking 
-		*/
-		virtual 
-		void setImageRaw(unsigned char* image, 
-			PixelFormatType format = VIDEOFORMAT_GREY8);
-	    
-		/** 
-		* \brief set the image to analyzed.
-		* 
-		* @param video the video object to use
-		*/
+		 * \brief Set the image to analyzed.
+		 * 
+		 * \param video the video object to use
+		 */
 		virtual void setImage(GenericVideo* video);
 	    
 		/** 
-		* \brief XXX.
-		* 
-		* XXX.
-		*/
+		 * \brief Set the image to analyzed using raw pixel data.
+		 * 
+		 * \param image A pointer to a block of pixel data.
+		 * \param format A value of type PixelFormatType representing
+		 *		the layout of colour components of individual pixels
+		 *		in the supplied pixel data. Default value VIDEOFORMAT_GREY8.
+		 */
+		virtual void setImageRaw(unsigned char *image, 
+								 PixelFormatType format = VIDEOFORMAT_GREY8);
+	    
+		/** 
+		 * \brief update the tracking.
+		 * 
+		 * Request that the tracker update the position of tracked
+		 * markers, using the most recent image supplied by setImage.
+		 */
+		virtual void update();
+		
+		/** 
+		 * \brief XXX.
+		 * 
+		 * XXX.
+		 */
 		virtual Marker* getMarker(int markerId);
 		
 		unsigned int getMarkerCount() const;
 		
 		/** 
-		* \brief get the openGL projection matrix.
-		* 
-		* delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
-		* @param proj the openGL projection matrix computed
-		*/
+		 * \brief get the openGL projection matrix.
+		 * 
+		 * delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
+		 * @param proj the openGL projection matrix computed
+		 */
 		virtual const double* getProjectionMatrix() const;
-		
 			
 		/**
-		* \brief Return a string that contains the tracker name and version.
-		*/	
+		 * \brief Return a string that contains the tracker name and version.
+		 */	
 		std::string		getLabel()const;
 		
 		virtual void	setEnable(const bool & _enable);
 		virtual bool	getEnable()const;
 
-
-
-
-	    
+		
 	protected:		
-	
 	
 		/**
 		 * Creates an undistorted mesh, according to the 
@@ -146,7 +144,6 @@ namespace osgART {
 	
 		/** 
 		 * \brief destructor.
-		 *
 		 */
 		virtual ~GenericTracker();
 	
@@ -155,32 +152,32 @@ namespace osgART {
 		 */
 		typedef std::vector< osg::ref_ptr<Marker> > MarkerList;
 		
-		
 		/**
 		 * A list of markers associated with this tracker.
 		 */ 
 		MarkerList m_markerlist;
-
 		
 		unsigned char		*m_imageptr;
 		PixelFormatType		 m_imageptr_format;
 		
-		
 		double m_projectionMatrix[16];
 		std::string		m_name;		//!< Store the name of the tracker.
 		std::string		m_version;	//!< Store the version of the tracker.
-		bool			m_enable;//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
-
-
+		bool			m_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
 
 		
 	private:
 
 		int trackerId;
 		static int trackerNum;
-	};
+	}; // class GenericTracker
 
 
+	/**
+	 * The TrackerContainer encapsulates a tracker object.
+	 * Its single purpose of existance is to get arround restrictions
+	 * within osgIntrospection and RTTI accross DLL boundaries.
+	 */
 	class OSGART_EXPORT TrackerContainer : public GenericTracker {
 	public:
 
@@ -212,9 +209,8 @@ namespace osgART {
 		osg::ref_ptr<GenericTracker> m_tracker;		
 		osg::ref_ptr<GenericVideo> m_video;
 
-	};
-
-
-};
+	}; // class TrackerContainer
+	
+}; // namespace osgART
 
 #endif

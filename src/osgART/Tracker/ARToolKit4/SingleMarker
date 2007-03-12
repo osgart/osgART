@@ -21,7 +21,7 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Marker"
-#if AR_TRACKER_PROFILE
+#ifdef AR_TRACKER_PROFILE
 	#include "ProfilerTools"
 #endif
 
@@ -67,7 +67,7 @@ namespace osgART {
 		 */
 		virtual ~SingleMarker();	    
 
-		ARPattHandle	*AR4_PattList;/ /struct to store a set of patterns.
+		ARPattHandle	*AR4_PattList;//struct to store a set of patterns.
 		ARHandle		*arHandle; //struct to store ARToolKit global state.
 	 
 	    int             patt_id;

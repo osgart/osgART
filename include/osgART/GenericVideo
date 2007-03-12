@@ -185,10 +185,10 @@ namespace osgART {
 		// used for locking
 		OpenThreads::Mutex m_mutex;
 		
-	};
+	}; // class GenericVideo
 
 	/**
-     * The videocontainer encapsulates a video video stream object
+     * The VideoContainer encapsulates a video object.
 	 * Its single purpose of existance is to get arround restrictions
 	 * within osgIntrospection and RTTI accross DLL boundaries.
 	 */
@@ -238,9 +238,7 @@ namespace osgART {
 		*/
 		virtual void update();		
 		
-		
 		virtual void releaseImage();
-		
 		
 		/**
 		 * Load a plugin in the video container.
@@ -254,9 +252,8 @@ namespace osgART {
 
 		osg::ref_ptr<GenericVideo> m_encapsulated;
 
-	};
+	}; // class VideoContainer
 	
-	
-};
+}; // namespace osgART
 
 #endif

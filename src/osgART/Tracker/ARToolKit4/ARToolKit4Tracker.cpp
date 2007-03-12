@@ -26,10 +26,11 @@
 #include "MultiMarker"
 
 #include <osgART/GenericVideo>
+#include <osg/Notify>
 
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
+//#include <stdio.h>
 using namespace std;
 
 namespace osgART {
@@ -38,27 +39,21 @@ namespace osgART {
 #define AR4_DFLT_DEBUGMODE false
 
 	ARToolKit4Tracker::ARToolKit4Tracker() : 
-#if  AR_TRACKER_PROFILE
-
-	ARToolKitTrackerProfiler<int>(),
-
-#else
-
 	GenericTracker(),
-
-#endif
 		MainAR4_PattList(CreateARPattHandle()),
 		gARHandle(NULL),
 		gAR3DHandle(NULL),
 		m_debugmode(false)
 	{
-		//version and name of the tracker
+		// Assign version and name of the tracker.
+		m_name		= "ARToolKit4";
+		char *version;
+		arGetVersion(&version);
+		if (version) {
+			m_version = version;
+			free(version);
+		}
 
-		m_name		= "ARToolkit";
-
-		m_version	= AR_HEADER_VERSION_STRING;
-
-		__AR_DO_PROFILE(m_version+="(Prf)");
 		//other attached field are set into the createARHandle()
 	}
 
@@ -70,7 +65,7 @@ namespace osgART {
 		arDeleteHandle(gARHandle);
 	}
 
-	ARHandle * ARToolKit4Tracker::CreateARHandle(ART4_ARParam  *wparam)
+	ARHandle * ARToolKit4Tracker::CreateARHandle(ARParam  *wparam)
 	{
 		gARHandle = arCreateHandle (wparam);
 		if (!gARHandle)
@@ -80,16 +75,13 @@ namespace osgART {
 		}
 
 		//callback fields
-
 		m_fields["threshold"]	= new CallbackField<ARToolKit4Tracker,int>(this,
 
 			&ARToolKit4Tracker::getThreshold,
 
 			&ARToolKit4Tracker::setThreshold);
 		m_fields["debug"]		= new CallbackField<ARToolKit4Tracker,bool>(this,
-
 			&ARToolKit4Tracker::getDebugMode,
-
 			&ARToolKit4Tracker::setDebugMode);
 		
 		// attach a new field to the name "markercount"
@@ -124,25 +116,18 @@ namespace osgART {
 		const std::string& pattlist_name, 
 		const std::string& camera_name)
 	{
-		
-
-		m_width = xsize;
-
-		m_height = ysize, 
-
-
 		cout << "ARToolKit4Tracker::init()..." << endl;
-		ART4_ARParam  wparam;
+		ARParam  wparam;
 		
 	    // Set the initial camera parameters.
 		cparamName = camera_name;
 	   
-		if(arParamLoad(cparamName.c_str(), 1, &wparam) < 0) {
+		if (arParamLoad(cparamName.c_str(), 1, &wparam) < 0) {
 			std::cerr << "ERROR: Camera parameter load error." << std::endl;
 			return false;
 	    }
 
-		arParamChangeSize(&wparam, xsize, ysize,(ART4_ARParam*)&m_cparam);
+		arParamChangeSize(&wparam, xsize, ysize,(ARParam*)&m_cparam);
 	    arParamDisp((ARParam*)&m_cparam);
 		//--------------------------------------
 		
@@ -168,6 +153,12 @@ namespace osgART {
 
 		// Success
 		return true;
+	}
+
+	std::string trim(std::string& s,const std::string& drop = " ")
+	{
+		std::string r=s.erase(s.find_last_not_of(drop)+1);
+		return r.erase(0,r.find_first_not_of(drop));
 	}
 
 	bool ARToolKit4Tracker::setupMarkers(const std::string& patternListFile)
@@ -226,6 +217,12 @@ namespace osgART {
 			{
 				std::cerr << "Unrecognized pattern type: " << patternType << std::endl;
 				ret = false;
+				break;
+			}
+
+			if(i>=AR_PATT_NUM_MAX)
+			{
+				std::cerr << "Maximum number of pattern reached(" << AR_PATT_NUM_MAX<< "), please change the value AR_PATT_NUM_MAX in 'AR\arConfig.h' header file." << std::endl;
 				break;
 			}
 		}
@@ -321,79 +318,42 @@ namespace osgART {
 	
 
 	int ARToolKit4Tracker::ConvertOSGARTPixelFormatToART(PixelFormatType format)const
-
 	{
-
 		switch (format)
-
 		{
-
 			case VIDEOFORMAT_RGB24: return AR_PIXEL_FORMAT_RGB;
-
 			case VIDEOFORMAT_BGR24:	return AR_PIXEL_FORMAT_BGR;
-
 			case VIDEOFORMAT_BGRA32:return AR_PIXEL_FORMAT_BGRA;
-
 			case VIDEOFORMAT_RGBA32:return AR_PIXEL_FORMAT_RGBA;
-
 			case VIDEOFORMAT_ARGB32:return AR_PIXEL_FORMAT_ARGB;
-
 			case VIDEOFORMAT_ABGR32:return AR_PIXEL_FORMAT_ABGR;
-
 			case VIDEOFORMAT_YUV422:return AR_PIXEL_FORMAT_2vuy;
-
 			case VIDEOFORMAT_Y8:
-
-			case VIDEOFORMAT_GREY8:
-
-									return AR_PIXEL_FORMAT_MONO;
-
+			case VIDEOFORMAT_GREY8: return AR_PIXEL_FORMAT_MONO;
 			default:
-
 				osg::notify() << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << std::endl;
-
 				return 0;
-
-		}        
-
+		}
 		return 0;
 
 	}
 
-
-
 	PixelFormatType ARToolKit4Tracker::ConvertARTPixelFormatToOSGART(int format)const
-
 	{
-
 		switch (format)
-
 		{
-
 			case AR_PIXEL_FORMAT_RGB : return VIDEOFORMAT_RGB24;
-
 			case AR_PIXEL_FORMAT_BGR : return VIDEOFORMAT_BGR24;
-
 			case AR_PIXEL_FORMAT_BGRA :return VIDEOFORMAT_BGRA32;
-
 			case AR_PIXEL_FORMAT_RGBA :return VIDEOFORMAT_RGBA32;
-
 			case AR_PIXEL_FORMAT_ARGB :return VIDEOFORMAT_ARGB32;
-
 			case AR_PIXEL_FORMAT_ABGR :return VIDEOFORMAT_ABGR32;
-
 			case AR_PIXEL_FORMAT_2vuy :return VIDEOFORMAT_YUV422;
-
 			case AR_PIXEL_FORMAT_MONO :return VIDEOFORMAT_Y8;//or VIDEOFORMAT_GREY8:
-
 			default:
-
 				osg::notify() << "ConvertARTPixelFormatToOSGART() : Unknown pixel format!" << std::endl;
-
 		}        
-
 		return VIDEOFORMAT_ANY;
-
 	}
 
 	 /*virtual*/ 
@@ -419,24 +379,17 @@ namespace osgART {
 		if(m_debugmode)
 			osg::notify() << endl << "Start->" << getLabel() << "::update()" << endl;
 
-		__AR_DO_PROFILE( static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct		("arDetectMarker_TIME"));		
-
 	    int             j, k;
 
 		// Do not update with a null image
 		if (m_imageptr == NULL) return;
 
-		AR_BENCH_TIME(ThisFct, 
-			// Detect the markers in the video frame.
-			if(arDetectMarker(gARHandle, m_imageptr) < 0) 
-			{
-				std::cerr << "Error detecting markers in image." << std::endl;
-				return;
-			}
-		, m_markerlist.size() 
-		, getLabel()
-		, gARHandle->marker_num
-		);
+		// Detect the markers in the video frame.
+		if(arDetectMarker(gARHandle, m_imageptr) < 0) 
+		{
+			std::cerr << "Error detecting markers in image." << std::endl;
+			return;
+		}
 	
 		if (m_debugmode)
 			cout << "	arDetectMarker() => Markerdetected = " << gARHandle->marker_num <<endl;
@@ -453,7 +406,7 @@ namespace osgART {
 			if (currentMarker->getType() == Marker::ART_SINGLE)
 			{
 				SingleMarker* singleMarker = static_cast<SingleMarker*>(currentMarker);
-				cout << ". ID " << singleMarker->getPatternID() <<endl;
+				//cout << ". ID " << singleMarker->getPatternID() <<endl;
 				k = -1;
 
 				for (j = 0; j < gARHandle->marker_num; j++)	
@@ -471,11 +424,10 @@ namespace osgART {
 				{			
 			//		cout << "		candidate " << k<< " match  "<< currentMarker->getName() <<endl;
 					singleMarker->update(&gARHandle->markerInfo[k], gAR3DHandle);
-					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, true));
 				} 
 				else 
 				{
-					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, false));
+					singleMarker->update(NULL, NULL);
 				}
 			}
 			else if (currentMarker->getType() == Marker::ART_MULTI)
