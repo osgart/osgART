@@ -81,8 +81,8 @@ class OSGART_EXPORT TrackerManager
 		/**
 		 * Creates and registers a tracker from an external plugin.
 		 * \param plugin name of the plugin (excluding the system specific extension)
-		 * \param trackerconfig configuration parameters for the tracker
 		 * \return pointer to the instance of the tracker
+		 * \note This function works for release and debug mode and will add the 'd' letter at the end of the plugin name when required.
 		 */
 		static
 		GenericTracker* createTrackerFromPlugin(const std::string& plugin);

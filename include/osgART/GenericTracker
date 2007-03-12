@@ -119,6 +119,8 @@ namespace osgART {
 		virtual bool	getEnable()const;
 
 
+
+
 	    
 	protected:		
 	
@@ -168,6 +170,8 @@ namespace osgART {
 		std::string		m_name;		//!< Store the name of the tracker.
 		std::string		m_version;	//!< Store the version of the tracker.
 		bool			m_enable;//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
+
+
 
 		
 	private:

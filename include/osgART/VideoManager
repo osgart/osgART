@@ -97,6 +97,10 @@ namespace osgART {
 	
 		static VideoManager* _instance;
 		
+		/**
+		*\brief Open the given file and look for the function "osgart_createvideo".
+		*\note This function works for release and debug mode and will add the 'd' letter at the end of the filename when required.
+		*/
 		static p_VideoCreateFunc createFunc(const std::string& filename);
 
 		int numVideoStream;

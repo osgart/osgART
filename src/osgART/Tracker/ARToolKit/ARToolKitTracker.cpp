@@ -97,7 +97,16 @@ namespace osgART {
 		m_threshold(100),
 		m_marker_num(0),
 		m_cparam(new CameraParameter)
-	{		
+	{
+		// Assign version and name of the tracker.
+		m_name		= "ARToolKit";
+		char *version;
+		arGetVersion(&version);
+		if (version) {
+			m_version = version;
+			free(version);
+		}
+		
 		// create a new field 
 		m_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
 			&ARToolKitTracker::getThreshold,
