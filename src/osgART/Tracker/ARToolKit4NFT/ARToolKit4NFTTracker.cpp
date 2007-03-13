@@ -172,7 +172,7 @@ ARToolKit4NFTTracker::setupMarkers(const std::string& patternListFile)
 
 	std::string patternName, patternType;
 
-	std::cerr<<"pattern list.."<<patternNum<<std::endl;
+	std::cerr<<"ARToolKit4NFTTracker::setupMarkers:/ Number of markers: "<<patternNum<<std::endl;
 
 	for (int i = 0; i < patternNum; i++) {
 
@@ -183,41 +183,44 @@ ARToolKit4NFTTracker::setupMarkers(const std::string& patternListFile)
 			}
 			
 		// Check whether markerFile exists?
-
 		markerFile >> patternType;
 
 		if (patternType == "SINGLE")
 		{
 			double width, center[2];
 			markerFile >> width >> center[0] >> center[1];
-			std::cerr<<"new single.."<<std::endl;
+			std::cerr<<"ARToolKit4NFTTracker::setupMarkers:/ adding SingleMarker: ";
+			std::cerr << patternName << " " << width << " " << center[0] << "x" <<center[1] << std::endl;
 			if (addSingleMarker(patternName, width, center) == -1) {
-				std::cerr << "Error adding single pattern: " << patternName << std::endl;
+				std::cerr << "ARToolKit4NFTTracker::setupMarkers:/ Error adding SingleMarker: " << patternName << std::endl;
 				ret = false;
 				break;
 			}
 		}
 		else if (patternType == "MULTI")
 		{
-			std::cerr<<"new multi.."<<std::endl;
+			std::cerr<<"ARToolKit4NFTTracker::setupMarkers:/ adding MultiMarker: "<<std::endl;
+			std::cerr << patternName << std::endl;
 			if (addMultiMarker(patternName) == -1) {
-				std::cerr << "Error adding multi-marker pattern: " << patternName << std::endl;
+				std::cerr << "ARToolKit4NFTTracker::setupMarkers:/ Error adding MultiMarker: " << patternName << std::endl;
 				ret = false;
 				break;
 			}
 		}
 		else if (patternType == "NFT")
 		{
-			std::cerr<<"new nft.."<<std::endl;
+			std::cerr<<"ARToolKit4NFTTracker::setupMarkers:/ adding NFTMarker: "<<std::endl;
+			std::cerr << patternName << std::endl;
 			if (addNFTMarker(patternName) == -1) {
-				std::cerr << "Error adding nft-marker pattern: " << patternName << std::endl;
+				std::cerr << "ARToolKit4NFTTracker::setupMarkers:/ Error adding nft-marker pattern: " << patternName << std::endl;
 				ret = false;
 				break;
 			}
+			std::cerr << std::endl;
 		}
 		else 
 		{
-			std::cerr << "Unrecognized pattern type: " << patternType << std::endl;
+			std::cerr <<"ARToolKit4NFTTracker::setupMarkers:/ Unrecognized marker type: " << patternType << std::endl;
 			ret = false;
 			break;
 		}
@@ -225,7 +228,7 @@ ARToolKit4NFTTracker::setupMarkers(const std::string& patternListFile)
 
 	arPattAttach( arHandle, arPattHandle );
 
-	std::cerr<<"Finish setup patterns.."<<std::endl;
+	std::cerr<<"ARToolKit4NFTTracker::setupMarkers:/ Marker setup finished."<<std::endl;
 	markerFile.close();
 
 	return ret;
@@ -239,7 +242,7 @@ ARToolKit4NFTTracker::addSingleMarker(const std::string& pattFile,
 
 	osgART::SingleMarker* singleMarker = new osgART::SingleMarker();
 	
-	if (singleMarker->initialise(arPattHandle,(char*)pattFile.c_str(), width, center))
+	if (!singleMarker->initialise(arPattHandle,(char*)pattFile.c_str(), width, center))
 	{
 		singleMarker->unref();
 		return -1;
@@ -269,17 +272,12 @@ ARToolKit4NFTTracker::addMultiMarker(const std::string& multiFile)
 int 
 ARToolKit4NFTTracker::addNFTMarker(const std::string& nftFile) 
 {
-	//JENS
-	// changes: creating ART4Markers for all surfaces of surface set in here
-	// instead of adding only one to pattList
-	// original code below
-
 	// read surfaces and markers from file
 
 	surfaceSet = ar2ReadSurfaceSet((char*)nftFile.c_str(),arPattHandle);
     if( surfaceSet == NULL ) 
 	{
-		std::cerr<<"ca chie la colle.."<<std::endl;
+		std::cerr<<"ARToolKit4NFTTracker::addNFTMarker:/ error reading surface set from file: " << nftFile.c_str() <<std::endl;
 		exit(0);
 	}
 	
@@ -288,9 +286,8 @@ ARToolKit4NFTTracker::addNFTMarker(const std::string& nftFile)
 		NFTMarker* nftMarker = new NFTMarker();
 		
 		if (!nftMarker->initialise())
-		{
-				
-			std::cerr<<"ca initialize mal la colle.."<<std::endl;			
+		{	
+			std::cerr<<"ARToolKit4NFTTracker::addNFTMarker:/ error initializing NFTMarker, ->unref()"<<std::endl;			
 			nftMarker->unref();
 
 			break;
@@ -301,38 +298,7 @@ ARToolKit4NFTTracker::addNFTMarker(const std::string& nftFile)
 		}
 
 	}
-	
-	// check if all markers got initialized
-	/*
-	if (m_markerlist.size() != surfaceSet->num ){
-			std::cerr<<"ca a pas marche mal la colle.."<<std::endl;
-		// delete all nftmarkers
-		for (int j = 0; j < m_markerlist.size(); j++){
-			//delete (static_cast<NFTMarker*>(m_markerlist[j].get()));
-		}
-		// empty pattern list
-		m_markerlist.clear();
-		return -1;
-	}
-	*/
 	return m_markerlist.size() - 1;
-	
-	
-	//JENS left the original code in here
-
-	//ART4Marker* nftMarker = new NFTART4Marker();
-	//
-	//// read surfaces and markers from file
-	//surfaceSet = ar2ReadSurfaceSet((char*)nftFile.c_str(),arPattHandle);
- //   if( surfaceSet == NULL ) exit(0);
-	//	
-	//if (!static_cast<NFTART4Marker*>(nftMarker)->initialise())
-	//{
-	//	delete nftMarker;
-	//	return -1;
-	//}
-	//pattList.push_back(nftMarker);
-	//return pattList.size() - 1;
 }
 
 void ARToolKit4NFTTracker::setThreshold(int thresh)	{
@@ -354,11 +320,8 @@ ARToolKit4NFTTracker::square_tracking( ARUint8 *dataPtr, double patt_trans1[3][4
     double          wtrans2[3][4];
 	double			err;
     int             i, j, k, l, m, n; 
- 
-	// detect visible marker
-	arDetectMarker(arHandle, dataPtr);
 
-    // check for object visibility, i.e. which marker is visible
+    // check if currently visible marker belongs to one of the surfaces
     k = -1; 
     for( j = 0; j < arHandle->marker_num; j++ ) {
 		for( m = 0; m < surfaceSet->num; m++ ) {
@@ -382,45 +345,70 @@ ARToolKit4NFTTracker::square_tracking( ARUint8 *dataPtr, double patt_trans1[3][4
     arUtilMatMul( wtrans, surfaceSet->surface[n].markerSet->marker[l].transI2M, wtrans2 );
     arUtilMatMul( wtrans2, surfaceSet->surface[n].itrans, patt_trans1 );
 
-    return n; // return index of currently tracked surface
-	
+    return n; // return index of currently tracked surface	
 }
 
-void
-ARToolKit4NFTTracker::update()
-{	
-
-	//JENS
-	static int active_surface = 0;
-
-	// declare all markers as invalid
+void ARToolKit4NFTTracker::updateStandardTracker()
+{
+	int j, k;
+	// browse through list of markers
 	for (MarkerList::iterator iter = m_markerlist.begin(); 
 			iter != m_markerlist.end(); 
-			iter++)	
-	{
-				NFTMarker* currentMarker=(NFTMarker*)(*iter).get();
-				currentMarker->update(NULL);
-	}
-	
-	// Do not update with a null image
-	if (m_imageptr == NULL) return;
+			iter++)		
+		{
+			Marker* currentMarker = (*iter).get();
 
-	//NFT TRACKING
+			if (currentMarker->getType() == Marker::ART_SINGLE)
+			{
+				SingleMarker* singleMarker = static_cast<SingleMarker*>(currentMarker);
+
+				// get markerInfo for each marker
+				k = -1;
+				for (j = 0; j < arHandle->marker_num; j++)	
+				{
+					if (singleMarker->getPatternID() == arHandle->markerInfo[j].id) 
+					{
+						if (k == -1) k = j; // First marker detected.
+						else 
+						if(arHandle->markerInfo[j].cf > arHandle->markerInfo[k].cf) k = j; // Higher confidence marker detected.
+					}
+				}
+				// markerInfo for current marker found -> update transf. matrix
+				if(k != -1) 
+				{
+					//std::cerr<<"Found single marker with ID: " << singleMarker->getPatternID() <<std::endl;
+					singleMarker->update(ar3DHandle,&arHandle->markerInfo[k]);
+				} 
+				else 
+				{
+					singleMarker->update(ar3DHandle,NULL);
+				}
+			}
+		}
+}
+
+
+void
+ARToolKit4NFTTracker::updateNFTTracker()
+{	
+	// reset active surface to none active
+	static int active_surface = -1;
+		
 	static double		patt_trans1[3][4]; 
 	static double		patt_trans2[3][4]; 
 	static double		patt_trans3[3][4];
 	static int			contF = 0; 
 	double				new_trans[3][4];
 	double				err;
-	//int mode;			//JENS this variable seems to be a leftover to me, doesn't do no harm, may be removed
-
+	
 	// try NFT
 	if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
 		|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
 		|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
-		&& err < 10.0 ) 
+		&& err < 10.0 )
 	{
-		std::cerr<<"features found.."<<std::endl;
+		//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here2" << std::endl;
+		//std::cerr<<"features found.."<<std::endl;
 		for(int  j = 0; j < 3; j++ ) {
 			for(int  i = 0; i < 4; i++ ) patt_trans3[j][i] = patt_trans2[j][i];
 		}
@@ -432,24 +420,50 @@ ARToolKit4NFTTracker::update()
 		}
 		contF++;
 		if( contF > 3) contF = 3;
-		//mode = 1;
+		
 	}
 	// NFT failed, try normal marker tracking
 	else {
+		//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here3" << std::endl;
+
 		if( (active_surface = square_tracking(m_imageptr, patt_trans1 )) < 0 ){
 			contF = 0;
 		}
 		else {
-			std::cerr<<"marker found on surface "<< active_surface <<std::endl;
-			contF = 1;
-			//mode = 2;
+			std::cerr<<"ARToolKit4NFTTracker::updateNFTTracker:/ marker found on surface "<< active_surface <<std::endl;
+			contF = 1;	
 		}
 	}
-					
-		// apply transformation matrix and activate the right pattern
-		if (active_surface >= 0){
-			(static_cast<NFTMarker*>(m_markerlist[active_surface].get()))->update(patt_trans1);
-		}
+
+	// apply transformation matrix and activate the right pattern
+	if (active_surface >= 0)
+		(static_cast<NFTMarker*>(m_markerlist[active_surface].get()))->update(patt_trans1);
+}
+
+
+void
+ARToolKit4NFTTracker::update()
+{	
+	// Do not update with a null image
+	if (m_imageptr == NULL) return;
+	
+	// declare all markers as not valid
+	for (MarkerList::iterator iter = m_markerlist.begin(); 
+			iter != m_markerlist.end(); 
+			iter++)	
+	{
+			Marker* m = 	(*iter).get();
+			m->m_valid = false;
+	}
+
+	// detect visible markers
+	arDetectMarker(arHandle,m_imageptr);
+	
+	// update single and multiple artoolkit markers
+	updateStandardTracker();
+	
+	// update nft
+	updateNFTTracker();
 }
 
 

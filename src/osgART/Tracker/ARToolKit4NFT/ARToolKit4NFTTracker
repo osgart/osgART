@@ -21,6 +21,7 @@
  *	
  * \author Julian Looser Julian.Looser@hitlabnz.org
  * \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+ * \author Jens Hopfer Jens.Hopfer@hitlabnz.org
  */
  
 // graphics include
@@ -132,9 +133,23 @@ namespace osgART {
 		/** 
 		* \brief update the tracking.
 		* 
-		* This core function apply the ARToolKit algorithm on the last image defined by setImage.
+		* This function applies the ARToolKit algorithms (marker tracking and nft) on the last image defined by setImage.
 		*/
 		void update();
+		
+		/** 
+		* \brief update the standard artoolkit marker tracker.
+		* 
+		* This function applies artoolkit marker tracking to the last image defined by setImage.
+		*/
+		void updateStandardTracker();
+		
+		/** 
+		* \brief update the nft tracker.
+		* 
+		* This function applies natural feature tracking to the last image defined by setImage.
+		*/
+		void updateNFTTracker();
 		 
 	    
 	protected: 
@@ -158,8 +173,8 @@ namespace osgART {
 	
 		bool setupMarkers(const std::string& patternListFile);
 	
-		ARParam  cparam;
-		std::string cparamName;
+		ARParam				cparam;
+		std::string			cparamName;
 		int					threshold;
 
 		ARHandle           *arHandle;
