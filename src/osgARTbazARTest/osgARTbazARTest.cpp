@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
 	//osgART::VideoManager::createVideoFromPlugin("osgart_dsvl2", cfg);
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
 	//osgART::VideoManager::createVideoFromPlugin("osgart_cvcam", cfg);
 
 	
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
 	//Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
-	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video->getId());
+	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
 
 //	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_2D);
 
