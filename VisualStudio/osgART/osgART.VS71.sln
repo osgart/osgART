@@ -87,14 +87,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkitMMauto_trac
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_artoolkit4_tracker", "..\..\..\OSGART (release_1_0_pro)\VisualStudio\osgart_artoolkit4_tracker\osgart_artoolkit4_tracker.vcproj", "{076A3DF8-75F0-485C-887C-4487AFD8F057}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Debug Static = Debug Static
 		Release = Release
 		Release Static = Release Static
-	EndGlobalSection
-	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
@@ -257,6 +259,14 @@ Global
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release.Build.0 = Release|Win32
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release Static.ActiveCfg = Release|Win32
 		{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}.Release Static.Build.0 = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug Static.ActiveCfg = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug Static.Build.0 = Debug|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.ActiveCfg = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release.Build.0 = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release Static.ActiveCfg = Release|Win32
+		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Release Static.Build.0 = Release|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.ActiveCfg = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug.Build.0 = Debug|Win32
 		{076A3DF8-75F0-485C-887C-4487AFD8F057}.Debug Static.ActiveCfg = Debug|Win32
