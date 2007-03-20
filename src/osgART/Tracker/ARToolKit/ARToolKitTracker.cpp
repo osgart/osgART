@@ -35,6 +35,23 @@
 
 #define PD_LOOP 3
 
+// Make sure that required OpenGL constant definitions are available at compile-time.
+// N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.
+// Define constants for extensions (not yet core).
+#ifndef GL_APPLE_ycbcr_422
+#  define GL_YCBCR_422_APPLE				0x85B9
+#  define GL_UNSIGNED_SHORT_8_8_APPLE		0x85BA
+#  define GL_UNSIGNED_SHORT_8_8_REV_APPLE	0x85BB
+#endif
+#ifndef GL_EXT_abgr
+#  define GL_ABGR_EXT						0x8000
+#endif
+#ifndef GL_MESA_ycbcr_texture
+#  define GL_YCBCR_MESA						0x8757
+#  define GL_UNSIGNED_SHORT_8_8_MESA		0x85BA
+#  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
+#endif
+
 template <typename T> 
 int Observer2Ideal(	const T dist_factor[4], 
 					const T ox, 
