@@ -453,7 +453,7 @@ ARToolKit4NFTTracker::update()
 			iter++)	
 	{
 			Marker* m = 	(*iter).get();
-			m->m_valid = false;
+			//m->m_valid = false;
 	}
 
 	// detect visible markers
