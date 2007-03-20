@@ -1,7 +1,7 @@
 #include "MultiMarker"
 
 typedef int AR_PIXEL_FORMAT;
-#include <AR4/AR/gsub.h>
+#include <AR/gsub.h>
 
 #include <iostream>
 

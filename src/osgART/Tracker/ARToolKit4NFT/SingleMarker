@@ -19,7 +19,7 @@
 #include "osgART/Marker"
 
 // AR Toolkit 4 include
-#include <AR4/AR/AR.h>
+#include <AR/AR.h>
 
 namespace osgART {
 

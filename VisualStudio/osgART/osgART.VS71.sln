@@ -71,7 +71,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgWrapper osgART", "..\osg
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osgart_example", "..\Example\Example.VS71.vcproj", "{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "..\Example\Example.VS71.vcproj", "{3F5F35C3-D9BA-45E1-BDC6-9FBB20BF31EB}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject

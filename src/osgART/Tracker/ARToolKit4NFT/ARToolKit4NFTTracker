@@ -26,9 +26,9 @@
  
 // graphics include
 
-#include <AR4/AR/config.h>
-#include <AR4/AR/param.h>
-#include <AR4/AR/ar.h>
+#include <AR/config.h>
+#include <AR/param.h>
+#include <AR/ar.h>
 
 #include <AR2/marker.h>    
 #include <AR2/featureSet.h>    

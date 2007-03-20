@@ -11,8 +11,8 @@ typedef int AR_PIXEL_FORMAT;
 
 
 
-// #include <AR/gsub_lite.h>
-#include <AR4/AR/gsub.h>
+#include <AR/gsub_lite.h>
+//#include <AR/gsub.h>
 
 
 

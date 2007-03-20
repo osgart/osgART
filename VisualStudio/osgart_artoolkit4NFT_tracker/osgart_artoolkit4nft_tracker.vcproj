@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osgARTd.lib libARd.lib"
-				OutputFile="..\..\bin\osgart_artoolkit_trackerd.dll"
+				AdditionalDependencies="osgARTd.lib osg.lib ARd.lib AR2d.lib opengl32.lib ARgsubd.lib ARMultid.lib"
+				OutputFile="..\..\bin\osgart_artoolkit4nft_trackerd.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib"
+				AdditionalLibraryDirectories="..\..\lib;&quot;$(ARTOOLKIT_4_ROOT)\lib&quot;;&quot;$(ARTOOLKIT_NFT_ROOT)\lib&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_artoolkit_tracker.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/osgart_artoolkit_tracker.lib"
+				ImportLibrary="$(OutDir)/osgart_artoolkit4nft_trackerd.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -87,7 +87,7 @@
 				AdditionalDependencies="osgART.lib osg.lib AR.lib AR2.lib opengl32.lib ARgsub.lib ARMulti.lib"
 				OutputFile="..\..\bin\osgart_artoolkit4nft_tracker.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\lib;&quot;$(ARTOOLKIT_4_ROOT)\lib&quot;;..\..\..\TexTracking\Ver.3.20\lib"
+				AdditionalLibraryDirectories="..\..\lib;&quot;$(ARTOOLKIT_4_ROOT)\lib&quot;;&quot;$(ARTOOLKIT_NFT_ROOT)\lib&quot;"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
