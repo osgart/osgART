@@ -124,12 +124,16 @@ namespace osgART {
 		virtual osgART::VideoConfiguration* getVideoConfiguration();
 		
 		
-		
 	private:
 
 		AR2VideoParamT *video;
 		
 		osgART::VideoConfiguration m_config;
+		
+		int m_artoolkit_pixelformat;
+		
+		//int getARPixelFormatForImage(osg::Image &img) const;
+		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 		
 	};
 }

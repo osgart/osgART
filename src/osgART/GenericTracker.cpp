@@ -100,8 +100,7 @@ namespace osgART {
 	GenericTracker::setImage(GenericVideo* video)
 	{
 		if (video) {
-			this->setImageRaw(video->getImageRaw(),
-			video->getPixelFormat(false));
+			this->setImageRaw(video->getImageRaw(), video->pixelFormat());
 		} else {
 			osg::notify(osg::WARN) << "Warning: invalid video object supplied to osgART::GenericTracker::setImage(video)." << std::endl;
 		}

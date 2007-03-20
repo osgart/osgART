@@ -47,7 +47,8 @@ int main(int argc, char* argv[])
 	osg::setNotifyLevel(osg::NOTICE);
 
 	osgARTInit(&argc, argv);
-
+	
+	// Set up the osg viewer.
 	osgProducer::Viewer viewer;
 	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
 	viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
@@ -61,53 +62,24 @@ int main(int argc, char* argv[])
 
 	viewer.setSceneData(root.get());
 
-	// load a video plugin
+	// Load a video plugin.
 	osg::ref_ptr<osgART::GenericVideo> video = 
 		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
-
-	// check if loading the plugin was successful
-	if (!video.valid()) 
-	{   
-		// without video an AR application can not work
+	if (!video.valid()) {   
+		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
-
-		// quit the program
 		exit(-1);
 	}
-	/* load a tracker plugin */
+	
+	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
-
-	if (tracker.valid()) 
-	{
-
-		// access a field within the tracker
-		osg::ref_ptr< osgART::TypedField<int> > _threshold = 
-			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
-
-		// values can only be accessed through a get()/set() mechanism
-		if (_threshold.valid()) 
-		{			
-			// set the threshold
-			_threshold->set(150);
-
-			/* check what we actually get */
-			osg::notify() << "Field 'threshold' = " << _threshold->get() << std::endl;
-
-		} else 
-		{
-			osg::notify() << "Field 'threshold' supported for this tracker" << std::endl;
-		}		
-
-	} else 
-	{
-        // this example needs a tracker
-		std::cerr << "Could not initialize tracker plugin!" << std::endl;
-
-		// quit the program
+	if (!tracker.valid()) {
+        // this example needs a tracker. Quit if none found.
+		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
-	}	
-	
+	}
+		
 	// flipping the video can be done on the fly or in advance
 	video->setFlip(false,true);
 
@@ -116,14 +88,27 @@ int main(int argc, char* argv[])
 	// for the connected tracker
 	video->open();
 
-	// Connect the video to a tracker
-	if (!root->connect(tracker.get(),video.get())) 
-	{
+	// Connect the video to a tracker. This will also init the tracker.
+	if (!root->connect(tracker.get(),video.get())) {
 		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
 		exit(-1);
 	}
 	
-
+	// Tracker parameters are read and written via a field mechanism.
+	// Init access to a field within the tracker, in this case, the binarization threshhold.
+	osg::ref_ptr< osgART::TypedField<int> > _threshold = 
+		reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
+	
+	// Values are be accessed through a get()/set() mechanism on the field pointer.
+	if (_threshold.valid())  {			
+		// Set the threshold, and read back.
+		_threshold->set(100);
+		osg::notify(osg::WARN) << "Field 'threshold' = " << _threshold->get() << std::endl;
+	} else {
+		osg::notify(osg::WARN) << "Field 'threshold' not supported for this tracker" << std::endl;
+	}
+	
+	
 	// Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 

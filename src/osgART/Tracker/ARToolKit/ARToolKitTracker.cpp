@@ -81,17 +81,6 @@ namespace osgART {
 		ARParam cparam;	
 	};
 
-	void ARToolKitTracker::setDebugMode(const bool& b)
-	{
-		arDebug = (int)b;
-	}
-
-	bool ARToolKitTracker::getDebugMode() const
-	{
-		return (arDebug == 1);
-	}
-
-
 	ARToolKitTracker::ARToolKitTracker() : GenericTracker(),
 		m_debugimage(new osg::Image),
 		m_threshold(100),
@@ -146,9 +135,8 @@ namespace osgART {
 			
 			// 
 			osg::notify(osg::FATAL) 
-				<< "osgART::ARToolKitTracker::init(video,patternlist,cameraparam) Can't load camera parameters from '"<<
+				<< "osgART::ARToolKitTracker::init : Error: Can't load camera parameters from '"<<
 				camera_name <<"'." << std::endl;
-			
 			return false;
 	    }
 
@@ -346,12 +334,10 @@ namespace osgART {
 		
 	    register int             j, k;
 
-		// Do not update with a null image
-		if (m_imageptr == NULL) 
-		{
+		// Do not update with a null image.
+		if (m_imageptr == NULL) {
 			osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image"
 				<< std::endl;
-
 			return;
 		}
 
@@ -361,31 +347,28 @@ namespace osgART {
 			return;
 		}
 
-
-		if (arDebug)		
-		{
-			// Debug Image
-			if (!m_debugimage->valid())
-			{
+		// Debug Image.
+		if (arDebug) {
+			GLenum internalformat_GL;
+			GLenum format_GL;
+			GLenum type_GL;
+			getGLPixelFormatForARPixelFormat(m_artoolkit_pixformat, &internalformat_GL, &format_GL, &type_GL);
+			if (!m_debugimage->valid()) {
 				osg::notify() << "ARToolKitTracker::init() Create Debug Image: " << m_cparam->cparam.xsize << " x " << m_cparam->cparam.ysize  << std::endl;
-
-				m_debugimage->allocateImage(m_cparam->cparam.xsize,m_cparam->cparam.ysize,1,GL_RGBA,GL_UNSIGNED_BYTE, 1);
+				m_debugimage->allocateImage(m_cparam->cparam.xsize, m_cparam->cparam.ysize, 1, format_GL, type_GL, 1);
 			} 
 		
 			m_debugimage->setImage(m_debugimage->s(), m_debugimage->t(), 
-					1, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, arImage, 
+					1, internalformat_GL, format_GL, type_GL, arImage, 
 					osg::Image::NO_DELETE, 1);
 		}
 
 
 		// Detect the markers in the video frame.
-		if(arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) 
-		{
+		if (arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) {
 			std::cerr << "Error detecting markers in image." << std::endl;
 			return;
 		}
-
-
 
 		MarkerList::iterator _end = m_markerlist.end();
 			
@@ -435,6 +418,16 @@ namespace osgART {
 
 	}
 
+	void ARToolKitTracker::setDebugMode(const bool& b)
+	{
+		arDebug = (int)b;
+	}
+	
+	bool ARToolKitTracker::getDebugMode() const
+	{
+		return (arDebug == 1);
+	}
+	
 	void ARToolKitTracker::setProjection(const double n, const double f) 
 	{
 		arglCameraFrustumRH(&(m_cparam->cparam), n, f, m_projectionMatrix);
@@ -484,4 +477,71 @@ namespace osgART {
 		}
 	}
 
+	int ARToolKitTracker::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL)
+	{
+		// Translate the internal pixelformat to an OpenGL texture2D triplet.
+		switch (arPixelFormat) {
+			case AR_PIXEL_FORMAT_RGB:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_RGB;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case AR_PIXEL_FORMAT_BGR:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_BGR;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case AR_PIXEL_FORMAT_RGBA:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_RGBA;
+				*type_GL = GL_UNSIGNED_BYTE;
+			case AR_PIXEL_FORMAT_BGRA:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_BGRA;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case AR_PIXEL_FORMAT_ARGB:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_BGRA;
+#ifdef AR_BIG_ENDIAN
+				*type_GL = GL_UNSIGNED_INT_8_8_8_8_REV;
+#else
+				*type_GL = GL_UNSIGNED_INT_8_8_8_8;
+#endif
+				break;
+			case AR_PIXEL_FORMAT_ABGR:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_ABGR_EXT;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case AR_PIXEL_FORMAT_MONO:
+				*internalformat_GL = GL_LUMINANCE8;
+				*format_GL = GL_LUMINANCE;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case AR_PIXEL_FORMAT_2vuy:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_YCBCR_422_APPLE; //GL_YCBCR_MESA
+#ifdef AR_BIG_ENDIAN
+				*type_GL = GL_UNSIGNED_SHORT_8_8_REV_APPLE; //GL_UNSIGNED_SHORT_8_8_REV_MESA
+#else
+				*type_GL = GL_UNSIGNED_SHORT_8_8_APPLE; //GL_UNSIGNED_SHORT_8_8_MESA
+#endif
+				break;
+			case AR_PIXEL_FORMAT_yuvs:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_YCBCR_422_APPLE; //GL_YCBCR_MESA
+#ifdef AR_BIG_ENDIAN
+				*type_GL = GL_UNSIGNED_SHORT_8_8_APPLE; //GL_UNSIGNED_SHORT_8_8_MESA
+#else
+				*type_GL = GL_UNSIGNED_SHORT_8_8_REV_APPLE; //GL_UNSIGNED_SHORT_8_8_REV_MESA
+#endif
+				break;
+			default:
+				return (-1);
+				break;
+		}
+		return (0);
+	}
+	
 }; // namespace osgART

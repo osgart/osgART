@@ -28,6 +28,9 @@ namespace osgART
 				{
 					if ((*i).second) 
 					{
+						// If a new frame is available from the video,
+						// then call setImage() with the video object
+						// and then update.
 						if ((*i).second->getFrame())
 						{
 							(*i).first->setImage((*i).second);

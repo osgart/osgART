@@ -13,18 +13,17 @@
 
 #include "osgART/Utils"
 
-namespace osgART{
-
-
-
-std::string trim(std::string& s,const std::string& drop/* = " "*/)
+namespace osgART
 {
-	std::string r=s.erase(s.find_last_not_of(drop)+1);
-	return r.erase(0,r.find_first_not_of(drop));
-}
+
+	std::string trim(std::string& s,const std::string& drop/* = " "*/)
+	{
+		std::string r=s.erase(s.find_last_not_of(drop)+1);
+		return r.erase(0,r.find_first_not_of(drop));
+	}
 	
-void PrintMatrix(std::string name, const osg::Matrix &Transform)
-{
+	void PrintMatrix(std::string name, const osg::Matrix &Transform)
+	{
 		// Print it out
 		std::cout << "Matrix : " << name << std::endl;
 		for (int j = 0; j < 4; j++)
@@ -37,9 +36,9 @@ void PrintMatrix(std::string name, const osg::Matrix &Transform)
 		}
 		osg::notify() << " length : " << Transform.getTrans().length() << std::endl;
 		osg::notify() << std::endl;
-}
+	}
 
-osg::Matrix GenerateMatrix(const osg::Vec3d & _trans, const osg::Vec3d & _rot)
+	osg::Matrix GenerateMatrix(const osg::Vec3d & _trans, const osg::Vec3d & _rot)
 	{
 		osg::Matrix tempmatt;
 		tempmatt = osg::Matrixd::rotate(
@@ -68,4 +67,5 @@ osg::Matrix GenerateMatrix(const osg::Vec3d & _trans, const osg::Vec3d & _rot)
 			
 		osg::notify() << std::endl;
 	}
+
 };//namespace osgART

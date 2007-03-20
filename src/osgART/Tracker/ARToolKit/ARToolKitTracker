@@ -171,7 +171,7 @@ namespace osgART {
 		
         int                 m_artoolkit_pixformat;
         int                 m_artoolkit_pixsize;
-
+		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 	};
 
 };

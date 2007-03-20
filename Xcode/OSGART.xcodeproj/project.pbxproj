@@ -2020,9 +2020,9 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/lib\"";
 				MACH_O_TYPE = mh_bundle;
 				OTHER_LDFLAGS = (
-					"-lARd",
-					"-lARgsub_lited",
-					"-lARMultid",
+					"-lAR",
+					"-lARgsub_lite",
+					"-lARMulti",
 				);
 				PRODUCT_NAME = osgart_artoolkit_tracker;
 			};
@@ -2169,7 +2169,7 @@
 				LIBRARY_SEARCH_PATHS = "$(LIBRARY_SEARCH_PATHS_QUOTED_1)";
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../ARToolKit/lib\"";
 				MACH_O_TYPE = mh_bundle;
-				OTHER_LDFLAGS = "-lARvideod";
+				OTHER_LDFLAGS = "-lARvideo";
 				PRODUCT_NAME = osgart_artoolkit;
 			};
 			name = Debug;
@@ -2252,10 +2252,7 @@
 		7842DB1709182F5200414BD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_OPTIMIZATION_LEVEL = 0;

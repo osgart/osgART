@@ -84,7 +84,9 @@ namespace osgART {
 		void setDebugMode(const bool& d);
 		bool getDebugMode()const;
 		
-		
+		void setImageProcMode(const int &mode);
+		int getImageProcMode(void)const;
+			
 		/** 
 		* \brief Initialize ARToolKit4.
 		* 
@@ -127,8 +129,6 @@ namespace osgART {
 		*/
 		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
 		
-		
-		PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
 		int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
 
 		/** 
@@ -137,34 +137,32 @@ namespace osgART {
 		* This core function applies the ARToolKit4 algorithm to the last image defined by setImage.
 		*/
 		void update();
-		
-		
-		//yannick>>>>>>>>>
-		ARPattHandle * CreateARPattHandle();
-		int DeleteARPattHandle(ARPattHandle *_Hdle);
-		int arMainPattListAttach();		
-		int arMainPattListDetach();
-		//=-------------------------
-		
+				
 	protected:
 	
-		ARHandle * CreateARHandle(ARParam  *wparam);
 		/** 
 		 * \brief destructor.
 		 */
 		virtual ~ARToolKit4Tracker();
 		
+		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
+		
 	private:
 	
-		ARPattHandle		*MainAR4_PattList;//main list of patterns
+		osg::ref_ptr<osg::Image> m_debugimage;
+		
+		ARPattHandle		*gARPattHandle;//main list of patterns
 		ARHandle			*gARHandle;
 		AR3DHandle			*gAR3DHandle;
-		ARParam				m_cparam;
-		bool				m_debugmode;
+		
+		struct				CameraParameter;
+		CameraParameter*	m_cparam;
 	
 		bool setupMarkers(const std::string& patternListFile);
 		
 		std::string 		cparamName;
+		
+		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 	};
 
 };

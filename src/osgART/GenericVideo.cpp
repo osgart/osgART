@@ -54,6 +54,7 @@ namespace osgART {
 		return *this;
 	}
 
+	/* virtual */
 	int
 	GenericVideo::getID() const
 	{
@@ -67,6 +68,12 @@ namespace osgART {
 		return this->data();
 	}
 
+	void
+	GenericVideo::getGLPixelFormat(GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) {
+		*internalformat_GL = m_internalformat_GL;
+		*format_GL = m_format_GL;
+		*type_GL = m_type_GL;
+	}
 
 	Field*
 	GenericVideo::get(const std::string& name)
@@ -161,8 +168,7 @@ namespace osgART {
 			this->xsize = m_encapsulated->getWidth();
 			this->ysize = m_encapsulated->getHeight();
 
-			this->pixelformat = m_encapsulated->getPixelFormat(false);
-			this->internalpixelformat = m_encapsulated->getPixelFormat(true);
+			this->pixelformat = m_encapsulated->pixelFormat();
 			*/
 
 			/* hse25: following line needs a replacement! 

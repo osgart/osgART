@@ -125,7 +125,7 @@ namespace osgART {
 	
 		/**
 		 * Creates an undistorted mesh, according to the 
-		 * parameters know to the tracker
+		 * camera lens distortion parameters known to the tracker.
 		 * \param width width of the actual video
 		 * \param height height of the actual video
 		 * \param maxU texture coordinate maximum in u direction

@@ -34,39 +34,6 @@ namespace osgART {
 		m_texWidth = GenericVideoObject::mathNextPowerOf2(m_vidWidth);
 		m_texHeight = GenericVideoObject::mathNextPowerOf2(m_vidHeight);
 
-		switch (m_video->pixelFormat())
-		{
-		case VIDEOFORMAT_RGB24:
-			this->setInternalFormat(GL_RGB);
-			break;
-		case VIDEOFORMAT_BGR24:
-			this->setInternalFormat(GL_RGB);
-			break;
-		case VIDEOFORMAT_RGBA32:
-			this->setInternalFormat(GL_RGBA);
-			break;
-		case VIDEOFORMAT_ABGR32:
-			this->setInternalFormat(GL_RGBA);
-			break;
-		case VIDEOFORMAT_BGRA32:
-			this->setInternalFormat(GL_RGBA);
-			break;
-		case VIDEOFORMAT_ARGB32:
-			this->setInternalFormat(GL_RGBA);
-			break;
-		case VIDEOFORMAT_YUV422:
-#ifdef __APPLE__
-			//# error Due to lack of support in OpenSceneGraph, 
-			// AR_PIX_FORMAT_2vuy is not supported in osgART yet. 
-			// Use AR_PIX_FORMAT_ARGB instead.\n
-			this->setInternalFormat(GL_RGB);
-#endif
-				break;
-		default: 
-			osg::notify(osg::WARN) << "Warning: format not supported for texture mapping!" << std::endl;
-			break;
-		}
-
 		this->setTextureSize(m_texWidth,m_texHeight);
 		this->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
 		this->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);

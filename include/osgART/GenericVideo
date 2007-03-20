@@ -89,13 +89,11 @@ namespace osgART {
 		}
 		
 		/**
-		* \brief return the type of the internal pixel format
-		* @return pixel format use internally, grabbed from camera: from RGB to YUV format.
-		*/
-		inline PixelFormatType pixelInternalFormat() const {
-			return internalpixelformat;
-		}
-
+		 * \brief return the type of the pixel format in OpenGL terms.
+		 * @return An integer value less than 0 if an error occured. 
+		 */
+		void getGLPixelFormat(GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
+		
 		/**
 		* \brief return the frame rate
 		* @return actual frame rate used by the camera
@@ -115,14 +113,7 @@ namespace osgART {
 		 * Get the last image retrieved since call of update.
 		 */
 		unsigned char* getImageRaw();
-		
-	
-		
-		inline PixelFormatType getPixelFormat(bool internal = true) {
-			return (internal) ? internalpixelformat : pixelformat;
-		}		
-		
-		
+
 		inline OpenThreads::Mutex& getMutex() {
 			return m_mutex;		
 		}
@@ -175,8 +166,11 @@ namespace osgART {
 		int pixelsize;
 		
 		PixelFormatType pixelformat;
-		PixelFormatType internalpixelformat;
 		FrameRateType framerate;
+		
+		GLenum m_internalformat_GL;
+		GLenum m_format_GL;
+		GLenum m_type_GL;
 		
 		int m_video_id;
 			
