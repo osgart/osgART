@@ -23,22 +23,7 @@
 
 namespace osgART {
 
-	/**
-	 * \class ARTTransformCallback
-	 * \brief Node callback that applies a marker's transformation from ARToolKit to an OSG MatrixTransform.
-	 */
-	class OSGART_EXPORT ARTTransformCallback : public osg::NodeCallback {
-	public:
-
-		ARTTransformCallback(Marker* marker);
-	
-		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
-
-	protected:
-	
-		Marker* m_marker;
-		
-	};
+	// Deprecated
 
 };
 #endif
