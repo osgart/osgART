@@ -13,8 +13,7 @@
 
 
 #include <osg/Version>
-
-
+#include <osg/Notify>
 //
 // Includes.
 //
@@ -32,22 +31,6 @@
 #  include <OpenGL/OpenGL.h>
 #endif
 
-static 
-void osgARTGeneralFinaliser() 
-{
-    // from 05 December 2006 we only support OSG 1.1 and higher
-	// due to problems with texture handling
-#if (OSG_VERSION_MAJOR < 1) && (OSG_VERSION_MINOR < 1)
-	#error "Unsupported version of OpenSceneGraph"
-#endif
-
-	// TrackerManager Singleton needs an explicit D'tor
-	osgART::TrackerManager::destroy();
-	
-	
-	// VideoManager Singleton needs an explicit D'tor
-	osgART::VideoManager::destroy();
-}
 
 //
 // Private globals.
@@ -61,8 +44,6 @@ static char g_cwd[MAXPATHLEN] = "";
 //
 extern "C" void osgARTFinal(void)
 {
-	osgARTGeneralFinaliser();
-
 	// Add OS-specific cleanup here.
 #ifdef __APPLE__
 	// Restore working directory to what it was when we were exec'ed.
@@ -78,8 +59,6 @@ extern "C" void osgARTFinal(void)
 //
 void osgARTInit(int *argcp, char **argv)
 {
-	// Register exit function before anything else.
-	atexit(osgARTFinal);
 
 	// silence the compiler
 	if ((argcp == 0) || (&argv[0] == 0)) {
@@ -119,12 +98,13 @@ void osgARTInit(int *argcp, char **argv)
 			SInt32 MacVersion;
 			if (Gestalt(gestaltSystemVersion, &MacVersion) == noErr) {
 				if (MacVersion == 0x1047) { // Mac OS X 10.4.7.
-					printf("WARNING: Found a dodgy OpenGL driver for this CPU and Mac OS X version.\n");
+					osg::notify() << "WARNING: Found a dodgy OpenGL driver for this CPU and Mac OS X version" << std::endl;
 					if (strncmp(osgGetVersion(), "1.1", 3) == 0) {
-						printf("You MUST upgrade to OpenSceneGraph version 1.2 to avoid a crash in osgText!!\n");
+						osg::notify() << "You MUST upgrade to OpenSceneGraph version 1.2 to avoid a crash in osgText! << std::endl;
 						sleep(10);
 					} else {
-						printf("Using workaround in osgText.\n");
+						osg::notify() << "Installing workaround in osgText." << std::endl;
+						
 						putenv("OSG_TEXT_INCREMENTAL_SUBLOADING=OFF");
 					}
 				}
@@ -135,4 +115,34 @@ void osgARTInit(int *argcp, char **argv)
 
 #endif
 
+
 }
+
+namespace osgART {
+
+	class Initializer 
+	{
+	public:
+
+		Initializer()
+		{
+			osg::notify() << "osgART::Initializer()" << std::endl;
+
+			osgARTInit(0,0);
+		}
+
+		~Initializer() 
+		{
+			// TrackerManager Singleton needs an explicit D'tor
+			osgART::TrackerManager::destroy();
+
+
+			// VideoManager Singleton needs an explicit D'tor
+			osgART::VideoManager::destroy();
+		}
+
+	};
+}
+
+
+osgART::Initializer gs_Initializer;
