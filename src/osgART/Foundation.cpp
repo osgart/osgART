@@ -100,7 +100,7 @@ void osgARTInit(int *argcp, char **argv)
 				if (MacVersion == 0x1047) { // Mac OS X 10.4.7.
 					osg::notify() << "WARNING: Found a dodgy OpenGL driver for this CPU and Mac OS X version" << std::endl;
 					if (strncmp(osgGetVersion(), "1.1", 3) == 0) {
-						osg::notify() << "You MUST upgrade to OpenSceneGraph version 1.2 to avoid a crash in osgText! << std::endl;
+						osg::notify() << "You MUST upgrade to OpenSceneGraph version 1.2 to avoid a crash in osgText!" << std::endl;
 						sleep(10);
 					} else {
 						osg::notify() << "Installing workaround in osgText." << std::endl;

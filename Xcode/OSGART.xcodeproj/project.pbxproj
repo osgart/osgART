@@ -24,10 +24,6 @@
 		4A133C320A8BBEA100C95219 /* VideoLayer in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED470A63093A007D0FA4 /* VideoLayer */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C330A8BBEA100C95219 /* VideoManager in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2F09182F8200414BD5 /* VideoManager */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C340A8BBEA100C95219 /* VideoPlane in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3009182F8200414BD5 /* VideoPlane */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C350A8BBEA100C95219 /* VideoTexCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3109182F8200414BD5 /* VideoTexCallback */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C360A8BBEA100C95219 /* VideoTexRectCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3209182F8200414BD5 /* VideoTexRectCallback */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C370A8BBEA100C95219 /* VideoTexture in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3309182F8200414BD5 /* VideoTexture */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C380A8BBEA100C95219 /* VideoTextureRectangle in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3409182F8200414BD5 /* VideoTextureRectangle */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A174BB60AD9D66000B9FC9B /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		4A174BB70AD9D66000B9FC9B /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		4A174BB80AD9D66000B9FC9B /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
@@ -89,10 +85,8 @@
 		4A6AC5CE0B55CB7100BFED12 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A6AC5CD0B55CB7100BFED12 /* Utils.cpp */; };
 		4A8F9F5409D8FA5800E57FEA /* Marker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8F9F5009D8FA5800E57FEA /* Marker.cpp */; };
 		4A8F9F5709D8FA5800E57FEA /* VideoBillboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */; };
-		4A94BA7F0AC8BFE600E20A2A /* VideoLoadModel in Headers */ = {isa = PBXBuildFile; fileRef = 4A94BA7E0AC8BFE600E20A2A /* VideoLoadModel */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A9969820AC783430068A373 /* PlaneARShadowRenderer in Headers */ = {isa = PBXBuildFile; fileRef = 4A99697E0AC783430068A373 /* PlaneARShadowRenderer */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A9969830AC783430068A373 /* ShadowRenderer in Headers */ = {isa = PBXBuildFile; fileRef = 4A99697F0AC783430068A373 /* ShadowRenderer */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A9969850AC783430068A373 /* VideoPlaneMulti in Headers */ = {isa = PBXBuildFile; fileRef = 4A9969810AC783430068A373 /* VideoPlaneMulti */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A99698D0AC783A20068A373 /* ARLocalTransformCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969860AC783A20068A373 /* ARLocalTransformCallback.cpp */; };
 		4A99698E0AC783A20068A373 /* ARTTransformCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969870AC783A20068A373 /* ARTTransformCallback.cpp */; };
 		4A99698F0AC783A20068A373 /* PlaneARShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */; };
@@ -129,7 +123,6 @@
 		4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */; };
 		4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */; };
 		4AE1D48D0B701AC1001CB3B5 /* VideoImageStream in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1D4890B701AA1001CB3B5 /* VideoImageStream */; settings = {ATTRIBUTES = (Public, ); }; };
-		4AE1D48E0B701AC1001CB3B5 /* VideoTextureBase in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1D48A0B701AA1001CB3B5 /* VideoTextureBase */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AE1ED6B0A630FD8007D0FA4 /* GenericTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ED570A630FD8007D0FA4 /* GenericTracker.cpp */; };
 		4AE1ED6C0A630FD8007D0FA4 /* GenericVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ED580A630FD8007D0FA4 /* GenericVideo.cpp */; };
 		4AE1ED6D0A630FD8007D0FA4 /* GenericVideoObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ED590A630FD8007D0FA4 /* GenericVideoObject.cpp */; };
@@ -1549,16 +1542,9 @@
 				4A133C310A8BBEA100C95219 /* VideoForeground in Headers */,
 				4AE1D48D0B701AC1001CB3B5 /* VideoImageStream in Headers */,
 				4A133C320A8BBEA100C95219 /* VideoLayer in Headers */,
-				4A94BA7F0AC8BFE600E20A2A /* VideoLoadModel in Headers */,
 				4A133C330A8BBEA100C95219 /* VideoManager in Headers */,
 				4A133C340A8BBEA100C95219 /* VideoPlane in Headers */,
-				4A9969850AC783430068A373 /* VideoPlaneMulti in Headers */,
 				4A55A7250AA78988005EDC69 /* VideoPlugin in Headers */,
-				4A133C350A8BBEA100C95219 /* VideoTexCallback in Headers */,
-				4A133C360A8BBEA100C95219 /* VideoTexRectCallback in Headers */,
-				4A133C370A8BBEA100C95219 /* VideoTexture in Headers */,
-				4AE1D48E0B701AC1001CB3B5 /* VideoTextureBase in Headers */,
-				4A133C380A8BBEA100C95219 /* VideoTextureRectangle in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1832,6 +1818,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A99698D0AC783A20068A373 /* ARLocalTransformCallback.cpp in Sources */,
+				4A4F69C30B8E4B6100275FD1 /* ARSceneNode.cpp in Sources */,
 				7842DB7A09184AA900414BD5 /* ARTTransform.cpp in Sources */,
 				4A99698E0AC783A20068A373 /* ARTTransformCallback.cpp in Sources */,
 				4AECD6F20ACA2C2800527735 /* Foundation.cpp in Sources */,
@@ -1847,12 +1834,11 @@
 				4A6AC5CE0B55CB7100BFED12 /* Utils.cpp in Sources */,
 				7842DB8009184AA900414BD5 /* VideoBackground.cpp in Sources */,
 				4A8F9F5709D8FA5800E57FEA /* VideoBillboard.cpp in Sources */,
+				4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */,
+				4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */,
 				4AE1ED770A630FD8007D0FA4 /* VideoLayer.cpp in Sources */,
 				7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */,
 				7842DB8309184AA900414BD5 /* VideoPlane.cpp in Sources */,
-				4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */,
-				4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */,
-				4A4F69C30B8E4B6100275FD1 /* ARSceneNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
