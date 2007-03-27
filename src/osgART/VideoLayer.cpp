@@ -210,14 +210,21 @@ namespace osgART {
 		switch (m_textureMode) 
 		{
 		case GenericVideoObject::USE_TEXTURE_RECTANGLE:
+			
+			osg::notify() << "osgART::GenericVideoObject() using TextureRectangle" << std::endl;
+
 			_texture = new osg::TextureRectangle(this->m_image.get());
+			
 			maxU = m_image->s();
 			maxV = m_image->t();
+			
 			break;
 
 		case GenericVideoObject::USE_TEXTURE_DEFAULT:
 		case GenericVideoObject::USE_TEXTURE_2D:
 		default:
+
+			osg::notify() << "osgART::GenericVideoObject() using Texture2D" << std::endl;
 
 			_texture = new osg::Texture2D(this->m_image.get());
 
