@@ -35,18 +35,13 @@
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
-#include <osgART/VideoBackground>
-#include <osgART/VideoPlane>
-#include <osgART/VideoForeground>
+#include <osgART/VideoLayer>
 #include <osgART/ARSceneNode>
 
 
 int main(int argc, char* argv[]) 
 {
 
-	osg::setNotifyLevel(osg::NOTICE);
-
-	osgARTInit(&argc, argv);
 	
 	// Set up the osg viewer.
 	osgProducer::Viewer viewer;
@@ -93,7 +88,6 @@ int main(int argc, char* argv[])
 		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
 		exit(-1);
 	}
-	
 	// Tracker parameters are read and written via a field mechanism.
 	// Init access to a field within the tracker, in this case, the binarization threshhold.
 	osg::ref_ptr< osgART::TypedField<int> > _threshold = 
@@ -109,19 +103,18 @@ int main(int argc, char* argv[])
 	}
 	
 	
-	// Adding video background
+	// Creating a video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
-	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
-
-	//specify a video texture rectangle (faster)
-	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
+	// Creating a video background
+	osg::ref_ptr<osgART::VideoLayer> videoBackground = 
+		new osgART::VideoLayer(video.get() , 0);
 
 	//initialize the video background
 	videoBackground->init();
 	
 	//adding it to the scene graph
-	foregroundGroup->addChild(videoBackground);
+	foregroundGroup->addChild(videoBackground.get());
 
 	foregroundGroup->getOrCreateStateSet()->setRenderBinDetails(2, "RenderBin");
 
