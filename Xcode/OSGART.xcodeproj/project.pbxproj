@@ -97,7 +97,6 @@
 		4A99698E0AC783A20068A373 /* ARTTransformCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969870AC783A20068A373 /* ARTTransformCallback.cpp */; };
 		4A99698F0AC783A20068A373 /* PlaneARShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */; };
 		4A9969900AC783A20068A373 /* ShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969890AC783A20068A373 /* ShadowRenderer.cpp */; };
-		4A9969930AC783A20068A373 /* VideoTexRectCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A99698C0AC783A20068A373 /* VideoTexRectCallback.cpp */; };
 		4A9969C90AC785D10068A373 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
 		4A996A340AC786950068A373 /* DummyImageVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A996A220AC7865B0068A373 /* DummyImageVideo.cpp */; };
 		4A996A350AC786950068A373 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A996A230AC7865B0068A373 /* Main.cpp */; };
@@ -129,7 +128,6 @@
 		4AA822C70B82877500BA6D59 /* TransformFilterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA822C60B82877500BA6D59 /* TransformFilterCallback.cpp */; };
 		4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */; };
 		4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */; };
-		4AE1D4880B701A80001CB3B5 /* VideoTextureBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4850B701A80001CB3B5 /* VideoTextureBase.cpp */; };
 		4AE1D48D0B701AC1001CB3B5 /* VideoImageStream in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1D4890B701AA1001CB3B5 /* VideoImageStream */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AE1D48E0B701AC1001CB3B5 /* VideoTextureBase in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1D48A0B701AA1001CB3B5 /* VideoTextureBase */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AE1ED6B0A630FD8007D0FA4 /* GenericTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ED570A630FD8007D0FA4 /* GenericTracker.cpp */; };
@@ -144,9 +142,6 @@
 		7842DB8009184AA900414BD5 /* VideoBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4009182F8200414BD5 /* VideoBackground.cpp */; };
 		7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4209182F8200414BD5 /* VideoManager.cpp */; };
 		7842DB8309184AA900414BD5 /* VideoPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4309182F8200414BD5 /* VideoPlane.cpp */; };
-		7842DB8409184AA900414BD5 /* VideoTexCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4409182F8200414BD5 /* VideoTexCallback.cpp */; };
-		7842DB8509184AA900414BD5 /* VideoTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4509182F8200414BD5 /* VideoTexture.cpp */; };
-		7842DB8609184AA900414BD5 /* VideoTextureRectangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4609182F8200414BD5 /* VideoTextureRectangle.cpp */; };
 		7842DE8809184F6100414BD5 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
 		7842DE8909184F6100414BD5 /* osg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8D09184F5F00414BD5 /* osg.framework */; };
 		7842DE8A09184F6100414BD5 /* osgDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8E09184F5F00414BD5 /* osgDB.framework */; };
@@ -1855,13 +1850,8 @@
 				4AE1ED770A630FD8007D0FA4 /* VideoLayer.cpp in Sources */,
 				7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */,
 				7842DB8309184AA900414BD5 /* VideoPlane.cpp in Sources */,
-				7842DB8409184AA900414BD5 /* VideoTexCallback.cpp in Sources */,
-				7842DB8509184AA900414BD5 /* VideoTexture.cpp in Sources */,
-				7842DB8609184AA900414BD5 /* VideoTextureRectangle.cpp in Sources */,
-				4A9969930AC783A20068A373 /* VideoTexRectCallback.cpp in Sources */,
 				4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */,
 				4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */,
-				4AE1D4880B701A80001CB3B5 /* VideoTextureBase.cpp in Sources */,
 				4A4F69C30B8E4B6100275FD1 /* ARSceneNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
