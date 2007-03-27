@@ -142,13 +142,7 @@ namespace osgART {
 		 */
 		void setFlip(bool horizontal, bool vertical);
 		
-		
-		/**
-		 * For on demand update. It will try to call update and 
-		 * return true if this is a new frame.
-		 * \return true if a new frame has been captured
-		 */
-		bool getFrame();
+
 		
 	   
 	protected:
@@ -156,8 +150,6 @@ namespace osgART {
 		bool m_vertical_flip;
 		bool m_horizontal_flip;
 		
-		bool m_isupdated;
-	
 		/** 
 		 * \brief destructor.
 		 *
@@ -167,10 +159,6 @@ namespace osgART {
 		
 		PixelFormatType pixelformat;
 		FrameRateType framerate;
-		
-		GLenum m_internalformat_GL;
-		GLenum m_format_GL;
-		GLenum m_type_GL;
 		
 		int m_video_id;
 			

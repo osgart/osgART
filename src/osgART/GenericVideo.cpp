@@ -25,7 +25,6 @@ namespace osgART {
 	GenericVideo::GenericVideo() 
 		: VideoImageStream(), 
 		FieldContainer<GenericVideo>(),
-		m_isupdated(false),
 		pixelsize(4), 
 		pixelformat(VIDEOFORMAT_RGB24),
 		framerate(VIDEOFRAMERATE_30),
@@ -70,9 +69,9 @@ namespace osgART {
 
 	void
 	GenericVideo::getGLPixelFormat(GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) {
-		*internalformat_GL = m_internalformat_GL;
-		*format_GL = m_format_GL;
-		*type_GL = m_type_GL;
+		//*internalformat_GL = m_internalformat_GL;
+		//*format_GL = m_format_GL;
+		//*type_GL = m_type_GL;
 	}
 
 	Field*
@@ -109,20 +108,6 @@ namespace osgART {
 
 	}
 
-	bool
-	GenericVideo::getFrame()
-	{
-		try {
-
-			this->update();
-
-		} catch(...) {
-            m_isupdated = false;
-		}
-
-		return m_isupdated;
-	}
-
 
 	// -----------------------------------------------------------------------
 	
@@ -137,8 +122,6 @@ namespace osgART {
 		GenericVideo(*container.m_encapsulated.get())
 	{
 	}
-
-
 
 	VideoConfiguration* VideoContainer::getVideoConfiguration() 
 	{
