@@ -11,11 +11,8 @@
 // @@OSGART_LICENSE_HEADER_BEGIN@@
 // @@OSGART_LICENSE_HEADER_END@@
 
-#include <osgART/VideoPlane>
-// #include <osgART/VideoTexture>
-#include <osgART/VideoManager>
-// #include <osgART/VideoTextureRectangle>
-
+#include "osgART/VideoPlane"
+#include "osgART/VideoManager"
 
 #include <osg/Group>
 #include <osg/Node>
