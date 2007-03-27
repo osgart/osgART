@@ -11,14 +11,14 @@
 // @@OSGART_LICENSE_HEADER_BEGIN@@
 // @@OSGART_LICENSE_HEADER_END@@
 
-#include <osgART/VideoTextureBase>
 #include <osg/Notify>
 
+#include "osgART/VideoTextureBase"
 
 // using namespace std;
 namespace osgART {
 
-	VideoTextureBase::VideoTextureBase(GenericVideo* video) : 
+	VideoTextureBase::VideoTextureBase(osg::Image* video) : 
 		m_alphabias(-1.), 
 		m_video(video) 
 	{		

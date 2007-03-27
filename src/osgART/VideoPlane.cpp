@@ -12,9 +12,9 @@
 // @@OSGART_LICENSE_HEADER_END@@
 
 #include <osgART/VideoPlane>
-#include <osgART/VideoTexture>
+// #include <osgART/VideoTexture>
 #include <osgART/VideoManager>
-#include <osgART/VideoTextureRectangle>
+// #include <osgART/VideoTextureRectangle>
 
 
 #include <osg/Group>
@@ -169,10 +169,13 @@ namespace osgART {
 
 			if ((*_ii).valid()) {
 				if (m_textureMode == USE_TEXTURE_RECTANGLE) {
-					_t = new VideoTextureRectangle((*_ii).get());
+					// \TODO: replace
+					// _t = new VideoTextureRectangle((*_ii).get());
 				} else 
+				
 				if (m_textureMode == USE_TEXTURE_2D) {
-					_t = new VideoTexture((*_ii).get());
+					// \TODO: replace
+					// _t = new VideoTexture((*_ii).get());
 				}
 			}
 			if (0L != _t) {

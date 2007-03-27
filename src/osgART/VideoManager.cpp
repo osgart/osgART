@@ -78,9 +78,18 @@ namespace osgART {
 
 	/*static*/
 	void
-	VideoManager::destroy() {
-		delete VideoManager::_instance;
-		VideoManager::_instance = 0L;
+	VideoManager::destroy() 
+	{
+		try
+		{
+			delete VideoManager::_instance;
+			VideoManager::_instance = 0L;
+
+		} 
+		catch(...)
+		{
+			osg::notify(osg::WARN) << "Could not delete instance of VideoManager!" << std::endl;
+		}
 	}
 
 	GenericVideo* 

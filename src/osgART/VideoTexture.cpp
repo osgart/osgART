@@ -11,12 +11,12 @@
 // @@OSGART_LICENSE_HEADER_BEGIN@@
 // @@OSGART_LICENSE_HEADER_END@@
 
+#include <osg/Notify>
+
 #include <osgART/VideoManager>
 #include <osgART/VideoTexture>
 #include <osgART/VideoTexCallback>
-#include <osgART/VideoBackground>
-
-#include <osg/Notify>
+#include <osgART/GenericVideoObject>
 
 
 // using namespace std;
@@ -28,12 +28,13 @@ namespace osgART {
 	{
 		this->setDataVariance(osg::Object::DYNAMIC);
 
-		m_vidWidth = m_video->getWidth();
-		m_vidHeight = m_video->getHeight();
+		m_vidWidth = m_video->s();
+		m_vidHeight = m_video->t();
 
 		m_texWidth = GenericVideoObject::mathNextPowerOf2(m_vidWidth);
 		m_texHeight = GenericVideoObject::mathNextPowerOf2(m_vidHeight);
-
+#if 0
+#endif
 		this->setTextureSize(m_texWidth,m_texHeight);
 		this->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
 		this->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
