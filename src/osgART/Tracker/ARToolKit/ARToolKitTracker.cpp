@@ -295,54 +295,23 @@ namespace osgART {
 		return m_threshold;
 	}
 
-    /*virtual*/ 
-	void ARToolKitTracker::setImageRaw(unsigned char * image, PixelFormatType format)
-    {
-		if (m_imageptr_format != format) {
-			// format has changed.
-			// Translate the pixel format to an appropriate type for ARToolKit v2.
-			switch (format) {
-				case VIDEOFORMAT_RGB24:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_RGB;
-					m_artoolkit_pixsize = 3;
-					break;
-				case VIDEOFORMAT_BGR24:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_BGR;
-					m_artoolkit_pixsize = 3;
-					break;
-				case VIDEOFORMAT_BGRA32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_BGRA;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_RGBA32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_RGBA;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_ARGB32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_ARGB;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_ABGR32:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_ABGR;
-					m_artoolkit_pixsize = 4;
-					break;
-				case VIDEOFORMAT_YUV422:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_2vuy;
-					m_artoolkit_pixsize = 2;
-					break;
-				case VIDEOFORMAT_Y8:
-				case VIDEOFORMAT_GREY8:
-					m_artoolkit_pixformat = AR_PIXEL_FORMAT_MONO;
-					m_artoolkit_pixsize = 1;
-					break;
-				default:
-					break;
-			}        
+
+	// simple function for getting the image format 
+	// \TODO: Phil ... you might want to put the "inverse" of your
+	// original function in here
+	unsigned int getARToolKitFormat(const osg::Image& _image)
+	{
+		switch (_image.getPixelFormat())
+		{
+		case GL_BGRA:
+            return AR_PIXEL_FORMAT_BGRA;
+		default:
+			osg::notify(osg::WARN) << "Not implemented!" << std::endl;
 		}
-		
-        // We are only augmenting method in parent class.
-        GenericTracker::setImageRaw(image, format);
-    }
+
+		return 0;
+	}
+
 
 	void ARToolKitTracker::update()
 	{
@@ -351,16 +320,33 @@ namespace osgART {
 		
 	    register int             j, k;
 
+		if (!m_imagesource.valid())
+		{
+			osg::notify(osg::WARN) << "No connected image source for the tracker" << std::endl;
+			return;
+		}
+
 		// Do not update with a null image.
-		if (m_imageptr == NULL) {
+		if (!m_imagesource->valid())
+		{
 			osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image"
 				<< std::endl;
 			return;
 		}
 
-        // Check that the format matches the one passed in.
-		if (AR_PIX_SIZE_DEFAULT != m_artoolkit_pixsize || AR_DEFAULT_PIXEL_FORMAT != m_artoolkit_pixformat) {
-			std::cerr << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
+		if (m_imagesource->getModifiedCount() != m_lastModifiedCount)
+		{
+			m_lastModifiedCount = m_imagesource->getModifiedCount();
+		} else 
+		{
+			// hse25: performance measurement: only update if the image was modified
+			return;
+		}
+
+		// \TODO: hse25: check here for the moment, the function needs to be extended
+		if (AR_DEFAULT_PIXEL_FORMAT != getARToolKitFormat(*m_imagesource.get()))
+		{
+			osg::notify(osg::WARN) << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
 
@@ -382,8 +368,8 @@ namespace osgART {
 
 
 		// Detect the markers in the video frame.
-		if (arDetectMarker(m_imageptr, m_threshold, &marker_info, &m_marker_num) < 0) {
-			std::cerr << "Error detecting markers in image." << std::endl;
+		if (arDetectMarker(m_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) {
+			osg::notify(osg::FATAL) << "Error detecting markers in image." << std::endl;
 			return;
 		}
 
