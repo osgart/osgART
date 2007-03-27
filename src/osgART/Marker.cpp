@@ -23,8 +23,9 @@ namespace osgART {
 		m_valid(false),
 		m_name("Marker")		
 	{
-		m_fields["name"] = new TypedField<std::string>(&m_name);
-		m_fields["active"] = new TypedField<bool>(&m_active);
+		// hse25: No fields within osgART
+		//m_fields["name"] = new TypedField<std::string>(&m_name);
+		//m_fields["active"] = new TypedField<bool>(&m_active);
 	}
 
 	Marker::~Marker() 
