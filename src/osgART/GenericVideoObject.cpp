@@ -14,6 +14,8 @@
 #include "osgART/GenericVideoObject"
 
 #include <osg/Notify>
+#include <osg/Texture>
+
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -43,14 +45,13 @@ namespace osgART {
 	#endif
 	}
 
-	GenericVideoObject::GenericVideoObject(GenericVideo* video /* = 0L */) :
+	GenericVideoObject::GenericVideoObject(osg::Image* image /* = 0L */) :
 		osg::Group(),
 		m_vShader(0L),
-		m_vTexture(0L),
-		m_video(video),
+//		m_vTexture(0L),
+		m_image(image),
 		m_distortionMode(NO_CORRECTION),
-		m_textureMode(USE_TEXTURE_RECTANGLE),
-		m_videoimage(new osg::Image)
+		m_textureMode(USE_TEXTURE_RECTANGLE)
 	{
 	}
 
@@ -73,15 +74,15 @@ namespace osgART {
 	}
 
 	void 
-	GenericVideoObject::setVideo(GenericVideo* video)
+		GenericVideoObject::setImageSource(osg::Image* image)
 	{
-		this->m_video = video;
+		this->m_image = image;
 	}
 
-	GenericVideo*
-	GenericVideoObject::getVideo() const 
+	osg::Image*
+	GenericVideoObject::getImageSource() const 
 	{
-		return this->m_video.get();
+		return this->m_image.get();
 	}
 
 }; // namespace osgART

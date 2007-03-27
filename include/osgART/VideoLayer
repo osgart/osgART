@@ -43,6 +43,7 @@
 #include <osg/MatrixTransform>
 #include <osg/Geometry>
 #include <osg/Projection>
+#include <osg/Image>
 
 // local include
 #include "osgART/Export"
@@ -63,7 +64,7 @@ namespace osgART {
 		 * \param videoId the number of the video used for the background
 		 * \param layerDepth
 		 */
-		VideoLayer(GenericVideo* video = 0L, 
+		VideoLayer(osg::Image* video = 0L, 
 			int layerDepth = 0);
 			
 	
@@ -126,7 +127,7 @@ namespace osgART {
  		 * Set the connected video on the fly.
 		 * \param video an initialised video
 		 */
-		virtual void setVideo(GenericVideo* video);
+		virtual void setImageSource(osg::Image* image);
 		
 	    
 	protected: 

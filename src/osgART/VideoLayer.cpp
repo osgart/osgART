@@ -13,11 +13,12 @@
 
 #include "osgART/VideoLayer"
 #include "osgART/TrackerManager"
-#include "osgART/VideoTexture"
 #include "osgART/VideoManager"
-#include "osgART/VideoTextureRectangle"
 #include "osgART/GenericTracker"
 
+#include <osg/Texture>
+#include <osg/Texture2D>
+#include <osg/TextureRectangle>
 #include <osg/Group>
 #include <osg/Node>
 #include <osg/MatrixTransform>
@@ -25,42 +26,89 @@
 #include <osg/Projection>
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
-#include <osg/TextureRectangle>
 #include <osg/Depth>
 #include <osg/Geometry>
 #include <osg/BlendFunc>
 #include <osg/Notify>
+#include <osg/Image>
+
 
 namespace osgART {
 
 
-	class ImageUpdateCallback : public osg::NodeCallback
+	class Texture2DCallback : public osg::Texture2D::SubloadCallback
 	{
 	public:
+		
+		Texture2DCallback(osg::Texture2D* texture);
 
-		ImageUpdateCallback(osg::TextureRectangle* texture, osgART::GenericVideo* video):
-			_texture(texture),
-			_video(video)
-		{			
-		}
+		void load(const osg::Texture2D& texture, osg::State&) const;
+		void subload(const osg::Texture2D& texture, osg::State&) const;
 
-		virtual void operator()(osg::Node*, osg::NodeVisitor*)
-		{
-			_texture->setImage(_video.get());        
-		}
-	    
-		protected:
-			osg::ref_ptr<osg::TextureRectangle>	_texture;
-			osg::ref_ptr<osgART::GenericVideo>	_video;
-			
+		inline float getTexCoordX() const { return (_texCoordX);};
+		inline float getTexCoordY() const { return (_texCoordY);};
+
+	protected:
+		
+		float _texCoordX;
+		float _texCoordY;
+		
 	};
 
+
+	Texture2DCallback::Texture2DCallback(osg::Texture2D* texture) :
+		_texCoordX(texture->getImage()->s() / (float)GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->s())),
+		_texCoordY(texture->getImage()->t() / (float)GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->t()))
+	{
+		texture->setTextureSize(GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->s()),
+			GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->t()));
+
+		texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
+		texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
+		texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::CLAMP);
+		texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::CLAMP);
+		
+	}
+
+	/*virtual*/ 
+	void 
+	Texture2DCallback::load(const osg::Texture2D& texture, osg::State&) const 
+	{
+		
+		const osg::Image* _image = texture.getImage();
+
+		glTexImage2D(GL_TEXTURE_2D, 0, 
+			// hse25: internal texture format gets overwritten by the image format 
+			// we need just the components - ???
+			osg::Image::computeNumComponents(_image->getInternalTextureFormat()), 
+			(float)GenericVideoObject::mathNextPowerOf2((unsigned int)_image->s()), 
+			(float)GenericVideoObject::mathNextPowerOf2((unsigned int)_image->t()), 
+			0, _image->getPixelFormat(), 
+			_image->getDataType(), 0);
+	}
+	
+	/*virtual */ 
+	void
+	Texture2DCallback::subload(const osg::Texture2D& texture, osg::State&) const 
+	{
+	
+		const osg::Image* _image = texture.getImage();
+
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+			_image->s(), _image->t(), _image->getPixelFormat(), 
+		GL_UNSIGNED_BYTE, _image->data());
+
+	}
+
+
+	// VideoLayer
+
 	VideoLayer::VideoLayer(
-		GenericVideo* video /* = 0L*/,
+		osg::Image* image /* = 0L*/,
 		int layerD)
-		: GenericVideoObject(video),
-		m_width(video ? video->getWidth() : 0),
-		m_height(video ? video->getHeight() : 0),
+		: GenericVideoObject(image),
+		m_width(image ? image->s() : 0),
+		m_height(image ? image->t() : 0),
 		m_layerDepth(layerD),
 		m_alpha(-1),
 		m_trackerid_undistort(0)
@@ -82,12 +130,12 @@ namespace osgART {
 
 	/* virtual */
 	void
-	VideoLayer::setVideo(GenericVideo* video)
+	VideoLayer::setImageSource(osg::Image* image)
 	{
-		GenericVideoObject::setVideo(video);
+		GenericVideoObject::setImageSource(image);
 
-		m_width = (video) ? video->getWidth() : 0;
-		m_height = (video) ? video->getHeight() : 0;
+		m_width = (image) ? image->t() : 0;
+		m_height = (image) ? image->s() : 0;
 	}
 
 	/* virtual */
@@ -113,6 +161,8 @@ namespace osgART {
 			stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
 			stateset->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
 		}
+
+
 		osg::Vec4Array* colors = new osg::Vec4Array;
 		colors->push_back(osg::Vec4(1.0f,1.0f,1.0f,alpha));
 		m_geometry->setColorArray(colors);
@@ -152,35 +202,34 @@ namespace osgART {
 	osg::ref_ptr<osg::Geode>
 	VideoLayer::buildLayerGeometry() 
 	{
+
+		osg::Texture* _texture = 0L;
+
 		float maxU = 1.0f, maxV = 1.0f;
 
-		osg::Texture* _texture = NULL;
+		switch (m_textureMode) 
+		{
+		case GenericVideoObject::USE_TEXTURE_RECTANGLE:
+			_texture = new osg::TextureRectangle(this->m_image.get());
+			maxU = m_image->s();
+			maxV = m_image->t();
+			break;
 
-		switch(m_textureMode) {
-			case USE_TEXTURE_RECTANGLE:
-				maxU = m_width;
-				maxV = m_height;
-				_texture = new VideoTextureRectangle(m_video.get());
-				break;
-			case USE_TEXTURE_2D:
-				maxU = m_width / (float)mathNextPowerOf2((unsigned int)m_width);
-				maxV = m_height / (float)mathNextPowerOf2((unsigned int)m_height);
-				_texture = new VideoTexture(m_video.get());
-				break;
+		case GenericVideoObject::USE_TEXTURE_DEFAULT:
+		case GenericVideoObject::USE_TEXTURE_2D:
+		default:
 
-			case USE_TEXTURE_VIDEO:
+			_texture = new osg::Texture2D(this->m_image.get());
 
-				_texture = new osg::TextureRectangle;
-				this->setUpdateCallback(new ImageUpdateCallback((osg::TextureRectangle*)_texture,
-					m_video.get()));
-				
-				break;
+			Texture2DCallback *_cb = new Texture2DCallback(dynamic_cast<osg::Texture2D*>(_texture));
 
-			default:
-				std::cerr << "VideoBackground::buildBackGeometry(): Error, unknown texture mode" << std::endl;
+			maxU = _cb->getTexCoordX();
+			maxV = _cb->getTexCoordY();
+
+			dynamic_cast<osg::Texture2D*>(_texture)->setSubloadCallback(_cb);
 		}
 
-		this->m_vTexture = _texture;
+
 		_texture->setDataVariance(osg::Object::DYNAMIC);
 
 		m_layerGeode = new osg::Geode();
@@ -193,11 +242,6 @@ namespace osgART {
 		osg::Vec2Array* tcoords = new osg::Vec2Array();
 		m_geometry->setTexCoordArray(0, tcoords);
 
-		osg::Vec4Array* colors = new osg::Vec4Array();
-		colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		m_geometry->setColorArray(colors);
-		m_geometry->setColorBinding(osg::Geometry::BIND_OVERALL);
-
 		switch (m_distortionMode) {
 
 			case CAMERA_PARAM_CORRECTION:
@@ -207,7 +251,9 @@ namespace osgART {
 					createUndistortedMesh((int)m_width, (int)m_height, maxU, maxV, *m_geometry);
 			}
 
-
+			default:
+				osg::notify() << "osgART::VideoLayer::buildLayerGeometry()"
+					"Undefined distortion mode" << std::endl;
 			case NO_CORRECTION:
 			{
 
@@ -225,31 +271,14 @@ namespace osgART {
 
 				break;
 			}
-			default:
-				osg::notify() << "osgART::VideoLayer::buildLayerGeometry()"
-					"Undefined distortion mode" << std::endl;
 		}
 	    
-		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, _texture, osg::StateAttribute::ON);
-		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
-		
-		//if we have transparency texture and we are not the background layer
-		if ((dynamic_cast<osgART::VideoTextureBase*>(_texture)->getVideo()->pixelSize()==4)&&(m_layerDepth!=1))
-		{
-			osg::BlendFunc* blendFunc = new osg::BlendFunc();
-			blendFunc->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA);
-		
-			m_geometry->getOrCreateStateSet()->setAttribute(blendFunc);
-			m_geometry->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
-			m_geometry->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+		m_geometry->getOrCreateStateSet()->setTextureAttributeAndModes(0, 
+			_texture, osg::StateAttribute::ON);
 
-			dynamic_cast<osgART::VideoTextureBase*>(_texture)->setAlphaBias(0.0);	
-		}
-
-		if (m_vShader.valid())
-		{
-			m_vShader->apply(*(m_geometry->getOrCreateStateSet()));	
-		}
+		m_geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, 
+			osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);
+		
 		m_layerGeode->addDrawable(m_geometry.get());
 
 		return m_layerGeode;

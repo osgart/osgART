@@ -27,7 +27,6 @@
 
 //personnal include
 #include "osgART/Export"
-#include "osgART/VideoTexture"
 #include "osgART/GenericVideoShader"
 #include "osgART/GenericVideo"
 
@@ -46,7 +45,7 @@ namespace osgART {
 		 * \brief default constructor.
 		 * \param videoId the number of the video used for the background
 		 */    
-		GenericVideoObject(GenericVideo* video = 0L);
+		GenericVideoObject(osg::Image* image = 0L);
 		
 		/** 
 		 * \brief Copy constructor.
@@ -72,10 +71,9 @@ namespace osgART {
 	     * Modes how the video is being rendered.
 	     */
 		enum TextureMode {
-			USE_TEXTURE_AUTO = 0,	/**< Automatically determine best texture mode */
-			USE_TEXTURE_2D,			/**< Video is being pasted into a 2D texture */
-			USE_TEXTURE_RECTANGLE,	/**< Video is being attached to a 2D rectangle */
-			USE_TEXTURE_VIDEO		/**< different way to construct a video */
+			USE_TEXTURE_DEFAULT = 0,	/**< Default texture mode */
+			USE_TEXTURE_2D,				/**< Video is being pasted into a 2D texture */
+			USE_TEXTURE_RECTANGLE,		/**< Video is being attached to a 2D rectangle */
 		};
 
 		/**
@@ -94,6 +92,8 @@ namespace osgART {
 		virtual void init();
 	    
 	    
+	    /*
+	    
 		inline void setTexture(osg::Texture* vt) {
 			m_vTexture=vt;
 		}
@@ -101,6 +101,7 @@ namespace osgART {
 		inline osg::ref_ptr<osg::Texture> getTexture() {
 			return m_vTexture;
 		}
+		*/
 	    
 		inline void setShader(GenericVideoShader* vs) { 
 			m_vShader=vs;
@@ -129,13 +130,13 @@ namespace osgART {
 		/**
 		 * Set the connected video stream
 		 */
-		 virtual void setVideo(GenericVideo* video);
+		 virtual void setImageSource(osg::Image* video);
 		
 				
 		/**
 		 * Get the connected video stream
 		 */
-		 virtual GenericVideo* getVideo() const;
+		 virtual osg::Image* getImageSource() const;
 	    
 	    
 	protected:
@@ -148,17 +149,15 @@ namespace osgART {
 	
 	
 		osg::ref_ptr<GenericVideoShader>	m_vShader;
-		osg::ref_ptr<osg::Texture>			m_vTexture;
+		// osg::ref_ptr<osg::Texture>			m_vTexture;
 
 	
-		osg::ref_ptr<GenericVideo>			m_video;
+		osg::ref_ptr<osg::Image>			m_image;
 		
 	
 		DistortionCorrectionMode m_distortionMode;
 		TextureMode m_textureMode;
 		
-		osg::ref_ptr<osg::Image> m_videoimage;
-
 	};
 };
 
