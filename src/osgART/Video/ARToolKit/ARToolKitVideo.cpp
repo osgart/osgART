@@ -148,6 +148,38 @@ namespace osgART {
 		}
 	}
 
+
+	typedef struct _table {
+		int artoolkit; 
+		int opengl;
+	} __table;
+
+
+
+//
+//#define AR_PIXEL_FORMAT_RGB 1
+//#define AR_PIXEL_FORMAT_BGR 2
+//#define AR_PIXEL_FORMAT_RGBA 3
+//#define AR_PIXEL_FORMAT_BGRA 4
+//#define AR_PIXEL_FORMAT_ABGR 5
+//#define AR_PIXEL_FORMAT_MONO 6
+//#define AR_PIXEL_FORMAT_ARGB 7
+//#define AR_PIXEL_FORMAT_2vuy 8
+//#define AR_PIXEL_FORMAT_UYVY AR_PIXEL_FORMAT_2vuy
+//#define AR_PIXEL_FORMAT_yuvs 9
+//#define AR_PIXEL_FORMAT_YUY2 AR_PIXEL_FORMAT_yuvs
+
+	_table gs_translation[] = {
+		{0,0},
+		{AR_PIXEL_FORMAT_RGB,	GL_RGB},
+		{AR_PIXEL_FORMAT_BGR,	GL_BGR},
+		{AR_PIXEL_FORMAT_RGBA,	GL_RGBA},
+		{AR_PIXEL_FORMAT_BGRA,	GL_BGRA},
+		{AR_PIXEL_FORMAT_ABGR,	0},
+		{AR_PIXEL_FORMAT_MONO,	GL_LUMINANCE},
+	};
+
+    
 	void
 	ARToolKitVideo::update()
 	{
@@ -164,9 +196,11 @@ namespace osgART {
 
 			if (newImage) {
 				m_isupdated = true;
+
 				this->setImage(this->s(), this->t(), 
-				1, m_internalformat_GL, m_format_GL, m_type_GL, newImage, 
-				osg::Image::NO_DELETE, 1);	
+					1, AR_PIX_SIZE_DEFAULT, gs_translation[AR_DEFAULT_PIXEL_FORMAT].opengl, GL_UNSIGNED_BYTE, newImage , 
+					osg::Image::NO_DELETE, 1);	
+
 			} else {
 				m_isupdated = false;
 			}
