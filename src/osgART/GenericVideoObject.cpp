@@ -51,7 +51,7 @@ namespace osgART {
 //		m_vTexture(0L),
 		m_image(image),
 		m_distortionMode(NO_CORRECTION),
-		m_textureMode(USE_TEXTURE_RECTANGLE)
+		m_textureMode(USE_TEXTURE_2D)
 	{
 	}
 
