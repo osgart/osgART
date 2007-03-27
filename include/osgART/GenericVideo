@@ -72,21 +72,6 @@ namespace osgART {
 		*/
 		int getHeight() const;
 
-		/**
-		* \brief pixel size of the GenericVideo.
-		* @return the pixel size of the GenericVideo stream in number of components.
-		*/
-		inline int pixelSize() const {
-			return pixelsize;
-		}
-
-		/**
-		* \brief return the type of the pixel format
-		* @return pixel format of the video image returned: from RGB to YUV format. 
-		*/
-		inline PixelFormatType pixelFormat() const {
-			return pixelformat;
-		}
 		
 		/**
 		 * \brief return the type of the pixel format in OpenGL terms.
@@ -95,24 +80,11 @@ namespace osgART {
 		void getGLPixelFormat(GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 		
 		/**
-		* \brief return the frame rate
-		* @return actual frame rate used by the camera
-		*/
-		inline FrameRateType frameRate() const {
-			return framerate;
-		}
-		
-		/**
 		* \brief get GenericVideo id.
 		* @return a GenericVideo identifier.
 		*/
 		virtual int getID() const;
 		
-		/**
-		 * \brief get an image.
-		 * Get the last image retrieved since call of update.
-		 */
-		unsigned char* getImageRaw();
 
 		inline OpenThreads::Mutex& getMutex() {
 			return m_mutex;		
@@ -155,11 +127,7 @@ namespace osgART {
 		 *
 		 */
 		virtual ~GenericVideo();   
-		int pixelsize;
-		
-		PixelFormatType pixelformat;
-		FrameRateType framerate;
-		
+				
 		int m_video_id;
 			
 		static int videoNum;

@@ -181,18 +181,6 @@
 			<File
 				RelativePath="..\..\src\osgWrappers\osgART\VideoPlane.cpp">
 			</File>
-			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoTexCallback.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoTexRectCallback.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoTexture.cpp">
-			</File>
-			<File
-				RelativePath="..\..\src\osgWrappers\osgART\VideoTextureRectangle.cpp">
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"

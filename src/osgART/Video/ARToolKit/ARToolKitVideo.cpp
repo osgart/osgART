@@ -147,7 +147,6 @@ namespace osgART {
 
 			if (newImage) 
 			{
-				std::cout << "SGGG" << std::endl;
 				this->setImage(this->s(), this->t(), 
 					1, _internalformat_GL, _format_GL, _datatype_GL, newImage , 
 					osg::Image::NO_DELETE, 1);

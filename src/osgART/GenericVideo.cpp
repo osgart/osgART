@@ -25,9 +25,6 @@ namespace osgART {
 	GenericVideo::GenericVideo() 
 		: VideoImageStream(), 
 		FieldContainer<GenericVideo>(),
-		pixelsize(4), 
-		pixelformat(VIDEOFORMAT_RGB24),
-		framerate(VIDEOFRAMERATE_30),
 		m_video_id(GenericVideo::videoNum++)		
 	{
 		osg::notify(osg::INFO) << "Generic Video c'tor" << std::endl;
@@ -58,20 +55,6 @@ namespace osgART {
 	GenericVideo::getID() const
 	{
 		return m_video_id;
-	}
-
-	unsigned char*
-	GenericVideo::getImageRaw() 
-	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
-		return this->data();
-	}
-
-	void
-	GenericVideo::getGLPixelFormat(GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) {
-		//*internalformat_GL = m_internalformat_GL;
-		//*format_GL = m_format_GL;
-		//*type_GL = m_type_GL;
 	}
 
 	Field*

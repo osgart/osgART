@@ -348,10 +348,8 @@ namespace osgART {
 			return; 
 		}
 		
+		// update internal modified count
 		m_lastModifiedCount = m_imagesource->getModifiedCount();
-
-		
-		std::cout << "gahhh!" << std::endl;
 
 		// \TODO: hse25: check here for the moment, the function needs to be extended
 		if (AR_DEFAULT_PIXEL_FORMAT != getARToolKitFormat(*m_imagesource.get()))
@@ -359,12 +357,6 @@ namespace osgART {
 			osg::notify(osg::WARN) << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
-
-		std::cout << "Components: " <<
-			m_imagesource->data() << ", " <<
-			m_imagesource->data()+1 << ", " <<
-			m_imagesource->data()+2 << ", " <<
-			m_imagesource->data()+3 << ", " << std::endl;
 
 		// Debug Image.
 		if (arDebug) {
@@ -433,8 +425,6 @@ namespace osgART {
 				std::cerr << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
 			}
 		}
-// #endif
-
 	}
 
 	void ARToolKitTracker::setDebugMode(const bool& b)

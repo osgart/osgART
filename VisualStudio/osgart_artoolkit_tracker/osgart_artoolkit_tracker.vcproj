@@ -89,6 +89,7 @@
 				OutputFile="..\..\bin\osgart_artoolkit_tracker.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib;&quot;$(ARTOOLKIT_2_ROOT)\lib&quot;"
+				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
