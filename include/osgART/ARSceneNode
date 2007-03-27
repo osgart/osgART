@@ -16,6 +16,7 @@
 
 
 #include <osg/Group>
+#include <osg/ImageStream>
 
 #include "osgART/Export"
 #include "osgART/GenericVideo"
@@ -34,8 +35,7 @@ namespace osgART
 	{
 	public:
 	
-		typedef std::map<GenericTracker*, GenericVideo*> ConnectionMap;
-		typedef std::deque<GenericVideo*>  VideoMap;
+		typedef std::map<GenericTracker*, osg::ImageStream*> ConnectionMap;
 	
 		ARSceneNode();
 		
@@ -44,17 +44,14 @@ namespace osgART
 		
 		META_Node(osgART,ARSceneNode)
 		
-		void add(GenericVideo* video);		
-		
 		bool connect(GenericTracker* tracker,
-			GenericVideo* video);
+			osg::ImageStream* imagestream);
 		
 	protected:
 	
 		friend class ARSceneNodeCallback;
 		
 		ConnectionMap _connectionmap;
-		VideoMap _videomap;
 		
 		virtual ~ARSceneNode();
 
