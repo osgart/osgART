@@ -74,19 +74,9 @@ namespace osgART {
 		 * 
 		 * \param video the video object to use
 		 */
-		virtual void setImage(GenericVideo* video);
-	    
-		/** 
-		 * \brief Set the image to analyzed using raw pixel data.
-		 * 
-		 * \param image A pointer to a block of pixel data.
-		 * \param format A value of type PixelFormatType representing
-		 *		the layout of colour components of individual pixels
-		 *		in the supplied pixel data. Default value VIDEOFORMAT_GREY8.
-		 */
-		virtual void setImageRaw(unsigned char *image, 
-								 PixelFormatType format = VIDEOFORMAT_GREY8);
-	    
+		void setImageSource(osg::Image* image);
+	
+    
 		/** 
 		 * \brief update the tracking.
 		 * 
@@ -157,13 +147,17 @@ namespace osgART {
 		 */ 
 		MarkerList m_markerlist;
 		
-		unsigned char		*m_imageptr;
-		PixelFormatType		 m_imageptr_format;
+		// unsigned char		*m_imageptr;
+		// PixelFormatType		 m_imageptr_format;
 		
 		double m_projectionMatrix[16];
 		std::string		m_name;		//!< Store the name of the tracker.
 		std::string		m_version;	//!< Store the version of the tracker.
 		bool			m_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
+		
+		osg::ref_ptr<osg::Image> m_imagesource;
+		
+		unsigned int m_lastModifiedCount;
 
 		
 	private:

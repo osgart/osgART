@@ -27,8 +27,8 @@ namespace osgART {
 
 	GenericTracker::GenericTracker() 
 		: osg::Referenced(),
-		m_imageptr(0L),
 		m_enable(true),
+		m_lastModifiedCount(0xFFFFF),
 		trackerId(GenericTracker::trackerNum++)
 	{
 		m_fields["name"]	= new TypedField<std::string>(&m_name);
@@ -85,25 +85,11 @@ namespace osgART {
 			"Empty implementation called!" << std::endl;
 	}
 
-
 	/*virtual*/ 
 	void 
-	GenericTracker::setImageRaw(unsigned char *image,
-		PixelFormatType format)
+	GenericTracker::setImageSource(osg::Image* image)
 	{
-		m_imageptr = image;
-		m_imageptr_format = format;
-	}
-
-	/*virtual*/ 
-	void 
-	GenericTracker::setImage(GenericVideo* video)
-	{
-		if (video) {
-			this->setImageRaw(video->getImageRaw(), video->pixelFormat());
-		} else {
-			osg::notify(osg::WARN) << "Warning: invalid video object supplied to osgART::GenericTracker::setImage(video)." << std::endl;
-		}
+		m_imagesource = image;
 	}
 
 	/*virtual*/
@@ -156,7 +142,6 @@ namespace osgART {
 	TrackerContainer::update()
 	{
 		if (m_tracker.valid()) {
-			m_tracker->setImage(m_video.get());
 			m_tracker->update();
 		}
 	}
@@ -179,7 +164,7 @@ namespace osgART {
 			_ret = m_tracker->init(xsize,ysize,pattlist_name,camera_name);
 
 			this->m_markerlist = m_tracker->m_markerlist;
-			this->m_imageptr = m_tracker->m_imageptr;
+			//this->m_imageptr = m_tracker->m_imageptr;
 
 			memcpy(m_projectionMatrix,m_tracker->m_projectionMatrix,
 				sizeof(double) * 16);
