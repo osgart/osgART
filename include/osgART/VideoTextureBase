@@ -14,14 +14,14 @@
 #ifndef OSGART_VIDEOALPHA_BIAS
 #define OSGART_VIDEOALPHA_BIAS
 
-#include <osgART/GenericVideo>
+#include "osgART/GenericVideo"
 
 namespace osgART {
 
 	class OSGART_EXPORT VideoTextureBase {
 	public:
 	
-		VideoTextureBase(GenericVideo* video);
+		VideoTextureBase(osg::Image* video);
 		
 		void setAlphaBias(float alphabias);
 		
@@ -37,7 +37,9 @@ namespace osgART {
 	
 		float m_alphabias;
 		
-		osg::ref_ptr<GenericVideo> m_video;
+		// osg::ref_ptr<GenericVideo> m_video;
+		osg::ref_ptr<osg::Image> m_video;
+		
 	
 		~VideoTextureBase();
 	
