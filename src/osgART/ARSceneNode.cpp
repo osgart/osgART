@@ -10,7 +10,8 @@ namespace osgART
 	public:
 		ARSceneNodeCallback(ARSceneNode* parent)
 			: osg::NodeCallback(),
-			_parent(parent)
+			_parent(parent),
+			_lastModifiedCount(0xFFFFFF)
 		{
 		}
 
@@ -26,27 +27,11 @@ namespace osgART
 				{
 					if ((*i).second) 
 					{
-						// If a new frame is available from the video,
-						// then call setImage() with the video object
-						// and then update.
-						if ((*i).second->getFrame())
-						{
-							(*i).first->setImage((*i).second);
-							(*i).first->update();
-						}
+						(*i).second->update();
+						(*i).first->update();
 					}
 					
 					i++;
-				}
-
-				ARSceneNode::VideoMap::iterator j = n->_videomap.begin();
-
-				while (j != n->_videomap.end()) 
-				{
-
-					(*j)->update();
-
-					j++;
 				}
 
 			}
@@ -56,6 +41,8 @@ namespace osgART
 
 	protected:
 
+		unsigned int _lastModifiedCount;
+        
         ARSceneNode* _parent;
 	};
 
@@ -76,39 +63,44 @@ namespace osgART
 	{
 	}
 
-	void 
-	ARSceneNode::add(GenericVideo* video)
-	{
-		if (_videomap.size() == 0 && _connectionmap.size() == 0) 
-		{			
-			this->setUpdateCallback(new ARSceneNodeCallback(this));
-		}
+	//void 
+	//ARSceneNode::add(osg::Image* video)
+	//{
+	//	if (_videomap.size() == 0 && _connectionmap.size() == 0) 
+	//	{			
+	//		this->setUpdateCallback(new ARSceneNodeCallback(this));
+	//	}
 
-		_videomap.push_back(video);
-	}
+	//	_videomap.push_back(video);
+	//}
 
 	bool
 	ARSceneNode::connect(GenericTracker* tracker,
-		GenericVideo* video) 
+	osg::ImageStream* image) 
 	{
-		if (video == 0L || tracker == 0L) 
+		if (image == 0L || tracker == 0L) 
 		{
 			return false;
 		}
 
-		if (!tracker->init(video->getWidth(),
-			video->getHeight())) 
+		if (!tracker->init(image->s(),
+			image->t())) 
 		{
 			osg::notify(osg::WARN) << "osgART::ARSceneNode::connect(tracker,video): Can not connect video and tracker, initialisation failed!" << std::endl;
 			return false;
 		}
 			
-        if (_videomap.size() == 0 && _connectionmap.size() == 0) 
+        if (/*_videomap.size() == 0 && */_connectionmap.size() == 0) 
 		{			
 			this->setUpdateCallback(new ARSceneNodeCallback(this));
+			
 		}
 
-		_connectionmap[tracker] = video;
+        // add the connection to the connection map
+		_connectionmap[tracker] = image;
+
+		// set the image source for the tracker
+		tracker->setImageSource(image);
 
 		return true;
 	}
