@@ -14,10 +14,8 @@ namespace osgART
 		{
 		}
 
-	
 		void ARSceneNodeCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
 		{
-		
 			ARSceneNode* n = dynamic_cast<ARSceneNode*>(node);
 
 			if (n) 

@@ -31,7 +31,7 @@ namespace osgART {
 		framerate(VIDEOFRAMERATE_30),
 		m_video_id(GenericVideo::videoNum++)		
 	{
-		osg::notify(osg::INFO) << "Main C'tor" << std::endl;
+		osg::notify(osg::INFO) << "Generic Video c'tor" << std::endl;
 	}
 
 	GenericVideo::GenericVideo(const GenericVideo& container,
@@ -115,18 +115,6 @@ namespace osgART {
 		try {
 
 			this->update();
-	
-
-            // \TODO: implement locking better!
-
-			//
-			//if (this->m_isupdated) 
-			//{
-
-			//	if (this->m_horizontal_flip) this->flipHorizontal();
-			//	if (this->m_vertical_flip) this->flipVertical();
-			//}
-
 
 		} catch(...) {
             m_isupdated = false;
