@@ -130,10 +130,12 @@ namespace osgART {
 		
 		osgART::VideoConfiguration m_config;
 		
-		int m_artoolkit_pixelformat;
+		GLint _internalformat_GL; 
+		GLenum _format_GL;
+		GLenum _datatype_GL;
 		
-		//int getARPixelFormatForImage(osg::Image &img) const;
-		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
+		
+		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLint *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 		
 	};
 }

@@ -13,6 +13,10 @@
 
 #include "ARToolKitVideo"
 
+#include <osg/Notify>
+#include <iostream>
+#include <iomanip>
+
 #include "osgART/VideoConfig"
 
 // Make sure that required OpenGL constant definitions are available at compile-time.
@@ -61,46 +65,23 @@ namespace osgART {
 		int xsize = 0;
 		int ysize = 0;
 
-		// Work out what format pixels will be returned in.
-#if (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_RGBA)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_RGBA;
-		pixelsize = 4;
-		pixelformat = VIDEOFORMAT_RGB32;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_ABGR)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_ABGR;
-		pixelsize = 4;
-		pixelformat = VIDEOFORMAT_ABGR32;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_BGRA)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_BGRA;
-		pixelsize = 4;
-		pixelformat = VIDEOFORMAT_BGRA32;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_ARGB)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_ARGB;
-		pixelsize = 4;
-		pixelformat = VIDEOFORMAT_ARGB32;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_RGB)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_RGB;
-		pixelsize = 3;
-		pixelformat = VIDEOFORMAT_RGB24;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_BGR)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_BGR;
-		pixelsize = 3;
-		pixelformat = VIDEOFORMAT_BGR24;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_2vuy)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_2vuy;
-		pixelsize = 2;	
-		pixelformat = VIDEOFORMAT_422YpCbCr8;
-#elif (AR_DEFAULT_PIXEL_FORMAT == AR_PIXEL_FORMAT_yuvs)
-		m_artoolkit_pixelformat = AR_PIXEL_FORMAT_yuvs;
-		pixelsize = 2;	
-		pixelformat = VIDEOFORMAT_422YpCbCr8R;
-#else
-#error "osgART: Unknown pixel format in config.h of your ARToolKit installation.
-#endif
-
-		if (getGLPixelFormatForARPixelFormat(m_artoolkit_pixelformat, &m_internalformat_GL, &m_format_GL, &m_type_GL) < 0) {
+		// get the format only once for opening the video source
+		if (getGLPixelFormatForARPixelFormat(AR_DEFAULT_PIXEL_FORMAT, 
+						&_internalformat_GL, 
+						&_format_GL, 
+						&_datatype_GL))
+		{
+			osg::notify(osg::FATAL) << "osgART::ARToolKitVideo::open() << unknown video format! " << std::endl;
 			return;
-		};
+
+		} else 
+		{
+			osg::notify() << "osgART::ARToolKitVideo::open() using format [GL (internal) " <<
+				"0x" << std::hex << _internalformat_GL << ", " <<
+				"0x" << std::hex << _format_GL << ", " << 
+				"0x" << std::hex << std::uppercase << _datatype_GL << "]" << std::endl;
+		}
+
 
 		if (m_config.deviceconfig != "") {
 			config = (char*)&m_config.deviceconfig.c_str()[0];
@@ -110,13 +91,14 @@ namespace osgART {
 		video = ar2VideoOpen(config);
 		
 		// check if the video was successfully opened
-		if (video) {
+		if (video) 
+		{
 			// get the video size
 			ar2VideoInqSize(video, &xsize, &ysize);
 		}
 
 		// create an image that same size (packing set to 1)
-		this->allocateImage(xsize, ysize, 1, m_format_GL, m_type_GL, 1);
+		this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 	}
 
 	void
@@ -152,10 +134,6 @@ namespace osgART {
 	ARToolKitVideo::update()
 	{
 		unsigned char* newImage = NULL;
-		static int initedPixelFormat = 0;
-		GLenum internalformat_GL;
-		GLenum format_GL;
-		GLenum type_GL;
 
 		if (video) 
 		{
@@ -166,22 +144,12 @@ namespace osgART {
 
 			newImage = (unsigned char*)ar2VideoGetImage(video);
 
-			if (newImage) {
-				m_isupdated = true;
-
-				if (!initedPixelFormat) {
-					getGLPixelFormatForARPixelFormat(AR_DEFAULT_PIXEL_FORMAT, &internalformat_GL, &format_GL, &type_GL);
-					initedPixelFormat = 1;
-				}
-				
+			if (newImage) 
+			{
 				this->setImage(this->s(), this->t(), 
-					1, internalformat_GL, format_GL, type_GL, newImage , 
-					osg::Image::NO_DELETE, 1);	
-
-			} else {
-				m_isupdated = false;
+					1, _internalformat_GL, _format_GL, _datatype_GL, newImage , 
+					osg::Image::NO_DELETE, 1);
 			}
-
 		}
 	}
 
@@ -196,7 +164,8 @@ namespace osgART {
 	{
 	}
 
-	int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL)
+	int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat, 
+		GLint *internalformat_GL, GLenum *format_GL, GLenum *type_GL)
 	{
 		// Translate the internal pixelformat to an OpenGL texture2D triplet.
 		switch (arPixelFormat) {
