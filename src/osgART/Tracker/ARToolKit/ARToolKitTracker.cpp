@@ -133,9 +133,17 @@ namespace osgART {
 
 	ARToolKitTracker::~ARToolKitTracker()
 	{
-		std::cout << "ARToolKitTracker::~ARToolKitTracker()"
+		osg::notify() << "ARToolKitTracker::~ARToolKitTracker()"
 			<< std::endl;
-		// if (m_cparam) delete m_cparam;
+		try {
+
+			delete this->m_cparam;
+		}
+		catch (...)
+		{
+			osg::notify() << "ARToolKitTracker::~ARToolKitTracker() D'tor failed to delete"
+				<< std::endl;
+		}
 	}
 
 
@@ -334,14 +342,16 @@ namespace osgART {
 			return;
 		}
 
-		if (m_imagesource->getModifiedCount() != m_lastModifiedCount)
+		// hse25: performance measurement: only update if the image was modified
+		if (m_imagesource->getModifiedCount() == m_lastModifiedCount)
 		{
-			m_lastModifiedCount = m_imagesource->getModifiedCount();
-		} else 
-		{
-			// hse25: performance measurement: only update if the image was modified
-			return;
+			return; 
 		}
+		
+		m_lastModifiedCount = m_imagesource->getModifiedCount();
+
+		
+		std::cout << "gahhh!" << std::endl;
 
 		// \TODO: hse25: check here for the moment, the function needs to be extended
 		if (AR_DEFAULT_PIXEL_FORMAT != getARToolKitFormat(*m_imagesource.get()))
@@ -349,6 +359,12 @@ namespace osgART {
 			osg::notify(osg::WARN) << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
+
+		std::cout << "Components: " <<
+			m_imagesource->data() << ", " <<
+			m_imagesource->data()+1 << ", " <<
+			m_imagesource->data()+2 << ", " <<
+			m_imagesource->data()+3 << ", " << std::endl;
 
 		// Debug Image.
 		if (arDebug) {

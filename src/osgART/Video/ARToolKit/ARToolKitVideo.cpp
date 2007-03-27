@@ -116,7 +116,8 @@ namespace osgART {
 	void
 	ARToolKitVideo::start()
 	{
-		if (video) {
+		if (video)
+		{
 			ar2VideoCapStart(video);
 			ar2VideoGetImage(video);
 		}
@@ -146,6 +147,7 @@ namespace osgART {
 
 			if (newImage) 
 			{
+				std::cout << "SGGG" << std::endl;
 				this->setImage(this->s(), this->t(), 
 					1, _internalformat_GL, _format_GL, _datatype_GL, newImage , 
 					osg::Image::NO_DELETE, 1);
