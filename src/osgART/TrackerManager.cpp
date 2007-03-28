@@ -11,27 +11,30 @@
 // @@OSGART_LICENSE_HEADER_BEGIN@@
 // @@OSGART_LICENSE_HEADER_END@@
 
-#include <osgART/TrackerManager>
+#include "osgART/TrackerManager"
+
+
 #include <osgDB/DynamicLibrary>
 #include <osg/Notify>
 
 namespace osgART {
 
-	TrackerManager* TrackerManager::s_instance = 0L;
-
-
-	TrackerManager::TrackerManager() : m_trackercount(0)
+	TrackerManager::TrackerManager() : osg::Referenced(), m_trackercount(0)
 	{
 	}
 
 
-	TrackerManager* TrackerManager::getInstance() 
+	TrackerManager* TrackerManager::getInstance(bool erase /* = false*/) 
 	{
-		if (TrackerManager::s_instance == 0L) 
+	
+		osg::ref_ptr<TrackerManager> s_trackermanager = new TrackerManager;
+		
+		if (erase) 
 		{
-			TrackerManager::s_instance = new TrackerManager();
+			s_trackermanager = 0;
 		}
-		return s_instance;
+		
+		return s_trackermanager.get();
 	}
 
 	TrackerManager::~TrackerManager()
@@ -91,24 +94,6 @@ namespace osgART {
 				"tracker with ID:" << id << " doesn't exist" << std::endl;
 		}
 		return 0L;
-	}
-
-	/*static*/
-	void
-	TrackerManager::destroy()
-	{
-		try 
-		{
-			osg::notify() << "osgART::TrackerManager::destroy() Delete the tracker manager"
-				<< std::endl;
-
-			delete s_instance;
-
-			s_instance = 0L;
-
-		} catch (...)
-		{
-		}
 	}
 
 	/* static */

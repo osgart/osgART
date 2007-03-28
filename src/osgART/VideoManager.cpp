@@ -19,16 +19,17 @@
 
 namespace osgART {
 
-	VideoManager* VideoManager::_instance = 0L;
-	
-	VideoManager::PluginMap VideoManager::s_plugins;
-
-	VideoManager* VideoManager::getInstance() {
+	VideoManager* VideoManager::getInstance(bool erase /* = false */) 
+	{
 		
-		if (_instance == 0L) {
-			_instance = new VideoManager();
-		}
-		return _instance;
+		static osg::ref_ptr<VideoManager> s_videomanager = new VideoManager;
+		
+		if (erase)
+		{
+			s_videomanager = 0;
+		}		
+		
+		return s_videomanager.get();
 	}
 
 	VideoManager::~VideoManager() {
@@ -37,7 +38,7 @@ namespace osgART {
 		m_videomap.clear();
 
 		// remove all video plugins
-		VideoManager::s_plugins.clear();
+		m_plugins.clear();
 	}
 
 	int 
@@ -76,21 +77,6 @@ namespace osgART {
 		}
 	}
 
-	/*static*/
-	void
-	VideoManager::destroy() 
-	{
-		try
-		{
-			delete VideoManager::_instance;
-			VideoManager::_instance = 0L;
-
-		} 
-		catch(...)
-		{
-			osg::notify(osg::WARN) << "Could not delete instance of VideoManager!" << std::endl;
-		}
-	}
 
 	GenericVideo* 
 	VideoManager::getVideo(int id)
@@ -126,15 +112,15 @@ namespace osgART {
 #endif
 		osgDB::DynamicLibrary* _lib = 0L;
 
-		PluginMap::iterator _plug = s_plugins.find(filename);
+		PluginMap::iterator _plug = VideoManager::getInstance()->m_plugins.find(filename);
 
-		if (_plug == s_plugins.end()) 
+		if (_plug == VideoManager::getInstance()->m_plugins.end()) 
 		{
 			_lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);
 
 			if (_lib) {
 
-				s_plugins[filename] = _lib;				
+				VideoManager::getInstance()->m_plugins[filename] = _lib;				
 
 			} else {
 				

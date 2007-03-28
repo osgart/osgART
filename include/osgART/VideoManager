@@ -35,7 +35,7 @@ namespace osgART {
 	*
 	*/
 	 
-	class OSGART_EXPORT VideoManager {
+	class OSGART_EXPORT VideoManager : public osg::Referenced {
 	public:
 
 		/** function signature for creating a video instance */
@@ -47,12 +47,7 @@ namespace osgART {
 		* actually used by the program.
 		* @return an instance of a video manager
 		*/
-		static VideoManager* getInstance();
-	   
-		/**
-		* \brief destructor.
-		*/
-		virtual ~VideoManager();    
+		static VideoManager* getInstance(bool erase = false);
 
 		/**
 		* \brief add a video stream.
@@ -79,16 +74,14 @@ namespace osgART {
 		static
 		GenericVideo* createVideoFromPlugin(const std::string& plugin);
 
-		/**
-		 * Delete the instance of the VideoManager
-		 */
-		 static
-		 void destroy();
-	    
+    
 	protected: 
 	    
-		// default constructor
+		// Default constructor
 		VideoManager();
+		
+		// Destructor
+		virtual ~VideoManager();   
 		
 	private:
 	
@@ -106,10 +99,10 @@ namespace osgART {
 		int numVideoStream;
 		
 		// video streams
-		VideoStreamMap m_videomap;	
+		VideoStreamMap m_videomap;
 		
-		// video plugins
-		static PluginMap s_plugins;
+		PluginMap m_plugins;
+
 	};
 
 }

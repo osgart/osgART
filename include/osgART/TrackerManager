@@ -17,6 +17,9 @@
 // STL include
 #include <map>
 
+// include osg
+#include <osg/Referenced>
+
 // local include
 #include "osgART/Export"
 #include "osgART/GenericTracker"
@@ -27,7 +30,7 @@ namespace osgART {
  * class TrackerManager.
  *
  */
-class OSGART_EXPORT TrackerManager
+class OSGART_EXPORT TrackerManager : public osg::Referenced
 {
 	public:        
     
@@ -35,15 +38,11 @@ class OSGART_EXPORT TrackerManager
 		* \brief singleton constructor.
 		* Based on a singleton pattern, user can get the instance of the tracker manager
 		* actually used by the program.
-		* \return an instance of a tracker manager
+		* \param erase explicitly deletes the singleton instance of the tracker manager
+		* \return an instance of a tracker manager or 0 if the tracker manager got erased
 		*/
-		static TrackerManager* getInstance();
+		static TrackerManager* getInstance(bool erase = false);
 	    
-		/**
-		* \brief destructor.
-		*/
-		~TrackerManager();    
-
 		/**
 		* \brief register a tracker.
 		* Register in the tracker manager a tracker.
@@ -68,16 +67,6 @@ class OSGART_EXPORT TrackerManager
 		*/
 		GenericTracker* getTracker(int idTracker);
 		
-		
-		/**
-		 * Explicitly delete the instance of the Tracker.
-		 * This method will also destroy all attached 
-		 * Tracker and free their memory if they are not
-		 * referenced any more.
-		 */
-		static void destroy();
-		
-		
 		/**
 		 * Creates and registers a tracker from an external plugin.
 		 * \param plugin name of the plugin (excluding the system specific extension)
@@ -91,6 +80,13 @@ class OSGART_EXPORT TrackerManager
 		typedef GenericTracker* (*p_TrackerCreateFunc)(void);
 	    
 	protected:
+	
+	
+		/**
+		 * \brief destructor.
+		 */
+		~TrackerManager();    
+
 		    
 		TrackerManager();
 		
@@ -99,10 +95,7 @@ class OSGART_EXPORT TrackerManager
 		int m_trackercount;
 		
 		TrackerMap m_trackermap;
-		
-	private:
-	
-		static TrackerManager* s_instance;
+
 	};
 
 };

@@ -134,11 +134,11 @@ namespace osgART {
 		~Initializer() 
 		{
 			// TrackerManager Singleton needs an explicit D'tor
-			osgART::TrackerManager::destroy();
+			osgART::TrackerManager::getInstance(true);
 
 
 			// VideoManager Singleton needs an explicit D'tor
-			osgART::VideoManager::destroy();
+			osgART::VideoManager::getInstance(true);
 		}
 
 	};

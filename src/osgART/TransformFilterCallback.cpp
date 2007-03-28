@@ -5,15 +5,15 @@
 
 namespace osgART {
 
-	TransformFilterCallback::TransformFilterCallback():
-	m_TransOutlierDistance(50),				// i.e. 5cm
-	m_maxNumOfTransRejections(10),		// max number of subsequent rejections
-	m_TransRejectionCount(0),			// current number of rejections
-	m_rotationSmoothFactor(0.15f),
+	TransformFilterCallback::TransformFilterCallback() :
 	m_translationSmoothFactor(0.15f),
-	m_doTransOutlierRejection(false),
+	m_rotationSmoothFactor(0.15f),
+	m_TransOutlierDistance(50),				// i.e. 5cm
+	m_maxNumOfTransRejections(10),			// max number of subsequent rejections
+	m_TransRejectionCount(0),				// current number of rejections
 	m_doRotationalSmoothing(true),
-	m_doTranslationalSmoothing(true)
+	m_doTranslationalSmoothing(true),
+	m_doTransOutlierRejection(false)
 	{			           
 	}
 
