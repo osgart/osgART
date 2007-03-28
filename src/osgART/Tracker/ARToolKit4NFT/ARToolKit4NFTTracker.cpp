@@ -1,3 +1,16 @@
+/*
+ *	osgART/Tracker/ARToolKit4NFT/ARToolKit4NFTTracker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 typedef int AR_PIXEL_FORMAT;
 
 #include "ARToolKit4NFTTracker"
@@ -451,9 +464,13 @@ ARToolKit4NFTTracker::update()
 	for (MarkerList::iterator iter = m_markerlist.begin(); 
 			iter != m_markerlist.end(); 
 			iter++)	
+
 	{
+
 			Marker* m = 	(*iter).get();
+
 			//m->m_valid = false;
+
 	}
 
 	// detect visible markers

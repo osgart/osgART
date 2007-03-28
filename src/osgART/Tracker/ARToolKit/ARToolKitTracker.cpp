@@ -483,7 +483,7 @@ namespace osgART {
 		}
 	}
 
-	int ARToolKitTracker::getARPixelFormatForImage(osg::Image& _image)
+	int ARToolKitTracker::getARPixelFormatForImage(const osg::Image& _image) const
 	{
 		int format = 0, size = 0;
 		
@@ -533,7 +533,7 @@ namespace osgART {
 				case GL_YCBCR_422_APPLE:
 				case GL_YCBCR_MESA:
 	#ifdef AR_BIG_ENDIAN
-					if (_imag.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+					if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
 						format = AR_PIXEL_FORMAT_2vuy; // N.B.: GL_UNSIGNED_SHORT_8_8_REV_APPLE = GL_UNSIGNED_SHORT_8_8_REV_MESA
 						size = 2;
 					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
@@ -563,7 +563,7 @@ namespace osgART {
 		return (format);
 	}
 
-	int ARToolKitTracker::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL)
+	int ARToolKitTracker::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) const
 	{
 		// Translate the internal pixelformat to an OpenGL texture2D triplet.
 		switch (arPixelFormat) {

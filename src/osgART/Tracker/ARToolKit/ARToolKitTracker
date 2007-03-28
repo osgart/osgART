@@ -156,8 +156,8 @@ namespace osgART {
 		int					m_threshold;
 		int					m_marker_num;
 		        
-        int getARPixelFormatForImage(osg::Image& _image);
-		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
+        int getARPixelFormatForImage(const osg::Image& _image) const;
+		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) const;
 	};
 
 };
