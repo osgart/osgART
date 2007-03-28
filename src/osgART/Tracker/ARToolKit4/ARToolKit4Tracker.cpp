@@ -18,8 +18,8 @@
 #include <AR/ar.h>
 #include <AR/gsub_lite.h>
 
-#ifndef AR_HEADER_VERSION_MAJOR
-#error ARToolKit v4.0 or later is required to build the OSGART ARToolKit tracker.
+#ifndef AR_HAVE_HEADER_VERSION_4_1
+#error ARToolKit v4.1 or later is required to build the OSGART ARToolKit tracker.
 #endif
 
 #include "SingleMarker"
@@ -33,29 +33,41 @@
 //#include <stdio.h>
 
 // Make sure that required OpenGL constant definitions are available at compile-time.
+
 // N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.
+
 // Define constants for extensions (not yet core).
+
 #ifndef GL_APPLE_ycbcr_422
+
 #  define GL_YCBCR_422_APPLE				0x85B9
+
 #  define GL_UNSIGNED_SHORT_8_8_APPLE		0x85BA
+
 #  define GL_UNSIGNED_SHORT_8_8_REV_APPLE	0x85BB
+
 #endif
+
 #ifndef GL_EXT_abgr
+
 #  define GL_ABGR_EXT						0x8000
+
 #endif
+
 #ifndef GL_MESA_ycbcr_texture
+
 #  define GL_YCBCR_MESA						0x8757
+
 #  define GL_UNSIGNED_SHORT_8_8_MESA		0x85BA
+
 #  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
+
 #endif
+
 
 using namespace std;
 
 namespace osgART {
-
-#define AR4_DFLT_THRESHOLD 100
-#define AR4_DFLT_DEBUGMODE false
-#define AR4_DFLT_IMAGE_PROC_MODE AR_IMAGE_PROC_FRAME_IMAGE
 
 	struct ARToolKit4Tracker::CameraParameter 
 	{
@@ -85,20 +97,30 @@ namespace osgART {
 
 	ARToolKit4Tracker::~ARToolKit4Tracker()
 	{
+		osg::notify() << "ARToolKitTracker::~ARToolKitTracker()"
+			<< std::endl;
 		if (gARPattHandle) {
 			arPattDetach(gARHandle);
 			arPattDeleteHandle(gARPattHandle);
 		}
 		ar3DDeleteHandle(gAR3DHandle);
 		arDeleteHandle(gARHandle);
-		// if (m_cparam) delete m_cparam;
+		try {
+
+			delete this->m_cparam;
+		}
+		catch (...)
+		{
+			osg::notify() << "ARToolKitTracker::~ARToolKitTracker() D'tor failed to delete"
+				<< std::endl;
+		}
 	}
 
 	bool ARToolKit4Tracker::init(int xsize, int ysize, 
 		const std::string& pattlist_name, 
 		const std::string& camera_name)
 	{
-		cout << "ARToolKit4Tracker::init()..." << endl;
+		osg::notify() << "ARToolKit4Tracker::init()..." << endl;
 		ARParam  wparam;
 		
 	    // Load the camera parameters, resize for the window and init.
@@ -121,18 +143,18 @@ namespace osgART {
 		m_fields["debug"]		= new CallbackField<ARToolKit4Tracker,bool>(this,
 																			&ARToolKit4Tracker::getDebugMode,
 																			&ARToolKit4Tracker::setDebugMode);
-		setDebugMode(AR4_DFLT_DEBUGMODE);
+		setDebugMode(AR_DEFAULT_DEBUG_MODE);
 		
 		
 		m_fields["imageProcMode"]		= new CallbackField<ARToolKit4Tracker,int>(this,
 																			&ARToolKit4Tracker::getImageProcMode,
 																			&ARToolKit4Tracker::setImageProcMode);
-		setImageProcMode(AR4_DFLT_IMAGE_PROC_MODE);
+		setImageProcMode(AR_IMAGE_PROC_FRAME_IMAGE);
 
 		m_fields["threshold"]	= new CallbackField<ARToolKit4Tracker,int>(this,
 																		   &ARToolKit4Tracker::getThreshold,
 																		   &ARToolKit4Tracker::setThreshold);
-		setThreshold(AR4_DFLT_THRESHOLD);
+		setThreshold(AR_DEFAULT_LABELING_THRESH);
 
 		if ((gAR3DHandle = ar3DCreateHandle(&(m_cparam->cparam))) == NULL) {
 			osg::notify(osg::FATAL) << "osgART::ARToolKit4Tracker::init : Error: Could not create AR3DHandle." << endl;
@@ -179,6 +201,7 @@ namespace osgART {
 
 		int patternNum = 0;
 		markerFile >> patternNum;
+		//std::cout << "Loading " << patternNum << " patterns." << std::endl;
 
 		std::string patternName, patternType;
 
@@ -239,9 +262,9 @@ namespace osgART {
 	int ARToolKit4Tracker::addSingleMarker(const std::string& pattFile, double width, double center[2]) {
 
 		std::cout << "Adding new single marker..." << pattFile << std::endl;
-		Marker* NewSingleMarker = new SingleMarker(gARPattHandle);
+		Marker* singleMarker = new SingleMarker(gARPattHandle);
 		
-		if (!NewSingleMarker)
+		if (!singleMarker)
 		{
 			osg::notify(osg::WARN) <<  "ARToolKit4Tracker::addSingleMarker() : Could not create singleMarker!" << endl;
 			return -1;
@@ -252,13 +275,13 @@ namespace osgART {
 			exit(-1);
 		}
 
-		if (!static_cast<SingleMarker*>(NewSingleMarker)->initialise(gARHandle, pattFile, width, center))
+		if (!static_cast<SingleMarker*>(singleMarker)->initialise(gARHandle, pattFile, width, center))
 		{
-			NewSingleMarker->unref();
+			singleMarker->unref();
 			osg::notify(osg::WARN) <<  "ARToolKit4Tracker::addSingleMarker() : Could not init singleMarker!" << endl;
 			return -1;
 		}		
-		m_markerlist.push_back(NewSingleMarker);
+		m_markerlist.push_back(singleMarker);
 
 		return m_markerlist.size() - 1;
 	}
@@ -313,60 +336,56 @@ namespace osgART {
 		return arGetDebugMode(gARHandle);
 	}
 
-
-	int ARToolKit4Tracker::ConvertOSGARTPixelFormatToART(PixelFormatType format)const
-	{
-		switch (format)
-		{
-			case VIDEOFORMAT_RGB24: return AR_PIXEL_FORMAT_RGB;
-			case VIDEOFORMAT_BGR24:	return AR_PIXEL_FORMAT_BGR;
-			case VIDEOFORMAT_BGRA32:return AR_PIXEL_FORMAT_BGRA;
-			case VIDEOFORMAT_RGBA32:return AR_PIXEL_FORMAT_RGBA;
-			case VIDEOFORMAT_ARGB32:return AR_PIXEL_FORMAT_ARGB;
-			case VIDEOFORMAT_ABGR32:return AR_PIXEL_FORMAT_ABGR;
-			case VIDEOFORMAT_YUV422:return AR_PIXEL_FORMAT_2vuy;
-			case VIDEOFORMAT_Y8:
-			case VIDEOFORMAT_GREY8: return AR_PIXEL_FORMAT_MONO;
-			default:
-				osg::notify() << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << std::endl;
-				return 0;
-		}
-		return 0;
-	}
-
-	/*virtual*/ 
-	void ARToolKit4Tracker::setImageRaw(unsigned char * image, PixelFormatType format)
-    {	
-		// We are only augmenting method in parent class.
-		if (format != m_imageptr_format) {
-			arSetPixelFormat(gARHandle, ConvertOSGARTPixelFormatToART(format));
-		}
-		GenericTracker::setImageRaw(image, format);
-	}
-
-
 	void ARToolKit4Tracker::update()
 	{		
 		if (arGetDebugMode(gARHandle)) osg::notify() << endl << "Start->" << getLabel() << "::update()" << endl;
 
 	    int             j, k;
 
-		// Do not update with a null image
-		if (m_imageptr == NULL) return;
+		if (!m_imagesource.valid())
+		{
+			osg::notify(osg::WARN) << "No connected image source for the tracker" << std::endl;
+			return;
+		}
+
+		// Do not update with a null image.
+		if (!m_imagesource->valid())
+		{
+			osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image"
+				<< std::endl;
+			return;
+		}
+
+		// hse25: performance measurement: only update if the image was modified
+		if (m_imagesource->getModifiedCount() == m_lastModifiedCount)
+		{
+			return; 
+		}
+		
+		// update internal modified count
+		m_lastModifiedCount = m_imagesource->getModifiedCount();
+		
+		arSetPixelFormat(gARHandle, getARPixelFormatForImage(*m_imagesource.get()));
+
+		// Detect the markers in the video frame.
+		if (arDetectMarker(gARHandle, m_imagesource->data()) < 0) {
+			std::cerr << "Error detecting markers in image." << std::endl;
+			return;
+		}
+	
+		if (arGetDebugMode(gARHandle)) cout << "	arDetectMarker() => Markerdetected = " << gARHandle->marker_num <<endl;
 
 		// Debug image.
 		if (arGetDebugMode(gARHandle)) {
-			int arPixelFormat = ConvertOSGARTPixelFormatToART(m_imageptr_format);
 			GLenum internalformat_GL;
 			GLenum format_GL;
 			GLenum type_GL;
-			getGLPixelFormatForARPixelFormat(arPixelFormat, &internalformat_GL, &format_GL, &type_GL);
+			getGLPixelFormatForARPixelFormat(arGetPixelFormat(gARHandle), &internalformat_GL, &format_GL, &type_GL);
 			
-			// If the ARToolKit pixel format has changed, then reallocate.
-			//if (arPixelFormat != arGetPixelFormat(gARHandle)) {
-			//	m_debugimage->deallocateData();
-			//}
-			if (!m_debugimage->valid()) {
+			// If no debugimage, or if the ARToolKit pixel format has changed, then (re)allocate.
+			if (!m_debugimage->valid() ||
+				m_debugimage->getPixelFormat() != format_GL ||
+				m_debugimage->getDataType() != type_GL) {
 				osg::notify() << "ARToolKit4Tracker::init() Create Debug Image: " << m_cparam->cparam.xsize << " x " << m_cparam->cparam.ysize  << std::endl;
 				m_debugimage->allocateImage(m_cparam->cparam.xsize, m_cparam->cparam.ysize, 1, format_GL, type_GL, 1);
 			}
@@ -376,14 +395,6 @@ namespace osgART {
 								   osg::Image::NO_DELETE, 1);
 		}
 		
-		// Detect the markers in the video frame.
-		if (arDetectMarker(gARHandle, m_imageptr) < 0) {
-			std::cerr << "Error detecting markers in image." << std::endl;
-			return;
-		}
-	
-		if (arGetDebugMode(gARHandle)) cout << "	arDetectMarker() => Markerdetected = " << gARHandle->marker_num <<endl;
-
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
 		for (MarkerList::iterator iter = m_markerlist.begin(); 
@@ -404,7 +415,7 @@ namespace osgART {
 			//		cout << "	try matching candidate pattern :" << gARHandle->markerInfo[j].id<<endl;
 					if (singleMarker->getPatternID() == gARHandle->markerInfo[j].id) {
 						if (k == -1) k = j; // First marker detected.
-						else if(gARHandle->markerInfo[j].cf > gARHandle->markerInfo[k].cf) k = j; // Higher confidence marker detected.
+						else if (gARHandle->markerInfo[j].cf > gARHandle->markerInfo[k].cf) k = j; // Higher confidence marker detected.
 					}
 				}
 					
@@ -426,35 +437,7 @@ namespace osgART {
 
 	void ARToolKit4Tracker::setProjection(const double n, const double f) 
 	{
-		//arglCameraFrustum((ARParam*)&m_cparam, n, f, m_projectionMatrix);
 		arglCameraFrustumRH((ARParam*)&m_cparam, n, f, m_projectionMatrix);
-		/*cout << "arglCameraFrustum : " << endl;
-		for (int j = 0; j < 4; j++)	
-		{
-			cout <<  m_projectionMatrix[j] << " " ;
-			cout <<  m_projectionMatrix[j+4] << " " ;
-			cout <<  m_projectionMatrix[j+8] << " " ;
-			cout <<  m_projectionMatrix[j+12] << " " ;
-			cout << endl;
-		}*/
-#if 0
-		arglCameraFrustumRH((ARParam*)&m_cparam, n, f, m_projectionMatrix);
-		cout << "arglCameraFrustumRH : " << endl;
-		for (int j = 0; j < 16; j+=4)	
-		{
-			/*
-			cout <<  m_projectionMatrix[j] << " " ;
-			cout <<  m_projectionMatrix[j+1] << " " ;
-			cout <<  m_projectionMatrix[j+2] << " " ;
-			cout <<  m_projectionMatrix[j+3] << " " ;
-			*/
-			cout <<  m_projectionMatrix[j] << " " ;
-			cout <<  m_projectionMatrix[j+4] << " " ;
-			cout <<  m_projectionMatrix[j+8] << " " ;
-			cout <<  m_projectionMatrix[j+12] << " " ;
-			cout << endl;
-		}
-#endif
 	}
 	
 	void ARToolKit4Tracker::createUndistortedMesh(
@@ -501,76 +484,75 @@ namespace osgART {
 		}
 	}
 
-/*	This can be used once the tracker is actually receiving a real osg::Image.
-	int ARToolKit4Tracker::getARPixelFormatForImage(osg::Image &img) const
+	int ARToolKit4Tracker::getARPixelFormatForImage(osg::Image& _image)
 	{
 		int format = 0, size = 0;
 		
-		if (img->valid()) {
-			switch (img->getPixelFormat) {
+		if (_image.valid()) {
+			switch (_image.getPixelFormat()) {
 				case GL_RGBA:
-					if (img->getDataType == GL_UNSIGNED_BYTE) {
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
 						format = AR_PIXEL_FORMAT_RGBA;
 						size = 4;
 					}
 					break;
 				case GL_ABGR_EXT:
-					if (img->getDataType == GL_UNSIGNED_BYTE) {
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
 						format = AR_PIXEL_FORMAT_ABGR;
 						size = 4;
 					}
 					break;
 				case GL_BGRA:
-					if (img->getDataType == GL_UNSIGNED_BYTE) {
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
 						format = AR_PIXEL_FORMAT_BGRA;
 						size = 4;
 					}
-	#ifdef AR_BIG_ENDIAN
-					else if (img->getDataType == GL_UNSIGNED_INT_8_8_8_8_REV) {
+#ifdef AR_BIG_ENDIAN
+					else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8_REV) {
 						format = AR_PIXEL_FORMAT_ARGB;
 						size = 4;
 					}
-	#else
-					else if (img->getDataType == GL_UNSIGNED_INT_8_8_8_8) {
+#else
+					else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8) {
 						format = AR_PIXEL_FORMAT_ARGB;
 						size = 4;
 					}
-	#endif
+#endif
 					break;
 				case GL_RGB:
-					if (img->getDataType == GL_UNSIGNED_BYTE) {
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
 						format = AR_PIXEL_FORMAT_RGB;
 						size = 3;
 					}
 					break;
 				case GL_BGR:
-					if (img->getDataType == GL_UNSIGNED_BYTE) {
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
 						format = AR_PIXEL_FORMAT_BGR;
 						size = 3;
 					}
 					break;
 				case GL_YCBCR_422_APPLE:
 				case GL_YCBCR_MESA:
-	#ifdef AR_BIG_ENDIAN
-					if (img->getDataType == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+#ifdef AR_BIG_ENDIAN
+					if (_imag.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
 						format = AR_PIXEL_FORMAT_2vuy; // N.B.: GL_UNSIGNED_SHORT_8_8_REV_APPLE = GL_UNSIGNED_SHORT_8_8_REV_MESA
 						size = 2;
-					} else if (img->getDataType == GL_UNSIGNED_SHORT_8_8_APPLE) {
+					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
 						format = AR_PIXEL_FORMAT_yuvs; // GL_UNSIGNED_SHORT_8_8_APPLE = GL_UNSIGNED_SHORT_8_8_MESA
 						size = 2;
 					}
-	#else
-					if (img->getDataType == GL_UNSIGNED_SHORT_8_8_APPLE) {
+#else
+					if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
 						format = AR_PIXEL_FORMAT_2vuy;
 						size = 2;
-					} else if (img->getDataType == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
 						format = AR_PIXEL_FORMAT_yuvs;
 						size = 2;
 					}
-	#endif
+#endif
 					break;
 				case GL_LUMINANCE:
-					if (img->getDataType == GL_UNSIGNED_BYTE) {
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
 						format = AR_PIXEL_FORMAT_MONO;
 						size = 1;
 					}
@@ -581,7 +563,7 @@ namespace osgART {
 		}
 		return (format);
 	}
-*/
+
 	int ARToolKit4Tracker::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL)
 	{
 		// Translate the internal pixelformat to an OpenGL texture2D triplet.

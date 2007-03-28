@@ -1,11 +1,15 @@
 /*
- * osgART / AR Toolkit for OpenSceneGraph
- * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *	osgART/Tracker/ARToolKit4/ARToolKit4Tracker
+ *	osgART: AR ToolKit for OpenSceneGraph
  *
- * Licensing is governed by the LICENSE.txt which is 
- * part of this library distribution.
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
  *
  */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
 
 #ifndef OSGART_ARTTOOLKIT4TRACKER
 #define OSGART_ARTTOOLKIT4TRACKER
@@ -30,9 +34,7 @@
 #include <string>
 
 #include <AR/ar.h>
-#if (AR_HEADER_VERSION_MAJOR < 4)
-#error ARToolKit v4.x is required to build this plugin.
-#endif
+
 
 namespace osgART {
 
@@ -43,8 +45,7 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARToolKit4Tracker : public
-	GenericTracker
+	class ARToolKit4Tracker : public GenericTracker
 	{
 
 	public:        
@@ -70,19 +71,28 @@ namespace osgART {
 		* Define the threshold used to binarize the image in ARToolKit4.
 		* \param thresh integer value between 0 (dark) and 255 (bright) 
 		*/
-		void setThreshold(const int & thresh);
+		void setThreshold(const int& thresh);
 		
 		/**
 		* \brief Get the current threshold value for the tracking algorithm.
 		*
 		* \return The current threshold.
 		*/
-		int getThreshold(void)const;	
+		int getThreshold() const;	
 		
-
-		unsigned char* getDebugImage();	
-		void setDebugMode(const bool& d);
-		bool getDebugMode()const;
+		/** 
+		* \brief Switch on or off the debug mode in ARToolKit
+		* 
+		* \param b true = debug mode on/ false debug mode of
+		*/
+		void setDebugMode(const bool& b);
+		
+		/**
+		* \brief Query if debug mode is switched on or off.
+		*
+		* \return Current state of debug mode.
+		*/
+		bool getDebugMode() const;
 		
 		void setImageProcMode(const int &mode);
 		int getImageProcMode(void)const;
@@ -119,18 +129,7 @@ namespace osgART {
 		* \return the internal ID of the new marker, or -1 on failure
 		*/
 		int addMultiMarker(const std::string& multiFile);
-		
-		/** 
-		* \brief set the image which will be used for tracking.
-		* 
-		* \param image Pointer to raw image pixels.
-		* \param format OSGART-defined pixel format of the raw pixels. This will be converted
-		*		to a format understood by ARToolKit4 internally.
-		*/
-		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
-		
-		int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
-
+				
 		/** 
 		* \brief update the tracking.
 		* 
@@ -159,9 +158,11 @@ namespace osgART {
 		CameraParameter*	m_cparam;
 	
 		bool setupMarkers(const std::string& patternListFile);
-		
+		void cleanupMarkers(void);
+
 		std::string 		cparamName;
 		
+		int getARPixelFormatForImage(osg::Image& _image);
 		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 	};
 

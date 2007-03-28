@@ -10,8 +10,8 @@ namespace osgART
 	public:
 		ARSceneNodeCallback(ARSceneNode* parent)
 			: osg::NodeCallback(),
-			_parent(parent),
-			_lastModifiedCount(0xFFFFFF)
+			_lastModifiedCount(0xFFFFFF),
+			_parent(parent)
 		{
 		}
 

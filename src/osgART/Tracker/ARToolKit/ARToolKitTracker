@@ -79,8 +79,6 @@ namespace osgART {
 		*/
 		int getThreshold() const;	
 		
-		
-		
 		/** 
 		* \brief Switch on or off the debug mode in ARToolKit
 		* 
@@ -156,12 +154,9 @@ namespace osgART {
 
 		std::string 		cparamName;
 		int					m_threshold;
-
-	
 		int					m_marker_num;
-		
-        int                 m_artoolkit_pixformat;
-        int                 m_artoolkit_pixsize;
+		        
+        int getARPixelFormatForImage(osg::Image& _image);
 		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
 	};
 

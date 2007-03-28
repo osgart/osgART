@@ -36,21 +36,37 @@
 #define PD_LOOP 3
 
 // Make sure that required OpenGL constant definitions are available at compile-time.
+
 // N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.
+
 // Define constants for extensions (not yet core).
+
 #ifndef GL_APPLE_ycbcr_422
+
 #  define GL_YCBCR_422_APPLE				0x85B9
+
 #  define GL_UNSIGNED_SHORT_8_8_APPLE		0x85BA
+
 #  define GL_UNSIGNED_SHORT_8_8_REV_APPLE	0x85BB
+
 #endif
+
 #ifndef GL_EXT_abgr
+
 #  define GL_ABGR_EXT						0x8000
+
 #endif
+
 #ifndef GL_MESA_ycbcr_texture
+
 #  define GL_YCBCR_MESA						0x8757
+
 #  define GL_UNSIGNED_SHORT_8_8_MESA		0x85BA
+
 #  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
+
 #endif
+
 
 template <typename T> 
 int Observer2Ideal(	const T dist_factor[4], 
@@ -165,8 +181,9 @@ namespace osgART {
 			return false;
 	    }
 
-	    arParamChangeSize(&wparam, xsize, ysize,&(m_cparam->cparam));
+	    arParamChangeSize(&wparam, xsize, ysize, &(m_cparam->cparam));
 	    arInitCparam(&(m_cparam->cparam));
+	    std::cout << "*** Camera Parameter ***" << std::endl;
 	    arParamDisp(&(m_cparam->cparam));
 
 		arFittingMode = AR_FITTING_TO_IDEAL;
@@ -176,8 +193,8 @@ namespace osgART {
 		setThreshold(m_threshold);
 
 		if (!setupMarkers(pattlist_name)) {
-			std::cerr << "ERROR: Marker setup failed." << std::endl;
-			return false;
+			osg::notify(osg::FATAL) << "osgART::ARToolKitTracker::init : Error: Marker setup failed." << std::endl;
+			return (false);
 		}
 
 		// Success
@@ -303,24 +320,16 @@ namespace osgART {
 		return m_threshold;
 	}
 
-
-	// simple function for getting the image format 
-	// \TODO: Phil ... you might want to put the "inverse" of your
-	// original function in here
-	unsigned int getARToolKitFormat(const osg::Image& _image)
+	void ARToolKitTracker::setDebugMode(const bool& b)
 	{
-		switch (_image.getPixelFormat())
-		{
-		case GL_BGRA:
-            return AR_PIXEL_FORMAT_BGRA;
-		default:
-			osg::notify(osg::WARN) << "Not implemented!" << std::endl;
-		}
-
-		return 0;
+		arDebug = (int)b;
 	}
-
-
+	
+	bool ARToolKitTracker::getDebugMode() const
+	{
+		return (arDebug == 1);
+	}
+	
 	void ARToolKitTracker::update()
 	{
 
@@ -352,9 +361,15 @@ namespace osgART {
 		m_lastModifiedCount = m_imagesource->getModifiedCount();
 
 		// \TODO: hse25: check here for the moment, the function needs to be extended
-		if (AR_DEFAULT_PIXEL_FORMAT != getARToolKitFormat(*m_imagesource.get()))
+		if (AR_DEFAULT_PIXEL_FORMAT != getARPixelFormatForImage(*m_imagesource.get()))
 		{
 			osg::notify(osg::WARN) << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
+			return;
+		}
+
+		// Detect the markers in the video frame.
+		if (arDetectMarker(m_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) {
+			osg::notify(osg::FATAL) << "Error detecting markers in image." << std::endl;
 			return;
 		}
 
@@ -363,7 +378,8 @@ namespace osgART {
 			GLenum internalformat_GL;
 			GLenum format_GL;
 			GLenum type_GL;
-			getGLPixelFormatForARPixelFormat(m_artoolkit_pixformat, &internalformat_GL, &format_GL, &type_GL);
+			getGLPixelFormatForARPixelFormat(AR_DEFAULT_PIXEL_FORMAT, &internalformat_GL, &format_GL, &type_GL);
+
 			if (!m_debugimage->valid()) {
 				osg::notify() << "ARToolKitTracker::init() Create Debug Image: " << m_cparam->cparam.xsize << " x " << m_cparam->cparam.ysize  << std::endl;
 				m_debugimage->allocateImage(m_cparam->cparam.xsize, m_cparam->cparam.ysize, 1, format_GL, type_GL, 1);
@@ -372,13 +388,6 @@ namespace osgART {
 			m_debugimage->setImage(m_debugimage->s(), m_debugimage->t(), 
 					1, internalformat_GL, format_GL, type_GL, arImage, 
 					osg::Image::NO_DELETE, 1);
-		}
-
-
-		// Detect the markers in the video frame.
-		if (arDetectMarker(m_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) {
-			osg::notify(osg::FATAL) << "Error detecting markers in image." << std::endl;
-			return;
 		}
 
 		MarkerList::iterator _end = m_markerlist.end();
@@ -402,9 +411,7 @@ namespace osgART {
 					if (singleMarker->getPatternID() == marker_info[j].id) 
 					{
 						if (k == -1) k = j; // First marker detected.
-						else 
-						if(marker_info[j].cf > marker_info[k].cf) k = j; // Higher confidence marker detected.
-
+						else if (marker_info[j].cf > marker_info[k].cf) k = j; // Higher confidence marker detected.
 					}
 				}
 					
@@ -427,16 +434,6 @@ namespace osgART {
 		}
 	}
 
-	void ARToolKitTracker::setDebugMode(const bool& b)
-	{
-		arDebug = (int)b;
-	}
-	
-	bool ARToolKitTracker::getDebugMode() const
-	{
-		return (arDebug == 1);
-	}
-	
 	void ARToolKitTracker::setProjection(const double n, const double f) 
 	{
 		arglCameraFrustumRH(&(m_cparam->cparam), n, f, m_projectionMatrix);
@@ -484,6 +481,86 @@ namespace osgART {
 			geometry.addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 
 				r * 2 * (cols+1), 2 * (cols+1)));
 		}
+	}
+
+	int ARToolKitTracker::getARPixelFormatForImage(osg::Image& _image)
+	{
+		int format = 0, size = 0;
+		
+		if (_image.valid()) {
+			switch (_image.getPixelFormat()) {
+				case GL_RGBA:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = AR_PIXEL_FORMAT_RGBA;
+						size = 4;
+					}
+					break;
+				case GL_ABGR_EXT:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = AR_PIXEL_FORMAT_ABGR;
+						size = 4;
+					}
+					break;
+				case GL_BGRA:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = AR_PIXEL_FORMAT_BGRA;
+						size = 4;
+					}
+	#ifdef AR_BIG_ENDIAN
+					else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8_REV) {
+						format = AR_PIXEL_FORMAT_ARGB;
+						size = 4;
+					}
+	#else
+					else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8) {
+						format = AR_PIXEL_FORMAT_ARGB;
+						size = 4;
+					}
+	#endif
+					break;
+				case GL_RGB:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = AR_PIXEL_FORMAT_RGB;
+						size = 3;
+					}
+					break;
+				case GL_BGR:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = AR_PIXEL_FORMAT_BGR;
+						size = 3;
+					}
+					break;
+				case GL_YCBCR_422_APPLE:
+				case GL_YCBCR_MESA:
+	#ifdef AR_BIG_ENDIAN
+					if (_imag.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+						format = AR_PIXEL_FORMAT_2vuy; // N.B.: GL_UNSIGNED_SHORT_8_8_REV_APPLE = GL_UNSIGNED_SHORT_8_8_REV_MESA
+						size = 2;
+					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+						format = AR_PIXEL_FORMAT_yuvs; // GL_UNSIGNED_SHORT_8_8_APPLE = GL_UNSIGNED_SHORT_8_8_MESA
+						size = 2;
+					}
+	#else
+					if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+						format = AR_PIXEL_FORMAT_2vuy;
+						size = 2;
+					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+						format = AR_PIXEL_FORMAT_yuvs;
+						size = 2;
+					}
+	#endif
+					break;
+				case GL_LUMINANCE:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = AR_PIXEL_FORMAT_MONO;
+						size = 1;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		return (format);
 	}
 
 	int ARToolKitTracker::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL)

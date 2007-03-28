@@ -111,9 +111,9 @@ namespace osgART {
 		CallbackField(C *object, 
 			GetHandler ghandler = 0,
 			SetHandler shandler = 0) : 
-			mp_object(object),
 			f_gethandler(ghandler),			
-			f_sethandler(shandler)
+			f_sethandler(shandler),
+			mp_object(object)
 		{
 		}
 		
