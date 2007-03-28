@@ -97,12 +97,18 @@ namespace osgART {
 	void
 	TrackerManager::destroy()
 	{
-		osg::notify() << "osgART::TrackerManager::destroy() Delete the tracker manager"
-			<< std::endl;
+		try 
+		{
+			osg::notify() << "osgART::TrackerManager::destroy() Delete the tracker manager"
+				<< std::endl;
 
-		delete s_instance;
-		
-		s_instance = 0L;
+			delete s_instance;
+
+			s_instance = 0L;
+
+		} catch (...)
+		{
+		}
 	}
 
 	/* static */
