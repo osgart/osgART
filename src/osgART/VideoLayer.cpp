@@ -95,8 +95,8 @@ namespace osgART {
 		const osg::Image* _image = texture.getImage();
 
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-			_image->s(), _image->t(), _image->getPixelFormat(), 
-		GL_UNSIGNED_BYTE, _image->data());
+						_image->s(), _image->t(), _image->getPixelFormat(), 
+						_image->getDataType(), _image->data());
 
 	}
 
