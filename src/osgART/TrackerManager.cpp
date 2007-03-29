@@ -49,10 +49,20 @@ namespace osgART {
 	int 
 	TrackerManager::addTracker(GenericTracker* tracker)
 	{
-		m_trackermap[tracker->getId()] = tracker;
+		// to avoid flawed plugins get loaded
+		try 
+		{
+			if (tracker) 
+			{
+				m_trackermap[tracker->getId()] = tracker;
 
-		osg::notify() << "osgART::TrackerManager::addTracker(tracker): " <<
-			"Added tracker with ID " << tracker->getId() << std::endl;
+				osg::notify() << "osgART::TrackerManager::addTracker(tracker): " <<
+					"Added tracker with ID " << tracker->getId() << std::endl;
+			}
+		} catch (...)
+		{
+			osg::notify(osg::FATAL) << "TrackerManager::addTracker() failed!" << std::endl;
+		}
 
 		return m_trackercount++;
 	}

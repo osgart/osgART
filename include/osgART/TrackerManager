@@ -83,11 +83,13 @@ class OSGART_EXPORT TrackerManager : public osg::Referenced
 	
 	
 		/**
-		 * \brief destructor.
+		 * Destructor.
 		 */
-		~TrackerManager();    
-
-		    
+		~TrackerManager();
+		
+		/**
+		 * Standard constructor
+		 */	    
 		TrackerManager();
 		
 		typedef std::map<int, osg::ref_ptr<GenericTracker> > TrackerMap;
