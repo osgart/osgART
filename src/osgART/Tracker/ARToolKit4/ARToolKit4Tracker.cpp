@@ -33,37 +33,21 @@
 //#include <stdio.h>
 
 // Make sure that required OpenGL constant definitions are available at compile-time.
-
 // N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.
-
 // Define constants for extensions (not yet core).
-
 #ifndef GL_APPLE_ycbcr_422
-
 #  define GL_YCBCR_422_APPLE				0x85B9
-
 #  define GL_UNSIGNED_SHORT_8_8_APPLE		0x85BA
-
 #  define GL_UNSIGNED_SHORT_8_8_REV_APPLE	0x85BB
-
 #endif
-
 #ifndef GL_EXT_abgr
-
 #  define GL_ABGR_EXT						0x8000
-
 #endif
-
 #ifndef GL_MESA_ycbcr_texture
-
 #  define GL_YCBCR_MESA						0x8757
-
 #  define GL_UNSIGNED_SHORT_8_8_MESA		0x85BA
-
 #  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
-
 #endif
-
 
 using namespace std;
 
@@ -149,7 +133,7 @@ namespace osgART {
 		m_fields["imageProcMode"]		= new CallbackField<ARToolKit4Tracker,int>(this,
 																			&ARToolKit4Tracker::getImageProcMode,
 																			&ARToolKit4Tracker::setImageProcMode);
-		setImageProcMode(AR_IMAGE_PROC_FRAME_IMAGE);
+		setImageProcMode(AR_DEFAULT_IMAGE_PROC_MODE);
 
 		m_fields["threshold"]	= new CallbackField<ARToolKit4Tracker,int>(this,
 																		   &ARToolKit4Tracker::getThreshold,
@@ -369,11 +353,11 @@ namespace osgART {
 
 		// Detect the markers in the video frame.
 		if (arDetectMarker(gARHandle, m_imagesource->data()) < 0) {
-			std::cerr << "Error detecting markers in image." << std::endl;
+			osg::notify(osg::FATAL) << "Error detecting markers in image." << std::endl;
 			return;
 		}
 	
-		if (arGetDebugMode(gARHandle)) cout << "	arDetectMarker() => Markerdetected = " << gARHandle->marker_num <<endl;
+		if (arGetDebugMode(gARHandle)) osg::notify(osg::NOTICE) << "	arDetectMarker() => Markerdetected = " << gARHandle->marker_num << std::endl;
 
 		// Debug image.
 		if (arGetDebugMode(gARHandle)) {
@@ -386,7 +370,7 @@ namespace osgART {
 			if (!m_debugimage->valid() ||
 				m_debugimage->getPixelFormat() != format_GL ||
 				m_debugimage->getDataType() != type_GL) {
-				osg::notify() << "ARToolKit4Tracker::init() Create Debug Image: " << m_cparam->cparam.xsize << " x " << m_cparam->cparam.ysize  << std::endl;
+				osg::notify(osg::NOTICE) << "ARToolKit4Tracker::init() Create Debug Image: " << m_cparam->cparam.xsize << " x " << m_cparam->cparam.ysize  << std::endl;
 				m_debugimage->allocateImage(m_cparam->cparam.xsize, m_cparam->cparam.ysize, 1, format_GL, type_GL, 1);
 			}
 			
@@ -437,7 +421,7 @@ namespace osgART {
 
 	void ARToolKit4Tracker::setProjection(const double n, const double f) 
 	{
-		arglCameraFrustumRH((ARParam*)&m_cparam, n, f, m_projectionMatrix);
+		arglCameraFrustumRH(&(m_cparam->cparam), n, f, m_projectionMatrix);
 	}
 	
 	void ARToolKit4Tracker::createUndistortedMesh(

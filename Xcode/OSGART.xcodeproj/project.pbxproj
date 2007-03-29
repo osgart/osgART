@@ -615,7 +615,7 @@
 		78BDBDDC091B00CA00D9D0B9 /* osgARTTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osgARTTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BDBDDE091B00CA00D9D0B9 /* osgARTTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgARTTest-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
-		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Data; path = ../../bin/Data; sourceTree = "<group>"; };
+		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1231,6 +1231,7 @@
 			children = (
 				4AECD75F0ACA341400527735 /* GNUmakefile */,
 				4AECD7600ACA341400527735 /* osgART.bkl */,
+				78BDC1A5091B030100D9D0B9 /* Data */,
 			);
 			name = bin;
 			path = ../bin;
@@ -1470,7 +1471,6 @@
 		78BDC0BC091B014900D9D0B9 /* osgARTTest */ = {
 			isa = PBXGroup;
 			children = (
-				78BDC1A5091B030100D9D0B9 /* Data */,
 				78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */,
 			);
 			path = osgARTTest;
