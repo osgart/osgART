@@ -45,11 +45,11 @@ Name: library; Description: osgART Core; Types: full compact custom; Flags: fixe
 Name: examples; Description: Examples; Types: full compact custom
 Name: doc; Description: Documentation; Types: full compact custom
 Name: plugins; Description: Plugins; Types: full compact custom
-Name: plugins\artoolkit; Description: ARToolkit Video Capture; Types: full compact custom
-Name: plugins\dsvl; Description: DirectShow Video Plugin; Types: custom
-Name: plugins\ptgrey; Description: Point Grey Capture; Types: custom
-Name: plugins\dummyimage; Description: ARToolkit Video Library; Types: full compact custom
-Name: plugins\intranel; Description: Intranel Video Stream Capture; Types: custom
+Name: plugins\artoolkit; Description: ARToolKit video capture plugin; Types: full compact custom
+Name: plugins\dsvl; Description: DirectShow video capture plugin; Types: custom
+Name: plugins\ptgrey; Description: Point Grey video capture plugin; Types: custom
+Name: plugins\dummyimage; Description: Static image video capture plugin; Types: full compact custom
+Name: plugins\intranel; Description: Intranel video stream capture plugin; Types: custom
 
 [Files]
 ;; License Files
