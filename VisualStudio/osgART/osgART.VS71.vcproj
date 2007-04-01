@@ -150,9 +150,6 @@
 					RelativePath="..\..\src\osgART\ARTTransform.cpp">
 				</File>
 				<File
-					RelativePath="..\..\src\osgART\ARTTransformCallback.cpp">
-				</File>
-				<File
 					RelativePath="..\..\src\osgART\GenericTracker.cpp">
 				</File>
 				<File

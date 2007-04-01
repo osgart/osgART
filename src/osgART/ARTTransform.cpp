@@ -12,7 +12,6 @@
 // @@OSGART_LICENSE_HEADER_END@@
 
 #include <osgART/ARTTransform>
-#include <osgART/ARTTransformCallback>
 #include <osgART/GenericTracker>
 #include <osgART/TrackerManager>
 #include <osgART/Marker>
