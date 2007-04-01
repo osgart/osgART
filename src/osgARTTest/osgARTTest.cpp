@@ -60,11 +60,15 @@ int main(int argc, char* argv[])
 	// Load a video plugin.
 	osg::ref_ptr<osgART::GenericVideo> video = 
 		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
-	if (!video.valid()) {   
+
+	// check if an instance of the video stream could be started
+	if (!video.valid()) 
+	{   
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
 	}
+
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
