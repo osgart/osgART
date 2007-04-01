@@ -272,10 +272,6 @@ IntranelStreamVideo::IntranelStreamVideo():m_frame(0),
 	managed(false),
 	m_pCapture(NULL)
 {
-	//m_frame->buffer=NULL;
-	//m_frame->buffersize=0;
-	pixelsize=4;
-	pixelformat=VIDEOFORMAT_BGRA32;
 }
 
 IntranelStreamVideo::IntranelStreamVideo(const IntranelStreamVideo &)
@@ -893,18 +889,4 @@ const int& IntranelStreamVideo::IsUpdated() const {
 void
 IntranelStreamVideo::update()
 {
-
-	m_isupdated = true;
-
-
-	// OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(m_mutex);
-
-	/*
-	if (m_frame->buffer) 
-	{
-		this->setImage(this->s(), this->t(), 1, GL_BGRA, GL_BGRA, 
-			GL_UNSIGNED_BYTE, m_frame->buffer, osg::Image::NO_DELETE, 1);
-        
-	}
-	*/
 }
