@@ -2,6 +2,10 @@
 -- premake script to create various versions of project files
 --
 
+
+require "plugins"
+
+
 project.name = "osgART"
 project.configs = { "Debug", "ReleaseWithSymbols", "Release" }
 
@@ -10,7 +14,6 @@ if     (target == "vs2003") then
 elseif (target == "vs2005") then
 	project.path = "../VisualStudio/VS2005"
 end
-
 
 
 --
@@ -101,81 +104,12 @@ package.files = {
 }
 
 --
--- Plugin ARToolKit Video
---
-package = newpackage()
-package.path = project.path
-package.bindir = "../../bin"
-package.name = "Plugin ARToolKit Video"
-package.target = "osgart_artoolkit"
-package.language = "c++"
-package.kind = "dll"
-package.objdir = "obj/" .. package.target
-
-package.defines = { "OSGART_PLUGIN_EXPORT" }
-
-if (OS == "windows") then
-	table.insert(package.defines,"WIN32")
-	table.insert(package.defines,"_WIN32")
-	table.insert(package.defines,"_WINDOWS")
-end
-
-package.includepaths = {
-	"../../include",
-	"$(OSG_ROOT)/include"
-}
-
-package.libpaths = { "$(OSG_ROOT)/lib" }
-
-package.links = {
-	"osg",
-	"osgART",
-}
-
-if (OS == "windows") then
-	table.insert(package.links,"libARvideo")
-end
-
-
-package.files = {
-  matchfiles("../../src/osgART/Video/ARToolKit/*"),
-}
-
---
 -- Plugin ARToolKit Tracker
 --
-package = newpackage()
-package.bindir = "../../bin"
-package.path = project.path
-package.name = "Plugin ARToolKit Tracker"
-package.target = "osgart_artoolkit_tracker"
-package.language = "c++"
-package.kind = "dll"
-package.objdir = "obj/" .. package.target
+package = createTrackerPlugin("ARToolKit","artoolkit")
 
 package.files = {
   matchfiles("../../src/osgART/Tracker/ARToolKit/*")
-}
-
-
-package.defines = { "OSGART_PLUGIN_EXPORT" }
-
-if (OS == "windows") then
-	table.insert(package.defines,"WIN32")
-	table.insert(package.defines,"_WIN32")
-	table.insert(package.defines,"_WINDOWS")
-end
-
-package.includepaths = {
-	"../../include",
-	"$(OSG_ROOT)/include"
-}
-
-package.libpaths = { "$(OSG_ROOT)/lib" }
-
-package.links = {
-	"osg",
-	"osgART",
 }
 
 if (OS == "windows") then
@@ -187,5 +121,57 @@ if (OS == "windows") then
 end
 
 
+--
+-- Video Plugin: PointGrey
+--
+if (OS == "windows") then
+	package = createVideoPlugin("PointGrey","ptgrey")
+
+    table.insert(package.includepaths,"C://Program Files//Point Grey Research//PGR FlyCapture//include")
+	table.insert(package.libpaths,"C://Program Files//Point Grey Research//PGR FlyCapture//lib")
+	table.insert(package.links,"PGRFlyCapture")
+	table.insert(package.links,"OpenThreadsWin32")
+
+
+	package.files = {
+		matchfiles("../../src/osgART/Video/PtGrey/*"),
+	}
+end
+
+
+--
+-- Video Plugin: Intranel
+--
+if (OS == "windows") then
+	package = createVideoPlugin("Intranel RTSP","intranel")
+
+    table.insert(package.includepaths,"$(DXSDK_DIR)//Extras//DirectShow//Samples//C++//DirectShow//BaseClasses")
+	table.insert(package.libpaths,"$(DXSDK_DIR)//Extras//DirectShow//Samples//C++//DirectShow//BaseClasses//Release")
+	table.insert(package.links,"strmbase")
+	table.insert(package.links,"strmiids")
+	table.insert(package.links,"winmm")
+	table.insert(package.links,"quartz")
+
+	table.insert(package.links,"OpenThreadsWin32")
+
+	package.files = {
+		matchfiles("../../src/osgART/Video/Intranel/*"),
+	}
+end
+
+--
+-- Plugin ARToolKit Video
+--
+
+package = createVideoPlugin("ARToolKit","artoolkit")
+
+if (OS == "windows") then
+	table.insert(package.links,"libARvideo")
+end
+
+
+package.files = {
+  matchfiles("../../src/osgART/Video/ARToolKit/*"),
+}
 
 
