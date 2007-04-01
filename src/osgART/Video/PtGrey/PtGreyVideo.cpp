@@ -39,12 +39,13 @@ void PtGreyVideoThread::run()
    FlyCaptureError   error;
 
    convertedimage.pixelFormat = FLYCAPTURE_BGRU;
-   convertedimage.pData = new unsigned char[ ptgrey->getWidth()*ptgrey->getHeight()*ptgrey->pixelSize() ];
-   memset(convertedimage.pData, 0x0,  ptgrey->getWidth()*ptgrey->getHeight()*ptgrey->pixelSize() );
+   convertedimage.pData = 
+	   new unsigned char[ ptgrey->getImageSizeInBytes() ];
+   memset(convertedimage.pData, 0x0,  ptgrey->getImageSizeInBytes() );
 
    convertedimage2.pixelFormat = FLYCAPTURE_BGRU;
-   convertedimage2.pData = new unsigned char[ ptgrey->getWidth()*ptgrey->getHeight()*ptgrey->pixelSize() ];
-   memset(convertedimage2.pData, 0x0,  ptgrey->getWidth()*ptgrey->getHeight()*ptgrey->pixelSize() );
+   convertedimage2.pData = new unsigned char[ ptgrey->getImageSizeInBytes() ];
+   memset(convertedimage2.pData, 0x0,  ptgrey->getImageSizeInBytes() );
 
    imagePtr=&convertedimage;
 
@@ -123,8 +124,8 @@ PtGreyVideo::configure()
 
 	camIndex = m_config.id;
 
-	framerate = this->getVideoConfiguration()->framerate;
-	pixelsize = 4;
+	// framerate = this->getVideoConfiguration()->framerate;
+	// pixelsize = 4;
 
 	xsize = m_config.width;
 	ysize = m_config.height;
@@ -252,7 +253,7 @@ PtGreyVideo::configure()
 
 
 	//we are using ART so we are converting the video to the readable ART format
-	pixelformat=VIDEOFORMAT_BGRA32;
+	// pixelformat=VIDEOFORMAT_BGRA32;
 
 }
 
@@ -357,20 +358,7 @@ PtGreyVideo::update()
 		this->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);
 
-		this->m_isupdated = true;
-
-		if (m_horizontal_flip || m_vertical_flip) 
-		{
-			if (m_horizontal_flip) this->flipHorizontal();
-			if (m_vertical_flip) this->flipVertical();
-		}
-
-
 		haveNewImage = false;
-
-	} else {
-
-		m_isupdated = false;
 
 	}
 }

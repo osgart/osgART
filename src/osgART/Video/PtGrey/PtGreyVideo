@@ -122,12 +122,6 @@ protected:
 	
 private:
 
-//Private Services
-
-
-//Private Type
-
-//Private Data
 	FlyCaptureContext context;
 	FlyCaptureVideoMode videoMode;	FlyCaptureFrameRate videoSpeed;
 	int camIndex;
