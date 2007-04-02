@@ -96,7 +96,10 @@ namespace osgART {
 		
 		void setImageProcMode(const int &mode);
 		int getImageProcMode(void)const;
-			
+
+		void setPatternDetectionMode(const int &mode);
+		int getPatternDetectionMode(void)const;
+
 		/** 
 		* \brief Initialize ARToolKit4.
 		* 

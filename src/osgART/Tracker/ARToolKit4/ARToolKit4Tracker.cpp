@@ -139,6 +139,11 @@ namespace osgART {
 																		   &ARToolKit4Tracker::getThreshold,
 																		   &ARToolKit4Tracker::setThreshold);
 		setThreshold(AR_DEFAULT_LABELING_THRESH);
+		
+		m_fields["patternDetectionMode"]	= new CallbackField<ARToolKit4Tracker,int>(this,
+																		   &ARToolKit4Tracker::getPatternDetectionMode,
+																		   &ARToolKit4Tracker::setPatternDetectionMode);
+		setPatternDetectionMode(AR_DEFAULT_PATTERN_DETECTION_MODE);
 
 		if ((gAR3DHandle = ar3DCreateHandle(&(m_cparam->cparam))) == NULL) {
 			osg::notify(osg::FATAL) << "osgART::ARToolKit4Tracker::init : Error: Could not create AR3DHandle." << endl;
@@ -310,14 +315,26 @@ namespace osgART {
 
 	void ARToolKit4Tracker::setImageProcMode(const int &mode) 
 	{
-		if (arSetDebugMode(gARHandle, mode) < 0) {
+		if (arSetImageProcMode(gARHandle, mode) < 0) {
 			osg::notify(osg::FATAL) << "ARToolKit4Tracker::setImageProcMode() : error in arSetImageProcMode()" << endl;
 		}
 	}
 
 	int ARToolKit4Tracker::getImageProcMode()const 
 	{
-		return arGetDebugMode(gARHandle);
+		return arGetImageProcMode(gARHandle);
+	}
+
+	void ARToolKit4Tracker::setPatternDetectionMode(const int &mode) 
+	{
+		if (arSetPatternDetectionMode(gARHandle, mode) < 0) {
+			osg::notify(osg::FATAL) << "ARToolKit4Tracker::setPatternDetectionMode() : error in arSetPatternDetectionMode()" << endl;
+		}
+	}
+
+	int ARToolKit4Tracker::getPatternDetectionMode()const
+	{
+		return arGetPatternDetectionMode(gARHandle);
 	}
 
 	void ARToolKit4Tracker::update()
