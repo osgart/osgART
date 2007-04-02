@@ -147,9 +147,6 @@ namespace osgART {
 		 */ 
 		MarkerList m_markerlist;
 		
-		// unsigned char		*m_imageptr;
-		// PixelFormatType		 m_imageptr_format;
-		
 		double m_projectionMatrix[16];
 		std::string		m_name;		//!< Store the name of the tracker.
 		std::string		m_version;	//!< Store the version of the tracker.
