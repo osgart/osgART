@@ -406,7 +406,7 @@ void ARToolKit4NFTTracker::updateStandardTracker()
 			if (currentMarker->getType() == Marker::ART_SINGLE)
 			{
 				SingleMarker* singleMarker = static_cast<SingleMarker*>(currentMarker);
-
+				
 				// get markerInfo for each marker
 				k = -1;
 				for (j = 0; j < arHandle->marker_num; j++)	
@@ -445,10 +445,19 @@ ARToolKit4NFTTracker::updateNFTTracker(ARUint8* imageptr)
 	static int			contF = 0; 
 	double				new_trans[3][4];
 	double				err;
-	
-	
 
-	// try NFT
+	// declare all nft-markers as not valid
+	for (MarkerList::iterator iter = m_markerlist.begin(); 
+			iter != m_markerlist.end(); 
+			iter++)	
+
+	{
+		if (NFTMarker* nm = dynamic_cast<NFTMarker*>((*iter).get()))
+			nm->update(NULL);
+		
+	}
+
+	// try NFT tracking
 	if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
 		|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
 		|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
@@ -515,15 +524,6 @@ ARToolKit4NFTTracker::update()
 	m_lastModifiedCount = m_imagesource->getModifiedCount();
 
 	arSetPixelFormat(arHandle, getARPixelFormatForImage(*m_imagesource.get()));
-	
-	// declare all markers as not valid
-	for (MarkerList::iterator iter = m_markerlist.begin(); 
-			iter != m_markerlist.end(); 
-			iter++)	
-
-	{
-			Marker* m = 	(*iter).get();
-	}
 
 	// detect visible markers
 	arDetectMarker(arHandle,m_imagesource->data());

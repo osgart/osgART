@@ -16,7 +16,7 @@ NFTMarker::~NFTMarker(void)
 }
 
 Marker::MarkerType NFTMarker::getType() const {
-	return Marker::ART_MULTI;
+	return Marker::ART_NFT;
 }
 
 void NFTMarker::setActive(bool a) {
