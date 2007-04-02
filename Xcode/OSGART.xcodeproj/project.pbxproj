@@ -17,9 +17,7 @@
 		4A133C220A8BBEA100C95219 /* Marker in Headers */ = {isa = PBXBuildFile; fileRef = 4A8F9F4809D8F9F300E57FEA /* Marker */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C280A8BBEA100C95219 /* ReflectionVideoFunctor in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED410A63093A007D0FA4 /* ReflectionVideoFunctor */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C2B0A8BBEA100C95219 /* TrackerManager in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED430A63093A007D0FA4 /* TrackerManager */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C2F0A8BBEA100C95219 /* VideoBackground in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2C09182F8200414BD5 /* VideoBackground */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C300A8BBEA100C95219 /* VideoBillboard in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2E09182F8200414BD5 /* VideoBillboard */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C310A8BBEA100C95219 /* VideoForeground in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED460A63093A007D0FA4 /* VideoForeground */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C320A8BBEA100C95219 /* VideoLayer in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED470A63093A007D0FA4 /* VideoLayer */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C330A8BBEA100C95219 /* VideoManager in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2F09182F8200414BD5 /* VideoManager */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C340A8BBEA100C95219 /* VideoPlane in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB3009182F8200414BD5 /* VideoPlane */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -118,7 +116,6 @@
 		4AA81F290B81336700BA6D59 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
 		4AA822C50B82874C00BA6D59 /* TransformFilterCallback in Headers */ = {isa = PBXBuildFile; fileRef = 4AA822C40B82874C00BA6D59 /* TransformFilterCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AA822C70B82877500BA6D59 /* TransformFilterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA822C60B82877500BA6D59 /* TransformFilterCallback.cpp */; };
-		4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */; };
 		4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */; };
 		4AE1D48D0B701AC1001CB3B5 /* VideoImageStream in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1D4890B701AA1001CB3B5 /* VideoImageStream */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AE1ED6B0A630FD8007D0FA4 /* GenericTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ED570A630FD8007D0FA4 /* GenericTracker.cpp */; };
@@ -130,7 +127,6 @@
 		4AECD6F20ACA2C2800527735 /* Foundation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AECD6F10ACA2C2800527735 /* Foundation.cpp */; };
 		4AECD6F60ACA2C7F00527735 /* Foundation in Headers */ = {isa = PBXBuildFile; fileRef = 4AECD6F50ACA2C7F00527735 /* Foundation */; settings = {ATTRIBUTES = (Public, ); }; };
 		7842DB7A09184AA900414BD5 /* ARTTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB3909182F8200414BD5 /* ARTTransform.cpp */; };
-		7842DB8009184AA900414BD5 /* VideoBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4009182F8200414BD5 /* VideoBackground.cpp */; };
 		7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4209182F8200414BD5 /* VideoManager.cpp */; };
 		7842DB8309184AA900414BD5 /* VideoPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7842DB4309182F8200414BD5 /* VideoPlane.cpp */; };
 		7842DE8809184F6100414BD5 /* OpenThreads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DC8C09184F5F00414BD5 /* OpenThreads.framework */; };
@@ -586,7 +582,7 @@
 		7842DEB40918502F00414BD5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		7842DEB50918502F00414BD5 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		7842DFB60918505900414BD5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		78BDBDDC091B00CA00D9D0B9 /* osgart_simple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = osgart_simple.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78BDBDDC091B00CA00D9D0B9 /* osgart_simple.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = osgart_simple.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78BDBDDE091B00CA00D9D0B9 /* osgart_simple-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgart_simple-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
 		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
@@ -1485,10 +1481,8 @@
 				4A133C2B0A8BBEA100C95219 /* TrackerManager in Headers */,
 				4AA822C50B82874C00BA6D59 /* TransformFilterCallback in Headers */,
 				4A6AC5A60B55CB2200BFED12 /* Utils in Headers */,
-				4A133C2F0A8BBEA100C95219 /* VideoBackground in Headers */,
 				4A133C300A8BBEA100C95219 /* VideoBillboard in Headers */,
 				4A55A7240AA78988005EDC69 /* VideoConfig in Headers */,
-				4A133C310A8BBEA100C95219 /* VideoForeground in Headers */,
 				4AE1D48D0B701AC1001CB3B5 /* VideoImageStream in Headers */,
 				4A133C320A8BBEA100C95219 /* VideoLayer in Headers */,
 				4A133C330A8BBEA100C95219 /* VideoManager in Headers */,
@@ -1780,9 +1774,7 @@
 				4AE1ED740A630FD8007D0FA4 /* TrackerManager.cpp in Sources */,
 				4AA822C70B82877500BA6D59 /* TransformFilterCallback.cpp in Sources */,
 				4A6AC5CE0B55CB7100BFED12 /* Utils.cpp in Sources */,
-				7842DB8009184AA900414BD5 /* VideoBackground.cpp in Sources */,
 				4A8F9F5709D8FA5800E57FEA /* VideoBillboard.cpp in Sources */,
-				4AE1D4860B701A80001CB3B5 /* VideoForeground.cpp in Sources */,
 				4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */,
 				4AE1ED770A630FD8007D0FA4 /* VideoLayer.cpp in Sources */,
 				7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */,
