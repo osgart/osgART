@@ -68,12 +68,13 @@ int main(int argc, char* argv[])
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
 	}
-
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
-	if (!tracker.valid()) {
+	// check if the tracker plugin could be loaded
+	if (!tracker.valid()) 
+	{
         // this example needs a tracker. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
@@ -112,7 +113,7 @@ int main(int argc, char* argv[])
 
 	// Creating a video background
 	osg::ref_ptr<osgART::VideoLayer> videoBackground = 
-		new osgART::VideoLayer(video.get() , 0);
+		new osgART::VideoLayer(video.get() , 1);
 
 	//initialize the video background
 	videoBackground->init();
