@@ -487,7 +487,6 @@
 		4AE1D47F0B7019EB001CB3B5 /* tools.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = tools.cpp; sourceTree = "<group>"; };
 		4AE1D4800B7019EB001CB3B5 /* VideoBench */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoBench; sourceTree = "<group>"; };
 		4AE1D4810B7019EB001CB3B5 /* VideoBench.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoBench.cpp; sourceTree = "<group>"; };
-		4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoForeground.cpp; sourceTree = "<group>"; };
 		4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoImageStream.cpp; sourceTree = "<group>"; };
 		4AE1D4890B701AA1001CB3B5 /* VideoImageStream */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoImageStream; sourceTree = "<group>"; };
 		4AE1ED390A63093A007D0FA4 /* GenericTracker */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = GenericTracker; sourceTree = "<group>"; };
@@ -496,7 +495,6 @@
 		4AE1ED3C0A63093A007D0FA4 /* GenericVideoShader */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = GenericVideoShader; sourceTree = "<group>"; };
 		4AE1ED410A63093A007D0FA4 /* ReflectionVideoFunctor */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = ReflectionVideoFunctor; sourceTree = "<group>"; };
 		4AE1ED430A63093A007D0FA4 /* TrackerManager */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = TrackerManager; sourceTree = "<group>"; };
-		4AE1ED460A63093A007D0FA4 /* VideoForeground */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoForeground; sourceTree = "<group>"; };
 		4AE1ED470A63093A007D0FA4 /* VideoLayer */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoLayer; sourceTree = "<group>"; };
 		4AE1ED570A630FD8007D0FA4 /* GenericTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = GenericTracker.cpp; sourceTree = "<group>"; };
 		4AE1ED580A630FD8007D0FA4 /* GenericVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = GenericVideo.cpp; sourceTree = "<group>"; };
@@ -550,12 +548,10 @@
 		7842DB2209182F8200414BD5 /* ARLocalTransformCallback */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = ARLocalTransformCallback; sourceTree = "<group>"; };
 		7842DB2509182F8200414BD5 /* ARTTransform */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = ARTTransform; sourceTree = "<group>"; };
 		7842DB2709182F8200414BD5 /* Export */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = Export; sourceTree = "<group>"; };
-		7842DB2C09182F8200414BD5 /* VideoBackground */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoBackground; sourceTree = "<group>"; };
 		7842DB2E09182F8200414BD5 /* VideoBillboard */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoBillboard; sourceTree = "<group>"; };
 		7842DB2F09182F8200414BD5 /* VideoManager */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoManager; sourceTree = "<group>"; };
 		7842DB3009182F8200414BD5 /* VideoPlane */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoPlane; sourceTree = "<group>"; };
 		7842DB3909182F8200414BD5 /* ARTTransform.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARTTransform.cpp; sourceTree = "<group>"; };
-		7842DB4009182F8200414BD5 /* VideoBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoBackground.cpp; sourceTree = "<group>"; };
 		7842DB4209182F8200414BD5 /* VideoManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoManager.cpp; sourceTree = "<group>"; };
 		7842DB4309182F8200414BD5 /* VideoPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoPlane.cpp; sourceTree = "<group>"; };
 		7842DB5709183C2F00414BD5 /* osgART.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = osgART.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1306,10 +1302,8 @@
 				4AE1ED430A63093A007D0FA4 /* TrackerManager */,
 				4AA822C40B82874C00BA6D59 /* TransformFilterCallback */,
 				4A6AC5A50B55CB2200BFED12 /* Utils */,
-				7842DB2C09182F8200414BD5 /* VideoBackground */,
 				7842DB2E09182F8200414BD5 /* VideoBillboard */,
 				4A55A7120AA78803005EDC69 /* VideoConfig */,
-				4AE1ED460A63093A007D0FA4 /* VideoForeground */,
 				4AE1D4890B701AA1001CB3B5 /* VideoImageStream */,
 				4AE1ED470A63093A007D0FA4 /* VideoLayer */,
 				4A94BA7E0AC8BFE600E20A2A /* VideoLoadModel */,
@@ -1361,9 +1355,7 @@
 				4AE1ED600A630FD8007D0FA4 /* TrackerManager.cpp */,
 				4AA822C60B82877500BA6D59 /* TransformFilterCallback.cpp */,
 				4A6AC5CD0B55CB7100BFED12 /* Utils.cpp */,
-				7842DB4009182F8200414BD5 /* VideoBackground.cpp */,
 				4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */,
-				4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */,
 				4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */,
 				4AE1ED630A630FD8007D0FA4 /* VideoLayer.cpp */,
 				7842DB4209182F8200414BD5 /* VideoManager.cpp */,
