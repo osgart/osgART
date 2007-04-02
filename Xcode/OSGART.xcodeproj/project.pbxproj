@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4A133C130A8BBEA100C95219 /* ARLocalTransformCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2209182F8200414BD5 /* ARLocalTransformCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C170A8BBEA100C95219 /* ARTTransform in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2509182F8200414BD5 /* ARTTransform */; settings = {ATTRIBUTES = (Public, ); }; };
-		4A133C180A8BBEA100C95219 /* ARTTransformCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2609182F8200414BD5 /* ARTTransformCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C1C0A8BBEA100C95219 /* Export in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2709182F8200414BD5 /* Export */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C1D0A8BBEA100C95219 /* GenericTracker in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED390A63093A007D0FA4 /* GenericTracker */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C1E0A8BBEA100C95219 /* GenericVideo in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1ED3A0A63093A007D0FA4 /* GenericVideo */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,7 +87,6 @@
 		4A9969820AC783430068A373 /* PlaneARShadowRenderer in Headers */ = {isa = PBXBuildFile; fileRef = 4A99697E0AC783430068A373 /* PlaneARShadowRenderer */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A9969830AC783430068A373 /* ShadowRenderer in Headers */ = {isa = PBXBuildFile; fileRef = 4A99697F0AC783430068A373 /* ShadowRenderer */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A99698D0AC783A20068A373 /* ARLocalTransformCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969860AC783A20068A373 /* ARLocalTransformCallback.cpp */; };
-		4A99698E0AC783A20068A373 /* ARTTransformCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969870AC783A20068A373 /* ARTTransformCallback.cpp */; };
 		4A99698F0AC783A20068A373 /* PlaneARShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */; };
 		4A9969900AC783A20068A373 /* ShadowRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4A9969890AC783A20068A373 /* ShadowRenderer.cpp */; };
 		4A9969C90AC785D10068A373 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
@@ -441,10 +439,8 @@
 		4A99697F0AC783430068A373 /* ShadowRenderer */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = ShadowRenderer; sourceTree = "<group>"; };
 		4A9969810AC783430068A373 /* VideoPlaneMulti */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoPlaneMulti; sourceTree = "<group>"; };
 		4A9969860AC783A20068A373 /* ARLocalTransformCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARLocalTransformCallback.cpp; sourceTree = "<group>"; };
-		4A9969870AC783A20068A373 /* ARTTransformCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ARTTransformCallback.cpp; sourceTree = "<group>"; };
 		4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = PlaneARShadowRenderer.cpp; sourceTree = "<group>"; };
 		4A9969890AC783A20068A373 /* ShadowRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowRenderer.cpp; sourceTree = "<group>"; };
-		4A99698C0AC783A20068A373 /* VideoTexRectCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoTexRectCallback.cpp; sourceTree = "<group>"; };
 		4A9969CD0AC785D10068A373 /* osgart_dummyimage.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = osgart_dummyimage.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A996A190AC7865B0068A373 /* CVCamVideo */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = CVCamVideo; sourceTree = "<group>"; };
 		4A996A1A0AC7865B0068A373 /* CVCamVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = CVCamVideo.cpp; sourceTree = "<group>"; };
@@ -510,7 +506,6 @@
 		4AE1D4810B7019EB001CB3B5 /* VideoBench.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoBench.cpp; sourceTree = "<group>"; };
 		4AE1D4830B701A80001CB3B5 /* VideoForeground.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoForeground.cpp; sourceTree = "<group>"; };
 		4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoImageStream.cpp; sourceTree = "<group>"; };
-		4AE1D4850B701A80001CB3B5 /* VideoTextureBase.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoTextureBase.cpp; sourceTree = "<group>"; };
 		4AE1D4890B701AA1001CB3B5 /* VideoImageStream */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoImageStream; sourceTree = "<group>"; };
 		4AE1D48A0B701AA1001CB3B5 /* VideoTextureBase */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = VideoTextureBase; sourceTree = "<group>"; };
 		4AE1ED390A63093A007D0FA4 /* GenericTracker */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = GenericTracker; sourceTree = "<group>"; };
@@ -585,9 +580,6 @@
 		7842DB4009182F8200414BD5 /* VideoBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoBackground.cpp; sourceTree = "<group>"; };
 		7842DB4209182F8200414BD5 /* VideoManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoManager.cpp; sourceTree = "<group>"; };
 		7842DB4309182F8200414BD5 /* VideoPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoPlane.cpp; sourceTree = "<group>"; };
-		7842DB4409182F8200414BD5 /* VideoTexCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoTexCallback.cpp; sourceTree = "<group>"; };
-		7842DB4509182F8200414BD5 /* VideoTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoTexture.cpp; sourceTree = "<group>"; };
-		7842DB4609182F8200414BD5 /* VideoTextureRectangle.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoTextureRectangle.cpp; sourceTree = "<group>"; };
 		7842DB5709183C2F00414BD5 /* osgART.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = osgART.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7842DB5909183C2F00414BD5 /* osgART-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgART-Info.plist"; sourceTree = "<group>"; };
 		7842DC8B09184F5F00414BD5 /* gdal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gdal.framework; path = ../../OpenSceneGraph/Frameworks/gdal.framework; sourceTree = SOURCE_ROOT; };
@@ -1398,7 +1390,6 @@
 				4A9969860AC783A20068A373 /* ARLocalTransformCallback.cpp */,
 				4A4F69C20B8E4B6100275FD1 /* ARSceneNode.cpp */,
 				7842DB3909182F8200414BD5 /* ARTTransform.cpp */,
-				4A9969870AC783A20068A373 /* ARTTransformCallback.cpp */,
 				4AECD6F10ACA2C2800527735 /* Foundation.cpp */,
 				4AE1ED570A630FD8007D0FA4 /* GenericTracker.cpp */,
 				4AE1ED580A630FD8007D0FA4 /* GenericVideo.cpp */,
@@ -1417,11 +1408,6 @@
 				4AE1ED630A630FD8007D0FA4 /* VideoLayer.cpp */,
 				7842DB4209182F8200414BD5 /* VideoManager.cpp */,
 				7842DB4309182F8200414BD5 /* VideoPlane.cpp */,
-				7842DB4409182F8200414BD5 /* VideoTexCallback.cpp */,
-				4A99698C0AC783A20068A373 /* VideoTexRectCallback.cpp */,
-				7842DB4509182F8200414BD5 /* VideoTexture.cpp */,
-				4AE1D4850B701A80001CB3B5 /* VideoTextureBase.cpp */,
-				7842DB4609182F8200414BD5 /* VideoTextureRectangle.cpp */,
 			);
 			path = osgART;
 			sourceTree = "<group>";
@@ -1521,7 +1507,6 @@
 				4A133C130A8BBEA100C95219 /* ARLocalTransformCallback in Headers */,
 				4A4F69C60B8E4BA600275FD1 /* ARSceneNode in Headers */,
 				4A133C170A8BBEA100C95219 /* ARTTransform in Headers */,
-				4A133C180A8BBEA100C95219 /* ARTTransformCallback in Headers */,
 				4A133C1C0A8BBEA100C95219 /* Export in Headers */,
 				4A5E72530ADDE57500A8249D /* Field in Headers */,
 				4AECD6F60ACA2C7F00527735 /* Foundation in Headers */,
@@ -1569,9 +1554,9 @@
 			productReference = 4A174BCB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		4A38FA870AD5EB78006DC8DB /* osgart_artoolkit_tracker */ = {
+		4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4A38FAA60AD5EB78006DC8DB /* Build configuration list for PBXNativeTarget "osgart_artoolkit_tracker" */;
+			buildConfigurationList = 4A38FAA60AD5EB78006DC8DB /* Build configuration list for PBXNativeTarget "osgart_tracker_artoolkit" */;
 			buildPhases = (
 				4A38FA8A0AD5EB78006DC8DB /* Headers */,
 				4A38FA8B0AD5EB78006DC8DB /* Sources */,
@@ -1582,7 +1567,7 @@
 			dependencies = (
 				4A38FA880AD5EB78006DC8DB /* PBXTargetDependency */,
 			);
-			name = osgart_artoolkit_tracker;
+			name = osgart_tracker_artoolkit;
 			productName = osgart_artoolkit;
 			productReference = 4A38FAA90AD5EB78006DC8DB /* osgart_artoolkit_tracker.so */;
 			productType = "com.apple.product-type.library.dynamic";
@@ -1627,9 +1612,9 @@
 			productReference = 4A4F6A0F0B8E4EF100275FD1 /* Example_SimpleCamera.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4A55AB1E0AA7A376005EDC69 /* osgart_artoolkit */ = {
+		4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4A55AB200AA7A3B7005EDC69 /* Build configuration list for PBXNativeTarget "osgart_artoolkit" */;
+			buildConfigurationList = 4A55AB200AA7A3B7005EDC69 /* Build configuration list for PBXNativeTarget "osgart_video_artoolkit" */;
 			buildPhases = (
 				4A55AB1B0AA7A376005EDC69 /* Headers */,
 				4A55AB1C0AA7A376005EDC69 /* Sources */,
@@ -1640,7 +1625,7 @@
 			dependencies = (
 				4A55AB280AA7A426005EDC69 /* PBXTargetDependency */,
 			);
-			name = osgart_artoolkit;
+			name = osgart_video_artoolkit;
 			productName = osgart_artoolkit;
 			productReference = 4A55AB1F0AA7A376005EDC69 /* osgart_artoolkit.so */;
 			productType = "com.apple.product-type.library.dynamic";
@@ -1715,9 +1700,9 @@
 			projectDirPath = "";
 			targets = (
 				7842DB5609183C2F00414BD5 /* osgART */,
-				4A55AB1E0AA7A376005EDC69 /* osgart_artoolkit */,
+				4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */,
 				4A9969AB0AC785D10068A373 /* osgart_dummyimage */,
-				4A38FA870AD5EB78006DC8DB /* osgart_artoolkit_tracker */,
+				4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */,
 				4A174BAB0AD9D66000B9FC9B /* osgart_artoolkit4_tracker */,
 				4A38FAB00AD5EC05006DC8DB /* osgart_artoolkit4nft_tracker */,
 				78BDBDDB091B00CA00D9D0B9 /* osgARTTest */,
@@ -1820,7 +1805,6 @@
 				4A99698D0AC783A20068A373 /* ARLocalTransformCallback.cpp in Sources */,
 				4A4F69C30B8E4B6100275FD1 /* ARSceneNode.cpp in Sources */,
 				7842DB7A09184AA900414BD5 /* ARTTransform.cpp in Sources */,
-				4A99698E0AC783A20068A373 /* ARTTransformCallback.cpp in Sources */,
 				4AECD6F20ACA2C2800527735 /* Foundation.cpp in Sources */,
 				4AE1ED6B0A630FD8007D0FA4 /* GenericTracker.cpp in Sources */,
 				4AE1ED6C0A630FD8007D0FA4 /* GenericVideo.cpp in Sources */,
@@ -1870,7 +1854,7 @@
 		};
 		4A38FAE60AD5EDFB006DC8DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A38FA870AD5EB78006DC8DB /* osgart_artoolkit_tracker */;
+			target = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
 			targetProxy = 4A38FAE50AD5EDFB006DC8DB /* PBXContainerItemProxy */;
 		};
 		4A4F69EB0B8E4EF100275FD1 /* PBXTargetDependency */ = {
@@ -1880,12 +1864,12 @@
 		};
 		4A4F69ED0B8E4EF100275FD1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A55AB1E0AA7A376005EDC69 /* osgart_artoolkit */;
+			target = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
 			targetProxy = 4A4F69EE0B8E4EF100275FD1 /* PBXContainerItemProxy */;
 		};
 		4A4F69EF0B8E4EF100275FD1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A38FA870AD5EB78006DC8DB /* osgart_artoolkit_tracker */;
+			target = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
 			targetProxy = 4A4F69F00B8E4EF100275FD1 /* PBXContainerItemProxy */;
 		};
 		4A55AB280AA7A426005EDC69 /* PBXTargetDependency */ = {
@@ -1895,7 +1879,7 @@
 		};
 		4A55AB770AA7B0C9005EDC69 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A55AB1E0AA7A376005EDC69 /* osgart_artoolkit */;
+			target = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
 			targetProxy = 4A55AB760AA7B0C9005EDC69 /* PBXContainerItemProxy */;
 		};
 		4A9969AC0AC785D10068A373 /* PBXTargetDependency */ = {
@@ -2341,7 +2325,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4A38FAA60AD5EB78006DC8DB /* Build configuration list for PBXNativeTarget "osgart_artoolkit_tracker" */ = {
+		4A38FAA60AD5EB78006DC8DB /* Build configuration list for PBXNativeTarget "osgart_tracker_artoolkit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A38FAA70AD5EB78006DC8DB /* Debug */,
@@ -2368,7 +2352,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4A55AB200AA7A3B7005EDC69 /* Build configuration list for PBXNativeTarget "osgart_artoolkit" */ = {
+		4A55AB200AA7A3B7005EDC69 /* Build configuration list for PBXNativeTarget "osgart_video_artoolkit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A55AB210AA7A3B7005EDC69 /* Debug */,
