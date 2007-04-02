@@ -19,7 +19,7 @@
 
 namespace osgART {
 
-	TrackerManager::TrackerManager() : osg::Referenced(), m_trackercount(0)
+	TrackerManager::TrackerManager() : osg::Referenced()
 	{
 	}
 
@@ -27,7 +27,7 @@ namespace osgART {
 	TrackerManager* TrackerManager::getInstance(bool erase /* = false*/) 
 	{
 	
-		osg::ref_ptr<TrackerManager> s_trackermanager = new TrackerManager;
+		static osg::ref_ptr<TrackerManager> s_trackermanager = new TrackerManager;
 		
 		if (erase) 
 		{
@@ -70,8 +70,8 @@ namespace osgART {
 	void 
 	TrackerManager::removeTracker(GenericTracker* tracker)
 	{
-		if (tracker) {
-
+		if (tracker) 
+		{
 			try 
 			{			
 				m_trackermap[tracker->getId()] = 0L;
@@ -112,7 +112,7 @@ namespace osgART {
 		GenericTracker* _ret = 0L;
 		std::string localLibraryName;
 
-#ifdef _WIN32
+#if defined(_WIN32)
 		localLibraryName = plugin;
 #else
 		localLibraryName = plugin + ".so";
@@ -129,6 +129,9 @@ namespace osgART {
 
 			if (_ret) 
 			{
+
+				osg::notify(osg::INFO) << "osgART::TrackerManager::createTrackerFromPlugin(plugin): "
+					"Add Tracker from plugin '" << plugin << "'" << std::endl;
 				
 				TrackerManager::getInstance()->addTracker(_ret);
 
