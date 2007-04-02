@@ -27,8 +27,7 @@ BEGIN_VALUE_REFLECTOR(osgART::TrackerManager)
 	I_Method1(int, addTracker, IN, osgART::GenericTracker *, tracker);
 	I_Method1(void, removeTracker, IN, osgART::GenericTracker *, tracker);
 	I_Method1(osgART::GenericTracker *, getTracker, IN, int, idTracker);
-	I_StaticMethod0(osgART::TrackerManager *, getInstance);
-	I_StaticMethod0(void, destroy);
+	I_StaticMethod1(osgART::TrackerManager *, getInstance, IN, bool, erase);
 	I_StaticMethod1(osgART::GenericTracker *, createTrackerFromPlugin, IN, const std::string &, plugin);
 END_REFLECTOR
 

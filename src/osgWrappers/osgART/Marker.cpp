@@ -33,19 +33,19 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::Marker)
 	I_Method0(osgART::Marker::MarkerType, getType);
 	I_Method0(bool, isValid);
 	I_Method0(const osg::Matrix &, getTransform);
-	I_Method1(void, setRotationalSmoothing, IN, float, r);
-	I_Method0(float, getRotationalSmoothing);
-	I_Method1(void, setTranslationalSmoothing, IN, float, t);
-	I_Method0(float, getTranslationalSmoothing);
+	//I_Method1(void, setRotationalSmoothing, IN, float, r);
+	//I_Method0(float, getRotationalSmoothing);
+	//I_Method1(void, setTranslationalSmoothing, IN, float, t);
+	//I_Method0(float, getTranslationalSmoothing);
 	I_Method1(void, setName, IN, const std::string &, name);
 	I_Method0(const std::string &, getName);
 	I_Method1(void, setActive, IN, bool, active);
 	I_Method0(bool, isActive);
 	I_WriteOnlyProperty(bool, Active);
 	I_Property(const std::string &, Name);
-	I_Property(float, RotationalSmoothing);
+	//I_Property(float, RotationalSmoothing);
 	I_ReadOnlyProperty(const osg::Matrix &, Transform);
-	I_Property(float, TranslationalSmoothing);
+	//I_Property(float, TranslationalSmoothing);
 	I_ReadOnlyProperty(osgART::Marker::MarkerType, Type);
 END_REFLECTOR
 

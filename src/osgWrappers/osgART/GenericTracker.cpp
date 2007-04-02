@@ -29,13 +29,13 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericTracker)
 	I_Method0(void, update);
 	I_MethodWithDefaults4(bool, init, IN, int, xsize, , IN, int, ysize, , IN, const std::string &, pattlist_name, "Data/markers_list.dat", IN, const std::string &, camera_name, "Data/camera_para.dat");
 	I_Method0(int, getId);
-	I_MethodWithDefaults2(void, setImageRaw, IN, unsigned char *, image, , IN, osgART::PixelFormatType, format, osgART::VIDEOFORMAT_GREY8);
-	I_Method1(void, setImage, IN, osgART::GenericVideo *, video);
+//	I_MethodWithDefaults2(void, setImageRaw, IN, unsigned char *, image, , IN, osgART::PixelFormatType, format, osgART::VIDEOFORMAT_GREY8);
+	I_Method1(void, setImageSource, IN, osg::Image *, image);
 	I_Method1(osgART::Marker *, getMarker, IN, int, markerId);
 	I_Method0(unsigned int, getMarkerCount);
 	I_Method0(const double *, getProjectionMatrix);
 	I_ReadOnlyProperty(int, Id);
-	I_WriteOnlyProperty(osgART::GenericVideo *, Image);
+	I_WriteOnlyProperty(osg::Image *, ImageSource);
 	I_ReadOnlyProperty(unsigned int, MarkerCount);
 	I_ReadOnlyProperty(const double *, ProjectionMatrix);
 END_REFLECTOR

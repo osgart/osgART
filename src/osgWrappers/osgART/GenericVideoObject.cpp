@@ -23,10 +23,9 @@
 #endif
 
 BEGIN_ENUM_REFLECTOR(osgART::GenericVideoObject::TextureMode)
-	I_EnumLabel(osgART::GenericVideoObject::USE_TEXTURE_AUTO);
+	I_EnumLabel(osgART::GenericVideoObject::USE_TEXTURE_DEFAULT);
 	I_EnumLabel(osgART::GenericVideoObject::USE_TEXTURE_2D);
 	I_EnumLabel(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
-	I_EnumLabel(osgART::GenericVideoObject::USE_TEXTURE_VIDEO);
 END_REFLECTOR
 
 BEGIN_ENUM_REFLECTOR(osgART::GenericVideoObject::DistortionCorrectionMode)
@@ -37,10 +36,8 @@ END_REFLECTOR
 BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideoObject)
 	I_Constructor1(IN, osgART::GenericVideo *, video);
 	I_Method0(void, init);
-	I_Method1(void, setTexture, IN, osg::Texture *, vt);
-	I_Method0(osg::ref_ptr< osg::Texture >, getTexture);
-	I_Method1(void, setShader, IN, osgART::GenericVideoShader *, vs);
-	I_Method0(osg::ref_ptr< osgART::GenericVideoShader >, getShader);
+	//I_Method1(void, setShader, IN, osgART::GenericVideoShader *, vs);
+	//I_Method0(osg::ref_ptr< osgART::GenericVideoShader >, getShader);
 	I_Method1(void, setTextureMode, IN, osgART::GenericVideoObject::TextureMode, tm);
 	I_Method0(osgART::GenericVideoObject::TextureMode, getTextureMode);
 	I_Method1(void, setDistortionCorrectionMode, IN, osgART::GenericVideoObject::DistortionCorrectionMode, dcm);
@@ -49,7 +46,7 @@ BEGIN_ABSTRACT_OBJECT_REFLECTOR(osgART::GenericVideoObject)
 	I_ReadOnlyProperty(osgART::GenericVideoObject::DistortionCorrectionMode, DistorsionCorrectionMode);
 	I_WriteOnlyProperty(osgART::GenericVideoObject::DistortionCorrectionMode, DistortionCorrectionMode);
 	I_ReadOnlyProperty(osg::ref_ptr< osgART::GenericVideoShader >, Shader);
-	I_WriteOnlyProperty(osg::Texture *, Texture);
+	//I_WriteOnlyProperty(osg::Texture *, Texture);
 	I_Property(osgART::GenericVideoObject::TextureMode, TextureMode);
 END_REFLECTOR
 

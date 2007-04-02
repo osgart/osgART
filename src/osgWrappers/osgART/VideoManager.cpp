@@ -27,8 +27,7 @@ BEGIN_VALUE_REFLECTOR(osgART::VideoManager)
 	I_Method1(int, addVideoStream, IN, osgART::GenericVideo *, video);
 	I_Method1(void, removeVideoStream, IN, osgART::GenericVideo *, video);
 	I_Method1(osgART::GenericVideo *, getVideo, IN, int, idVideo);
-	I_StaticMethod0(osgART::VideoManager *, getInstance);
+	I_StaticMethod1(osgART::VideoManager *, getInstance, IN, bool, erase );
 	I_StaticMethod1(osgART::GenericVideo *, createVideoFromPlugin, IN, const std::string &, plugin);
-	I_StaticMethod0(void, destroy);
 END_REFLECTOR
 
