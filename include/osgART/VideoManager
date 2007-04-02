@@ -87,8 +87,6 @@ namespace osgART {
 	
 		typedef std::map<std::string, osg::ref_ptr<osgDB::DynamicLibrary> > PluginMap;
 		typedef std::map<int, osg::ref_ptr<GenericVideo> > VideoStreamMap;
-	
-		static VideoManager* _instance;
 		
 		/**
 		*\brief Open the given file and look for the function "osgart_createvideo".
