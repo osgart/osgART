@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>osgARTTest</string>
+	<string>osgart_simple</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.hitlabnz.osgARTTest</string>
+	<string>org.hitlabnz.osgart_simple</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -15,6 +15,6 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0-svn_r365</string>
+	<string>1.0-svn_r580</string>
 </dict>
 </plist>
