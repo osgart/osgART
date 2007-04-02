@@ -48,10 +48,6 @@ package.includepaths = {
 }
 
 package.excludes = {
-	"../../src/osgART/VideoTexture.cpp",
-	"../../src/osgART/VideoTextureRectangle.cpp",
-	"../../src/osgART/VideoTexCallback.cpp",
-	"../../src/osgART/VideoTexRectCallback.cpp",
 	"../../src/osgART/VideoBillboard.cpp",
 	"../../src/osgART/VideoForeground.cpp",
 	"../../src/osgART/VideoBackground.cpp",

@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
+		osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
 
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
 	if (!tracker.valid()) {
         // this example needs a tracker. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;

@@ -12,10 +12,7 @@
 // @@OSGART_LICENSE_HEADER_END@@
 
 #include "osgART/ShadowRenderer"
-#include "osgART/VideoTexture"
 #include "osgART/VideoManager"
-#include "osgART/VideoTextureRectangle"
-
 
 #include <osg/Group>
 #include <osg/Node>
@@ -24,6 +21,7 @@
 #include <osg/Projection>
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
+#include <osg/Texture2D>
 #include <osg/TextureRectangle>
 #include <osg/Depth>
 #include <osg/Geometry>

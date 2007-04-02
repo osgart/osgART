@@ -12,9 +12,7 @@
 // @@OSGART_LICENSE_HEADER_END@@
 
 #include <osgART/PlaneARShadowRenderer>
-#include <osgART/VideoTexture>
 #include <osgART/VideoManager>
-#include <osgART/VideoTextureRectangle>
 #include <osg/Group>
 #include <osg/Node>
 #include <osg/MatrixTransform>
