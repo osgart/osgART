@@ -154,7 +154,7 @@ namespace osgART {
 		* 
 		* This function applies natural feature tracking to the last image defined by setImage.
 		*/
-		void updateNFTTracker();
+		void updateNFTTracker(ARUint8* imageptr);
 		 
 	    
 	protected: 
@@ -188,6 +188,9 @@ namespace osgART {
 		  
 		AR2HandleT			*ar2Handle;
 		AR2SurfaceSetT		*surfaceSet;
+		
+				
+		int getARPixelFormatForImage(const osg::Image& _image) const;
 	 
 	};
 };

@@ -22,11 +22,43 @@ typedef int AR_PIXEL_FORMAT;
 #include <iostream>
 #include <fstream>
 
+#include <osg/Notify>
 
-
-#include <AR/gsub_lite.h>
 //#include <AR/gsub.h>
+#include <AR/gsub_lite.h>
 
+
+// Make sure that required OpenGL constant definitions are available at compile-time.
+
+// N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.
+
+// Define constants for extensions (not yet core).
+
+#ifndef GL_APPLE_ycbcr_422
+
+#  define GL_YCBCR_422_APPLE				0x85B9
+
+#  define GL_UNSIGNED_SHORT_8_8_APPLE		0x85BA
+
+#  define GL_UNSIGNED_SHORT_8_8_REV_APPLE	0x85BB
+
+#endif
+
+#ifndef GL_EXT_abgr
+
+#  define GL_ABGR_EXT						0x8000
+
+#endif
+
+#ifndef GL_MESA_ycbcr_texture
+
+#  define GL_YCBCR_MESA						0x8757
+
+#  define GL_UNSIGNED_SHORT_8_8_MESA		0x85BA
+
+#  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
+
+#endif
 
 
 /* JENS MODIF
@@ -402,7 +434,7 @@ void ARToolKit4NFTTracker::updateStandardTracker()
 
 
 void
-ARToolKit4NFTTracker::updateNFTTracker()
+ARToolKit4NFTTracker::updateNFTTracker(ARUint8* imageptr)
 {	
 	// reset active surface to none active
 	static int active_surface = -1;
@@ -414,10 +446,12 @@ ARToolKit4NFTTracker::updateNFTTracker()
 	double				new_trans[3][4];
 	double				err;
 	
+	
+
 	// try NFT
-	if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
-		|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
-		|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, m_imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
+	if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
+		|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
+		|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
 		&& err < 10.0 )
 	{
 		//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here2" << std::endl;
@@ -439,7 +473,7 @@ ARToolKit4NFTTracker::updateNFTTracker()
 	else {
 		//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here3" << std::endl;
 
-		if( (active_surface = square_tracking(m_imageptr, patt_trans1 )) < 0 ){
+		if( (active_surface = square_tracking(imageptr, patt_trans1 )) < 0 ){
 			contF = 0;
 		}
 		else {
@@ -457,8 +491,30 @@ ARToolKit4NFTTracker::updateNFTTracker()
 void
 ARToolKit4NFTTracker::update()
 {	
-	// Do not update with a null image
-	if (m_imageptr == NULL) return;
+
+	if (!m_imagesource.valid())
+	{
+		osg::notify(osg::WARN) << "No connected image source for the tracker" << std::endl;
+		return;
+	}
+
+	// Do not update with a null image.
+	if (!m_imagesource->valid())
+	{
+		osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image" << std::endl;
+		return;
+	}
+
+	// hse25: performance measurement: only update if the image was modified
+	if (m_imagesource->getModifiedCount() == m_lastModifiedCount)
+	{
+		return; 
+	}
+
+	// update internal modified count
+	m_lastModifiedCount = m_imagesource->getModifiedCount();
+
+	arSetPixelFormat(arHandle, getARPixelFormatForImage(*m_imagesource.get()));
 	
 	// declare all markers as not valid
 	for (MarkerList::iterator iter = m_markerlist.begin(); 
@@ -466,21 +522,17 @@ ARToolKit4NFTTracker::update()
 			iter++)	
 
 	{
-
 			Marker* m = 	(*iter).get();
-
-			//m->m_valid = false;
-
 	}
 
 	// detect visible markers
-	arDetectMarker(arHandle,m_imageptr);
+	arDetectMarker(arHandle,m_imagesource->data());
 	
 	// update single and multiple artoolkit markers
 	updateStandardTracker();
 	
 	// update nft
-	updateNFTTracker();
+	updateNFTTracker(m_imagesource->data());
 }
 
 
@@ -488,4 +540,87 @@ void ARToolKit4NFTTracker::setProjection(const double n, const double f)
 {
 	arglCameraFrustumRH((ARParam*)&cparam, n, f, m_projectionMatrix);
 }
+
+
+
+int ARToolKit4NFTTracker::getARPixelFormatForImage(const osg::Image& _image) const
+{
+	int format = 0, size = 0;
+	
+	if (_image.valid()) {
+		switch (_image.getPixelFormat()) {
+			case GL_RGBA:
+				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+					format = AR_PIXEL_FORMAT_RGBA;
+					size = 4;
+				}
+				break;
+			case GL_ABGR_EXT:
+				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+					format = AR_PIXEL_FORMAT_ABGR;
+					size = 4;
+				}
+				break;
+			case GL_BGRA:
+				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+					format = AR_PIXEL_FORMAT_BGRA;
+					size = 4;
+				}
+#ifdef AR_BIG_ENDIAN
+				else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8_REV) {
+					format = AR_PIXEL_FORMAT_ARGB;
+					size = 4;
+				}
+#else
+				else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8) {
+					format = AR_PIXEL_FORMAT_ARGB;
+					size = 4;
+				}
+#endif
+				break;
+			case GL_RGB:
+				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+					format = AR_PIXEL_FORMAT_RGB;
+					size = 3;
+				}
+				break;
+			case GL_BGR:
+				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+					format = AR_PIXEL_FORMAT_BGR;
+					size = 3;
+				}
+				break;
+			case GL_YCBCR_422_APPLE:
+			case GL_YCBCR_MESA:
+#ifdef AR_BIG_ENDIAN
+				if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+					format = AR_PIXEL_FORMAT_2vuy; // N.B.: GL_UNSIGNED_SHORT_8_8_REV_APPLE = GL_UNSIGNED_SHORT_8_8_REV_MESA
+					size = 2;
+				} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+					format = AR_PIXEL_FORMAT_yuvs; // GL_UNSIGNED_SHORT_8_8_APPLE = GL_UNSIGNED_SHORT_8_8_MESA
+					size = 2;
+				}
+#else
+				if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+					format = AR_PIXEL_FORMAT_2vuy;
+					size = 2;
+				} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+					format = AR_PIXEL_FORMAT_yuvs;
+					size = 2;
+				}
+#endif
+				break;
+			case GL_LUMINANCE:
+				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+					format = AR_PIXEL_FORMAT_MONO;
+					size = 1;
+				}
+				break;
+			default:
+				break;
+		}
+	}
+	return (format);
+}
+
 };
