@@ -76,7 +76,9 @@ namespace osgART
 
 	bool
 	ARSceneNode::connect(GenericTracker* tracker,
-	osg::ImageStream* image) 
+		osg::ImageStream* image,
+		const std::string& patternlist,
+		const std::string& cameraparam) 
 	{
 		if (image == 0L || tracker == 0L) 
 		{
@@ -84,7 +86,9 @@ namespace osgART
 		}
 
 		if (!tracker->init(image->s(),
-			image->t())) 
+			image->t(),
+			patternlist,
+			cameraparam)) 
 		{
 			osg::notify(osg::WARN) << "osgART::ARSceneNode::connect(tracker,video): Can not connect video and tracker, initialisation failed!" << std::endl;
 			return false;

@@ -44,7 +44,9 @@ namespace osgART
 		META_Node(osgART,ARSceneNode)
 		
 		bool connect(GenericTracker* tracker,
-			osg::ImageStream* imagestream);
+			osg::ImageStream* imagestream,
+			const std::string& markerlist = "Data/markers_list.dat",
+			const std::string& cameraparam = "Data/camera_para.dat");
 		
 	protected:
 	
