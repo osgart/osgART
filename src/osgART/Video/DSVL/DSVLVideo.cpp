@@ -36,17 +36,9 @@
 using namespace osgART;
 
 
-DSVLVideo::DSVLVideo(const char *name) 
-	: videoName(name)
+DSVLVideo::DSVLVideo()
 {
-	pixelsize=4;
-	pixelformat=VIDEOFORMAT_BGRA32;
 }
-
-/*DSVLVideo::DSVLVideo(const DSVLVideo &dshow)
-{
-    
-}*/
 
 DSVLVideo::~DSVLVideo(void)
 {
@@ -83,8 +75,11 @@ DSVLVideo::open()
 	long frame_height;
 
 	graphManager->GetCurrentMediaFormat(&frame_width, &frame_height,NULL,NULL);
-	xsize = (int) frame_width;
-	ysize = (int) frame_height;
+
+
+	// create an image that same size (packing set to 1)
+	this->allocateImage(frame_width, frame_height, 1, GL_RGBA, GL_UNSIGNED_BYTE, 1);
+
 
 }
 
@@ -150,8 +145,8 @@ DSVLVideo::update()
 		}
 	}
 	
-	if (newImage && m_image.valid()) 
-		m_image->setImage(this->xsize, this->ysize, 1, GL_BGRA, GL_BGRA, 
+	if (newImage) 
+		this->setImage(this->s(), this->t(), 1, GL_BGRA, GL_BGRA, 
 			GL_UNSIGNED_BYTE, newImage, osg::Image::NO_DELETE, 1);	
 }
 

@@ -56,15 +56,7 @@ public:
     * @param videoName a string definition of the video background. See documentation
     * of ARToolKit for further details.
     */
-    DSVLVideo(const char* videoName);
-    
-    /** 
-    * \brief copy constructor.
-    *
-    */
-  //  DSVLVideo(const DSVLVideo &);
-    
-
+    DSVLVideo();
     
     /** 
     * \brief affectation operator.
