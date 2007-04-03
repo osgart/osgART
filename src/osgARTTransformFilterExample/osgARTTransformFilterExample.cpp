@@ -44,6 +44,10 @@
 #include "KeyboardHandler.h"
 
 
+#define MARKER_CONF		"data/markers_list4.dat"
+#define CAMERA_PARA		"data/camera_paraQC5000.dat"
+
+
 osg::ref_ptr<osgART::TransformFilterCallback>	_transformFilterCallback;
 osg::ref_ptr< osgART::TypedField<int> >			_threshold;
 osgProducer::Viewer								viewer;
@@ -73,7 +77,7 @@ int main(int argc, char* argv[])
 
 	osg::setNotifyLevel(osg::DEBUG_INFO);
 
-	osgARTInit(&argc, argv);
+	//osgARTInit(&argc, argv);
 
 	viewer;
 	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
@@ -88,11 +92,6 @@ int main(int argc, char* argv[])
 
 	viewer.setSceneData(root.get());
 
-	viewer.realize();
-
-
-	
-
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
 		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
@@ -102,8 +101,6 @@ int main(int argc, char* argv[])
 	{        
 		// without video an AR application can not work
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
-
-		// quit the program
 		exit(-1);
 	}
 
@@ -142,7 +139,8 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}	
 	
-	tracker->init(video->getWidth(), video->getHeight(),"data/markers_list4.dat","data/camera_para4.dat");
+	tracker->init(video->getWidth(), video->getHeight(),MARKER_CONF,CAMERA_PARA);
+
 
 
 	// flipping the video can be done on the fly or in advance
@@ -164,16 +162,15 @@ int main(int argc, char* argv[])
 	// Adding video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
-	osgART::VideoBackground* videoBackground=new osgART::VideoBackground(video.get());
-
-	//specify a video texture rectangle (faster)
-	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
+	// Creating a video background
+	osg::ref_ptr<osgART::VideoLayer> videoBackground = 
+		new osgART::VideoLayer(video.get() , 0);
 
 	//initialize the video background
 	videoBackground->init();
 	
 	//adding it to the scene graph
-	foregroundGroup->addChild(videoBackground);
+	foregroundGroup->addChild(videoBackground.get());
 
 	foregroundGroup->getOrCreateStateSet()->setRenderBinDetails(2, "RenderBin");
 
@@ -292,6 +289,8 @@ int main(int argc, char* argv[])
 
 	video->start();
 	
+	viewer.realize();
+
     while (!viewer.done()) 
 	{
 		viewer.sync();	
