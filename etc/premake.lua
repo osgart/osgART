@@ -196,6 +196,28 @@ end
 
 
 --
+-- Plugin ARToolKit Plus
+--
+package = createTrackerPlugin("ARToolKit Plus","artoolkitplus")
+
+table.insert(package.includepaths,"$(ARTOOLKIT_PLUS_ROOT)/include")
+
+package.files = {
+  matchfiles("../../src/osgART/Tracker/ARToolKitPlus/*")
+}
+
+-- windows specific
+if (OS == "windows") then
+
+	table.insert(package.libpaths,"$(ARTOOLKIT_PLUS_ROOT)/lib/win32")
+
+	table.insert(package.links,"ARToolKitPlus")
+	table.insert(package.links,"OpenGL32")
+	table.insert(package.links,"GLU32")
+end
+
+
+--
 -- Plugin ARToolKit 4 NFT Tracker
 --
 package = createTrackerPlugin("ARToolKit 4 NFT","artoolkit4nft")
@@ -253,6 +275,27 @@ if (OS == "windows") then
 
 	package.files = {
 		matchfiles("../../src/osgART/Video/Intranel/*"),
+	}
+end
+
+
+--
+-- Video Plugin: DSVL
+--
+if (OS == "windows") then
+	package = createVideoPlugin("DSVL","dsvl")
+
+    table.insert(package.includepaths,"$(ARTOOLKIT_2_ROOT)/DSVL/src")
+    table.insert(package.includepaths,"$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses")
+    table.insert(package.libpaths,"$(ARTOOLKIT_2_ROOT)/DSVL/lib")
+	table.insert(package.libpaths,"$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release")
+	
+	table.insert(package.links,"DSVL")
+
+	table.insert(package.links,"OpenThreadsWin32")
+
+	package.files = {
+		matchfiles("../../src/osgART/Video/DSVL/*"),
 	}
 end
 
