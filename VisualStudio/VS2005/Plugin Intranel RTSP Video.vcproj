@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Plugin Intranel RTSP Video"
-	ProjectGUID="{79C5D900-A665-1545-BDE3-8B8C0119F6E2}"
+	ProjectGUID="{64575FF1-EF20-8A41-AD35-E248AE71832A}"
 	RootNamespace="Plugin Intranel RTSP Video"
 	Keyword="Win32Proj"
 	>

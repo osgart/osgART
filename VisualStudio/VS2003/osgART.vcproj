@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="osgART"
-	ProjectGUID="{9F0C5F74-4854-4945-AB38-9C40E6B8B613}"
+	ProjectGUID="{B3FEBFD4-8969-4749-8AD2-2FA5CC16C7A0}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform

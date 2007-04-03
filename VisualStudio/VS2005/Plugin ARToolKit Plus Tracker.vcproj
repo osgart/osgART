@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Plugin ARToolKit Tracker"
-	ProjectGUID="{B8BF9A3F-09FC-CC4B-A311-9E13D3B5911A}"
-	RootNamespace="Plugin ARToolKit Tracker"
+	Name="Plugin ARToolKit Plus Tracker"
+	ProjectGUID="{8DE6DD13-D7DB-984F-B647-CE5695197010}"
+	RootNamespace="Plugin ARToolKit Plus Tracker"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_tracker_artoolkit/Debug"
+			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/Debug"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -57,21 +57,21 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
-				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
+				AdditionalDependencies="osg.lib ../../etc/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
+				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkitplus.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../etc/osgart_tracker_artoolkitplus.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -102,7 +102,7 @@
 		<Configuration
 			Name="ReleaseWithSymbols|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_tracker_artoolkit/ReleaseWithSymbols"
+			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/ReleaseWithSymbols"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -124,7 +124,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -141,21 +141,21 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
-				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
+				AdditionalDependencies="osg.lib ../../etc/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
+				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkitplus.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../etc/osgart_tracker_artoolkitplus.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -186,7 +186,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_tracker_artoolkit/Release"
+			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/Release"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -208,7 +208,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -224,22 +224,22 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
-				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
+				AdditionalDependencies="osg.lib ../../etc/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
+				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../etc/osgart_tracker_artoolkitplus.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -284,29 +284,14 @@
 					Filter=""
 					>
 					<Filter
-						Name="ARToolKit"
+						Name="ARToolKitPlus"
 						Filter=""
 						>
 						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker">
+							RelativePath="..\..\src\osgART\Tracker\ARToolKitPlus\ARToolKitPlusTracker">
 						</File>
 						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\ARToolKitTracker.cpp">
-						</File>
-						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\Main.cpp">
-						</File>
-						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker">
-						</File>
-						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\MultiMarker.cpp">
-						</File>
-						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker">
-						</File>
-						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKit\SingleMarker.cpp">
+							RelativePath="..\..\src\osgART\Tracker\ARToolKitPlus\ARToolKitPlusTracker.cpp">
 						</File>
 					</Filter>
 				</Filter>

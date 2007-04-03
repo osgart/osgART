@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="Plugin PointGrey Video"
-	ProjectGUID="{C6B07C8A-837D-3B47-971A-0FABDDD2D96D}"
+	Name="Plugin DSVL Video"
+	ProjectGUID="{EBA07C6E-562D-D744-933F-71EC39AC2ADC}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -13,13 +13,13 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_video_ptgrey/Debug"
+			IntermediateDirectory="obj/osgart_video_dsvl/Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
+				AdditionalDependencies="osg.lib ../../etc/osgART.lib DSVL.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_ptgrey.lib"
+				ImportLibrary="../../etc/osgart_video_dsvl.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -54,7 +54,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"/>
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -69,13 +69,13 @@
 		<Configuration
 			Name="ReleaseWithSymbols|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_video_ptgrey/ReleaseWithSymbols"
+			IntermediateDirectory="obj/osgart_video_dsvl/ReleaseWithSymbols"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -90,14 +90,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
+				AdditionalDependencies="osg.lib ../../etc/osgART.lib DSVL.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_ptgrey.lib"
+				ImportLibrary="../../etc/osgart_video_dsvl.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -110,7 +110,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"/>
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -125,13 +125,13 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_video_ptgrey/Release"
+			IntermediateDirectory="obj/osgart_video_dsvl/Release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -145,15 +145,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
+				AdditionalDependencies="osg.lib ../../etc/osgART.lib DSVL.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_video_ptgrey.lib"
+				ImportLibrary="../../etc/osgart_video_dsvl.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -166,7 +166,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"/>
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -192,16 +192,16 @@
 					Name="Video"
 					Filter="">
 					<Filter
-						Name="PtGrey"
+						Name="DSVL"
 						Filter="">
 						<File
-							RelativePath="..\..\src\osgART\Video\PtGrey\Main.cpp">
+							RelativePath="..\..\src\osgART\Video\DSVL\DSVLVideo">
 						</File>
 						<File
-							RelativePath="..\..\src\osgART\Video\PtGrey\PtGreyVideo">
+							RelativePath="..\..\src\osgART\Video\DSVL\DSVLVideo.cpp">
 						</File>
 						<File
-							RelativePath="..\..\src\osgART\Video\PtGrey\PtGreyVideo.cpp">
+							RelativePath="..\..\src\osgART\Video\DSVL\Main.cpp">
 						</File>
 					</Filter>
 				</Filter>

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Plugin ARToolKit 4 Professional Tracker"
-	ProjectGUID="{4A5800B0-18D3-7F48-A3AB-EA842AA43B73}"
+	ProjectGUID="{B7407027-3CA1-A441-8503-469D81B56EE8}"
 	RootNamespace="Plugin ARToolKit 4 Professional Tracker"
 	Keyword="Win32Proj"
 	>
