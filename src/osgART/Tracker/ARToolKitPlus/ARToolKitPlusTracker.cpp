@@ -69,7 +69,7 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 		//version and name of the tracker
 		m_name		= "ARToolkitPlus";
 		m_version	= "2.1";
-		__AR_DO_PROFILE(m_version+="(Prf)");
+//		__AR_DO_PROFILE(m_version+="(Prf)");
 
 #if	AR_TRACKER_PROFILE
 		{
@@ -351,10 +351,6 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	{	return m_undistortMode;	}
 	
 
-	//?? 
-	unsigned char* ARToolKitTracker_Plus::getDebugImage()
-	{ 		return m_imageptr; 	}
-
 	//debug mode
 	void ARToolKitTracker_Plus::setDebugMode(const bool &d) 
 	{ 	m_debugMode = d;}
@@ -362,16 +358,6 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	bool ARToolKitTracker_Plus::getDebugMode()const  
 	{ 	return m_debugMode;}
 	 
-	void ARToolKitTracker_Plus::setImageRaw(unsigned char * image, PixelFormatType format)
-    {//We are only augmenting method in parent class.
-		if (format != m_imageptr_format)
-		{
-			if (m_PlusTracker)
-				m_PlusTracker->setPixelFormat((ARToolKitPlus::PIXEL_FORMAT) ConvertOSGARTPixelFormatToART(format));
-		}
-		
-		GenericTracker::setImageRaw(image, format);
-    }
 	 
 	void ARToolKitTracker_Plus::setProjection(const double n, const double f)
 	{
@@ -409,9 +395,9 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		for (int i=0;i<16; i++)
 			m_projectionMatrix[i] = projectionMatrix_fl[i];
 
-		if (m_debugMode)
-			PrintMatrix("SetProjectionMatrix() before conversion", osg::Matrix(m_projectionMatrix));
-		
+		//if (m_debugMode)
+		//	 PrintMatrix("SetProjectionMatrix() before conversion", osg::Matrix(m_projectionMatrix));
+		//
 
 		//convert matrix from left hand to right hand
 		//see arglCameraFrustumRH for details
@@ -421,8 +407,8 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		m_projectionMatrix[2 + 2 *4] *= -1; //	q[2][3] = -2.0 * focalmax * focalmin / (focalmax - focalmin);
 		m_projectionMatrix[3 + 2 *4] *= -1; //	q[3][2] = 1.0;
 
-		if (m_debugMode)
-			PrintMatrix("SetProjectionMatrix() aftet right hand conversion", osg::Matrix(m_projectionMatrix));
+		//if (m_debugMode)
+		//	 PrintMatrix("SetProjectionMatrix() aftet right hand conversion", osg::Matrix(m_projectionMatrix));
 	}
 
 
@@ -640,8 +626,29 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		static CL_FUNCT_TRC<CL_TimerVal>	*ThisFct			= this->LocalARTimeTracer->AddFunct	("arDetectMarker_TIME");		
 #endif
 		
-	if (m_imageptr== NULL)
-		return;
+		if (!m_imagesource.valid())
+		{
+			osg::notify(osg::WARN) << "No connected image source for the tracker" << std::endl;
+			return;
+		}
+
+		// Do not update with a null image.
+		if (!m_imagesource->valid())
+		{
+			osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image"
+				<< std::endl;
+			return;
+		}
+
+		// hse25: performance measurement: only update if the image was modified
+		if (m_imagesource->getModifiedCount() == m_lastModifiedCount)
+		{
+			return; 
+		}
+		
+		// update internal modified count
+		m_lastModifiedCount = m_imagesource->getModifiedCount();
+
 
 	ARToolKitPlus::ARMarkerInfo    *marker_info;
 	float confidence = 0.0f;  
@@ -650,14 +657,14 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	//
 #if AR_TRACKER_PROFILE
 	AR_BENCH_TIME(ThisFct, 
-		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imageptr), m_threshold, &marker_info, &m_marker_num) < 0)
+		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imagesource->data()), m_threshold, &marker_info, &m_marker_num) < 0)
 		{
 			return;
 		}
 	, 1, //pattern in memory
 	 getLabel(), m_marker_num);
 #else 
-		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imageptr), m_threshold, &marker_info, &m_marker_num) < 0)
+		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imagesource->data()), m_threshold, &marker_info, &m_marker_num) < 0)
 		{
 			return;
 		}
@@ -691,12 +698,12 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				if(k != -1) 
 				{					
 					singleMarker->update(&marker_info[k]);
-					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, true));
+					//__AR_DO_PROFILE(RecordMarkerStats(singleMarker, true));
 				} 
 				else 
 				{
 					singleMarker->update(NULL);
-					__AR_DO_PROFILE(RecordMarkerStats(singleMarker, false));
+					//__AR_DO_PROFILE(RecordMarkerStats(singleMarker, false));
 				}
 
 				confidence = marker_info[k].cf;

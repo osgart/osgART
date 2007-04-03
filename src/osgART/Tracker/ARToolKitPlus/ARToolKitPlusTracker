@@ -29,10 +29,10 @@
 #include <string>
 #include <vector>
 
-#include "Definition"
+// #include "Definition"
 
 //#if AR_TRACKER_PROFILE
-	#include <ARToolKitTrackerProfiler>
+//	#include <ARToolKitTrackerProfiler>
 //#endif
 
 #include <ARToolkitplus/ar.h>
