@@ -36,6 +36,13 @@
 #  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
 #endif
 
+
+// check for newer ARToolKit version
+#ifndef AR_HAVE_HEADER_VERSION_2_72
+#error ARToolKit v2.72 or later is required to build the OSGART ARToolKit tracker.
+#endif
+
+
 namespace osgART {
 
 	ARToolKitVideo::ARToolKitVideo() : GenericVideo(),
