@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="osgART"
-	ProjectGUID="{0D957D67-A55B-6844-A4A4-5E77217A3363}"
+	ProjectGUID="{9F0C5F74-4854-4945-AB38-9C40E6B8B613}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -296,16 +296,10 @@
 					RelativePath="..\..\include\osgART\Utils">
 				</File>
 				<File
-					RelativePath="..\..\include\osgART\VideoBackground">
-				</File>
-				<File
 					RelativePath="..\..\include\osgART\VideoBillboard">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoConfig">
-				</File>
-				<File
-					RelativePath="..\..\include\osgART\VideoForeground">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\VideoImageStream">
