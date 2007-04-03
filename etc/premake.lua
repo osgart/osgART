@@ -157,6 +157,10 @@ package.files = {
 --
 package = createTrackerPlugin("ARToolKit","artoolkit")
 
+
+table.insert(package.includepaths,"$(ARTOOLKIT_2_ROOT)/include")
+table.insert(package.libpaths,"$(ARTOOLKIT_2_ROOT)/lib")
+
 package.files = {
   matchfiles("../../src/osgART/Tracker/ARToolKit/*")
 }
@@ -260,6 +264,9 @@ package = createVideoPlugin("ARToolKit","artoolkit")
 if (OS == "windows") then
 	table.insert(package.links,"libARvideo")
 end
+
+table.insert(package.includepaths,"$(ARTOOLKIT_2_ROOT)/include")
+table.insert(package.libpaths,"$(ARTOOLKIT_2_ROOT)/lib")
 
 
 package.files = {
