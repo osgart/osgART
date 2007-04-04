@@ -32,15 +32,15 @@ public:
 
 	void addARNode(osg::ref_ptr<ARNode> arnode, int binNum, bool addToSceneGraph = true);
 
-	virtual osg::ref_ptr<ARNode> addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum = 20);
+	virtual osg::ref_ptr<ARNode> addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum = 20,  bool addToSceneGraph = true);
 	
 	void addToBackgroundGroup(osg::Node *aNode);
 	void addToBackgroundTextureGroup(osg::Node *aNode, bool isARNode);
 	
 
 	// choose to use only one!
-	osg::ref_ptr<osgART::VideoBackground> initDefaultVideoBackground(int id);
-	osg::ref_ptr<osg::Texture> initTextureVideoBackground(int id, int colNum = 1, int rowNum = 1, bool addDummyLayer = true, bool _useFloatTexture = false, GLuint _texInternalFormat = GL_RGBA32F_ARB );
+	osg::ref_ptr<osgART::VideoBackground> initDefaultVideoBackground(osgART::GenericVideo*, bool addToSceneGraph = true);
+	osg::ref_ptr<osg::Texture> initTextureVideoBackground(osgART::GenericVideo*, int colNum = 1, int rowNum = 1, bool addDummyLayer = true, bool _useFloatTexture = false, GLuint _texInternalFormat = GL_RGBA32F_ARB );
 
 	void initDefaultForeground();
 	osg::ref_ptr<osg::Texture> initTextureForeground(int colNum = 1, int rowNum = 1 , bool addDummyLayer = true);
@@ -80,7 +80,7 @@ public:
 	
 protected:
 
-	osg::ref_ptr<osgART::VideoBackground> makeVideoBackground(int id);
+	osg::ref_ptr<osgART::VideoBackground> makeVideoBackground(osgART::GenericVideo*);
 
 	osg::ref_ptr<FBOManager> fboManager;
 	vector< osg::ref_ptr<ARNode> > arNodes;

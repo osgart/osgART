@@ -34,6 +34,7 @@
 #include "ARScene.h"
 #include "ARNode.h"
 #include "DummyBackgroundPlane.h"
+#include "SimpleAnimatorCallback.h"
 
 #define AR_VIDEO_WIN32_DIRECTSHOW_2_71
 
@@ -125,27 +126,73 @@ osg::Node* build_quad(osg::Texture *tex)
     return geode;
 }
 
-osg::Node* addLightAt(osg::StateSet* rootStateSet, osg::Vec3 pos)
+osg::ref_ptr<osg::Texture2D> loadTexture( const std::string filename )
 {
-    osg::Group* lightGroup = new osg::Group;
-   
+    osg::ref_ptr<osgDB::ReaderWriter::Options> options;
+
+	osg::ref_ptr<osg::Image> image = osgDB::readImageFile( filename, options.get() );
+	osg::ref_ptr<osg::Texture2D> texture = new osg::Texture2D;
+	texture->setImage(image.get());
+	
+    texture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::NEAREST);
+    texture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::NEAREST);
+
+    return texture;
+}
+
+//osg::Node* addLightAt(osg::StateSet* rootStateSet, osg::Vec3 pos)
+//{
+//    osg::Group* lightGroup = new osg::Group;
+//   
+//    // create a directional light (infinite distance place at 45 degrees)
+//    osg::Light* myLight = new osg::Light;
+//    myLight->setLightNum(1);
+//	myLight->setPosition(osg::Vec4(pos,1));
+//    myLight->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,1.0f));
+//    myLight->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+//    myLight->setConstantAttenuation(1.0f);
+//
+//    osg::LightSource* lightS = new osg::LightSource;	
+//    lightS->setLight(myLight);
+//    lightS->setLocalStateSetModes(osg::StateAttribute::ON); 
+//
+//    lightS->setStateSetModes(*rootStateSet,osg::StateAttribute::ON);
+// 
+//    lightGroup->addChild(lightS);
+//
+//    return lightGroup;
+//}
+
+osg::MatrixTransform* addLightAt(osg::StateSet* rootStateSet, osg::Vec3 pos)
+{
+	rootStateSet->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
+    //osg::Group* lightGroup = new osg::Group;
+    osg::MatrixTransform* lightTransform = new osg::MatrixTransform;
+
     // create a directional light (infinite distance place at 45 degrees)
     osg::Light* myLight = new osg::Light;
     myLight->setLightNum(1);
 	myLight->setPosition(osg::Vec4(pos,1));
-    myLight->setAmbient(osg::Vec4(0.5f,0.5f,0.5f,1.0f));
-    myLight->setDiffuse(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+	myLight->setAmbient(osg::Vec4(0.2f, 0.2f, 0.2f, 1.0f));
+	myLight->setDiffuse(osg::Vec4(0.8f, 0.7f, 0.7f, 1.0f));
+	myLight->setSpecular(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
     myLight->setConstantAttenuation(1.0f);
+
+
+	osg::Vec3f lightDir = myLight->getDirection();
+	//myLight->setDirection( osg::Vec3f(0,0,-1) );
+	std::cout << lightDir[0] << " " << lightDir[1] << " " << lightDir[2] << std::endl;
 
     osg::LightSource* lightS = new osg::LightSource;	
     lightS->setLight(myLight);
     lightS->setLocalStateSetModes(osg::StateAttribute::ON); 
-
     lightS->setStateSetModes(*rootStateSet,osg::StateAttribute::ON);
  
-    lightGroup->addChild(lightS);
+	rootStateSet->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
 
-    return lightGroup;
+    lightTransform->addChild(lightS);
+
+    return lightTransform;
 }
 
 int main(int argc, char* argv[]) {
@@ -166,7 +213,7 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
@@ -201,9 +248,9 @@ int main(int argc, char* argv[]) {
 	//// 1. Add sobel filter to the video background
 	//// 2. Add toon shader to the truck
 
-	////load default video <osgART::VideoBackground> 
+	//load default video <osgART::VideoBackground> 
 	//osg::ref_ptr<osgART::VideoBackground> videoBackground =
-	//	arScene->initDefaultVideoBackground( video->getId() );
+	//	arScene->initDefaultVideoBackground( video.get() );
 	//arScene->initDefaultForeground();
 
 	//int videoBGWidth = video->getWidth();
@@ -234,7 +281,7 @@ int main(int argc, char* argv[]) {
 	//// put the model to marker
 	//osg::ref_ptr<ARNode> hiroMarkerWithTruck =		
 	//	arScene->addNewARNodeWith( truckModel );
-	////////////////////////////////////////////////////////////////// example 01 end here 
+	//////////////////////////////////////////////////////////////////// example 01 end here 
 	
 
 		
@@ -289,69 +336,122 @@ int main(int argc, char* argv[]) {
 	// 5. Apply Sobel filter on the blurred image from 1st pass ( 2nd pass )
 	// 6. Add the final image to the background group
 
-	// 1. Init background as a texture and no dummy geometry this time!
-	osg::ref_ptr<osg::Texture> bgTexture = arScene->initTextureVideoBackground( video->getId(), false);
+//	// 1. Init background as a texture and no dummy geometry this time!
+//	osg::ref_ptr<osg::Texture> bgTexture = arScene->initTextureVideoBackground( video.get(), false);
+//	int videoBGWidth = video->getWidth();
+//	int videoBGHeight = video->getHeight();
+//
+//	
+//	osg::ref_ptr<osg::Node> truckModel = addARTModel("dumptruck.osg", 100, 0,0,10);
+//	lightPos = osg::Vec3f(0.0,0.0,100);
+//	//addLightAt( truckModel->getOrCreateStateSet(), lightPos);
+//	osg::MatrixTransform* lightSubGraph = addLightAt( truckModel->getOrCreateStateSet(), lightPos);
+//	lightSubGraph->addChild(truckModel.get());
+//
+//	// 2. Add cartoon shader
+///*	sf.addVertexAndFragmentShaderFromFile("./data/shader/CartoonShader.vert",
+//	                                      "./data/shader/CartoonShader.frag", 
+//									      truckModel.get());
+//	lightPos.normalize();
+//	truckModel.get()->getOrCreateStateSet()->addUniform(new osg::Uniform("lightDir", lightPos));*/ 
+//	
+//	// 3. Add truck to background texture group ( not the video background )
+//	// note. we have to make a ARNode because of markerTrans
+//	osg::ref_ptr<ARNode> arNode = new ARNode();
+//	arNode->init(0, tracker.get()); // 0 marker!
+//	arNode->addModel(lightSubGraph);
+//
+//	arScene->addToBackgroundTextureGroup( arNode.get(), true );	
+//	osg::ref_ptr<osg::Group> backgroundTextureGroup = arScene->getBackgroundTextureGroup();
+//
+//	// 4. Blur the background texture group ( 1st pass )
+//	// To do it, we have to render them to a texture
+//	osg::ref_ptr<DummyImageLayer> dummyLayer01 = new DummyImageLayer;
+//	dummyLayer01->init(videoBGWidth, videoBGHeight);
+//	dummyLayer01->setTexture( arScene->getBackgroundTexture() );
+//
+//	sf.addFragmentShaderFromFile("./data/shader/GaussianBlur.frag", dummyLayer01.get());
+//	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+//	dummyLayer01->getOrCreateStateSet()->addUniform(
+//		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight))); 
+//
+//	fboManager = new FBOManager();
+//	fboManager->init(videoBGWidth, videoBGHeight, arScene.get());
+//	fboManager->attachTarget( dummyLayer01.get(), 900);
+//	osg::ref_ptr<osg::Texture> blurredTexture = fboManager->getTexture(0);
+//
+//	// 5. Apply Sobel filter on the blurred image from 1st pass ( 2nd pass )
+//	osg::ref_ptr<DummyImageLayer> dummyLayer02 = new DummyImageLayer;
+//	dummyLayer02->init(videoBGWidth, videoBGHeight);
+//	dummyLayer02->setTexture( blurredTexture.get() );
+//
+//	sf.addFragmentShaderFromFile("./data/shader/SimpleSobelFilter.frag", dummyLayer02.get());
+//	dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
+//	dummyLayer02->getOrCreateStateSet()->addUniform(
+//		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight))); 
+//	dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("threshold", 0.25f)); 
+//	dummyLayer02->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
+//
+//	// 6. Add the final image to the background group
+//	arScene->addToBackgroundGroup(dummyLayer02.get());
+//
+//	// put the model to marker
+//	arScene->addARNode( arNode, 1100, false ); // just add to ARScene but not to scene graph
+
+
+	///////////////////////test /////////////////////////////////////////
+	//osg::ref_ptr<osgART::VideoBackground> videoBackground =
+	//	arScene->initDefaultVideoBackground( video.get(), false );
+	//osg::ref_ptr<osg::Texture> bgTexture = videoBackground->getTexture();
+
+	osg::ref_ptr<osg::Texture> bgTexture = arScene->initTextureVideoBackground(video.get(), false );
+	arScene->initDefaultForeground();
+
+	DummyBackgroundPlane *dummyBGPlane = new DummyBackgroundPlane();
+
+	int w = video->getWidth();
+	int h = video->getHeight();
+
+	dummyBGPlane->init( w, h, w/5, h/5, 45);
+	dummyBGPlane->setTexture( bgTexture);
+
+	//osg::ref_ptr<osg::Texture2D> screenBasedWeight = loadTexture("./data/image/BlurWeight.bmp");
+	//dummyBGPlane->setTexture( screenBasedWeight.get());
+
+	sf.addVertexAndFragmentShaderFromFile( "./Data/shader/Rippling.vert", "./Data/shader/Rippling.frag", dummyBGPlane );
+	dummyBGPlane->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+
+	RipplingValueAnimationCallback *rvacb = new RipplingValueAnimationCallback();
+	rvacb->init( 0.01, true );
+	rvacb->linkTo( dummyBGPlane );
+	rvacb->setAnimationOn( true );
+
+
+	arScene->addToBackgroundGroup( 	dummyBGPlane );
+	
+	arScene->initDefaultForeground();
+
 	int videoBGWidth = video->getWidth();
 	int videoBGHeight = video->getHeight();
 
 	
+	// load truck model
 	osg::ref_ptr<osg::Node> truckModel = addARTModel("dumptruck.osg", 100, 0,0,0);
-	lightPos = osg::Vec3f(1.0,-1.0,-1.0);
-	addLightAt( truckModel->getOrCreateStateSet(), lightPos);
-	// 2. Add cartoon shader
-/*	sf.addVertexAndFragmentShaderFromFile("./data/shader/CartoonShader.vert",
-	                                      "./data/shader/CartoonShader.frag", 
-									      truckModel.get());
-	lightPos.normalize();
-	truckModel.get()->getOrCreateStateSet()->addUniform(new osg::Uniform("lightDir", lightPos));*/ 
+
+	// and add light to it
+	lightPos = osg::Vec3f(500.0,500.0, 500.0);
+
+	osg::MatrixTransform* lightSubGraph = addLightAt( truckModel->getOrCreateStateSet(), lightPos);
+	lightSubGraph->addChild(truckModel.get());
 	
-	// 3. Add truck to background texture group ( not the video background )
-	// note. we have to make a ARNode because of markerTrans
-	osg::ref_ptr<ARNode> arNode = new ARNode();
-	arNode->init(0); // 0 marker!
-	arNode->addModel(truckModel.get());
-
-	arScene->addToBackgroundTextureGroup( arNode.get(), true );	
-	osg::ref_ptr<osg::Group> backgroundTextureGroup = arScene->getBackgroundTextureGroup();
-
-	// 4. Blur the background texture group ( 1st pass )
-	// To do it, we have to render them to a texture
-	osg::ref_ptr<DummyImageLayer> dummyLayer01 = new DummyImageLayer;
-	dummyLayer01->init(videoBGWidth, videoBGHeight);
-	dummyLayer01->setTexture( arScene->getBackgroundTexture() );
-
-	sf.addFragmentShaderFromFile("./data/shader/GaussianBlur.frag", dummyLayer01.get());
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(
-		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight))); 
-
-	fboManager = new FBOManager();
-	fboManager->init(videoBGWidth, videoBGHeight, arScene.get());
-	fboManager->attachTarget( dummyLayer01.get(), 900);
-	osg::ref_ptr<osg::Texture> blurredTexture = fboManager->getTexture(0);
-
-	// 5. Apply Sobel filter on the blurred image from 1st pass ( 2nd pass )
-	osg::ref_ptr<DummyImageLayer> dummyLayer02 = new DummyImageLayer;
-	dummyLayer02->init(videoBGWidth, videoBGHeight);
-	dummyLayer02->setTexture( blurredTexture.get() );
-
-	sf.addFragmentShaderFromFile("./data/shader/SimpleSobelFilter.frag", dummyLayer02.get());
-	dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
-	dummyLayer02->getOrCreateStateSet()->addUniform(
-		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight))); 
-	dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("threshold", 0.25f)); 
-	dummyLayer02->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
-
-	// 6. Add the final image to the background group
-	arScene->addToBackgroundGroup(dummyLayer02.get());
 
 	// put the model to marker
-	arScene->addARNode( arNode, 1100, false ); // just add to ARScene but not to scene graph
-
+	osg::ref_ptr<ARNode> hiroMarkerWithTruck =		
+		arScene->addNewARNodeWith( lightSubGraph );
+	
+	///////////////////////////////////////////////////////////////////
 	viewer.setSceneData(arScene.get());
-	
 	viewer.realize();
-	
 	video->start();
 	
     while (!viewer.done()) {

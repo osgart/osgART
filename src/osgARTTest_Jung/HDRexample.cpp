@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit", cfg);
+	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
 
 	/* check if loading the plugin was successful */
 	if (!video.valid()) {
@@ -257,7 +257,7 @@ int main(int argc, char* argv[]) {
 	int videoBGWidth = video->getWidth();
 	int videoBGHeight = video->getHeight();
 
-	osg::ref_ptr<osg::Texture> backgroundTexture = arScene->initTextureVideoBackground( video->getId(), videoBGWidth/10, videoBGHeight/10, true, true, GL_RGBA16F_ARB);
+	osg::ref_ptr<osg::Texture> backgroundTexture = arScene->initTextureVideoBackground( video.get(), videoBGWidth/10, videoBGHeight/10, true, true, GL_RGBA16F_ARB);
 	osg::ref_ptr<osg::Texture> foregroundTexture = arScene->initTextureForeground(videoBGWidth/10, videoBGHeight/10, true);
 
 	

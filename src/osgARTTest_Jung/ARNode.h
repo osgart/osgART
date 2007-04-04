@@ -17,14 +17,52 @@ public:
 	ARNode();
 	virtual ~ARNode();
 
-	void init(int markerID, int trackerID = 0);
+	void init(int markerID, osgART::GenericTracker* tracker);
 	void addModel(osg::ref_ptr<osg::Node> model);
 
 	osg::ref_ptr<osgART::ARTTransform> getMarkerTrans();
+
+	void setImportanceVal(float v)
+	{	
+		importanceVal = v;
+	};
+	
+	float getImportanceVal()
+	{
+		return importanceVal;
+	};
+
+	void setImportanceValUnit(float v)
+	{	
+		importanceValUnit = v;
+	};
+	
+	float getImportanceValUnit()
+	{
+		return importanceValUnit;
+	};
+	
+	void increaseImportanceVal()
+	{
+		importanceVal = importanceVal + importanceValUnit;
+
+		if (importanceVal > 1 )
+			importanceVal = 1.0;
+	};
+	
+	void decreaseImportanceVal()
+	{
+		float temp = importanceVal - importanceValUnit;
+		if ( temp > 0 )
+			importanceVal = temp;
+	};
+
 private:
 
 	osg::ref_ptr<osgART::ARTTransform> markerTrans;
 
+	float importanceVal;
+	float importanceValUnit;
 };
 
 #endif

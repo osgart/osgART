@@ -265,6 +265,7 @@ osg::setNotifyLevel(osg::ALWAYS);
 	// Shadow Renderer !!!
 	osg::ref_ptr<osgART::BaseShadowRenderer> renderer = 
 		new osgART::BaseShadowRenderer(shadowedSubGraph.get(),lightSubGraph, tracker, 0, videoWidth, videoHeight);
+		//new osgART::BaseShadowRenderer(shadowedSubGraph.get(),lightSubGraph, tracker, 0, videoWidth, videoHeight);
 	renderer->init();
 	
 
@@ -297,7 +298,7 @@ osg::setNotifyLevel(osg::ALWAYS);
 
 	// Add phatoms geometries to the shadow renderer
 	renderer->addPhantomNode( trans.get() );
-	renderer->addPhantomNode( cylinderNode.get() );
+	//renderer->addPhantomNode( cylinderNode.get() );
 	markerTrans->addChild(renderer.get());
 
 	osg::MatrixTransform* modelViewMatrix = new osg::MatrixTransform();

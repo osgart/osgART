@@ -41,22 +41,22 @@ void ARScene::addARNode(osg::ref_ptr<ARNode> arNode, int binNum,  bool addToScen
 		foregroundGroup->addChild( arNode.get() );	
 }
 	
-osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum)
+osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum, bool addToSceneGraph)
 {
 	osg::ref_ptr<ARNode> arNode = new ARNode;
 	int lastIndex = (int)arNodes.size();
 
-	arNode->init(lastIndex, trackerID);
+	arNode->init(lastIndex,  osgART::TrackerManager::getInstance()->getTracker(trackerID));
 	arNode->addModel(node);
 	
-	addARNode( arNode, binNum );
+	addARNode( arNode, binNum, addToSceneGraph  );
 	return arNode;
 }
 
-osg::ref_ptr<osgART::VideoBackground> ARScene::makeVideoBackground(int id)
+osg::ref_ptr<osgART::VideoBackground> ARScene::makeVideoBackground(osgART::GenericVideo* video)
 {
 		
-	osg::ref_ptr<osgART::VideoBackground> videoBackground = new osgART::VideoBackground(id);
+	osg::ref_ptr<osgART::VideoBackground> videoBackground = new osgART::VideoBackground(video);
 	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
 	videoBackground->init();
 
@@ -68,17 +68,19 @@ osg::ref_ptr<osgART::VideoBackground> ARScene::makeVideoBackground(int id)
 	return videoBackground;
 }
 
-osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(int id)
+osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(osgART::GenericVideo* video, bool addToSceneGraph )
 {
-	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(id);
-	sceneGroup->addChild(videoBackground.get());
+	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(video);
+
+	if ( addToSceneGraph )
+		sceneGroup->addChild(videoBackground.get());
 	
 	return videoBackground;
 }
 
-osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(int id, int colNum , int rowNum, bool addDummyLayer, bool _useFloatTexture, GLuint _texInternalFormat )
+osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(osgART::GenericVideo* video, int colNum , int rowNum, bool addDummyLayer, bool _useFloatTexture, GLuint _texInternalFormat )
 {
-	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(id);
+	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(video);
 	backgroundGroup->addChild(videoBackground.get());
 
 	fboManager->init(bgWidth, bgHeight, this, _useFloatTexture, _texInternalFormat);

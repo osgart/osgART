@@ -97,8 +97,8 @@ osg::ref_ptr<osg::Texture> FBOManager::createRenderTexture2D(int w, int h)
 
 	tex->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::LINEAR);
 	tex->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::LINEAR); 
-	//tex->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::NEAREST);
-	//tex->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::NEAREST_MIPMAP_NEAREST);
+	//tex->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::NEAREST_MIPMAP_LINEAR);
+	//tex->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::NEAREST_MIPMAP_LINEAR);
 
 	tex->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
     tex->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);

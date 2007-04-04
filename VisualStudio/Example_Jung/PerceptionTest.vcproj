@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="Test"
-	ProjectGUID="{4C11E43B-FFFD-49E3-B910-EDE511522BE7}"
+	Name="PerceptionTest"
+	ProjectGUID="{C56DD942-F1E7-4376-833F-11D1E7620725}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -19,7 +19,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -32,12 +31,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib"
-				OutputFile="../../bin/simpleTestd.exe"
+				OutputFile="$(OutDir)/PerceptionTest.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Test.pdb"
+				ProgramDatabaseFile="$(OutDir)/PerceptionTest.pdb"
 				SubSystem="1"
 				TargetMachine="1"/>
 			<Tool
@@ -81,8 +78,8 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib"
-				OutputFile="../../bin/simpleTest.exe"
+				AdditionalDependencies="osg.lib osgGA.lib OpenThreadsWin32.lib producer.lib osgProducer.lib opengl32.lib osgUtil.lib osgDB.lib osgText.lib glu32.lib osgART.lib"
+				OutputFile="../../bin/PerceptionTest.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="TRUE"
@@ -120,25 +117,40 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath="..\..\src\osgARTTest_Jung\osgARTTest_Jung.cpp">
+				RelativePath="..\..\src\osgARTTest_Jung\ARNode.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ARNodeBoundingAreabillBoard.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ARScene.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\DummyImageLayer.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\FBOManager.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ModelMaskRenderer.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\NodeBoundingAreabillBoard.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\osgARTPerceptionTest.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ShaderFactory.cpp">
 			</File>
 			<Filter
-				Name="Util"
+				Name="ImageUtil"
 				Filter="">
 				<File
-					RelativePath="..\..\src\osgARTTest_Jung\ARNode.cpp">
+					RelativePath="..\..\src\osgARTTest_Jung\HistogramUpdateCallback.cpp">
 				</File>
 				<File
-					RelativePath="..\..\src\osgARTTest_Jung\ARScene.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgARTTest_Jung\DummyImageLayer.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgARTTest_Jung\FBOManager.cpp">
-				</File>
-				<File
-					RelativePath="..\..\src\osgARTTest_Jung\ShaderFactory.cpp">
+					RelativePath="..\..\src\osgARTTest_Jung\RGBMeanStdUpdater.cpp">
 				</File>
 			</Filter>
 		</Filter>
@@ -146,23 +158,38 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ARNode.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ARNodeBoundingAreabillBoard.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ARScene.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\DummyImageLayer.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\FBOManager.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ModelMaskRenderer.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\NodeBoundingAreabillBoard.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ShaderFactory.h">
+			</File>
 			<Filter
-				Name="Util"
+				Name="ImageUtil"
 				Filter="">
 				<File
-					RelativePath="..\..\src\osgARTTest_Jung\ARNode.h">
+					RelativePath="..\..\src\osgARTTest_Jung\HistogramUpdateCallback.h">
 				</File>
 				<File
-					RelativePath="..\..\src\osgARTTest_Jung\ARScene.h">
-				</File>
-				<File
-					RelativePath="..\..\src\osgARTTest_Jung\DummyImageLayer.h">
-				</File>
-				<File
-					RelativePath="..\..\src\osgARTTest_Jung\FBOManager.h">
-				</File>
-				<File
-					RelativePath="..\..\src\osgARTTest_Jung\ShaderFactory.h">
+					RelativePath="..\..\src\osgARTTest_Jung\RGBMeanStdUpdater.h">
 				</File>
 			</Filter>
 		</Filter>
@@ -170,6 +197,34 @@
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<Filter
+			Name="TestItems"
+			Filter="">
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ColorTemperatureEffect.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ColorTemperatureEffect.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\DarkeningEffect.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\DarkeningEffect.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ShaderEffect.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ShaderEffect.h">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ShaderEffectHandler.cpp">
+			</File>
+			<File
+				RelativePath="..\..\src\osgARTTest_Jung\ShaderEffectHandler.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -40,7 +40,7 @@ private:
 
 	osg::ref_ptr<osg::Texture> createRenderTexture2D(int w, int h);
 	osg::ref_ptr<osg::Texture> createRenderTextureRect(int w, int h);
-
+	
 	osg::ref_ptr<osg::CameraNode> createCamera(osg::Texture *tex, int w, int h);
 
 	int numOfattachedTexture;

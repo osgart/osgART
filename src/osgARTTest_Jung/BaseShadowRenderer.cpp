@@ -10,7 +10,7 @@ void osgART::BaseShadowRenderer::init()
 
 	// setup for shadowTextureRef
     shadowTextureRef = new osg::Texture2D;
-	shadowTextureRef->setTextureSize(m_shadowWidth, m_shadowHeight);
+	shadowTextureRef->setTextureSize(2048, 2048);
 
 	shadowTextureRef->setInternalFormat(GL_DEPTH_COMPONENT);
 	shadowTextureRef->setShadowComparison(true);
@@ -27,7 +27,7 @@ void osgART::BaseShadowRenderer::init()
 	camera->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
 	
 	camera->setComputeNearFarMode(osg::CameraNode::DO_NOT_COMPUTE_NEAR_FAR);
-	camera->setViewport(0, 0, m_shadowWidth, m_shadowHeight);
+	camera->setViewport(0, 0, 2048, 2048);
 	camera->setRenderOrder(osg::CameraNode::PRE_RENDER);
 	camera->setRenderTargetImplementation(osg::CameraNode::FRAME_BUFFER_OBJECT);
 	camera->attach(osg::CameraNode::DEPTH_BUFFER, shadowTextureRef);
