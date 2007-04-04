@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Plugin PointGrey Video"
-	ProjectGUID="{E31D960F-36AA-0748-8799-F9AA492498E0}"
+	ProjectGUID="{2534C09C-D746-2E4A-A042-CCFD5D46BCF0}"
 	RootNamespace="Plugin PointGrey Video"
 	Keyword="Win32Proj"
 	>
@@ -64,14 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_ptgrey.lib"
+				ImportLibrary="../../lib/osgart_video_ptgrey.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -148,14 +148,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_ptgrey.lib"
+				ImportLibrary="../../lib/osgart_video_ptgrey.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -231,15 +231,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_video_ptgrey.lib"
+				ImportLibrary="../../lib/osgart_video_ptgrey.lib"
 				TargetMachine="1"
 			/>
 			<Tool

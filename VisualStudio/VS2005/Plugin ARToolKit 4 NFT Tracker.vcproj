@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Plugin ARToolKit 4 NFT Tracker"
-	ProjectGUID="{DCBF7925-71F5-D946-A179-B95A3AE59330}"
+	ProjectGUID="{3A36ADF6-1B7A-2F4E-B7C6-A33382D1E38A}"
 	RootNamespace="Plugin ARToolKit 4 NFT Tracker"
 	Keyword="Win32Proj"
 	>
@@ -64,14 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib AR.lib AR2.lib ARmulti.lib ARgsub.lib ARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib AR.lib AR2.lib ARmulti.lib ARgsub.lib ARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit4nft.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_NFT_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_NFT_ROOT)/lib;$(ARTOOLKIT_4_ROOT)/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit4nft.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit4nft.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit4nft.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -148,14 +148,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib AR.lib AR2.lib ARmulti.lib ARgsub.lib ARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib AR.lib AR2.lib ARmulti.lib ARgsub.lib ARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit4nft.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_NFT_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_NFT_ROOT)/lib;$(ARTOOLKIT_4_ROOT)/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit4nft.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit4nft.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit4nft.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -231,15 +231,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib AR.lib AR2.lib ARmulti.lib ARgsub.lib ARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib AR.lib AR2.lib ARmulti.lib ARgsub.lib ARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit4nft.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_NFT_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_NFT_ROOT)/lib;$(ARTOOLKIT_4_ROOT)/lib"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit4nft.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit4nft.lib"
 				TargetMachine="1"
 			/>
 			<Tool

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin Intranel RTSP Video"
-	ProjectGUID="{DA0FA253-B3FC-984D-A80D-5F0EDE2111B8}"
+	ProjectGUID="{93758E6C-ABE4-1C45-87AA-27FF28509879}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_intranel.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_intranel.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_intranel.lib"
+				ImportLibrary="../../lib/osgart_video_intranel.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -90,14 +90,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_intranel.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_intranel.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_intranel.lib"
+				ImportLibrary="../../lib/osgart_video_intranel.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -145,15 +145,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_intranel.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_video_intranel.lib"
+				ImportLibrary="../../lib/osgart_video_intranel.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>

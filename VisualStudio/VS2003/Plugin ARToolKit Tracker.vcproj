@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin ARToolKit Tracker"
-	ProjectGUID="{3CC64CDC-6106-A143-8B73-7B4E07220840}"
+	ProjectGUID="{7524D634-8485-9645-A60D-9587080E0BA6}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -90,14 +90,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -145,15 +145,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>

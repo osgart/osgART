@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="osgART"
-	ProjectGUID="{B3FEBFD4-8969-4749-8AD2-2FA5CC16C7A0}"
+	ProjectGUID="{9234330F-C7F0-7341-A373-2619D15AF082}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -37,11 +37,11 @@
 				AdditionalDependencies="osg.lib osgDB.lib OpenGL32.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/Debug_osgART.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/Debug_osgART.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/Debug_osgART.lib"
+				ImportLibrary="../../lib/Debug_osgART.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -93,11 +93,11 @@
 				AdditionalDependencies="osg.lib osgDB.lib OpenGL32.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgART.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgART.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgART.lib"
+				ImportLibrary="../../lib/osgART.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -148,12 +148,12 @@
 				AdditionalDependencies="osg.lib osgDB.lib OpenGL32.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgART.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgART.lib"
+				ImportLibrary="../../lib/osgART.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>

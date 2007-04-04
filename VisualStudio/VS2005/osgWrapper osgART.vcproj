@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="osgWrapper osgART"
-	ProjectGUID="{27C8DB02-59FD-2744-9944-9499FFAE7F95}"
+	ProjectGUID="{DEB37C68-7B92-FE4B-BDB4-BF4684704450}"
 	RootNamespace="osgWrapper osgART"
 	Keyword="Win32Proj"
 	>
@@ -64,14 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib osgIntrospection.lib osgDB.lib OpenThreadsWin32.lib OpenGL32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib osgIntrospection.lib osgDB.lib OpenThreadsWin32.lib OpenGL32.lib"
 				OutputFile="$(OutDir)/osgwrapper_osgART.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgwrapper_osgART.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgwrapper_osgART.lib"
+				ImportLibrary="../../lib/osgwrapper_osgART.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -148,14 +148,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib osgIntrospection.lib osgDB.lib OpenThreadsWin32.lib OpenGL32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib osgIntrospection.lib osgDB.lib OpenThreadsWin32.lib OpenGL32.lib"
 				OutputFile="$(OutDir)/osgwrapper_osgART.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgwrapper_osgART.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgwrapper_osgART.lib"
+				ImportLibrary="../../lib/osgwrapper_osgART.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -231,15 +231,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib osgIntrospection.lib osgDB.lib OpenThreadsWin32.lib OpenGL32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib osgIntrospection.lib osgDB.lib OpenThreadsWin32.lib OpenGL32.lib"
 				OutputFile="$(OutDir)/osgwrapper_osgART.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgwrapper_osgART.lib"
+				ImportLibrary="../../lib/osgwrapper_osgART.lib"
 				TargetMachine="1"
 			/>
 			<Tool

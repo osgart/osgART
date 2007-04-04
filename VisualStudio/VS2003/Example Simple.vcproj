@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Example Simple"
-	ProjectGUID="{1FBE4B88-914D-6E4B-8220-DF19943790B0}"
+	ProjectGUID="{5838CC31-CD47-F147-80E7-130DA1208018}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib Producer.lib osgProducer.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib Producer.lib osgProducer.lib"
 				OutputFile="$(OutDir)/osgart_simple.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
@@ -90,7 +90,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib Producer.lib osgProducer.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib Producer.lib osgProducer.lib"
 				OutputFile="$(OutDir)/osgart_simple.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
@@ -145,7 +145,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib Producer.lib osgProducer.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib Producer.lib osgProducer.lib"
 				OutputFile="$(OutDir)/osgart_simple.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Plugin ARToolKit Tracker"
-	ProjectGUID="{B8BF9A3F-09FC-CC4B-A311-9E13D3B5911A}"
+	ProjectGUID="{BC0F863B-F17C-0644-8CBB-C31376FED34B}"
 	RootNamespace="Plugin ARToolKit Tracker"
 	Keyword="Win32Proj"
 	>
@@ -64,14 +64,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -148,14 +148,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkit.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -231,15 +231,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libAR.lib libARmulti.lib libARgsub_lite.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkit.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_tracker_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_tracker_artoolkit.lib"
 				TargetMachine="1"
 			/>
 			<Tool

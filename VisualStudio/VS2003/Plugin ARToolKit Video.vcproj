@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin ARToolKit Video"
-	ProjectGUID="{EAC2AE85-AC98-554B-93DA-CFFC359C9104}"
+	ProjectGUID="{5FB22C51-2324-0D4C-A01A-811D51233E7C}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libARvideo.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libARvideo.lib"
 				OutputFile="$(OutDir)/osgart_video_artoolkit.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_artoolkit.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_video_artoolkit.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -90,14 +90,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libARvideo.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libARvideo.lib"
 				OutputFile="$(OutDir)/osgart_video_artoolkit.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_artoolkit.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_video_artoolkit.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -145,15 +145,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib libARvideo.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib libARvideo.lib"
 				OutputFile="$(OutDir)/osgart_video_artoolkit.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_video_artoolkit.lib"
+				ImportLibrary="../../lib/osgart_video_artoolkit.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>

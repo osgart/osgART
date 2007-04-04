@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin DSVL Video"
-	ProjectGUID="{EBA07C6E-562D-D744-933F-71EC39AC2ADC}"
+	ProjectGUID="{4F7058D8-FB1B-E747-8CBD-0A5D11E0B52C}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib DSVL.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib DSVL.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_dsvl.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -90,14 +90,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib DSVL.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib DSVL.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl.pdb"
 				SubSystem="2"
-				ImportLibrary="../../etc/osgart_video_dsvl.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -145,15 +145,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../etc/osgART.lib DSVL.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib DSVL.lib OpenThreadsWin32.lib"
 				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../etc/osgart_video_dsvl.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
