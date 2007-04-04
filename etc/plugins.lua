@@ -5,6 +5,7 @@ function createVideoPlugin(fullname, shortname)
 
 	package = newpackage()
 	package.path = project.path
+	package.libdir = "../../lib"
 	package.bindir = "../../bin"
 	package.name = "Plugin " .. fullname.. " Video"
 	package.target = "osgart_video_" .. shortname
@@ -41,6 +42,7 @@ function createTrackerPlugin(fullname, shortname)
 
 	package = newpackage()
 	package.bindir = "../../bin"
+	package.libdir = "../../lib"
 	package.path = project.path
 	package.name = "Plugin "..fullname .. " Tracker"
 	package.target = "osgart_tracker_" .. shortname

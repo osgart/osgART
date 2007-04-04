@@ -22,10 +22,12 @@ end
 package = newpackage()
 package.path = project.path
 package.target = "osgART"
+
 package.name = "osgART"
 package.language = "c++"
 package.kind = "dll"
 
+package.libdir = "../../lib"
 package.bindir = "../../bin"
 package.objdir = "obj/" .. package.target
 
@@ -75,6 +77,8 @@ package.name = "osgWrapper osgART"
 package.target = "osgwrapper_osgART"
 package.language = "c++"
 package.kind = "dll"
+
+package.libdir = "../../lib"
 package.bindir = "../../bin"
 package.objdir = "obj/" .. package.target
 
@@ -225,6 +229,7 @@ package = createTrackerPlugin("ARToolKit 4 NFT","artoolkit4nft")
 table.insert(package.includepaths,"$(ARTOOLKIT_4_ROOT)/include")
 table.insert(package.includepaths,"$(ARTOOLKIT_NFT_ROOT)/include")
 table.insert(package.libpaths,"$(ARTOOLKIT_NFT_ROOT)/lib")
+table.insert(package.libpaths,"$(ARTOOLKIT_4_ROOT)/lib")
 
 package.files = {
   matchfiles("../../src/osgART/Tracker/ARToolKit4NFT/*")
