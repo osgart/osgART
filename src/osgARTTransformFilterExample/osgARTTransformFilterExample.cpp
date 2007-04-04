@@ -35,9 +35,7 @@
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
-#include <osgART/VideoBackground>
-#include <osgART/VideoPlane>
-#include <osgART/VideoForeground>
+#include <osgART/VideoLayer>
 #include <osgART/ARSceneNode>
 
 #include <osgART/TransformFilterCallback>
@@ -75,7 +73,7 @@ void toggleFullscreen();
 int main(int argc, char* argv[]) 
 {
 
-	osg::setNotifyLevel(osg::DEBUG_INFO);
+	//osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//osgARTInit(&argc, argv);
 
@@ -94,7 +92,7 @@ int main(int argc, char* argv[])
 
 	// load a video plugin
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
+		osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
 
 	// check if loading the plugin was successful
 	if (!video.valid()) 
@@ -104,67 +102,58 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}
 
-
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
 
-	if (tracker.valid()) 
+	// check if the tracker plugin could be loaded
+	if (!tracker.valid()) 
 	{
-
-		// access a field within the tracker
-		_threshold = 
-			reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
-
-		// values can only be accessed through a get()/set() mechanism
-		if (_threshold.valid()) 
-		{			
-			// set the threshold
-			_threshold->set(100);
-
-			/* check what we actually get */
-			osg::notify() << "Field 'threshold' = " << _threshold->get() << std::endl;
-
-		} else 
-		{
-			osg::notify() << "Field 'threshold' supported for this tracker" << std::endl;
-		}		
-
-	} else 
-	{
-        // this example needs a tracker
-		std::cerr << "Could not initialize tracker plugin!" << std::endl;
-
-		// quit the program
+        // this example needs a tracker. Quit if none found.
+		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
-	}	
-	
-	tracker->init(video->getWidth(), video->getHeight(),MARKER_CONF,CAMERA_PARA);
-
-
+	}
 
 	// flipping the video can be done on the fly or in advance
-	video->setFlip(true,true);
+	video->setFlip(false,true);
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
 	video->open();
 
+	
 	// Connect the video to a tracker
 	if (!root->connect(tracker.get(),video.get())) 
 	{
 		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
 		exit(-1);
 	}
-	
 
-	// Adding video background
+	// access a field within the tracker
+	_threshold = 
+		reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
+
+	// values can only be accessed through a get()/set() mechanism
+	if (_threshold.valid()) 
+	{			
+		// Set the threshold, and read back.
+		_threshold->set(100);
+		osg::notify(osg::WARN) << "Field 'threshold' = " << _threshold->get() << std::endl;
+	} else {
+		osg::notify(osg::WARN) << "Field 'threshold' not supported for this tracker" << std::endl;
+	}
+	
+	// pass on marker and camera configuration
+	tracker->init(video->getWidth(), video->getHeight(),MARKER_CONF,CAMERA_PARA);
+
+
+	// Creating a video background
 	osg::Group* foregroundGroup	= new osg::Group();
 
 	// Creating a video background
 	osg::ref_ptr<osgART::VideoLayer> videoBackground = 
-		new osgART::VideoLayer(video.get() , 0);
+		new osgART::VideoLayer(video.get() , 1);
 
 	//initialize the video background
 	videoBackground->init();
@@ -253,9 +242,7 @@ int main(int argc, char* argv[])
 	modelViewMatrix->addChild(foregroundGroup);
 	projectionMatrix->addChild(modelViewMatrix);
 	
-	root->addChild(projectionMatrix);
 	
-
 	/*Keyboard Event Handler*/
 	keyboardHandler* keyboardhandler = new keyboardHandler();
 
@@ -286,6 +273,7 @@ int main(int argc, char* argv[])
 	/*End Keyboard*/
 
 
+	root->addChild(projectionMatrix);
 
 	video->start();
 	
