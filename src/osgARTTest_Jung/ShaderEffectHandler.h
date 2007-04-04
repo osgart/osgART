@@ -32,7 +32,7 @@ public:
 		effects.at(id)->linkTo( node );
 	};
 	
-	bool turnOnOff();
+	void turnOnOff();
 
 private:
 	vector< osg::ref_ptr<ShaderEffect> > effects;

@@ -78,10 +78,11 @@ void ShaderEffectHandler::update()
 	}
 }
 
-bool ShaderEffectHandler::turnOnOff()
+void ShaderEffectHandler::turnOnOff()
 {
 	if ( index != -1 && index < (int)(effects.size()))
 	{			
 		effects.at(index)->turnOnOff();
+
 	}
 }

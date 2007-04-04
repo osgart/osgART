@@ -11,8 +11,8 @@
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
-#include <osgART/VideoBackground>
-#include <osgART/VideoTextureRectangle>
+#include <osgART/VideoLayer>
+
 
 #include "ARNode.h"
 #include "DummyImageLayer.h"
@@ -39,7 +39,7 @@ public:
 	
 
 	// choose to use only one!
-	osg::ref_ptr<osgART::VideoBackground> initDefaultVideoBackground(osgART::GenericVideo*, bool addToSceneGraph = true);
+	osg::ref_ptr<osgART::VideoLayer> initDefaultVideoBackground(osgART::GenericVideo*, bool addToSceneGraph = true);
 	osg::ref_ptr<osg::Texture> initTextureVideoBackground(osgART::GenericVideo*, int colNum = 1, int rowNum = 1, bool addDummyLayer = true, bool _useFloatTexture = false, GLuint _texInternalFormat = GL_RGBA32F_ARB );
 
 	void initDefaultForeground();
@@ -80,7 +80,7 @@ public:
 	
 protected:
 
-	osg::ref_ptr<osgART::VideoBackground> makeVideoBackground(osgART::GenericVideo*);
+	osg::ref_ptr<osgART::VideoLayer> makeVideoBackground(osgART::GenericVideo*);
 
 	osg::ref_ptr<FBOManager> fboManager;
 	vector< osg::ref_ptr<ARNode> > arNodes;

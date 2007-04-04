@@ -22,7 +22,7 @@
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
-#include <osgART/VideoBackground>
+
 #include <osgART/VideoPlane>
 
 #include <osg/Matrixf>
@@ -301,11 +301,11 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
+		osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
 
 	/* RFC: this how you would get any type in and out through the plugin system */
 	osg::ref_ptr< osgART::TypedField<int> > _field = 
@@ -320,6 +320,7 @@ int main(int argc, char* argv[]) {
 
 	tracker->init(video->getWidth(), video->getHeight());
 
+	tracker->setImageSource(video.get());
 	////////////////////////////////////////////////////////////////////////////////
 	osg::ref_ptr<ARScene> arScene = new ARScene;
 	
@@ -611,8 +612,8 @@ int main(int argc, char* argv[]) {
 		
 		video->update();
 
-		tracker->setImage(video.get());
-		tracker->update();
+		//tracker->setImage(video.get());
+		//tracker->update();
 		
 		//sef->update();
 

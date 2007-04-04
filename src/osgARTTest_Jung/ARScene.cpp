@@ -53,14 +53,12 @@ osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int
 	return arNode;
 }
 
-osg::ref_ptr<osgART::VideoBackground> ARScene::makeVideoBackground(osgART::GenericVideo* video)
+osg::ref_ptr<osgART::VideoLayer> ARScene::makeVideoBackground(osgART::GenericVideo* video)
 {
 		
-	osg::ref_ptr<osgART::VideoBackground> videoBackground = new osgART::VideoBackground(video);
-	videoBackground->setTextureMode(osgART::GenericVideoObject::USE_TEXTURE_RECTANGLE);
+	osg::ref_ptr<osgART::VideoLayer> videoBackground = new osgART::VideoLayer(video);
 	videoBackground->init();
-
-	videoBackground->getOrCreateStateSet()->setRenderBinDetails(5 , "RenderBin");
+	videoBackground->getOrCreateStateSet()->setRenderBinDetails(1 , "RenderBin");
 	
 	bgWidth   = videoBackground->getWidth();
 	bgHeight  = videoBackground->getHeight();
@@ -68,9 +66,9 @@ osg::ref_ptr<osgART::VideoBackground> ARScene::makeVideoBackground(osgART::Gener
 	return videoBackground;
 }
 
-osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(osgART::GenericVideo* video, bool addToSceneGraph )
+osg::ref_ptr<osgART::VideoLayer> ARScene::initDefaultVideoBackground(osgART::GenericVideo* video, bool addToSceneGraph )
 {
-	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(video);
+	osg::ref_ptr<osgART::VideoLayer> videoBackground = makeVideoBackground(video);
 
 	if ( addToSceneGraph )
 		sceneGroup->addChild(videoBackground.get());
@@ -80,7 +78,7 @@ osg::ref_ptr<osgART::VideoBackground> ARScene::initDefaultVideoBackground(osgART
 
 osg::ref_ptr<osg::Texture> ARScene::initTextureVideoBackground(osgART::GenericVideo* video, int colNum , int rowNum, bool addDummyLayer, bool _useFloatTexture, GLuint _texInternalFormat )
 {
-	osg::ref_ptr<osgART::VideoBackground> videoBackground = makeVideoBackground(video);
+	osg::ref_ptr<osgART::VideoLayer> videoBackground = makeVideoBackground(video);
 	backgroundGroup->addChild(videoBackground.get());
 
 	fboManager->init(bgWidth, bgHeight, this, _useFloatTexture, _texInternalFormat);

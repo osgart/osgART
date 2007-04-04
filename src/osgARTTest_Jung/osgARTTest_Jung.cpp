@@ -22,7 +22,7 @@
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
-#include <osgART/VideoBackground>
+#include <osgART/VideoLayer>
 #include <osgART/VideoPlane>
 
 #include <osg/Matrixf>
@@ -213,11 +213,11 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
+		osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
 
 	/* RFC: this how you would get any type in and out through the plugin system */
 	osg::ref_ptr< osgART::TypedField<int> > _field = 
@@ -237,7 +237,9 @@ int main(int argc, char* argv[]) {
 	// osgART::TrackerManager::getInstance()->addTracker(tracker.get());
 
 	tracker->init(video->getWidth(), video->getHeight());
-
+	
+	//osgART::GenericTracker::setImageSource()
+	tracker->setImageSource(video.get());
 
 	////////////////////////////////////////////////////////////////////////////////
 	osg::ref_ptr<ARScene> arScene = new ARScene;
@@ -248,15 +250,15 @@ int main(int argc, char* argv[]) {
 	//// 1. Add sobel filter to the video background
 	//// 2. Add toon shader to the truck
 
-	//load default video <osgART::VideoBackground> 
-	//osg::ref_ptr<osgART::VideoBackground> videoBackground =
+	//load default video <osgART::VideoLayer> 
+	//osg::ref_ptr<osgART::VideoLayer> videoBackground =
 	//	arScene->initDefaultVideoBackground( video.get() );
 	//arScene->initDefaultForeground();
 
 	//int videoBGWidth = video->getWidth();
 	//int videoBGHeight = video->getHeight();
 
-	//// notice <osgART::VideoBackground> use textureRectangle so use sampler2DRect in the shader !!!
+	//// notice <osgART::VideoLayer> use textureRectangle so use sampler2DRect in the shader !!!
 	//sf.addFragmentShaderFromFile("./data/shader/SimpleSobelFilterRect.frag", videoBackground.get());
 	//videoBackground->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
 	//videoBackground->getOrCreateStateSet()->addUniform(
@@ -400,7 +402,7 @@ int main(int argc, char* argv[]) {
 
 
 	///////////////////////test /////////////////////////////////////////
-	//osg::ref_ptr<osgART::VideoBackground> videoBackground =
+	//osg::ref_ptr<osgART::VideoLayer> videoBackground =
 	//	arScene->initDefaultVideoBackground( video.get(), false );
 	//osg::ref_ptr<osg::Texture> bgTexture = videoBackground->getTexture();
 
@@ -460,7 +462,7 @@ int main(int argc, char* argv[]) {
 		
 		video->update();
 
-		tracker->setImage(video.get());
+		//tracker->setImage(video.get());
 		tracker->update();
 		
         viewer.update();
