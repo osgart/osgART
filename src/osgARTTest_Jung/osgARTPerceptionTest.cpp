@@ -22,11 +22,12 @@
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
-
+#include <osgART/ARSceneNode>
 #include <osgART/VideoPlane>
 
 #include <osg/Matrixf>
 #include <osgDB/ReadFile>
+
 // shader stuff
 #include "ShaderFactory.h"
 #include "FBOManager.h"
@@ -296,8 +297,6 @@ int main(int argc, char* argv[]) {
 	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
 #endif
 
-	osgART::VideoConfiguration cfg;
-	cfg.deviceconfig = MY_VCONF;
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
@@ -318,13 +317,20 @@ int main(int argc, char* argv[]) {
 	/* open the video */
 	video->open();
 
-	tracker->init(video->getWidth(), video->getHeight());
-
-	tracker->setImageSource(video.get());
 	////////////////////////////////////////////////////////////////////////////////
+	osg::ref_ptr<osgART::ARSceneNode> root = new osgART::ARSceneNode;
 	osg::ref_ptr<ARScene> arScene = new ARScene;
-	
+		
+	if (!root->connect(tracker.get(),video.get())) {
+		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
+		exit(-1);
+	}
+
+	viewer.setSceneData(root.get());
+	root->addChild( arScene.get() );
 	arScene->init(tracker);
+	
+
 
 	osg::ref_ptr<osg::Texture> bgTexture = arScene->initTextureVideoBackground( video.get(), false);
 	int videoBGWidth = video->getWidth();
@@ -600,7 +606,7 @@ int main(int argc, char* argv[]) {
 	//viewer.getEventHandlerList().push_back( keyboardHandler.get() );
 	///////////////////////////////////////////////////////////
 
-	viewer.setSceneData(arScene.get());
+	//viewer.setSceneData(arScene.get());
 	viewer.realize();	
 	video->start();
 		
@@ -610,8 +616,7 @@ int main(int argc, char* argv[]) {
 		
 		viewer.sync();	
 		
-		video->update();
-
+		//video->update();
 		//tracker->setImage(video.get());
 		//tracker->update();
 		

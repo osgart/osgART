@@ -3,6 +3,7 @@
 
 #include <osg/Node>
 #include <string>
+#include <vector>
 #include <iostream>
 using namespace std;
 #include <sys/stat.h>
@@ -11,7 +12,6 @@ using namespace std;
 
 class ShaderFactory
 {
-
 public:
 	ShaderFactory();
 	virtual ~ShaderFactory();
@@ -28,6 +28,21 @@ private:
 
 };
 
+class ShaderPackage
+{
+public:
+	ShaderPackage();
+	virtual ~ShaderPackage();
+
+	void init( string _fileName, osg::Shader *_shader);
+	bool isModified();
+	void update();
+
+private:
+	string fileName;
+	osg::Shader *shader;
+	struct tm fileClock;
+};
 
 class ShaderReloadCallback : public osg::NodeCallback
 {
@@ -36,22 +51,13 @@ public:
 	~ShaderReloadCallback();
 	virtual void operator()(osg::Node *nd, osg::NodeVisitor* nv);
 
-	void init(string, string);
+	void addShader(string, osg::Shader*);
 	void setWrappedCallback(osg::NodeCallback *);
 private:
-
-	bool isFileModified(std::string FileName, struct tm* OrigFileClock);
-
-	string vertexFileName, fragmentFileName;
-	bool isVertexShaderOn, isFragmentShaderOn;
-
-	struct tm vertFileClock;
-	struct tm fragFileClock;
-
-	ShaderFactory sf;
 	
-	//osg::NodeCallback *wrappedCallback;
 	osg::ref_ptr<osg::NodeCallback> wrappedCallback;
+
+	vector<ShaderPackage> shaders;
 };
 
 

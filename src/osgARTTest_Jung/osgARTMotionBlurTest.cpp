@@ -22,8 +22,9 @@
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
 #include <osgART/TrackerManager>
-#include <osgART/VideoBackground>
+#include <osgART/VideoLayer>
 #include <osgART/VideoPlane>
+#include <osgART/ARSceneNode>
 
 #include <osg/Matrixf>
 #include <osgDB/ReadFile>
@@ -138,12 +139,7 @@ osg::Node* addARTModel(char* name,float sizeModel,float shiftX, float shiftY, fl
 	trackerCenterTransform->addChild(unitTransform);
 
 	osg::MatrixTransform* myObject=new osg::MatrixTransform;
-	
 	myObject->addChild(trackerCenterTransform);
-
-
-	osg::MatrixList mList = modelNode->getWorldMatrices();
-	std::cout << mList.size() << std::endl;
 
 	return myObject;
 }
@@ -205,7 +201,7 @@ int main(int argc, char* argv[]) {
 
 	/* load a video plugin */
 	osg::ref_ptr<osgART::GenericVideo> video = 
-	osgART::VideoManager::createVideoFromPlugin("osgart_artoolkit");
+	osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
 
 	/* check if loading the plugin was successful */
 	if (!video.valid()) {
@@ -215,7 +211,7 @@ int main(int argc, char* argv[]) {
 	
 	/* load a tracker plugin */
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_artoolkit_tracker");
+		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
 
 
 	if (tracker.valid()) {
@@ -281,12 +277,24 @@ int main(int argc, char* argv[]) {
 	video->open();
 
 	/* Initialise the tracker */
-	tracker->init(video->getWidth(), video->getHeight());
+	//tracker->init(video->getWidth(), video->getHeight());
 
 	//
+	osg::ref_ptr<osgART::ARSceneNode> root = new osgART::ARSceneNode;
 	osg::ref_ptr<ARScene> arScene = new ARScene;
+
+	if (!root->connect(tracker.get(),video.get())) {
+		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
+		exit(-1);
+	}
+
+	viewer.setSceneData(root.get());
+	root->addChild( arScene.get() );
+	
 	//osg::ref_ptr<MotionBlurredARScene> arScene = new MotionBlurredARScene;
 	arScene->init(tracker);
+	
+
 
 	
 	int videoBGWidth = video->getWidth();
@@ -368,15 +376,20 @@ int main(int argc, char* argv[]) {
 	//	new osg::Uniform("numToRepeat", 8) );
 
 	////// zooming 1
-	sf.addVertexAndFragmentShaderFromFile("./data/shader/Zooming.vert", 
-										  "./data/shader/Zooming.frag", 
-									      bgLayer.get());
-	bgLayer->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
 
 	ZoomingValueAnimationCallback *zvacb = new ZoomingValueAnimationCallback();
 	zvacb->init( 5000, false );
 	zvacb->setAnimationOn( false );
 	zvacb->linkTo( bgLayer.get() );
+
+
+	sf.addVertexAndFragmentShaderFromFile("./data/shader/Zooming.vert", 
+										  "./data/shader/Zooming.frag", 
+									      bgLayer.get());
+	bgLayer->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+
+
+
 
 	osg::ref_ptr<SimpleKeyboardHandler> keyboardHandler = new SimpleKeyboardHandler;
 	keyboardHandler->init( dynamic_cast<SimpleAnimatorCallback*>(zvacb) );
@@ -422,8 +435,8 @@ int main(int argc, char* argv[]) {
 
 
 	// load truck model
-	osg::ref_ptr<osg::Node> truckModel = addARTModel("david.ive", 150, 0,0,120);
-	//osg::ref_ptr<osg::Node> truckModel = addARTModel("cow.osg", 100, 0,0,0);
+	//osg::ref_ptr<osg::Node> truckModel = addARTModel("david.ive", 150, 0,0,120);
+	osg::ref_ptr<osg::Node> truckModel = addARTModel("cow.osg", 100, 0,0,0);
 	//osg::ref_ptr<osg::Node> truckModel = addARTModel("dumptruck.osg", 100, 0,0,0);
 	osg::Vec3f lightPos = osg::Vec3f(0.0,500.0,500.0);
 	addLightAt( truckModel->getOrCreateStateSet(), lightPos);
@@ -469,7 +482,7 @@ int main(int argc, char* argv[]) {
 	//truckModel->getOrCreateStateSet()->addUniform(
 	//	new osg::Uniform("brickRatio", osg::Vec2f(0.8,0.8)) );
 
-	viewer.setSceneData(arScene.get());
+	//viewer.setSceneData(arScene.get());
 	//
 	viewer.realize();
 	
@@ -479,10 +492,9 @@ int main(int argc, char* argv[]) {
 		
 		viewer.sync();	
 		
-		video->update();
-
-		tracker->setImage(video.get());
-		tracker->update();
+		//video->update();
+		//tracker->setImage(video.get());
+		//tracker->update();
 		
         viewer.update();
         viewer.frame();

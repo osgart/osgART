@@ -11,8 +11,8 @@
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
 #include <osgART/ARTTransform>
-#include <osgART/VideoBackground>
-#include <osgART/VideoTextureRectangle>
+#include <osgART/VideoLayer>
+
 
 #include "ARScene.h"
 #include "ARNode.h"
