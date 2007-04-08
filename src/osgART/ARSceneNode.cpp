@@ -1,7 +1,9 @@
-#include "osgART/ARSceneNode"
-
 #include <osg/FrameStamp>
 #include <osg/Notify>
+
+
+#include "osgART/ARSceneNode"
+
 
 namespace osgART 
 {
@@ -15,7 +17,7 @@ namespace osgART
 		{
 		}
 
-		void ARSceneNodeCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
+		void operator()(osg::Node* node, osg::NodeVisitor* nv) 
 		{
 			ARSceneNode* n = dynamic_cast<ARSceneNode*>(node);
 

@@ -45,7 +45,8 @@ namespace osgART {
 			// slerp stored and new rotation
 			m_storedRotation.slerp(m_rotationSmoothFactor, m_storedRotation, newRotation);
 			// update marker trans
-			marker_transfrom->setRotate(m_storedRotation);
+			marker_transfrom->makeRotate(m_storedRotation);
+			
 			//std::cout << "TransformFilterCallback::operator():/ Rotational Smoothing" << std::endl;
 		}
 	
