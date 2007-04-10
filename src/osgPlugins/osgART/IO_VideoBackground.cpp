@@ -1,5 +1,4 @@
-#include <osgART/VideoBackground>
-
+#include <osgART/VideoLayer>
 #include <osgART/VideoManager>
 
 #include <osg/Notify>
@@ -11,30 +10,29 @@
 #include <osgDB/Output>
 
 // forward declare functions to use later.
-bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr);
-bool VideoBackground_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
+bool VideoLayer_readLocalData(osg::Object& obj, osgDB::Input& fr);
+bool VideoLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw);
 
 // register the read and write functions with the osgDB::Registry.
-osgDB::RegisterDotOsgWrapperProxy VideoBackground_Proxy
+osgDB::RegisterDotOsgWrapperProxy VideoLayer_Proxy
 (
-	new osgART::VideoBackground /* 0L */,
-    "VideoBackground",
-    "Object Node Group GenericVideoObject VideoLayer VideoBackground",
-    VideoBackground_readLocalData,
-    VideoBackground_writeLocalData
+	new osgART::VideoLayer /* 0L */,
+    "VideoLayer",
+    "Object Node Group GenericVideoObject VideoLayer",
+    VideoLayer_readLocalData,
+    VideoLayer_writeLocalData
 );
 
-bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr) {
+bool VideoLayer_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 
 	bool iteratorAdvanced = false;
 
-	osgART::VideoBackground &node = 
-		static_cast<osgART::VideoBackground&>(obj);
+	osgART::VideoLayer &node = 
+		static_cast<osgART::VideoLayer&>(obj);
 	
-	/*osg::notify() */ std::cerr << "Loading VideoBackground" << std::endl;
+	osg::notify() << "Loading VideoLayer" << std::endl;
 
 	int _video_id;
-
 	
 	if (fr[0].matchWord("connected_video")) {
 
@@ -47,7 +45,7 @@ bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 			if (_video.valid()) 
 			{
 
-				node.setVideo(_video.get());
+				node.setImageSource(_video.get());
 
 				node.init();
 
@@ -134,7 +132,7 @@ bool VideoBackground_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 }
 
 
-bool VideoBackground_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool VideoLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 {
     /*
 	const MultiSwitch& sw = static_cast<const MultiSwitch&>(obj);
