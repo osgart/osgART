@@ -1,4 +1,4 @@
-Read me for osgART-1.0.
+Read me for osgART-1.1.
 =======================
 
 
@@ -17,13 +17,13 @@ Changes in earlier releases.
 
 About this archive.
 -------------------
-This archive contains the osgART Standard Edition SDK and examples, version 1.0.
+This archive contains the osgART Standard Edition SDK and examples, version 1.1-prerelease_r609.
 
 This archive was assembled by:
     Philip Lamb
     ARToolworks, Inc.
     http://www.artoolworks.com
-    2006-12-08
+    2007-04-11
 
 
 About osgART.
@@ -33,7 +33,7 @@ osgART is a library that simplifies the development of Augmented Reality or Mixe
 With osgART, users gain the benefit of all the features of OpenSceneGraph (high quality renderer, multiple file type loaders, community nodekits like osgAL, etc.) directly in their augmented reality (AR), mixed reality (MR) or mediated reality applications.
 As with the standard ARToolKit, the user can thus develop and prototype interactive applications that can use tangible interaction (in C++, Python, Lua, Ruby etc.).
 
-The latest version of osgART is always available from ARToolworks at http://www.artoolworks.com/osgart/.
+The latest version of osgART is always available from ARToolworks at http://www.artoolworks.com/products/osgart/.
 
 osgART is supported on the Linux, Windows, and Macintosh OS X platforms.
 
@@ -74,165 +74,26 @@ osgART Professional Edition is the right product for professional and commercial
 ARToolworks also provide a variety of value-added services, including professional support, customization and other modifications, and end-user turnkey applications.
 
 
-Building on Windows.
---------------------
-The latest version of these instructions can be found at http://www.artoolworks.com/community/osgart/docs_install.html#build_windows
-
-You will find project files for Visual Studio .NET 2003 and Visual Studio 2005 in the /VisualStudio/osgART/ folder in the source package. We are not yet actively supporting Visual Studio 2005 due to OSG and some required SDKs lack of support.
-
-* Make sure Visual Studio .NET 2003 can find headers and libraries for OpenSceneGraph and ARToolKit
-* Build the libraries in the following order:
-	osgART
-	osgart_artoolkit
-	osgart_artoolkit_tracker
-	osgart_dummyimage
-	osgart_example
-
-* For debugging purposes we also recommend to keep the OpenSceneGraph/bin directory in the $PATH variable.
+Building on Windows / Mac OS X / Linux.
+---------------------------------------
+The latest version of these instructions can be found at http://www.artoolworks.com/support/library/Installing_and_building_osgART. (Registration required to view).
 
 
-Building on Linux / SGI Irix.
------------------------------
-The latest version of these instructions can be found at http://www.artoolworks.com/community/osgart/docs_install.html#build_linux
+Changes in version 1.1 (this release) (2007-04-11).
+---------------------------------------------------
+Although osgART functionality remains similar, version 1.1 includes major architectural changes over version 1.0.
+- The ARToolKit tracker is now self-contained in a plugin, allowing different versions of ARToolKit (open source v2.x vs. Professional v4.x, NFT) to be used, as well as other tracker libraries.
+- Video plugins now return frames in the standard osg::Image type, allowing video to be more easily utilised elsewhere in the scene graph.
+- Tracker plugins now accept the standard osg::Image type.
+- Connection of the video and the tracker is achieved using a new OSG node type, ARSceneNode, which is subclassed from osg::Group, eliminating the need for a separate run loop inside osgART.
+- The video background functionality has been restructured, eliminating some small utility classes in favour of achieving the same effect with standard OSG calls.
+- Passing of data to and from the video and tracker plugins is now managed through fields, dynamically typed accessors which allow for plugins to accept and supply a variety of different data types.
 
-1) Requirements:
-
-
-1.1) Hardware
-- video capture device (webcam, DV cam, video files, etc. pp.) accessible 
-  for ARToolKit (please consult ARToolKit documentation)
-- OpenGL hardware accelerated graphics hardware
-
-1.2) Software
-
-- gcc 3.x or higher
-- GNU make
-- binutils
-- X11 development libraries (for X.org 7.x make sure to install Xm and Xi 
-  development libraries)
-- OpenSceneGraph 1.x development libraries (recommended version 1.1 or 1.2) 
-- depending on the video capture library you choose you need development
-  libraries for:
-	- GStreamer - gstreamer 0.10.x (http://gstreamer.freedesktop.org)
-	- Video4Linux - linux kernel headers (consult your distribution docs)
-	- lib1394 and libraw1394
-
-2) Compiling ARToolKit:
-
-- ARToolKit 2.72 (download from http://projects.sourceforge.net/artoolkit)
-
-- compile ARToolKit (read the documentation for video capture in ARToolKit)
-
-- make sure that /home/thatsme/Projects/artoolkit/bin/videoTest works
-
-
-3) Compiling osgART
-
-- unpack osgART 
-
-	$> tar xfzj osgART-x.x.tar.bz2
-
-- if you unpacked osgART into /home/thatsme/Projects/osgART
-
-	$> cd /home/thatsme/Projects/osgART/bin
-
-- you need to know where artoolkit is installed and start make
-
-	$> make -f GNUmakefile ARTOOLKIT_PATH="/home/thatsme/Projects/artoolkit"
-
-- assure the ARTOOLKIT_CONFIG is set correctly for the videocapture you 
-  are using. For example using GStreamer with the TV testsignal simulator 
-  you can use:
-
-	$> echo $ARTOOLKIT_CONFIG
-	videotestsrc ! identity name=artoolkit ! fakesink
-
-	or for using Video4Linux it should read something like this:
-
-	$> echo $ARTOOLKIT_CONFIG
-	-dev=/dev/video0 -width=320 -height=240 -palette=YUV420P
-
-  Please consult the ARToolKit documentation for more information how to set 
-  up video capturing correctly.
-
-- to run the example the runtime linker need to be able to load the plugins. 
-  For example in a bash shell:
-
-	$> export LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH"
-
-- run the example 
-	
-	$> ./osgart_example
-	
-
-4) Advanced
-
-For using the same build system as osgART you need bakefile 
-(http://bakefile.sourceforge.net). You can copy the original bakefile to a
-new one and add another target for your application.
-
-	$> cd /home/thatsme/Projects/osgART/bin
-	$> cp osgART.bkl MyosgART.bkl
-	
-You need to edit the bakefile for making changes to the source and include
-directories of your project. Additionally you need to regenerate the
-makefile from the bakefile.
-
-	$> bakefile -f gnu MyosgART.bkl
-	
-
-Building on Mac OS X.
----------------------------
-The latest version of these instructions can be found at http://www.artoolworks.com/community/osgart/docs_install.html#build_mac
-
-Prerequisites:
- *  Apple's Xcode Tools, version 2.4 or later. Available free with registration with ADC at http://developer.apple.com.
- *  ARToolKit version 2.72 or later. ARToolKit may have additional dependencies listed in its readme file.
- *  OpenSceneGraph 1.1 or later in Mac OS X binary format. (version 1.2 recommended.)
-
-Setting up the necessary directory structure:
-osgART must be able to find its dependencies during the build process. The XCode project file comes setup for a folder structure like this:
-someDirectory/   (top-level development directory)
-	ARToolKit/
-		bin
-		examples
-		include
-		lib
-	OpenSceneGraph/
-		Examples/
-		Frameworks/
-		Plugins/
-	OSGART/
-		bin/
-		docs/
-		etc/
-		include/
-		src/
-		VisualStudio/
-		XCode/
-If you wish to change this structure, you must edit the search path settings inside the build settings inspector for every one of the targets.
-
-Building using the XCode IDE:
-(1) Unpack the archive to a convenient location, and open the file XCode/osgART.xcodeproj.
-(2) Make sure that ARToolKit 2.72 builds and that you can run the simpleLite ARToolKit example without errors.
-(2) Build osgART.
-
-
-Running the built application:
-The osgARTTest example is built as a bundled application, and can be moved from its original location to anywhere on the system. It can be run double clicked from the Finder (debug output will appear in Console) or from within XCode.
-
-
-Changes in version 1.0 (this release) (2006-12-18).
-------------------------------------------------------
-All platforms:
-- The structure of osgART has been significantly reorganised during the beta release process. If you were participating in the beta test program, we recommend that you carefully examine the examples for correct usage patterns.
-- A large number of examples have been added to the project. Enjoy!
-- osgART now has a plugin structure for video sources and tracking libraries. osgART Standard Edition comes with default plugins for ARToolKit 2.72's libARVideo video library and libAR tracker library.
 
 
 Known issues in this release.
 -----------------------------
-- VideoBillboard is still broken. Sorry.
+- This release will break previously working code targeted at osgART-1.0. Please use the osgARTTest.cpp sample to update your usage.
 - Due to an issue in OpenSceneGraph, YCbCr-format video streams are not yet supported. On Mac OS X, make sure that ARToolKit's default video format is ARGB.
 - The Mac osgARTTest opens in multiple windows on a multi-display system.
 - The Mac XCode project file includes targets for only the osgARTTest example. The other exmples will be added later.
