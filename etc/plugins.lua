@@ -1,5 +1,6 @@
 -- generate a plugin
 
+require "globals"
 
 function createVideoPlugin(fullname, shortname)
 
@@ -14,6 +15,8 @@ function createVideoPlugin(fullname, shortname)
 	package.objdir = "obj/" .. package.target
 
 	package.defines = { "OSGART_PLUGIN_EXPORT" }
+
+	table.insert(package.config['Release'].defines,"NDEBUG")
 
 	if (OS == "windows") then
 		table.insert(package.defines,"WIN32")
@@ -32,6 +35,8 @@ function createVideoPlugin(fullname, shortname)
 		"osg",
 		"osgART",
 	}
+	
+	package.config["Debug"].target = package.target .. globals.targetsuffix
 
 	return package
 
@@ -53,6 +58,8 @@ function createTrackerPlugin(fullname, shortname)
 
 	package.defines = { "OSGART_PLUGIN_EXPORT" }
 
+	table.insert(package.config['Release'].defines,"NDEBUG")
+
 	if (OS == "windows") then
 		table.insert(package.defines,"WIN32")
 		table.insert(package.defines,"_WIN32")
@@ -70,6 +77,10 @@ function createTrackerPlugin(fullname, shortname)
 		"osg",
 		"osgART",
 	}
+	
+	package.config["Debug"].target = package.target .. globals.targetsuffix
+
+	
 	return package
 
 end

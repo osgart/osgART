@@ -2,12 +2,12 @@
 -- premake script to create various versions of project files
 --
 
-
+require "globals"
 require "plugins"
 
 
 project.name = "osgART"
-project.configs = { "Debug", "ReleaseWithSymbols", "Release" }
+project.configs = { "Debug", "Release" }
 
 if     (target == "vs2003") then
 	project.path = "../VisualStudio/VS2003"
@@ -31,6 +31,8 @@ package.libdir = "../../lib"
 package.bindir = "../../bin"
 package.objdir = "obj/" .. package.target
 
+table.insert(package.config['Release'].defines,"NDEBUG")
+
 package.defines = {
 	"OSGART_LIBRARY"
 	}
@@ -39,8 +41,6 @@ if (OS == "windows") then
 	table.insert(package.defines,"WIN32")
 	table.insert(package.defines,"_WINDOWS")
 end
-
-package.config["Debug"].targetprefix = "Debug_"
 
 package.files = {
   matchfiles("../../src/osgART/*.cpp", "../../include/osgART/*"),
@@ -67,10 +67,12 @@ if (OS == "windows") then
 	table.insert(package.links, {"OpenGL32", "OpenThreadsWin32" })
 end
 
+package.config["Debug"].target = package.target .. globals.targetsuffix
+
+
 --
 -- osgART Introspection Wrapper
 --
-
 package = newpackage()
 package.path = project.path
 package.name = "osgWrapper osgART"
@@ -81,6 +83,9 @@ package.kind = "dll"
 package.libdir = "../../lib"
 package.bindir = "../../bin"
 package.objdir = "obj/" .. package.target
+
+
+table.insert(package.config['Release'].defines,"NDEBUG")
 
 if (OS == "windows") then
 	table.insert(package.defines,"WIN32")
@@ -115,10 +120,58 @@ package.excludes = {
 	"../../src/osgWrappers/osgART/Field.cpp",
 	"../../src/osgWrappers/osgART/ShadowRenderer.cpp",
 	"../../src/osgWrappers/osgART/PlaneARShadow.cpp",
-
 }
 
+package.config["Debug"].target = package.target .. globals.targetsuffix
 
+--
+-- osgART NodeKit
+--
+package = newpackage()
+package.path = project.path
+package.name = "NodeKit osgART"
+package.target = "osgdb_osgART"
+package.language = "c++"
+package.kind = "dll"
+
+package.libdir = "../../lib"
+package.bindir = "../../bin"
+package.objdir = "obj/" .. package.target
+
+table.insert(package.config['Release'].defines,"NDEBUG")
+
+
+if (OS == "windows") then
+	table.insert(package.defines,"WIN32")
+	table.insert(package.defines,"_WINDOWS")
+end
+
+package.includepaths = {
+	"../../include",
+	"$(OSG_ROOT)/include"
+}
+
+package.libpaths = { "$(OSG_ROOT)/lib" }
+
+package.links = {
+	"osg",
+	"osgART",
+	"osgDB",
+}
+
+if (OS == "windows") then
+	table.insert(package.links,"OpenThreadsWin32")
+end
+
+
+package.files = {
+  matchfiles("../../src/osgPlugins/osgART/IO_*.cpp"),
+}
+
+package.excludes = {
+}
+
+package.config["Debug"].target = package.target .. globals.targetsuffix
 
 --
 -- Simple Example
@@ -130,6 +183,9 @@ package.target = "osgart_simple"
 package.language = "c++"
 package.kind = "exe"
 package.bindir = "../../bin"
+
+table.insert(package.config['Release'].defines,"NDEBUG")
+
 
 if (OS == "windows") then
 	table.insert(package.defines,"WIN32")
