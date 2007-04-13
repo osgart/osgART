@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="osgART"
-	ProjectGUID="{9234330F-C7F0-7341-A373-2619D15AF082}"
+	ProjectGUID="{B42E96AD-6729-E843-A7F5-5D59D3C9311E}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -35,69 +35,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="osg.lib osgDB.lib OpenGL32.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/Debug_osgART.dll"
+				OutputFile="$(OutDir)/osgART_debug.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/Debug_osgART.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgART_debug.pdb"
 				SubSystem="2"
-				ImportLibrary="../../lib/Debug_osgART.lib"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="OSGART_LIBRARY;WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseWithSymbols|Win32"
-			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgART/ReleaseWithSymbols"
-			ConfigurationType="2"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"
-				PreprocessorDefinitions="OSGART_LIBRARY;WIN32;_WINDOWS"
-				MinimalRebuild="TRUE"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib osgDB.lib OpenGL32.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgART.dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgART.pdb"
-				SubSystem="2"
-				ImportLibrary="../../lib/osgART.lib"
+				ImportLibrary="../../lib/osgART_debug.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -132,7 +76,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"
-				PreprocessorDefinitions="OSGART_LIBRARY;WIN32;_WINDOWS"
+				PreprocessorDefinitions="OSGART_LIBRARY;WIN32;_WINDOWS;NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -165,7 +109,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="OSGART_LIBRARY;WIN32;_WINDOWS"
+				PreprocessorDefinitions="OSGART_LIBRARY;WIN32;_WINDOWS;NDEBUG"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
@@ -214,6 +158,9 @@
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\Marker.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\PluginManager.cpp">
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\TrackerManager.cpp">
@@ -279,6 +226,9 @@
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\PlaneARShadowRenderer">
+				</File>
+				<File
+					RelativePath="..\..\include\osgART\PluginManager">
 				</File>
 				<File
 					RelativePath="..\..\include\osgART\ReflectionVideoFunctor">

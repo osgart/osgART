@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin Intranel RTSP Video"
-	ProjectGUID="{93758E6C-ABE4-1C45-87AA-27FF28509879}"
+	ProjectGUID="{0AE55837-70F5-7D49-A735-CA88330F1F27}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,70 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_intranel.dll"
+				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_intranel_debug.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_video_intranel.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_intranel_debug.pdb"
 				SubSystem="2"
-				ImportLibrary="../../lib/osgart_video_intranel.lib"
-				TargetMachine="1"/>
-			<Tool
-				Name="VCMIDLTool"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
-		</Configuration>
-		<Configuration
-			Name="ReleaseWithSymbols|Win32"
-			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_video_intranel/ReleaseWithSymbols"
-			ConfigurationType="2"
-			CharacterSet="2">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
-				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				MinimalRebuild="TRUE"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART.lib strmbase.lib strmiids.lib winmm.lib quartz.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_intranel.dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_video_intranel.pdb"
-				SubSystem="2"
-				ImportLibrary="../../lib/osgart_video_intranel.lib"
+				ImportLibrary="../../lib/osgart_video_intranel_debug.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -132,7 +76,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
-				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -165,7 +109,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
