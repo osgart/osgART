@@ -20,6 +20,7 @@
 #include "osgART/Foundation"
 #include "osgART/VideoManager"
 #include "osgART/TrackerManager"
+#include "osgART/PluginManager"
 
 
 #include <cstdlib>
@@ -139,6 +140,9 @@ namespace osgART {
 
 			// VideoManager Singleton needs an explicit D'tor
 			osgART::VideoManager::getInstance(true);
+
+			// Delete the Plugin Manager
+			osgART::PluginManager::getInstance(true);
 		}
 
 	};

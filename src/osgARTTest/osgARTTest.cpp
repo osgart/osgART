@@ -37,11 +37,17 @@
 #include <osgART/TrackerManager>
 #include <osgART/VideoLayer>
 #include <osgART/ARSceneNode>
+#include <osgART/PluginManager>
 
 
 int main(int argc, char* argv[]) 
 {
 
+	// preload the tracker
+	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit");
+
+	// preload the video
+	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
 	
 	// Set up the osg viewer.
 	osgProducer::Viewer viewer;
@@ -59,7 +65,7 @@ int main(int argc, char* argv[])
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
+		dynamic_cast<osgART::GenericVideo*>(osgART::PluginManager::getInstance()->get("video_artoolkit"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
@@ -71,8 +77,9 @@ int main(int argc, char* argv[])
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
-	// check if the tracker plugin could be loaded
+		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit"));
+
+    // check if the tracker plugin could be loaded
 	if (!tracker.valid()) 
 	{
         // this example needs a tracker. Quit if none found.

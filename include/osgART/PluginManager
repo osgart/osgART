@@ -9,46 +9,73 @@
 
 #include <string>
 #include <deque>
+#include <map>
 
 namespace osgART 
-{
-	
+{	
+	/**
+	 * PluginProxy is a helper to dynamicly instanciate and 
+	 * register plugins in the libaries PluginManager.
+	 */
 	template <typename T> class PluginProxy 
 	{
 	public:
-	
-		PluginProxy()
+		PluginProxy(const std::string& name)
 		{
 			m_plugininterface = new T;			
-			PluginRegistry::getInstance()->add(m_plugininterface);
+			PluginManager::getInstance()->add(name, m_plugininterface.get());
 		}
-		
-		osg::ref_ptr<osg::Referenced> m_plugininterface;
-		
+	protected:		
+		osg::ref_ptr<osg::Referenced> m_plugininterface;		
 	};
 
-
+	/**
+	 * PluginManager realises an autodiscovery capable plugin system
+	 * in order to load and unload plugins on the fly. It is losely 
+	 * based on the implementation of osgDB::Registry
+	 */
 	class OSGART_EXPORT PluginManager : public osg::Referenced {
 	public:
 		
-		PluginManager* getInstance(bool erase);
+		/**
+		 * Returns an instance of a plugin manager as it is 
+		 * singleton.
+		 * \param erase exlicitly deletes the instance of the plugin manager
+		 * \return instance of the PluginManager or 0 if erase was true
+		 */
+		static PluginManager* getInstance(bool erase = false);
 				
-		void load(const std::string& filename);
+		/**
+		 * Load an external plugin. The plugin will be loaded and 
+		 * stays in memory unless explicitly unloaded.
+		 * \param filename short version or complete path (use \param resolveName with false)
+		 * \param if resolveName is false a file path with extension can be handed over
+		 */
+		void load(const std::string& filename, bool resolveName = true);
 		
-		osg::Referenced* create(const std::string& name);
-		
-		void add(osg::Referenced* plugin);
-		
+		/**
+		 * Return a pointer to the plugin
+		 * \param identifier to get the plugin instance
+		 * \return 0 if unsuccessfull or a pointer to the plugin
+		 */
+		osg::Referenced* get(const std::string& identifier);
+
 	protected:
+	
+		friend class PluginProxy;
+
+		void add(const std::string& name, osg::Referenced* plugin);
 		
 		typedef std::deque< osg::ref_ptr<osgDB::DynamicLibrary> > PluginArray;
+		typedef std::map< std::string, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
 		
 		PluginArray m_plugins;
+		PluginInterfaceMap m_plugininterfaces;
 		
 	private:
 	
 		PluginManager();
-		~PluginManager();
+		virtual ~PluginManager();
 		
 	};
 }

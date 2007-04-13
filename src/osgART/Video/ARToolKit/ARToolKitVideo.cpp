@@ -18,6 +18,10 @@
 #include <iomanip>
 
 #include "osgART/VideoConfig"
+#include "osgART/PluginManager"
+
+// initializer for dynamic loading
+osgART::PluginProxy<osgART::ARToolKitVideo> g_artoolkitvideo("video_artoolkit");
 
 // Make sure that required OpenGL constant definitions are available at compile-time.
 // N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.

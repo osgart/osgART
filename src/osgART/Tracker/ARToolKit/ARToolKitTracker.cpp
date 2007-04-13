@@ -17,7 +17,7 @@
 
 
 // initializer for dynamic loading
-osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker;
+osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker("tracker_artoolkit");
 
 
 #include <osgDB/ReadFile>
