@@ -13,6 +13,12 @@
 
 #include "ARToolKitTracker"
 
+#include "osgART/PluginManager"
+
+
+// initializer for dynamic loading
+osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker;
+
 
 #include <osgDB/ReadFile>
 #include <AR/config.h>

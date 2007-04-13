@@ -1,0 +1,56 @@
+#ifndef OSGART_PLUGINMANAGER
+#define OSGART_PLUGINMANAGER 1
+
+#include <osg/ref_ptr>
+#include <osg/Referenced>
+#include <osgDB/DynamicLibrary>
+
+#include "osgART/Export"
+
+#include <string>
+#include <deque>
+
+namespace osgART 
+{
+	
+	template <typename T> class PluginProxy 
+	{
+	public:
+	
+		PluginProxy()
+		{
+			m_plugininterface = new T;			
+			PluginRegistry::getInstance()->add(m_plugininterface);
+		}
+		
+		osg::ref_ptr<osg::Referenced> m_plugininterface;
+		
+	};
+
+
+	class OSGART_EXPORT PluginManager : public osg::Referenced {
+	public:
+		
+		PluginManager* getInstance(bool erase);
+				
+		void load(const std::string& filename);
+		
+		osg::Referenced* create(const std::string& name);
+		
+		void add(osg::Referenced* plugin);
+		
+	protected:
+		
+		typedef std::deque< osg::ref_ptr<osgDB::DynamicLibrary> > PluginArray;
+		
+		PluginArray m_plugins;
+		
+	private:
+	
+		PluginManager();
+		~PluginManager();
+		
+	};
+}
+
+#endif

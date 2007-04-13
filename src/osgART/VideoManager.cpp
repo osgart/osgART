@@ -105,9 +105,14 @@ namespace osgART {
 	VideoManager::createFunc(const std::string& filename)
 	{
 		std::string localLibraryName;
-#ifdef _WIN32
+
 		localLibraryName = filename;
-#else
+
+#if !defined(NDEBUG)
+		localLibraryName += "_debug";
+#endif
+		// actually some platform are using .dylib (Apple)
+#if defined(__unix) || defined(__APPLE__)
 		localLibraryName = filename + ".so";
 #endif
 		osgDB::DynamicLibrary* _lib = 0L;
@@ -124,13 +129,13 @@ namespace osgART {
 
 			} else {
 				
-				osg::notify(osg::WARN) << "osgART::VideoManager::createFunc(fileName) could not open " << filename << std::endl;
+				osg::notify(osg::WARN) << "osgART::VideoManager::createFunc(fileName) could not open " << localLibraryName << std::endl;
 
 				return 0L;
 			}
 		} else 
 		{
-			osg::notify(osg::INFO) << "Video plugin '" << filename << "' was loaded in advance" << std::endl;
+			osg::notify(osg::INFO) << "Video plugin '" << localLibraryName << "' was loaded in advance" << std::endl;
 
 			// reaccess 
 			_lib = (*_plug).second.get();
