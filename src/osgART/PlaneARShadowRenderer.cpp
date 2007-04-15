@@ -55,8 +55,10 @@ ShadowRenderer(scene,light,marker),m_planeSize(size)
 		// hse25: should be replaced with a generic plane. no osgDB and hard wired filenames
 		
 		//HACK we need to construct a scene here from the size parameters
+#if 0
 		dynamic_cast<osg::Group*>(m_shadowedScene)->addChild(osgDB::readNodeFile("models/myplane.ive"));
 		m_shadowedScene->getOrCreateStateSet()->setAttributeAndModes(new osg::BlendFunc(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA));
+#endif
 	}
 
 }

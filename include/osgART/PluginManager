@@ -1,33 +1,37 @@
+/*
+ *	osgART/VideoImageStream
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
 #ifndef OSGART_PLUGINMANAGER
 #define OSGART_PLUGINMANAGER 1
 
+// osg
 #include <osg/ref_ptr>
 #include <osg/Referenced>
+
+// osgDB
 #include <osgDB/DynamicLibrary>
 
-#include "osgART/Export"
-
+// STL
 #include <string>
 #include <deque>
 #include <map>
 
+// Local include
+#include "osgART/Export"
+
+
 namespace osgART 
-{	
-	/**
-	 * PluginProxy is a helper to dynamicly instanciate and 
-	 * register plugins in the libaries PluginManager.
-	 */
-	template <typename T> class PluginProxy 
-	{
-	public:
-		PluginProxy(const std::string& name)
-		{
-			m_plugininterface = new T;			
-			PluginManager::getInstance()->add(name, m_plugininterface.get());
-		}
-	protected:		
-		osg::ref_ptr<osg::Referenced> m_plugininterface;		
-	};
+{
 
 	/**
 	 * PluginManager realises an autodiscovery capable plugin system
@@ -60,11 +64,14 @@ namespace osgART
 		 */
 		osg::Referenced* get(const std::string& identifier);
 
-	protected:
-	
-		friend class PluginProxy;
-
+		/**
+		 * Add a new instance of a dynamically loaded class
+		 * \param name identifier to retrieve the object
+		 * \param plugin pointer to the instantiated class
+		 */
 		void add(const std::string& name, osg::Referenced* plugin);
+
+	protected:
 		
 		typedef std::deque< osg::ref_ptr<osgDB::DynamicLibrary> > PluginArray;
 		typedef std::map< std::string, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
@@ -77,6 +84,31 @@ namespace osgART
 		PluginManager();
 		virtual ~PluginManager();
 		
+	};
+	
+		
+	/**
+	 * PluginProxy is a helper to dynamicly instanciate and 
+	 * register plugins in the libaries PluginManager.
+	 */
+	template <typename T> class PluginProxy 
+	{
+	public:
+		/**
+		 * Constructor for the dynamic loaded object
+		 * \param name identifier to retrieve an instance
+		 */
+		PluginProxy(const std::string& name)
+		{
+			m_plugininterface = new T;			
+			PluginManager::getInstance()->add(name, m_plugininterface.get());
+		}
+		
+	protected:
+		/**
+		 * Stored instance of the plugiin
+		 */
+		osg::ref_ptr<osg::Referenced> m_plugininterface;		
 	};
 }
 

@@ -32,9 +32,7 @@
 #include <osg/Image>
 
 #include <osgART/Foundation>
-#include <osgART/VideoManager>
 #include <osgART/ARTTransform>
-#include <osgART/TrackerManager>
 #include <osgART/VideoLayer>
 #include <osgART/ARSceneNode>
 #include <osgART/PluginManager>

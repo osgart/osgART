@@ -48,7 +48,7 @@ namespace osgART {
 #endif
 			// actually some platform are using .dylib (Apple)
 #if defined(__unix) || defined(__APPLE__)
-			localLibraryName = filename + ".so";
+			localLibraryName = pluginname + ".so";
 #endif
 		}
 

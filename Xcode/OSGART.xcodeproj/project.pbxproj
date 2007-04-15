@@ -143,6 +143,8 @@
 		78BDC0BE091B014900D9D0B9 /* osgARTTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */; };
 		78BDC1AA091B030100D9D0B9 /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 78BDC1A5091B030100D9D0B9 /* Data */; };
 		78BDC1CD091B041F00D9D0B9 /* osgART.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DB5709183C2F00414BD5 /* osgART.framework */; };
+		E6670C990BD23D8D00CCA069 /* PluginManager in Headers */ = {isa = PBXBuildFile; fileRef = E6670C980BD23D8D00CCA069 /* PluginManager */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6AF12DC0BD18B4500663E13 /* PluginManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6AF12DB0BD18B4500663E13 /* PluginManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -582,6 +584,9 @@
 		78BDBDDE091B00CA00D9D0B9 /* osgart_simple-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "osgart_simple-Info.plist"; sourceTree = "<group>"; };
 		78BDC0BD091B014900D9D0B9 /* osgARTTest.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = osgARTTest.cpp; sourceTree = "<group>"; };
 		78BDC1A5091B030100D9D0B9 /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+		E6670C980BD23D8D00CCA069 /* PluginManager */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = PluginManager; sourceTree = "<group>"; };
+		E6AF12DB0BD18B4500663E13 /* PluginManager.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = PluginManager.cpp; sourceTree = "<group>"; };
+		E6AF12DE0BD18B6900663E13 /* PluginManager */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = PluginManager; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1285,7 +1290,9 @@
 		7842DB2009182F8200414BD5 /* osgART */ = {
 			isa = PBXGroup;
 			children = (
+				E6670C980BD23D8D00CCA069 /* PluginManager */,
 				7842DB2209182F8200414BD5 /* ARLocalTransformCallback */,
+				E6AF12DE0BD18B6900663E13 /* PluginManager */,
 				4A4F69C50B8E4BA600275FD1 /* ARSceneNode */,
 				7842DB2509182F8200414BD5 /* ARTTransform */,
 				7842DB2709182F8200414BD5 /* Export */,
@@ -1338,6 +1345,7 @@
 		7842DB3609182F8200414BD5 /* osgART */ = {
 			isa = PBXGroup;
 			children = (
+				E6AF12DB0BD18B4500663E13 /* PluginManager.cpp */,
 				4AE1D4500B70199D001CB3B5 /* Interaction */,
 				4A38FA2E0AD5E077006DC8DB /* Tracker */,
 				4A55A7050AA78759005EDC69 /* Video */,
@@ -1456,6 +1464,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6670C990BD23D8D00CCA069 /* PluginManager in Headers */,
 				4A133C130A8BBEA100C95219 /* ARLocalTransformCallback in Headers */,
 				4A4F69C60B8E4BA600275FD1 /* ARSceneNode in Headers */,
 				4A133C170A8BBEA100C95219 /* ARTTransform in Headers */,
@@ -1771,6 +1780,7 @@
 				4AE1ED770A630FD8007D0FA4 /* VideoLayer.cpp in Sources */,
 				7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */,
 				7842DB8309184AA900414BD5 /* VideoPlane.cpp in Sources */,
+				E6AF12DC0BD18B4500663E13 /* PluginManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2237,6 +2247,7 @@
 				INFOPLIST_FILE = "osgart_simple-Info.plist";
 				INSTALL_PATH = "$(USER_APPS_DIR)";
 				PRODUCT_NAME = osgart_simple;
+				USER_HEADER_SEARCH_PATHS = ../../include;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -2253,6 +2264,7 @@
 				INFOPLIST_FILE = "osgart_simple-Info.plist";
 				INSTALL_PATH = "$(USER_APPS_DIR)";
 				PRODUCT_NAME = osgart_simple;
+				USER_HEADER_SEARCH_PATHS = ../../include;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
