@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="Plugin ARToolKit Plus Tracker"
-	ProjectGUID="{E6E468DB-00B9-2746-93F1-D73663DFF5FD}"
+	Name="Plugin DSVL2 Video"
+	ProjectGUID="{4FBAC54E-6070-E145-89EB-9BBACF0AC0A5}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -13,13 +13,13 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/Debug"
+			IntermediateDirectory="obj/osgart_video_dsvl2/Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -34,14 +34,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
-				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus_debug.dll"
+				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib DSVL2.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl2_debug.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkitplus_debug.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl2_debug.pdb"
 				SubSystem="2"
-				ImportLibrary="../../lib/osgart_tracker_artoolkitplus_debug.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl2_debug.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -54,7 +54,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"/>
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -69,13 +69,13 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/Release"
+			IntermediateDirectory="obj/osgart_video_dsvl2/Release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -89,15 +89,15 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
-				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib DSVL2.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl2.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../lib/osgart_tracker_artoolkitplus.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl2.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -110,7 +110,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"/>
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -133,16 +133,19 @@
 				Name="osgART"
 				Filter="">
 				<Filter
-					Name="Tracker"
+					Name="Video"
 					Filter="">
 					<Filter
-						Name="ARToolKitPlus"
+						Name="DSVL2"
 						Filter="">
 						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKitPlus\ARToolKitPlusTracker">
+							RelativePath="..\..\src\osgART\Video\DSVL2\DSVLVideo">
 						</File>
 						<File
-							RelativePath="..\..\src\osgART\Tracker\ARToolKitPlus\ARToolKitPlusTracker.cpp">
+							RelativePath="..\..\src\osgART\Video\DSVL2\DSVLVideo.cpp">
+						</File>
+						<File
+							RelativePath="..\..\src\osgART\Video\DSVL2\Main.cpp">
 						</File>
 					</Filter>
 				</Filter>

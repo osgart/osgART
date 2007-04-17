@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="Plugin ARToolKit Video"
-	ProjectGUID="{8442D438-84A4-9340-8C55-EEF2E51752DC}"
+	ProjectGUID="{17A7C7D4-7AE4-C34E-B70F-DCE7A5140A0B}"
 	RootNamespace="Plugin ARToolKit Video"
 	Keyword="Win32Proj"
 	>

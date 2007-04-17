@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="Plugin DSVL Video"
-	ProjectGUID="{D3665EC8-02F3-0A4F-9625-B16397128EFE}"
-	RootNamespace="Plugin DSVL Video"
+	Name="Plugin DSVL2 Video"
+	ProjectGUID="{200F4159-6E3A-DE47-90F0-672FC58B6C76}"
+	RootNamespace="Plugin DSVL2 Video"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_video_dsvl/Debug"
+			IntermediateDirectory="obj/osgart_video_dsvl2/Debug"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -57,21 +57,21 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib DSVL.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_dsvl_debug.dll"
+				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib DSVL2.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl2_debug.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl_debug.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_dsvl2_debug.pdb"
 				SubSystem="2"
-				ImportLibrary="../../lib/osgart_video_dsvl_debug.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl2_debug.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -102,7 +102,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="../../bin"
-			IntermediateDirectory="obj/osgart_video_dsvl/Release"
+			IntermediateDirectory="obj/osgart_video_dsvl2/Release"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -124,7 +124,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -140,22 +140,22 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
-				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_2_ROOT)/DSVL2/src;$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART.lib DSVL.lib OpenThreadsWin32.lib"
-				OutputFile="$(OutDir)/osgart_video_dsvl.dll"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib DSVL2.lib OpenThreadsWin32.lib"
+				OutputFile="$(OutDir)/osgart_video_dsvl2.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_2_ROOT)/DSVL/lib;$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release"
 				GenerateDebugInformation="false"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../lib/osgart_video_dsvl.lib"
+				ImportLibrary="../../lib/osgart_video_dsvl2.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -200,17 +200,17 @@
 					Filter=""
 					>
 					<Filter
-						Name="DSVL"
+						Name="DSVL2"
 						Filter=""
 						>
 						<File
-							RelativePath="..\..\src\osgART\Video\DSVL\DSVLVideo">
+							RelativePath="..\..\src\osgART\Video\DSVL2\DSVLVideo">
 						</File>
 						<File
-							RelativePath="..\..\src\osgART\Video\DSVL\DSVLVideo.cpp">
+							RelativePath="..\..\src\osgART\Video\DSVL2\DSVLVideo.cpp">
 						</File>
 						<File
-							RelativePath="..\..\src\osgART\Video\DSVL\Main.cpp">
+							RelativePath="..\..\src\osgART\Video\DSVL2\Main.cpp">
 						</File>
 					</Filter>
 				</Filter>
