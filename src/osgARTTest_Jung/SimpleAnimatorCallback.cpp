@@ -8,6 +8,7 @@ SimpleAnimatorCallback::SimpleAnimatorCallback()
 }
 SimpleAnimatorCallback::~SimpleAnimatorCallback()
 {
+	delete effectTimer;
 }
 
 void SimpleAnimatorCallback::init(float _timeInMillisec, bool _loop)
