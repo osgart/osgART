@@ -13,6 +13,11 @@
 
 #include "ARToolKit4Tracker"
 
+#include <osgART/PluginManager>
+
+// initializer for dynamic loading
+osgART::PluginProxy<osgART::ARToolKit4Tracker> g_artoolkit4("tracker_artoolkit4");
+
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/ar.h>

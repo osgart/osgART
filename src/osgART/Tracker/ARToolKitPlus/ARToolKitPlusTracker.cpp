@@ -10,9 +10,15 @@
 //#include "MultiMarker"
 
 #include <osgART/GenericVideo>
+#include <osgART/PluginManager>
 #include "osgART/VideoPlugin"
 #include "osgART/VideoConfig"
 #include "osgART/Utils"
+
+
+// initializer for dynamic loading
+osgART::PluginProxy<osgART::ARToolKitTracker_Plus> g_artoolkitplus("tracker_artoolkitplus");
+
 
 #include <iostream>
 #include <fstream>

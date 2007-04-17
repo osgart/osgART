@@ -361,6 +361,26 @@ if (OS == "windows") then
 end
 
 --
+-- Video Plugin: DSVL2
+--
+if (OS == "windows") then
+	package = createVideoPlugin("DSVL2","dsvl2")
+
+    table.insert(package.includepaths,"$(ARTOOLKIT_2_ROOT)/DSVL2/src")
+    table.insert(package.includepaths,"$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses")
+    table.insert(package.libpaths,"$(ARTOOLKIT_2_ROOT)/DSVL/lib")
+	table.insert(package.libpaths,"$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release")
+	
+	table.insert(package.links,"DSVL2")
+
+	table.insert(package.links,"OpenThreadsWin32")
+
+	package.files = {
+		matchfiles("../../src/osgART/Video/DSVL2/*"),
+	}
+end
+
+--
 -- Plugin ARToolKit Video
 --
 package = createVideoPlugin("ARToolKit","artoolkit")

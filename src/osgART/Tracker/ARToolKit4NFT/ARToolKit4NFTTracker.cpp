@@ -28,6 +28,13 @@ typedef int AR_PIXEL_FORMAT;
 #include <AR/gsub_lite.h>
 
 
+#include <osgART/PluginManager>
+
+// initializer for dynamic loading
+osgART::PluginProxy<osgART::ARToolKit4NFTTracker> g_artoolkitnft("tracker_artoolkitnft");
+
+
+
 // Make sure that required OpenGL constant definitions are available at compile-time.
 
 // N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.

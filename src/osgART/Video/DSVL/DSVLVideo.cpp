@@ -33,6 +33,15 @@
 
 #include <iostream>
 
+
+#include <osgART/PluginManager>
+
+// initializer for dynamic loading
+osgART::PluginProxy<DSVLVideo> g_dsvlvideo("video_dsvl");
+
+
+
+
 using namespace osgART;
 
 

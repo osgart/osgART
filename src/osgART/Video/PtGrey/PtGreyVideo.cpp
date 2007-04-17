@@ -8,7 +8,16 @@
  */
  
 #include "PtGreyVideo"
+
+#include <osgART/PluginManager>
+
+// initializer for dynamic loading
+osgART::PluginProxy<PtGreyVideo> g_ptgreyvideo("video_pointgrey");
+
+
 #include <OpenThreads/Thread>
+
+
 
 #include <process.h>
 

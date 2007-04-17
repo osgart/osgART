@@ -32,6 +32,13 @@
 
 #include "IntranelStreamVideo"
 
+
+#include <osgART/PluginManager>
+
+// initializer for dynamic loading
+osgART::PluginProxy<IntranelStreamVideo> g_intranelvideo("video_intranel");
+
+
 using namespace std;
 using namespace osgART;
 
