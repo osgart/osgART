@@ -28,12 +28,17 @@ namespace osgART
 		return *this;
 	}
 
+	VideoConfiguration* DSVL2Video::getVideoConfiguration() 
+	{
+		return &m_videoconfig;
+	}
+
 	void
 	DSVL2Video::open()
 	{	
 		graphManager = new DSVL_VideoSource();
 		
-		if(FAILED(graphManager->BuildGraphFromXMLFile((char*)videoName.c_str())))
+		if(FAILED(graphManager->BuildGraphFromXMLFile((char*)m_videoconfig.deviceconfig.c_str())))
 		{
 			std::cerr<<"OSGART->ERROR:Failed to build graph manager!!"<<std::endl;
 			exit(-1);

@@ -103,6 +103,8 @@ namespace osgART {
 		
 		inline virtual void releaseImage() {};
 		
+		VideoConfiguration* getVideoConfiguration();
+		
 	protected:
 
 		/** 
@@ -117,6 +119,8 @@ namespace osgART {
 		DSVL_VideoSource	*graphManager;
 		MemoryBufferHandle  m_Handle;
 		std::string videoName;
+		
+		VideoConfiguration m_videoconfig;
 	};
 }
 
