@@ -6,6 +6,20 @@
 	objectVersion = 42;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		4A89DCC50BCDA5AA00F262E4 /* Build API docs */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 4A89DCCA0BCDA5C800F262E4 /* Build configuration list for PBXAggregateTarget "Build API docs" */;
+			buildPhases = (
+				4A89DCC40BCDA5AA00F262E4 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Build API docs";
+			productName = "Build API docs";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		4A133C130A8BBEA100C95219 /* ARLocalTransformCallback in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2209182F8200414BD5 /* ARLocalTransformCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A133C170A8BBEA100C95219 /* ARTTransform in Headers */ = {isa = PBXBuildFile; fileRef = 7842DB2509182F8200414BD5 /* ARTTransform */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1666,6 +1680,7 @@
 				4A38FAB00AD5EC05006DC8DB /* osgart_tracker_artoolkit4nft */,
 				78BDBDDB091B00CA00D9D0B9 /* osgart_simple */,
 				4A4F69EA0B8E4EF100275FD1 /* Example_SimpleCamera */,
+				4A89DCC50BCDA5AA00F262E4 /* Build API docs */,
 			);
 		};
 /* End PBXProject section */
@@ -1695,6 +1710,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4A89DCC40BCDA5AA00F262E4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/csh\nif (-x /sw/bin/doxygen) then\ncd \"${SRCROOT}/docs\"\nmv doc/header.html doc/header.html.tmp\nmv doc/footer.html doc/footer.html.tmp\nrm -f doc/*.html doc/doxygen.css\nmv doc/header.html.tmp doc/header.html\nmv doc/footer.html.tmp doc/footer.html\n/sw/bin/doxygen doxygen_config.dox\nendif\nexit 0";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4A174BAF0AD9D66000B9FC9B /* Sources */ = {
@@ -2121,6 +2152,28 @@
 			};
 			name = Release;
 		};
+		4A89DCCB0BCDA5C800F262E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Build API docs";
+			};
+			name = Debug;
+		};
+		4A89DCCC0BCDA5C800F262E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = "Build API docs";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		4A9969CB0AC785D10068A373 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2317,6 +2370,15 @@
 			buildConfigurations = (
 				4A55AB210AA7A3B7005EDC69 /* Debug */,
 				4A55AB220AA7A3B7005EDC69 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4A89DCCA0BCDA5C800F262E4 /* Build configuration list for PBXAggregateTarget "Build API docs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A89DCCB0BCDA5C800F262E4 /* Debug */,
+				4A89DCCC0BCDA5C800F262E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
