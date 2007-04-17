@@ -28,7 +28,7 @@ public:
 	ARScene();
 	virtual ~ARScene();
 
-	virtual void init(osg::ref_ptr<osgART::GenericTracker> tracker, int _trakerID = 0);
+	virtual void init(osg::ref_ptr<osgART::GenericTracker> _tracker, int _trakerID = 0);
 
 	void addARNode(osg::ref_ptr<ARNode> arnode, int binNum, bool addToSceneGraph = true);
 
@@ -86,6 +86,8 @@ protected:
 	vector< osg::ref_ptr<ARNode> > arNodes;
 
 	int trackerID;
+	osg::ref_ptr<osgART::GenericTracker> tracker;
+
 	osg::ref_ptr<osg::Projection> projectionMatrix;
 	osg::ref_ptr<osg::Projection> projectionMatrixForFBO;
 	

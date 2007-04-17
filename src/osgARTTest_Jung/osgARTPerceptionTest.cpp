@@ -27,6 +27,7 @@
 
 #include <osg/Matrixf>
 #include <osgDB/ReadFile>
+#include <osgART/PluginManager>
 
 // shader stuff
 #include "ShaderFactory.h"
@@ -286,8 +287,12 @@ osg::MatrixTransform* addLightAt(osg::StateSet* rootStateSet, osg::Vec3 pos)
 
 int main(int argc, char* argv[]) {
 
-	osgARTInit(&argc, argv);
-	
+	// preload the tracker
+	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit");
+
+	// preload the video
+	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
+
 	osgProducer::Viewer viewer;
 	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
 	viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
@@ -298,14 +303,30 @@ int main(int argc, char* argv[]) {
 #endif
 
 
-	/* load a video plugin */
+	// Load a video plugin.
 	osg::ref_ptr<osgART::GenericVideo> video = 
-		osgART::VideoManager::createVideoFromPlugin("osgart_video_artoolkit");
+		dynamic_cast<osgART::GenericVideo*>(osgART::PluginManager::getInstance()->get("video_artoolkit"));
 	
-	/* load a tracker plugin */
-	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		osgART::TrackerManager::createTrackerFromPlugin("osgart_tracker_artoolkit");
+	// check if an instance of the video stream could be started
+	if (!video.valid()) 
+	{   
+		// Without video an AR application can not work. Quit if none found.
+		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
+		exit(-1);
+	}
 
+	// Load a tracker plugin.
+	osg::ref_ptr<osgART::GenericTracker> tracker = 
+		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit"));
+
+    // check if the tracker plugin could be loaded
+	if (!tracker.valid()) 
+	{
+        // this example needs a tracker. Quit if none found.
+		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
+		exit(-1);
+	}
+		
 	/* RFC: this how you would get any type in and out through the plugin system */
 	osg::ref_ptr< osgART::TypedField<int> > _field = 
 		dynamic_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
@@ -345,8 +366,10 @@ int main(int argc, char* argv[]) {
 	lightSubGraph->addChild(truckModel.get());
 
 	// add marker no1
+	std::cerr << "ASDFASDF" << std::endl;
 	arScene->addNewARNodeWith( lightSubGraph, 100, true);
-	
+	std::cerr << "ASD2FASDF" << std::endl;
+
 	// add marker no2 begin
 	// make a plane ( a phantom geometry )
 	float planeWidth = 220.0f;	

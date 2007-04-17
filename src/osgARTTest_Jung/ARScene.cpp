@@ -20,12 +20,13 @@ ARScene::~ARScene()
 {
 }
 
-void ARScene::init(osg::ref_ptr<osgART::GenericTracker> tracker, int _trakerID)
+void ARScene::init(osg::ref_ptr<osgART::GenericTracker> _tracker, int _trakerID)
 {
+	tracker = _tracker;
 	projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	projectionMatrixForFBO = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	trackerID = _trakerID;
-	
+
 	projectionMatrix->addChild( foregroundGroup.get() );
 	backgroundGroup->addChild(projectionMatrixForFBO.get());
 
@@ -46,7 +47,7 @@ osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int
 	osg::ref_ptr<ARNode> arNode = new ARNode;
 	int lastIndex = (int)arNodes.size();
 
-	arNode->init(lastIndex,  osgART::TrackerManager::getInstance()->getTracker(trackerID));
+	arNode->init(lastIndex,  tracker.get());
 	arNode->addModel(node);
 	
 	addARNode( arNode, binNum, addToSceneGraph  );
