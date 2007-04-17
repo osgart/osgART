@@ -4,9 +4,9 @@
 #include "DSVLVideo"
 
 
-DLL_API osgART::GenericVideo* osgart_createvideo(const osgART::VideoConfiguration& config)
+DLL_API osgART::GenericVideo* osgart_createvideo()
 {
-	return new DSVLVideo(config.deviceconfig.c_str());
+	return new osgART::DSVL2Video();
 }
 
 OSGART_PLUGIN_ENTRY()
