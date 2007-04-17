@@ -20,13 +20,12 @@ ARScene::~ARScene()
 {
 }
 
-void ARScene::init(osg::ref_ptr<osgART::GenericTracker> _tracker, int _trakerID)
+void ARScene::init(osg::ref_ptr<osgART::GenericTracker> _tracker)
 {
 	tracker = _tracker;
 	projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 	projectionMatrixForFBO = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
-	trackerID = _trakerID;
-
+	
 	projectionMatrix->addChild( foregroundGroup.get() );
 	backgroundGroup->addChild(projectionMatrixForFBO.get());
 

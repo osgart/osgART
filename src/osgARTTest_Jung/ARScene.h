@@ -28,7 +28,7 @@ public:
 	ARScene();
 	virtual ~ARScene();
 
-	virtual void init(osg::ref_ptr<osgART::GenericTracker> _tracker, int _trakerID = 0);
+	virtual void init(osg::ref_ptr<osgART::GenericTracker> _tracker);
 
 	void addARNode(osg::ref_ptr<ARNode> arnode, int binNum, bool addToSceneGraph = true);
 
