@@ -31,7 +31,7 @@ typedef int AR_PIXEL_FORMAT;
 #include <osgART/PluginManager>
 
 // initializer for dynamic loading
-osgART::PluginProxy<osgART::ARToolKit4NFTTracker> g_artoolkitnft("tracker_artoolkitnft");
+osgART::PluginProxy<osgART::ARToolKit4NFTTracker> g_artoolkitnft("tracker_artoolkit4nft");
 
 
 // Make sure that required OpenGL constant definitions are available at compile-time.
