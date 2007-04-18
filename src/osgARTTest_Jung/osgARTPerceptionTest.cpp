@@ -271,7 +271,7 @@ osg::MatrixTransform* addLightAt(osg::StateSet* rootStateSet, osg::Vec3 pos)
 
 	osg::Vec3f lightDir = myLight->getDirection();
 	//myLight->setDirection( osg::Vec3f(0,0,-1) );
-	std::cout << "Light direction: " << lightDir[0] << " " << lightDir[1] << " " << lightDir[2] << std::endl;
+	
 
     osg::LightSource* lightS = new osg::LightSource;	
     lightS->setLight(myLight);
@@ -366,9 +366,8 @@ int main(int argc, char* argv[]) {
 	lightSubGraph->addChild(truckModel.get());
 
 	// add marker no1
-	std::cerr << "ASDFASDF" << std::endl;
 	arScene->addNewARNodeWith( lightSubGraph, 100, true);
-	std::cerr << "ASD2FASDF" << std::endl;
+	
 
 	// add marker no2 begin
 	// make a plane ( a phantom geometry )
@@ -446,7 +445,6 @@ int main(int argc, char* argv[]) {
 	//	(new osg::BlendFunc, osg::StateAttribute::ON );
 	projectionMatrix->addChild(handMaskLayer);
 
-
 	fboManager->attachTarget( projectionMatrix, 1000, osg::Vec4(0.0f,0.0f,0.0f,0.0f));
 	osg::ref_ptr<osg::Texture> maskTextureForScreen = fboManager->getTexture(0);
 
@@ -471,15 +469,16 @@ int main(int argc, char* argv[]) {
 	dummyLayer01->setTexture( fgTexture, 3);
 	
 	//// Darkening mask
-	sf.addFragmentShaderFromFile("./data/shader/Darkening.frag", dummyLayer01.get());
-	
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
+	//sf.addFragmentShaderFromFile("./data/shader/Darkening.frag", dummyLayer01.get());
+	//
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
 
-	dummyLayer01->getOrCreateStateSet()->addUniform(
-		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
+	//dummyLayer01->getOrCreateStateSet()->addUniform(
+	//	new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
+	
 	
 	//// Skin color test
 	//sf.addFragmentShaderFromFile("./data/shader/SkinColorMask.frag", dummyLayer01.get());
@@ -587,54 +586,59 @@ int main(int argc, char* argv[]) {
 	//keyboardHandler->init( dynamic_cast<ShaderEffect*>(darkenEffect) );
 	//viewer.getEventHandlerList().push_back( keyboardHandler.get() );
 
-	//////// changing effects
-	////// color temp 1
-	//osg::ref_ptr<ShaderEffect> ct = new ColorTemperatureEffect;
-	//ColorTemperatureEffect *colorTempEffect = dynamic_cast<ColorTemperatureEffect*>( ct.get());
-	//colorTempEffect->init(1500);
-	//colorTempEffect->setStEdTemp( 6500, 12000);
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
+	////// changing effects
+	//// color temp 1
+	
+	osg::ref_ptr<ShaderEffect> ct = new ColorTemperatureEffect;
+	ColorTemperatureEffect *colorTempEffect = dynamic_cast<ColorTemperatureEffect*>( ct.get());
+	colorTempEffect->init(1500);
+	colorTempEffect->setStEdTemp( 6500, 12000);
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
 
-	///// Darkening mask 2
-	//osg::ref_ptr<ShaderEffect> df = new DarkeningEffect;
-	//DarkeningEffect	*darkenEffect = dynamic_cast<DarkeningEffect*>(df.get());
-	//darkenEffect->init(1500);
-	//	
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
-	//dummyLayer01->getOrCreateStateSet()->addUniform(
-	//	new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
+	/// Darkening mask 2
+	osg::ref_ptr<ShaderEffect> df = new DarkeningEffect;
+	DarkeningEffect	*darkenEffect = dynamic_cast<DarkeningEffect*>(df.get());
+	darkenEffect->init(1500);
+		
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
+	dummyLayer01->getOrCreateStateSet()->addUniform(
+		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
 
-	////// color temp 2
-	//osg::ref_ptr<ShaderEffect> ct2 = new ColorTemperatureEffect;
-	//ColorTemperatureEffect *colorTempEffect2 = dynamic_cast<ColorTemperatureEffect*>( ct2.get());
-	//colorTempEffect2->init(1500);
-	//colorTempEffect2->setStEdTemp( 6500, 4100);
-	//dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
+	//// color temp 2
+	osg::ref_ptr<ShaderEffect> ct2 = new ColorTemperatureEffect;
+	ColorTemperatureEffect *colorTempEffect2 = dynamic_cast<ColorTemperatureEffect*>( ct2.get());
+	colorTempEffect2->init(1500);
+	colorTempEffect2->setStEdTemp( 6500, 4100);
+	dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
 
 
-	//ShaderEffectHandler *sef = new ShaderEffectHandler();
-	//sef->init( dummyLayer01.get() );
+	ShaderEffectHandler *sef = new ShaderEffectHandler();
+	sef->init( dummyLayer01.get() );
 
-	//sef->addEffect( ct );
-	//sef->addEffect( df );
-	//sef->addEffect( ct2 );
+	sef->addEffect( ct );
+	sef->addEffect( df );
+	sef->addEffect( ct2 );
 
-	//sef->linkTo(0);
+	sef->linkTo(0);
 
-	//osg::ref_ptr<ShaderEffectKeyboardHandler> keyboardHandler = new ShaderEffectKeyboardHandler;
-	//keyboardHandler->init( sef );
+	osg::ref_ptr<ShaderEffectKeyboardHandler> keyboardHandler = new ShaderEffectKeyboardHandler;
+	keyboardHandler->init( sef );
+	viewer.getEventHandlerList().push_back( keyboardHandler.get() );
+
+	//osg::ref_ptr<SimpleKeyboardHandler> keyboardHandler = new SimpleKeyboardHandler;
+	//keyboardHandler->init( ct.get() );
 	//viewer.getEventHandlerList().push_back( keyboardHandler.get() );
-	///////////////////////////////////////////////////////////
 
+	
+	///////////////////////////////////////////////////////////
 	//viewer.setSceneData(arScene.get());
 	viewer.realize();	
 	video->start();
 		
 	
-
     while (!viewer.done()) {
 		
 		viewer.sync();	
@@ -643,7 +647,7 @@ int main(int argc, char* argv[]) {
 		//tracker->setImage(video.get());
 		//tracker->update();
 		
-		//sef->update();
+		sef->update();
 
         viewer.update();
         viewer.frame();
@@ -657,5 +661,5 @@ int main(int argc, char* argv[]) {
 	video->stop();
 	video->close();
 	
-	//delete sef;
+	delete sef;
 }

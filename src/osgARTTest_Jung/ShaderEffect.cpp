@@ -23,26 +23,27 @@ void ShaderEffect::init(float _timeInMillisec)
 osg::Program* ShaderEffect::createVertexAndFragmentShaderFromFile(string vertexFileName, 
 											string fragmentFileName)
 {
-    osg::Shader* vertObj = 
+    osg::ref_ptr<osg::Shader> vertObj = 
 		new osg::Shader( osg::Shader::VERTEX );
-    if ( !loadShaderSource( vertObj, vertexFileName ) )
+    if ( !loadShaderSource( vertObj.get(), vertexFileName ) )
 	{
 		std::cerr << "Vertex shader error!!" << std::endl;
 		return NULL;
 	}		
-
+	vertObj->setName( vertexFileName.c_str() );
 	
-	shaderProgram->addShader( vertObj );		
+	shaderProgram->addShader( vertObj.get() );		
 
-    osg::Shader* fragObj = 
+    osg::ref_ptr<osg::Shader> fragObj = 
       new osg::Shader( osg::Shader::FRAGMENT );
-    if ( !loadShaderSource( fragObj, fragmentFileName ) )
+    if ( !loadShaderSource( fragObj.get(), fragmentFileName ) )
 	{
 		std::cerr << "Fragment shader error!!" << std::endl;
 		return NULL;
 	}
 	
-	shaderProgram->addShader( fragObj );
+	fragObj->setName( fragmentFileName.c_str() );
+	shaderProgram->addShader( fragObj.get() );
 
 	return shaderProgram.get();
 }
@@ -50,16 +51,16 @@ osg::Program* ShaderEffect::createVertexAndFragmentShaderFromFile(string vertexF
 
 osg::Program* ShaderEffect::createFragmentShaderFromFile(string fragmentFileName)
 {
-	   
-    osg::Shader* fragObj = 
+    osg::ref_ptr<osg::Shader> fragObj = 
       new osg::Shader( osg::Shader::FRAGMENT );
-    if ( !loadShaderSource( fragObj, fragmentFileName ) )
+    if ( !loadShaderSource( fragObj.get(), fragmentFileName ) )
 	{
 		std::cerr << "File Not Found" << std::endl;
 		return NULL;
 	}
 
-	shaderProgram->addShader( fragObj );
+	fragObj->setName( fragmentFileName.c_str() );
+	shaderProgram->addShader( fragObj.get() );
 	
 	return shaderProgram.get();
 }
@@ -87,7 +88,6 @@ void ShaderEffect::linkTo( osg::Node *nd)
 {
 	osg::StateSet* nodeState = nd->getOrCreateStateSet();	
 	nodeState->setAttributeAndModes(shaderProgram.get(), osg::StateAttribute::ON);
-
 	nd->setEventCallback( this );
 }
 

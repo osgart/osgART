@@ -49,6 +49,8 @@ private:
 	
 	bool useFloatTexture;
 	GLuint texInternalFormat;
+
+	osg::ref_ptr<osg::FrameBufferObject> fbo;
 };
 
 #endif

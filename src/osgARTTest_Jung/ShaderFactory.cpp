@@ -26,7 +26,7 @@ bool ShaderFactory::addVertexAndFragmentShaderFromFile(string vertexFileName, st
 		std::cerr << vertexFileName << " loaded" << std::endl;
 	}
 	//nodeState->setAttributeAndModes(shaderPrograme, osg::StateAttribute::ON);
-	
+	vertObj->setName( vertexFileName );
 
     osg::Shader* fragObj = 
       new osg::Shader( osg::Shader::FRAGMENT );
@@ -38,7 +38,7 @@ bool ShaderFactory::addVertexAndFragmentShaderFromFile(string vertexFileName, st
 	{
 		std::cerr << fragmentFileName << " loaded" << std::endl;
 	}
-	
+	fragObj->setName( fragmentFileName );
 	osg::StateAttribute *program = nodeState->getAttribute( osg::StateAttribute::PROGRAM );
 
 
@@ -84,6 +84,8 @@ bool ShaderFactory::addVertexShaderFromFile(string fileName, osg::Node *node, bo
 		std::cerr << "File Not Found" << std::endl;
 		return false;
 	}
+	vertObj->setName( fileName );
+
 	std::cerr << fileName << " loaded" << std::endl;
 	nodeState->setAttributeAndModes(shaderPrograme, osg::StateAttribute::ON);
 	shaderPrograme->addShader( vertObj );
@@ -121,7 +123,7 @@ bool ShaderFactory::addFragmentShaderFromFile(string fileName, osg::Node *node, 
 		return false;
 	}
 	
-	
+	fragObj->setName( fileName );
 	nodeState->setAttributeAndModes(shaderPrograme, osg::StateAttribute::ON);
 	shaderPrograme->addShader( fragObj );
 	std::cerr << fileName << " loaded" << std::endl;

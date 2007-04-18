@@ -38,6 +38,9 @@ void FBOManager::init(int w,int h, osg::Group *_root, bool _useFloatTexture, GLu
 	texInternalFormat = _texInternalFormat;
 
 	root->addChild(this);
+
+	fbo = new osg::FrameBufferObject();
+	fbo->setAttachment(GL_DEPTH_ATTACHMENT_EXT, osg::FrameBufferAttachment(new osg::RenderBuffer(width, height, GL_DEPTH_COMPONENT24)));
 }
 
 bool FBOManager::attachTarget( osg::ref_ptr<osg::Node> renderedNode, int binNum, osg::Vec4 bgColor)
@@ -125,6 +128,12 @@ osg::ref_ptr<osg::Texture> FBOManager::createRenderTextureRect(int w, int h)
 
 osg::ref_ptr<osg::CameraNode> FBOManager::createCamera(osg::Texture *tex, int w, int h)
 {
+
+	int num = cameras.size();
+	osg::Texture2D *tt = dynamic_cast<osg::Texture2D*>(tex);
+	fbo->setAttachment(GL_COLOR_ATTACHMENT0_EXT + num, osg::FrameBufferAttachment( tt ));
+	
+
 	osg::ref_ptr<osg::CameraNode> camera = new osg::CameraNode;
 	camera->setClearColor(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -43,7 +43,7 @@ void ShaderEffectHandler::switchToEffect(int id)
 		effects.at(index)->turnOn(false);
 		targetIndex = id;
 	}
-	std::cout << "Index " << index << " TargetIndex " << targetIndex << " " << effects.size() << std::endl;
+	
 }
 
 
