@@ -35,11 +35,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib Producer.lib osgProducer.lib"
-				OutputFile="$(OutDir)/osgart_simple.exe"
+				OutputFile="$(OutDir)/osgart_simple_debug.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/osgart_simple.pdb"
+				ProgramDatabaseFile="$(OutDir)/osgart_simple_debug.pdb"
 				SubSystem="1"
 				EntryPointSymbol="mainCRTStartup"
 				TargetMachine="1"/>

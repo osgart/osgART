@@ -212,6 +212,8 @@ package.files = {
   matchfiles("../../src/osgARTTest/*.cpp"),
 }
 
+package.config["Debug"].target = package.target .. globals.targetsuffix
+
 --
 -- Plugin ARToolKit Tracker
 --
