@@ -19,8 +19,12 @@ namespace osgART {
 
 	osg::Referenced* PluginManager::get(const std::string& name)
 	{
-		if (m_plugininterfaces.find(name) == m_plugininterfaces.end()) 
+		if (m_plugininterfaces.find(name) == m_plugininterfaces.end())
+		{
+			osg::notify(osg::WARN) << "Plugin '" << name << "' unknown!" << std::endl;
+
 			return 0L;
+		}
 		return ((*m_plugininterfaces.find(name)).second.get());
 	}
 
