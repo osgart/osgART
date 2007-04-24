@@ -229,45 +229,12 @@ namespace osgART {
 
 		int _i = 0;
 
-
-		/*
-				switch (m_textureMode) 
-		{
-		case GenericVideoObject::USE_TEXTURE_RECTANGLE:
-			
-			osg::notify() << "osgART::GenericVideoObject() using TextureRectangle" << std::endl;
-
-			_texture = new osg::TextureRectangle(this->m_image.get());
-			
-			maxU = m_image->s();
-			maxV = m_image->t();
-			
-			break;
-
-		case GenericVideoObject::USE_TEXTURE_DEFAULT:
-		case GenericVideoObject::USE_TEXTURE_2D:
-		default:
-
-			osg::notify() << "osgART::GenericVideoObject() using Texture2D" << std::endl;
-
-			_texture = new osg::Texture2D(this->m_image.get());
-
-			Texture2DCallback *_cb = new Texture2DCallback(dynamic_cast<osg::Texture2D*>(_texture));
-
-			maxU = _cb->getTexCoordX();
-			maxV = _cb->getTexCoordY();
-
-			dynamic_cast<osg::Texture2D*>(_texture)->setSubloadCallback(_cb);
-		}
-
-		*/
 		while (_ii != m_layervideos.end()) {
 
 			osg::Texture* _t = 0L; 
 
 			if ((*_ii).valid()) {
 				if (m_textureMode == USE_TEXTURE_RECTANGLE) {
-					// \TODO: replace
 					_t = new osg::TextureRectangle((*_ii).get());
 					maxU = m_image->s();
 					maxV = m_image->t();
