@@ -17,8 +17,6 @@ osgART::PluginProxy<PtGreyVideo> g_ptgreyvideo("video_pointgrey");
 
 #include <OpenThreads/Thread>
 
-
-
 #include <process.h>
 
 using namespace std;

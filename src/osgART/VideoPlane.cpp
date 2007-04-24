@@ -26,16 +26,85 @@
 #include <osg/Geometry>
 #include <osg/BlendFunc>
 #include <osg/Notify>
-
+#include <osg/Texture2D>
+#include <osg/TextureRectangle>
 
 namespace osgART {
 
+	namespace _duplicatedcodehack {
+
+		class Texture2DCallback : public osg::Texture2D::SubloadCallback
+		{
+		public:
+			
+			Texture2DCallback(osg::Texture2D* texture);
+
+			void load(const osg::Texture2D& texture, osg::State&) const;
+			void subload(const osg::Texture2D& texture, osg::State&) const;
+
+			inline float getTexCoordX() const { return (_texCoordX);};
+			inline float getTexCoordY() const { return (_texCoordY);};
+
+		protected:
+			
+			float _texCoordX;
+			float _texCoordY;
+			
+		};
+
+
+		Texture2DCallback::Texture2DCallback(osg::Texture2D* texture) :
+			_texCoordX(texture->getImage()->s() / (float)GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->s())),
+			_texCoordY(texture->getImage()->t() / (float)GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->t()))
+		{
+			texture->setTextureSize(GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->s()),
+				GenericVideoObject::mathNextPowerOf2((unsigned int)texture->getImage()->t()));
+
+			texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
+			texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
+			texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::CLAMP);
+			texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::CLAMP);
+			
+		}
+
+		/*virtual*/ 
+		void 
+		Texture2DCallback::load(const osg::Texture2D& texture, osg::State&) const 
+		{
+			
+			const osg::Image* _image = texture.getImage();
+
+			glTexImage2D(GL_TEXTURE_2D, 0, 
+				// hse25: internal texture format gets overwritten by the image format 
+				// we need just the components - ???
+				osg::Image::computeNumComponents(_image->getInternalTextureFormat()), 
+				(float)GenericVideoObject::mathNextPowerOf2((unsigned int)_image->s()), 
+				(float)GenericVideoObject::mathNextPowerOf2((unsigned int)_image->t()), 
+				0, _image->getPixelFormat(), 
+				_image->getDataType(), 0);
+		}
+		
+		/*virtual */ 
+		void
+		Texture2DCallback::subload(const osg::Texture2D& texture, osg::State&) const 
+		{
+		
+			const osg::Image* _image = texture.getImage();
+
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+							_image->s(), _image->t(), _image->getPixelFormat(), 
+							_image->getDataType(), _image->data());
+
+		}
+
+	}
+
 	VideoPlane::VideoPlane(GenericVideo* video)		
 		: GenericVideoObject(video),
-		m_width(video->getWidth()),
-		m_height(video->getHeight())
+		m_width(video ? video->getWidth() : 0),
+		m_height(video ? video->getHeight() : 0)
 	{		
-		this->m_layervideos.push_back(video);
+		if (video) this->m_layervideos.push_back(video);
 	}
 
 	VideoPlane::~VideoPlane()
@@ -160,6 +229,38 @@ namespace osgART {
 
 		int _i = 0;
 
+
+		/*
+				switch (m_textureMode) 
+		{
+		case GenericVideoObject::USE_TEXTURE_RECTANGLE:
+			
+			osg::notify() << "osgART::GenericVideoObject() using TextureRectangle" << std::endl;
+
+			_texture = new osg::TextureRectangle(this->m_image.get());
+			
+			maxU = m_image->s();
+			maxV = m_image->t();
+			
+			break;
+
+		case GenericVideoObject::USE_TEXTURE_DEFAULT:
+		case GenericVideoObject::USE_TEXTURE_2D:
+		default:
+
+			osg::notify() << "osgART::GenericVideoObject() using Texture2D" << std::endl;
+
+			_texture = new osg::Texture2D(this->m_image.get());
+
+			Texture2DCallback *_cb = new Texture2DCallback(dynamic_cast<osg::Texture2D*>(_texture));
+
+			maxU = _cb->getTexCoordX();
+			maxV = _cb->getTexCoordY();
+
+			dynamic_cast<osg::Texture2D*>(_texture)->setSubloadCallback(_cb);
+		}
+
+		*/
 		while (_ii != m_layervideos.end()) {
 
 			osg::Texture* _t = 0L; 
@@ -167,12 +268,24 @@ namespace osgART {
 			if ((*_ii).valid()) {
 				if (m_textureMode == USE_TEXTURE_RECTANGLE) {
 					// \TODO: replace
-					// _t = new VideoTextureRectangle((*_ii).get());
+					_t = new osg::TextureRectangle((*_ii).get());
+					maxU = m_image->s();
+					maxV = m_image->t();
 				} else 
 				
 				if (m_textureMode == USE_TEXTURE_2D) {
-					// \TODO: replace
-					// _t = new VideoTexture((*_ii).get());
+
+					osg::notify() << "osgART::GenericVideoObject() using Texture2D" << std::endl;
+
+					_t = new osg::Texture2D((*_ii).get());
+
+					_duplicatedcodehack::Texture2DCallback *_cb = 
+						new _duplicatedcodehack::Texture2DCallback(dynamic_cast<osg::Texture2D*>(_t));
+
+					maxU = _cb->getTexCoordX();
+					maxV = _cb->getTexCoordY();
+
+					dynamic_cast<osg::Texture2D*>(_t)->setSubloadCallback(_cb);
 				}
 			}
 			if (0L != _t) {
