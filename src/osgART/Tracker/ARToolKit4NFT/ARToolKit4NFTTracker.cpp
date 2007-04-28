@@ -91,10 +91,12 @@ ARToolKit4NFTTracker::ARToolKit4NFTTracker() : GenericTracker(),
 		arPattHandle(0L),
 		ar3DHandle(0L),
 		ar2Handle(0L),
-		surfaceSet(0L)
+		surfaceSet(0L),
+		_useNFT(true)
 {
 	// attach a new field to the name "threshold"
 	m_fields["threshold"] = new TypedField<int>(&threshold);
+	m_fields["enableNFT"] = new TypedField<bool>(&_useNFT);
 
 	//image = NULL;
 }
@@ -135,7 +137,7 @@ ARToolKit4NFTTracker::init(int xsize,int ysize,
         return false;
     }
 
-	if( arSetDebugMode(arHandle, AR_DEBUG_ENABLE) < 0 ) 
+	if( arSetDebugMode(arHandle, AR_DEBUG_DISABLE) < 0 ) 
 	{
         std::cerr << "Error: arSetDebugMode." << std::endl;
         return false;
@@ -436,52 +438,59 @@ ARToolKit4NFTTracker::updateNFTTracker(ARUint8* imageptr)
 	double				new_trans[3][4];
 	double				err;
 
+	MarkerList::iterator iter = m_markerlist.begin();
 	// declare all nft-markers as not valid
-	for (MarkerList::iterator iter = m_markerlist.begin(); 
-			iter != m_markerlist.end(); 
-			iter++)	
-
+	while (iter != m_markerlist.end())
 	{
 		if (NFTMarker* nm = dynamic_cast<NFTMarker*>((*iter).get()))
 			nm->update(NULL);
-		
+
+		iter++;		
 	}
 
-	// try NFT tracking
-	if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
-		|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
-		|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
-		&& err < 10.0 )
-	{
-		//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here2" << std::endl;
-		//std::cerr<<"features found.."<<std::endl;
-		for(int  j = 0; j < 3; j++ ) {
-			for(int  i = 0; i < 4; i++ ) patt_trans3[j][i] = patt_trans2[j][i];
+	// this allows to enable/disable nft tracking using field mechanism
+	if ( _useNFT) {
+		// try NFT tracking
+		if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
+			|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
+			|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
+			&& err < 10.0)
+		{
+			//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here2" << std::endl;
+			//std::cerr<<"features found.."<<std::endl;
+			for(int  j = 0; j < 3; j++ ) {
+				for(int  i = 0; i < 4; i++ ) patt_trans3[j][i] = patt_trans2[j][i];
+				for(int  i = 0; i < 4; i++ ) patt_trans2[j][i] = patt_trans1[j][i];
+				for(int  i = 0; i < 4; i++ ) patt_trans1[j][i] = new_trans[j][i];
+			}
+			contF++;
+			if( contF > 3) contF = 3;
 		}
-		for(int  j = 0; j < 3; j++ ) {
-			for(int  i = 0; i < 4; i++ ) patt_trans2[j][i] = patt_trans1[j][i];
-		}
-		for(int  j = 0; j < 3; j++ ) {
-			for(int  i = 0; i < 4; i++ ) patt_trans1[j][i] = new_trans[j][i];
-		}
-		contF++;
-		if( contF > 3) contF = 3;
-		
-	}
-	// NFT failed, try normal marker tracking
-	else {
-		//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here3" << std::endl;
+		// NFT failed, try normal marker tracking
+		else {
+			//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here3" << std::endl;
 
+			if( (active_surface = square_tracking(imageptr, patt_trans1 )) < 0 ){
+				contF = 0;
+			}
+			else {
+				//std::cerr<<"ARToolKit4NFTTracker::updateNFTTracker:/ marker found on surface "<< active_surface <<std::endl;
+				contF = 1;	
+			}
+		}
+	}
+	// nft was disabled via _useNFT using field mechanism
+	else{
 		if( (active_surface = square_tracking(imageptr, patt_trans1 )) < 0 ){
 			contF = 0;
 		}
 		else {
-			std::cerr<<"ARToolKit4NFTTracker::updateNFTTracker:/ marker found on surface "<< active_surface <<std::endl;
+			//std::cerr<<"ARToolKit4NFTTracker::updateNFTTracker:/ marker found on surface "<< active_surface <<std::endl;
 			contF = 1;	
 		}
 	}
-
-	// apply transformation matrix and activate the right pattern
+	
+// apply transformation matrix and activate the right pattern
 	if (active_surface >= 0)
 		(static_cast<NFTMarker*>(m_markerlist[active_surface].get()))->update(patt_trans1);
 }
@@ -513,7 +522,7 @@ ARToolKit4NFTTracker::update()
 	// update internal modified count
 	m_lastModifiedCount = m_imagesource->getModifiedCount();
 
-	arSetPixelFormat(arHandle, getARPixelFormatForImage(*m_imagesource.get()));
+	//arSetPixelFormat(arHandle, getARPixelFormatForImage(*m_imagesource.get()));
 
 	// detect visible markers
 	arDetectMarker(arHandle,m_imagesource->data());
@@ -611,6 +620,10 @@ int ARToolKit4NFTTracker::getARPixelFormatForImage(const osg::Image& _image) con
 		}
 	}
 	return (format);
+}
+
+bool ARToolKit4NFTTracker::getNFTOn(){
+	return _useNFT;
 }
 
 };

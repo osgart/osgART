@@ -155,7 +155,14 @@ namespace osgART {
 		* This function applies natural feature tracking to the last image defined by setImage.
 		*/
 		void updateNFTTracker(ARUint8* imageptr);
-		 
+		
+		
+	    /** 
+		* \brief Return current nft mode (on/off).
+		* 
+		* This function returns true if NFT is enabled.
+		*/
+	    bool getNFTOn();
 	    
 	protected: 
 	    
@@ -189,6 +196,7 @@ namespace osgART {
 		AR2HandleT			*ar2Handle;
 		AR2SurfaceSetT		*surfaceSet;
 		
+		bool _useNFT;
 				
 		int getARPixelFormatForImage(const osg::Image& _image) const;
 	 
