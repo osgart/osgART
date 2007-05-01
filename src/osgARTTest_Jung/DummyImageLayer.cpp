@@ -118,7 +118,7 @@ osg::Drawable* DummyImageLayer::createDrawable()
 	
 	return backgroundGeometry;
 }
-void DummyImageLayer::setTexture( osg::ref_ptr<osg::Texture> _tex, int id)
+void DummyImageLayer::setTexture( osg::ref_ptr<osg::Texture> _tex, int id, osg::StateAttribute::Values v )
 {
-	getOrCreateStateSet()->setTextureAttributeAndModes(id, _tex.get() ,osg::StateAttribute::ON);	
+	getOrCreateStateSet()->setTextureAttributeAndModes(id, _tex.get() , v);	
 }
