@@ -18,6 +18,37 @@
 			name = "Build API docs";
 			productName = "Build API docs";
 		};
+		4AFFA64A0BE160BB0096CDF8 /* osgART Standard Edition */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 4AFFA6630BE1611E0096CDF8 /* Build configuration list for PBXAggregateTarget "osgART Standard Edition" */;
+			buildPhases = (
+			);
+			dependencies = (
+				4AFFA64C0BE160C00096CDF8 /* PBXTargetDependency */,
+				4AFFA64E0BE160C70096CDF8 /* PBXTargetDependency */,
+				4AFFA6500BE160C70096CDF8 /* PBXTargetDependency */,
+				4AFFA6520BE160C70096CDF8 /* PBXTargetDependency */,
+			);
+			name = "osgART Standard Edition";
+			productName = "osgART Standard Edition";
+		};
+		4AFFA6530BE160E20096CDF8 /* osgART Professional Edition */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 4AFFA6660BE1611E0096CDF8 /* Build configuration list for PBXAggregateTarget "osgART Professional Edition" */;
+			buildPhases = (
+			);
+			dependencies = (
+				4AFFA6550BE160F10096CDF8 /* PBXTargetDependency */,
+				4AFFA6570BE160F10096CDF8 /* PBXTargetDependency */,
+				4AFFA6590BE160F10096CDF8 /* PBXTargetDependency */,
+				4AFFA65B0BE160F10096CDF8 /* PBXTargetDependency */,
+				4AFFA65D0BE160F10096CDF8 /* PBXTargetDependency */,
+				4AFFA65F0BE160F10096CDF8 /* PBXTargetDependency */,
+				4AFFA6610BE160F10096CDF8 /* PBXTargetDependency */,
+			);
+			name = "osgART Professional Edition";
+			productName = "osgART Professional Edition";
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -231,6 +262,83 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7842DB5609183C2F00414BD5;
 			remoteInfo = osgART;
+		};
+		4AFFA64B0BE160C00096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7842DB5609183C2F00414BD5 /* osgART */;
+			remoteInfo = osgART;
+		};
+		4AFFA64D0BE160C70096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
+			remoteInfo = osgart_video_artoolkit;
+		};
+		4AFFA64F0BE160C70096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
+			remoteInfo = osgart_tracker_artoolkit;
+		};
+		4AFFA6510BE160C70096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78BDBDDB091B00CA00D9D0B9 /* osgart_simple */;
+			remoteInfo = osgart_simple;
+		};
+		4AFFA6540BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7842DB5609183C2F00414BD5 /* osgART */;
+			remoteInfo = osgART;
+		};
+		4AFFA6560BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
+			remoteInfo = osgart_video_artoolkit;
+		};
+		4AFFA6580BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A9969AB0AC785D10068A373 /* osgart_video_dummyimage */;
+			remoteInfo = osgart_video_dummyimage;
+		};
+		4AFFA65A0BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
+			remoteInfo = osgart_tracker_artoolkit;
+		};
+		4AFFA65C0BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A174BAB0AD9D66000B9FC9B /* osgart_tracker_artoolkit4 */;
+			remoteInfo = osgart_tracker_artoolkit4;
+		};
+		4AFFA65E0BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A38FAB00AD5EC05006DC8DB /* osgart_tracker_artoolkit4nft */;
+			remoteInfo = osgart_tracker_artoolkit4nft;
+		};
+		4AFFA6600BE160F10096CDF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78BDBDDB091B00CA00D9D0B9 /* osgart_simple */;
+			remoteInfo = osgart_simple;
 		};
 		78BDBDE2091B00CE00D9D0B9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1672,6 +1780,8 @@
 			productRefGroup = 7842DB5809183C2F00414BD5 /* Products */;
 			projectDirPath = "";
 			targets = (
+				4AFFA64A0BE160BB0096CDF8 /* osgART Standard Edition */,
+				4AFFA6530BE160E20096CDF8 /* osgART Professional Edition */,
 				7842DB5609183C2F00414BD5 /* osgART */,
 				4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */,
 				4A9969AB0AC785D10068A373 /* osgart_video_dummyimage */,
@@ -1875,6 +1985,61 @@
 			isa = PBXTargetDependency;
 			target = 7842DB5609183C2F00414BD5 /* osgART */;
 			targetProxy = 4A9969AD0AC785D10068A373 /* PBXContainerItemProxy */;
+		};
+		4AFFA64C0BE160C00096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7842DB5609183C2F00414BD5 /* osgART */;
+			targetProxy = 4AFFA64B0BE160C00096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA64E0BE160C70096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
+			targetProxy = 4AFFA64D0BE160C70096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA6500BE160C70096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
+			targetProxy = 4AFFA64F0BE160C70096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA6520BE160C70096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78BDBDDB091B00CA00D9D0B9 /* osgart_simple */;
+			targetProxy = 4AFFA6510BE160C70096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA6550BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7842DB5609183C2F00414BD5 /* osgART */;
+			targetProxy = 4AFFA6540BE160F10096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA6570BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
+			targetProxy = 4AFFA6560BE160F10096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA6590BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A9969AB0AC785D10068A373 /* osgart_video_dummyimage */;
+			targetProxy = 4AFFA6580BE160F10096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA65B0BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
+			targetProxy = 4AFFA65A0BE160F10096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA65D0BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A174BAB0AD9D66000B9FC9B /* osgart_tracker_artoolkit4 */;
+			targetProxy = 4AFFA65C0BE160F10096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA65F0BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A38FAB00AD5EC05006DC8DB /* osgart_tracker_artoolkit4nft */;
+			targetProxy = 4AFFA65E0BE160F10096CDF8 /* PBXContainerItemProxy */;
+		};
+		4AFFA6610BE160F10096CDF8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78BDBDDB091B00CA00D9D0B9 /* osgart_simple */;
+			targetProxy = 4AFFA6600BE160F10096CDF8 /* PBXContainerItemProxy */;
 		};
 		78BDBDE3091B00CE00D9D0B9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2220,6 +2385,50 @@
 			};
 			name = Release;
 		};
+		4AFFA6640BE1611E0096CDF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "osgART Standard Edition";
+			};
+			name = Debug;
+		};
+		4AFFA6650BE1611E0096CDF8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = "osgART Standard Edition";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		4AFFA6670BE1611E0096CDF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "osgART Professional Edition";
+			};
+			name = Debug;
+		};
+		4AFFA6680BE1611E0096CDF8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = "osgART Professional Edition";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		7842DB1709182F5200414BD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2388,6 +2597,24 @@
 			buildConfigurations = (
 				4A9969CB0AC785D10068A373 /* Debug */,
 				4A9969CC0AC785D10068A373 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4AFFA6630BE1611E0096CDF8 /* Build configuration list for PBXAggregateTarget "osgART Standard Edition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4AFFA6640BE1611E0096CDF8 /* Debug */,
+				4AFFA6650BE1611E0096CDF8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4AFFA6660BE1611E0096CDF8 /* Build configuration list for PBXAggregateTarget "osgART Professional Edition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4AFFA6670BE1611E0096CDF8 /* Debug */,
+				4AFFA6680BE1611E0096CDF8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
