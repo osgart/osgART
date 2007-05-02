@@ -237,8 +237,7 @@ namespace osgART {
 			else 
 			{
 				std::cerr << "Unrecognized pattern type: " << patternType << std::endl;
-				ret = false;
-				break;
+				continue;
 			}
 
 			if(i >= AR_PATT_NUM_MAX)
