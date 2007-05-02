@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="NodeKit osgART"
-	ProjectGUID="{C4E2D5DC-8B9E-B84B-A503-9A884B5C111A}"
+	ProjectGUID="{90A1E641-A001-DF4A-9ED3-FFB4E0E2CD38}"
 	RootNamespace="NodeKit osgART"
 	Keyword="Win32Proj"
 	>

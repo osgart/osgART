@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="osgART"
-	ProjectGUID="{7E6B41C7-7398-6848-A2BD-47FB2334DA6A}"
+	ProjectGUID="{48663B1C-7652-2048-AC90-F835F7C79BBB}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -160,7 +160,13 @@
 					RelativePath="..\..\src\osgART\Marker.cpp">
 				</File>
 				<File
+					RelativePath="..\..\src\osgART\PlaneARShadowRenderer.cpp">
+				</File>
+				<File
 					RelativePath="..\..\src\osgART\PluginManager.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\ShadowRenderer.cpp">
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\TrackerManager.cpp">
@@ -170,6 +176,12 @@
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\Utils.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoBillboard.cpp">
+				</File>
+				<File
+					RelativePath="..\..\src\osgART\VideoConfig.cpp">
 				</File>
 				<File
 					RelativePath="..\..\src\osgART\VideoImageStream.cpp">

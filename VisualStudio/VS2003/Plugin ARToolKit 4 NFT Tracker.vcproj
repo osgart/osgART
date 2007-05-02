@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin ARToolKit 4 NFT Tracker"
-	ProjectGUID="{BBB8D5AA-55A6-C447-95D8-D7A3FE882BFE}"
+	ProjectGUID="{95C8C326-D799-774A-8EED-FA3CDEB0CBCE}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform

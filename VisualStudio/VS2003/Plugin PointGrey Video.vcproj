@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin PointGrey Video"
-	ProjectGUID="{9B7FCE8F-11BF-3042-8BA6-16344BD06A95}"
+	ProjectGUID="{6FEE407E-DE21-0344-9CB9-A7F68106D6C5}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform

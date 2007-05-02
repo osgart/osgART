@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="osgWrapper osgART"
-	ProjectGUID="{04BBC196-77FF-CB42-B499-3787E7EA8DCA}"
+	ProjectGUID="{375EDEE2-141B-2448-957D-796C8087343C}"
 	RootNamespace="osgWrapper osgART"
 	Keyword="Win32Proj"
 	>
@@ -222,6 +222,12 @@
 					</File>
 					<File
 						RelativePath="..\..\src\osgWrappers\osgART\PlaneARShadowRenderer.cpp">
+					</File>
+					<File
+						RelativePath="..\..\src\osgWrappers\osgART\PluginManager.cpp">
+					</File>
+					<File
+						RelativePath="..\..\src\osgWrappers\osgART\ShadowRenderer.cpp">
 					</File>
 					<File
 						RelativePath="..\..\src\osgWrappers\osgART\TrackerManager.cpp">
