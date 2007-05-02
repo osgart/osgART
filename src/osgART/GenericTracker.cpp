@@ -45,10 +45,24 @@ namespace osgART {
 		m_markerlist.clear();		
 	}
 
+	/* static */
+	GenericTracker* GenericTracker::cast(osg::Referenced* instance)
+	{
+		return dynamic_cast<GenericTracker*>(instance);
+	}
+
 	int
 	GenericTracker::getId()
 	{
 		return trackerId;
+	}
+
+	/*virtual */
+	bool GenericTracker::init(int xsize, int ysize, 
+			const std::string& pattlist_name/*="Data/markers_list.dat"*/,
+			const std::string& camera_name/*="Data/camera_para.dat"*/)
+	{
+		return false;
 	}
 
 	Marker* 
@@ -95,7 +109,7 @@ namespace osgART {
 	/*virtual*/
 	void 
 	GenericTracker::update()
-	{
+	{		
 	}
 
 	/* virtual */
@@ -164,7 +178,6 @@ namespace osgART {
 			_ret = m_tracker->init(xsize,ysize,pattlist_name,camera_name);
 
 			this->m_markerlist = m_tracker->m_markerlist;
-			//this->m_imageptr = m_tracker->m_imageptr;
 
 			memcpy(m_projectionMatrix,m_tracker->m_projectionMatrix,
 				sizeof(double) * 16);

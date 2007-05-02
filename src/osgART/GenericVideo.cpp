@@ -14,7 +14,6 @@
 #include "osgART/GenericVideo"
 #include "osgART/VideoManager"
 
-#include <OpenThreads/ScopedLock>
 #include <osg/Notify>
 
 namespace osgART {
@@ -36,6 +35,11 @@ namespace osgART {
 		FieldContainer<GenericVideo>()
 	{
 		osg::notify(osg::INFO) << "Copy C'tor" << std::endl;
+	}
+
+	GenericVideo* GenericVideo::cast(osg::Referenced* instance)
+	{
+		return dynamic_cast<GenericVideo*>(instance);
 	}
 
 	

@@ -61,7 +61,7 @@ namespace osgART {
 		 */
 		virtual bool init(int xsize, int ysize, 
 			const std::string& pattlist_name="Data/markers_list.dat",
-			const std::string& camera_name="Data/camera_para.dat") = 0;
+			const std::string& camera_name="Data/camera_para.dat");
 
 		/**
 		 * \brief Get a unique identifier for this tracker instance.
@@ -109,6 +109,15 @@ namespace osgART {
 		
 		virtual void	setEnable(const bool & _enable);
 		virtual bool	getEnable()const;
+		
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted to a tracker
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static GenericTracker* cast(osg::Referenced* instance);
 
 		
 	protected:		

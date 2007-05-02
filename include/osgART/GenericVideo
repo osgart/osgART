@@ -26,8 +26,7 @@
 #include "osgART/VideoConfig"
 #include "osgART/Field"
 
-
-
+// OpenThreads
 #include <OpenThreads/ScopedLock>
 #include <OpenThreads/Mutex>
 
@@ -41,7 +40,6 @@ namespace osgART {
 	{
 	public:
 	
-		
 		/** 
 		 * Default constructor. Initializes also the FieldContainer 
 		 * explicitly.
@@ -55,11 +53,36 @@ namespace osgART {
 			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 	    
 		/** 
-		* \brief affectation operator.
-		*
-		*/
+		 * \brief assignemnt operator.
+		 *
+		 */
 		GenericVideo& operator = (const GenericVideo &);
-	   
+	
+        virtual osg::Object* cloneType() const 
+        { 
+			return new GenericVideo(); 
+		}
+        
+        virtual osg::Object* clone(const osg::CopyOp& copyop) const 
+        { 
+			return new GenericVideo(*this,copyop); 
+		}
+			
+        virtual bool isSameKindAs(const osg::Object* obj) const 
+        {
+			return dynamic_cast<const GenericVideo*>(obj) != 0; 
+		}
+        
+        virtual const char* libraryName() const 
+        {
+			return "osgART"; 
+		}
+        
+        virtual const char* className() const 
+        {
+			return "GenericVideo";
+		}	
+	
 		/**
 		* \brief x size of the GenericVideo.
 		* @return the width of the GenericVideo stream.
@@ -72,21 +95,20 @@ namespace osgART {
 		*/
 		int getHeight() const;
 
-		
-		/**
-		 * \brief return the type of the pixel format in OpenGL terms.
-		 * @return An integer value less than 0 if an error occured. 
-		 */
-		void getGLPixelFormat(GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
-		
+			
 		/**
 		* \brief get GenericVideo id.
 		* @return a GenericVideo identifier.
 		*/
 		virtual int getID() const;
 		
-
-		inline OpenThreads::Mutex& getMutex() {
+		
+		/** 
+		 * Get the mutex for a video object to lock against read/write operations
+		 * \return reference to the internal mutex
+		 */
+		inline OpenThreads::Mutex& getMutex() 
+		{
 			return m_mutex;		
 		}
 		
@@ -114,6 +136,13 @@ namespace osgART {
 		 */
 		void setFlip(bool horizontal, bool vertical);
 		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted to a tracker
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static GenericVideo* cast(osg::Referenced* instance);
 
 		
 	   
