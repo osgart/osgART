@@ -24,6 +24,7 @@
 // TYPE_NAME_ALIAS(osgART::GenericVideo *(*, osgART::VideoManager::p_VideoCreateFunc);
 
 BEGIN_VALUE_REFLECTOR(osgART::VideoManager)
+// oad(const std::string& filename, bool resolveName = true);
 	I_Method1(int, addVideoStream, IN, osgART::GenericVideo *, video);
 	I_Method1(void, removeVideoStream, IN, osgART::GenericVideo *, video);
 	I_Method1(osgART::GenericVideo *, getVideo, IN, int, idVideo);
