@@ -17,15 +17,20 @@ namespace osgART {
 		this->m_plugininterfaces[name] = ref;
 	}
 
-	osg::Referenced* PluginManager::get(const std::string& name)
+	osg::Referenced* PluginManager::operator[](const std::string& identifier)
 	{
-		if (m_plugininterfaces.find(name) == m_plugininterfaces.end())
+		return this->get(identifier);
+	}
+
+	osg::Referenced* PluginManager::get(const std::string& identifier)
+	{
+		if (m_plugininterfaces.find(identifier) == m_plugininterfaces.end())
 		{
-			osg::notify(osg::WARN) << "Plugin '" << name << "' unknown!" << std::endl;
+			osg::notify(osg::WARN) << "Plugin '" << identifier << "' unknown!" << std::endl;
 
 			return 0L;
 		}
-		return ((*m_plugininterfaces.find(name)).second.get());
+		return ((*m_plugininterfaces.find(identifier)).second.get());
 	}
 
 	PluginManager* PluginManager::getInstance(bool erase /* = false */) 
@@ -35,7 +40,7 @@ namespace osgART {
 		
 		if (erase)
 		{
-			s_pluginmanager = 0;
+			s_pluginmanager = 0L;
 		}		
 		
 		return s_pluginmanager.get();
@@ -50,7 +55,8 @@ namespace osgART {
 #if !defined(NDEBUG)
 			localLibraryName += "_debug";
 #endif
-			// actually some platform are using .dylib (Apple)
+			// actually some platform are using other extensions like Apple (.dylib)
+			// however OpenSceneGraph uses the .so extension - we just follow this
 #if defined(__unix) || defined(__APPLE__)
 			localLibraryName = pluginname + ".so";
 #endif
@@ -58,7 +64,8 @@ namespace osgART {
 
 		osgDB::DynamicLibrary* lib = 0L;
 
-		// some plugins behave badly when loaded into memory
+		// some plugins behave badly when loaded, this is trying to prevent 
+		// crashing the whole application
 		try {
 			
 			lib = osgDB::DynamicLibrary::loadLibrary(localLibraryName);

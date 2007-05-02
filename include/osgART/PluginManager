@@ -28,7 +28,8 @@
 
 // Local include
 #include "osgART/Export"
-
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
 
 namespace osgART 
 {
@@ -62,15 +63,23 @@ namespace osgART
 		 * \param identifier to get the plugin instance
 		 * \return 0 if unsuccessfull or a pointer to the plugin
 		 */
-		osg::Referenced* get(const std::string& identifier);
-
+		osg::Referenced* get(const std::string& identifier);		
+		
+		/**
+		 * Shorthand for the get method. 
+		 * \param identifier to get the plugin instance
+		 * \return 0 if unsuccessfull or a pointer to the plugin
+		 */
+		osg::Referenced* operator[](const std::string& identifier);
+		
 		/**
 		 * Add a new instance of a dynamically loaded class
 		 * \param name identifier to retrieve the object
 		 * \param plugin pointer to the instantiated class
 		 */
 		void add(const std::string& name, osg::Referenced* plugin);
-
+		
+	
 	protected:
 		
 		typedef std::deque< osg::ref_ptr<osgDB::DynamicLibrary> > PluginArray;
