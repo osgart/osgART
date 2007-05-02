@@ -48,10 +48,6 @@ namespace osgART {
 		 */
 		PlaneARShadowRenderer(osg::Node*,osg::MatrixTransform*,osg::Vec2f size,int markerId = 0);
 		
-		/**
-		 * \brief destructor.
-		 */
-		virtual ~PlaneARShadowRenderer();
 
 		/**
 		 * Initialize
@@ -60,8 +56,12 @@ namespace osgART {
 	
 	protected:
 		
-	private:
 		osg::Vec2f m_planeSize;
+		
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~PlaneARShadowRenderer();
 	
 	};
 };

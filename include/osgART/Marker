@@ -91,29 +91,6 @@ namespace osgART {
 		 */
 		osg::Matrix* getTransformMatrix();
 
-
-		/**
-		 * Set smoothing factor for rotations.
-		 * \param r 		 
-		 */
-		void setRotationalSmoothing(float r);
-		
-		/** Get smooting factor for rotations.
-		 * \return smoothing factor
-		 */		 
-		float getRotationalSmoothing() const;
-		 			 	
-		/**
-		 * Set smoothing factor for translations.
-		 * \param t 		 
-		 */	
-		void setTranslationalSmoothing(float t);
-		
-		/** Get smooting factor for translation.
-		 * \return smoothing factor
-		 */		 
-		float getTranslationalSmoothing() const;
-
 		/**
 		* \brief set name of the marker
 		* \param name identifier name for the marker
