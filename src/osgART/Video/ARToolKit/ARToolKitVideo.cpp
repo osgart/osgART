@@ -54,7 +54,8 @@ namespace osgART {
 	{
 	}
 
-	ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &)
+	ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &, 
+			const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/)
 	{	    
 	}
 
