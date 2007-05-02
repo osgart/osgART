@@ -21,6 +21,8 @@
 #ifndef OSGART_VIDEOCONFIG
 #define OSGART_VIDEOCONFIG 1
 
+#include <osg/Vec2s>
+
 #include "osgART/Export"
 
 #include <string>
@@ -87,6 +89,46 @@ namespace osgART {
 		PixelFormatType type;
 		std::string deviceconfig;
 	} VideoConfiguration;
+	
+	class OSGART_EXPORT VideoConfig {
+	public:
+	
+		VideoConfig();
+		virtual ~VideoConfig();
+		
+		virtual int getID() const { return _id; };	
+		virtual void setID(int id) {_id = id;};
+		
+		virtual float getFramerate() const { return _framerate;};
+		void setFrameRate(float framerate) { _framerate = framerate; };
+						
+		virtual const std::string& getDevice() const { return _device; };
+		void setDevice(const std::string& devicename) { _device = devicename; };
+		
+		virtual const osg::Vec2s& getSize() const { return _size;};
+		virtual void setSize(const osg::Vec2s& size) {_size = size;};
+		virtual void setSize(short width, short height) { _size = osg::Vec2s(width,height);};
+		
+		virtual void setPixelFormat(const std::string& fourcc);
+		
+		
+		
+		virtual void showDeviceDialog();
+		virtual void showFormatDialog();
+		
+		
+	protected:
+
+		int _id;
+		osg::Vec2s _size;
+		float _framerate;
+	
+		std::string _device;
+		
+		// FrameRateType framerate;
+		PixelFormatType _pixelformat;
+		
+	};
 
 };
 
