@@ -52,11 +52,8 @@ package.includepaths = {
 }
 
 package.excludes = {
-	"../../src/osgART/VideoBillboard.cpp",
 	"../../src/osgART/VideoForeground.cpp",
 	"../../src/osgART/VideoBackground.cpp",
-	"../../src/osgART/ShadowRenderer.cpp",
-	"../../src/osgART/PlaneARShadowRenderer.cpp",
 	}
 
 
@@ -118,8 +115,6 @@ package.files = {
 
 package.excludes = {
 	"../../src/osgWrappers/osgART/Field.cpp",
-	"../../src/osgWrappers/osgART/ShadowRenderer.cpp",
-	"../../src/osgWrappers/osgART/PlaneARShadow.cpp",
 }
 
 package.config["Debug"].target = package.target .. globals.targetsuffix
