@@ -19,10 +19,12 @@ typedef int AR_PIXEL_FORMAT;
 #include "MultiMarker"
 #include "NFTMarker"
 
+
 #include <iostream>
 #include <fstream>
 
 #include <osg/Notify>
+#include <osgART/GenericVideo>
 
 //#include <AR/gsub.h>
 #include <AR/gsub_lite.h>
@@ -92,18 +94,27 @@ ARToolKit4NFTTracker::ARToolKit4NFTTracker() : GenericTracker(),
 		ar3DHandle(0L),
 		ar2Handle(0L),
 		surfaceSet(0L),
+		contF(0),
+		active_surface(-1),
 		_useNFT(true)
 {
 	// attach a new field to the name "threshold"
 	m_fields["threshold"] = new TypedField<int>(&threshold);
 	m_fields["enableNFT"] = new TypedField<bool>(&_useNFT);
 
+	m_fields["image_mode"] = new CallbackField<ARToolKit4NFTTracker,int>(this,
+		ARToolKit4NFTTracker::getImageMode,
+		ARToolKit4NFTTracker::setImageMode);
+
+	m_fields["matching_method"] = new CallbackField<ARToolKit4NFTTracker,int>(this,
+		ARToolKit4NFTTracker::getMatchingMethod,
+		ARToolKit4NFTTracker::setMatchingMethod);
+
 	//image = NULL;
 }
 
 ARToolKit4NFTTracker::~ARToolKit4NFTTracker()
-{
-    
+{    
 }
 
 
@@ -119,18 +130,19 @@ ARToolKit4NFTTracker::init(int xsize,int ysize,
 		std::cerr << "ERROR: Camera parameter load error." << std::endl;
 		return false;
     }
-    arParamChangeSize(&wparam, xsize, ysize,&cparam);
+    arParamChangeSize(&wparam, xsize, ysize, &cparam);
+
 	std::cout << "*** Camera Parameter ***" << std::endl;
     arParamDisp( &cparam );
 
-	if( (arHandle=arCreateHandle(&cparam)) == NULL ) 
+	if( (arHandle = arCreateHandle(&cparam)) == NULL ) 
 	{
 		std::cerr << "ERROR: arCreateHandle." << std::endl;
         return false;
     }
 
-	int pixFormat;
-	pixFormat=AR_PIXEL_FORMAT_BGRA;
+	int pixFormat = AR_PIXEL_FORMAT_BGRA;
+
     if( arSetPixelFormat(arHandle, pixFormat) < 0 ) 
 	{
         std::cerr << "Error: arSetPixelFormat." << std::endl;
@@ -166,14 +178,13 @@ ARToolKit4NFTTracker::init(int xsize,int ysize,
 	//INIT NFT
 	int	matchingImageMode = AR2_MATCHING_FRAME_IMAGE;
 	int	matchingMethod    = AR2_MATCHING_FINE;
+
 	int	debugMode         = 0;
     
 	ar2Handle = ar2CreateHandle( &cparam, pixFormat );
 
 	ar2ChangeMacthingImageMode( ar2Handle, matchingImageMode );
-
 	ar2ChangeMacthingMethod( ar2Handle, matchingMethod );
-
 	ar2ChangeDebugMode( ar2Handle, debugMode );
 
 	//arFittingMode   = AR_FITTING_TO_IDEAL;
@@ -209,7 +220,8 @@ ARToolKit4NFTTracker::setupMarkers(const std::string& patternListFile)
 
 	std::string patternName, patternType;
 
-	std::cerr<<"ARToolKit4NFTTracker::setupMarkers:/ Number of markers: "<<patternNum<<std::endl;
+	// notify about the amount of markers
+	osg::notify() << "ARToolKit4NFTTracker::setupMarkers: Number of markers: " << patternNum << std::endl;
 
 	for (int i = 0; i < patternNum; i++) {
 
@@ -338,14 +350,38 @@ ARToolKit4NFTTracker::addNFTMarker(const std::string& nftFile)
 	return m_markerlist.size() - 1;
 }
 
-void ARToolKit4NFTTracker::setThreshold(int thresh)	{
+void ARToolKit4NFTTracker::setThreshold(int thresh)	
+{
 		// jcl64: Clamp to 0-255, hse25: use osg func
 		threshold = osg::clampBetween(thresh,0,255);		
-	}
-
-int ARToolKit4NFTTracker::getThreshold() {
-		return threshold;
 }
+
+int ARToolKit4NFTTracker::getThreshold() 
+{
+	return threshold;
+}
+
+void ARToolKit4NFTTracker::setImageMode(const int& mode)	
+{
+	ar2ChangeMacthingImageMode( ar2Handle, mode );
+}
+
+int ARToolKit4NFTTracker::getImageMode() const
+{
+	return 0;
+}
+
+
+void ARToolKit4NFTTracker::setMatchingMethod(const int& mode)	
+{
+	ar2ChangeMacthingMethod( ar2Handle, mode );
+}
+
+int ARToolKit4NFTTracker::getMatchingMethod() const
+{
+	return 0;
+}
+
 
 
 int 
@@ -356,7 +392,11 @@ ARToolKit4NFTTracker::square_tracking( ARUint8 *dataPtr, double patt_trans1[3][4
     double          wtrans[3][4];
     double          wtrans2[3][4];
 	double			err;
-    int             i, j, k, l, m, n; 
+    int             i, j, k, l, m, n;
+
+	
+	// detect visible markers
+	arDetectMarker(arHandle,dataPtr);
 
     // check if currently visible marker belongs to one of the surfaces
     k = -1; 
@@ -428,17 +468,14 @@ void ARToolKit4NFTTracker::updateStandardTracker()
 void
 ARToolKit4NFTTracker::updateNFTTracker(ARUint8* imageptr)
 {	
-	// reset active surface to none active
-	static int active_surface = -1;
-		
-	static double		patt_trans1[3][4]; 
-	static double		patt_trans2[3][4]; 
-	static double		patt_trans3[3][4];
-	static int			contF = 0; 
-	double				new_trans[3][4];
-	double				err;
 
-	MarkerList::iterator iter = m_markerlist.begin();
+	double				new_trans[3][4];
+	double				err(1.0);
+
+
+	// get an iterator
+	osgART::GenericTracker::MarkerList::iterator iter = m_markerlist.begin();
+	
 	// declare all nft-markers as not valid
 	while (iter != m_markerlist.end())
 	{
@@ -453,22 +490,29 @@ ARToolKit4NFTTracker::updateNFTTracker(ARUint8* imageptr)
 		// try NFT tracking
 		if( ((contF == 1 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, NULL, NULL, new_trans, &err) == 0)
 			|| (contF == 2 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, NULL, new_trans, &err) == 0)
-			|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0))
-			&& err < 10.0)
+			|| (contF == 3 && ar2Tracking_Jens(active_surface, ar2Handle, surfaceSet, imageptr, patt_trans1, patt_trans2, patt_trans3, new_trans, &err) == 0)
+			&& err < 10.0f))
 		{
-			//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here2" << std::endl;
-			//std::cerr<<"features found.."<<std::endl;
-			for(int  j = 0; j < 3; j++ ) {
-				for(int  i = 0; i < 4; i++ ) patt_trans3[j][i] = patt_trans2[j][i];
-				for(int  i = 0; i < 4; i++ ) patt_trans2[j][i] = patt_trans1[j][i];
-				for(int  i = 0; i < 4; i++ ) patt_trans1[j][i] = new_trans[j][i];
-			}
-			contF++;
-			if( contF > 3) contF = 3;
+			for (register int i = 0; i < 4; i++)
+			{
+				patt_trans3[0][i] = patt_trans2[0][i];
+				patt_trans3[1][i] = patt_trans2[1][i];
+				patt_trans3[2][i] = patt_trans2[2][i];
+
+				patt_trans2[0][i] = patt_trans1[0][i];
+				patt_trans2[1][i] = patt_trans1[1][i];
+				patt_trans2[2][i] = patt_trans1[2][i];
+
+				patt_trans1[0][i] = new_trans[0][i];
+				patt_trans1[1][i] = new_trans[1][i];
+				patt_trans1[2][i] = new_trans[2][i];
+
+				contF++;
+				if( contF > 3) contF = 3;
+			}	
 		}
 		// NFT failed, try normal marker tracking
 		else {
-			//std::cout << "ARToolKit4NFTTracker::updateNFTTracker:/ here3" << std::endl;
 
 			if( (active_surface = square_tracking(imageptr, patt_trans1 )) < 0 ){
 				contF = 0;
@@ -479,13 +523,17 @@ ARToolKit4NFTTracker::updateNFTTracker(ARUint8* imageptr)
 			}
 		}
 	}
-	// nft was disabled via _useNFT using field mechanism
-	else{
+	// NFT failed, try normal marker tracking
+	else {
+
+		// detect visible markers
+		arDetectMarker(arHandle,imageptr);
+
 		if( (active_surface = square_tracking(imageptr, patt_trans1 )) < 0 ){
 			contF = 0;
 		}
 		else {
-			//std::cerr<<"ARToolKit4NFTTracker::updateNFTTracker:/ marker found on surface "<< active_surface <<std::endl;
+			osg::notify() << "ARToolKit4NFTTracker::updateNFTTracker:/ marker found on surface '"<< active_surface << "'" << std::endl;
 			contF = 1;	
 		}
 	}
@@ -506,32 +554,45 @@ ARToolKit4NFTTracker::update()
 		return;
 	}
 
+	osg::Image *image = m_imagesource.get();
+
 	// Do not update with a null image.
-	if (!m_imagesource->valid())
+	if (!image->valid())
 	{
 		osg::notify(osg::WARN) << "osgart_artoolkit_tracker: received NULL pointer as image" << std::endl;
 		return;
 	}
 
 	// hse25: performance measurement: only update if the image was modified
-	if (m_imagesource->getModifiedCount() == m_lastModifiedCount)
+	if (image->getModifiedCount() == m_lastModifiedCount)
 	{
 		return; 
 	}
 
 	// update internal modified count
-	m_lastModifiedCount = m_imagesource->getModifiedCount();
+	m_lastModifiedCount = image->getModifiedCount();
 
-	//arSetPixelFormat(arHandle, getARPixelFormatForImage(*m_imagesource.get()));
+	// lock against video updates
+	osgART::GenericVideo* video = dynamic_cast<GenericVideo*>(image);
+	if (video)
+	{
+		video->getMutex().lock();
+	}
 
-	// detect visible markers
-	arDetectMarker(arHandle,m_imagesource->data());
-	
+	// set the pixel format
+	arSetPixelFormat(arHandle, ARToolKit4NFTTracker::getARPixelFormatForImage(*image));
+		
 	// update single and multiple artoolkit markers
 	updateStandardTracker();
 	
 	// update nft
 	updateNFTTracker(m_imagesource->data());
+
+	if (video)
+	{
+		video->getMutex().unlock();
+	}
+
 }
 
 
@@ -542,49 +603,66 @@ void ARToolKit4NFTTracker::setProjection(const double n, const double f)
 
 
 
-int ARToolKit4NFTTracker::getARPixelFormatForImage(const osg::Image& _image) const
+//static
+int ARToolKit4NFTTracker::getARPixelFormatForImage(const osg::Image& image)
 {
+
+#if 1
+	switch (image.getPixelFormat())
+	{
+	case GL_RGBA :
+		return AR_PIXEL_FORMAT_RGBA;
+	case GL_BGRA :
+		return AR_PIXEL_FORMAT_BGRA;
+	}
+
+	std::cerr << "ARGH" << std::endl; 
+
+	return 0;
+}
+#else
+	
 	int format = 0, size = 0;
 	
-	if (_image.valid()) {
-		switch (_image.getPixelFormat()) {
+	if (image.valid()) {
+		switch (image.getPixelFormat()) {
 			case GL_RGBA:
-				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+				if (image.getDataType() == GL_UNSIGNED_BYTE) {
 					format = AR_PIXEL_FORMAT_RGBA;
 					size = 4;
 				}
 				break;
 			case GL_ABGR_EXT:
-				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+				if (image.getDataType() == GL_UNSIGNED_BYTE) {
 					format = AR_PIXEL_FORMAT_ABGR;
 					size = 4;
 				}
 				break;
 			case GL_BGRA:
-				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+				if (image.getDataType() == GL_UNSIGNED_BYTE) {
 					format = AR_PIXEL_FORMAT_BGRA;
 					size = 4;
 				}
 #ifdef AR_BIG_ENDIAN
-				else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8_REV) {
+				else if (image.getDataType() == GL_UNSIGNED_INT_8_8_8_8_REV) {
 					format = AR_PIXEL_FORMAT_ARGB;
 					size = 4;
 				}
 #else
-				else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8) {
+				else if (image.getDataType() == GL_UNSIGNED_INT_8_8_8_8) {
 					format = AR_PIXEL_FORMAT_ARGB;
 					size = 4;
 				}
 #endif
 				break;
 			case GL_RGB:
-				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+				if (image.getDataType() == GL_UNSIGNED_BYTE) {
 					format = AR_PIXEL_FORMAT_RGB;
 					size = 3;
 				}
 				break;
 			case GL_BGR:
-				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+				if (image.getDataType() == GL_UNSIGNED_BYTE) {
 					format = AR_PIXEL_FORMAT_BGR;
 					size = 3;
 				}
@@ -592,25 +670,25 @@ int ARToolKit4NFTTracker::getARPixelFormatForImage(const osg::Image& _image) con
 			case GL_YCBCR_422_APPLE:
 			case GL_YCBCR_MESA:
 #ifdef AR_BIG_ENDIAN
-				if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+				if (image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
 					format = AR_PIXEL_FORMAT_2vuy; // N.B.: GL_UNSIGNED_SHORT_8_8_REV_APPLE = GL_UNSIGNED_SHORT_8_8_REV_MESA
 					size = 2;
-				} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+				} else if (image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
 					format = AR_PIXEL_FORMAT_yuvs; // GL_UNSIGNED_SHORT_8_8_APPLE = GL_UNSIGNED_SHORT_8_8_MESA
 					size = 2;
 				}
 #else
-				if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+				if (image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
 					format = AR_PIXEL_FORMAT_2vuy;
 					size = 2;
-				} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+				} else if (image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
 					format = AR_PIXEL_FORMAT_yuvs;
 					size = 2;
 				}
 #endif
 				break;
 			case GL_LUMINANCE:
-				if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+				if (image.getDataType() == GL_UNSIGNED_BYTE) {
 					format = AR_PIXEL_FORMAT_MONO;
 					size = 1;
 				}
@@ -621,7 +699,7 @@ int ARToolKit4NFTTracker::getARPixelFormatForImage(const osg::Image& _image) con
 	}
 	return (format);
 }
-
+#endif
 bool ARToolKit4NFTTracker::getNFTOn(){
 	return _useNFT;
 }

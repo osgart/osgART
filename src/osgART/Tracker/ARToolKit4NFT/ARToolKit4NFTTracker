@@ -31,10 +31,19 @@
  
 // graphics include
 
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+
+extern "C" {
+
+// ARToolKit 4
 #include <AR/config.h>
 #include <AR/param.h>
 #include <AR/ar.h>
 
+// ARToolKit NFT
 #include <AR2/marker.h>    
 #include <AR2/featureSet.h>    
 #include <AR2/imageSet.h>    
@@ -43,10 +52,7 @@
 #include <AR2/template.h>    
 #include <AR2/util.h>
 
-#include "osgART/Export"
-#include "osgART/Marker"
-#include "osgART/GenericVideo"
-#include "osgART/GenericTracker"
+};
 
 namespace osgART {
 
@@ -154,7 +160,7 @@ namespace osgART {
 		* 
 		* This function applies natural feature tracking to the last image defined by setImage.
 		*/
-		void updateNFTTracker(ARUint8* imageptr);
+		void updateNFTTracker(unsigned char* imageptr);
 		
 		
 	    /** 
@@ -165,11 +171,38 @@ namespace osgART {
 	    bool getNFTOn();
 	    
 	protected: 
+	
+		/**
+		 * callback for image mode
+		 */
+		void setImageMode(const int& mode);
+		
+		/**
+		 * callback for image mode
+		 */
+		int getImageMode() const;
+		
+		
+		/**
+		 * callback for matching method
+		 */
+		void setMatchingMethod(const int& mode);
+		
+		/**
+		 * callback for matching method
+		 */
+		int getMatchingMethod() const;
+		
 	    
 		/** 
 		 * \brief destructor.
 		 */
 		virtual ~ARToolKit4NFTTracker();
+		
+				
+		int contF;
+		
+		int active_surface;
 		
 	private:
 	
@@ -181,14 +214,15 @@ namespace osgART {
 		* @param gl the computed GL Matrix
 		*/
 		
-		int square_tracking( ARUint8 *dataPtr, double patt_trans1[3][4] );
+		int square_tracking( unsigned char *dataPtr, double patt_trans1[3][4] );
 	
 		bool setupMarkers(const std::string& patternListFile);
 	
 		ARParam				cparam;
 		std::string			cparamName;
 		int					threshold;
-
+		
+		
 		ARHandle           *arHandle;
 		ARPattHandle       *arPattHandle;
 		AR3DHandle         *ar3DHandle;
@@ -196,9 +230,12 @@ namespace osgART {
 		AR2HandleT			*ar2Handle;
 		AR2SurfaceSetT		*surfaceSet;
 		
+		double patt_trans1[3][4];
+		double patt_trans2[3][4];
+		double patt_trans3[3][4];
 		bool _useNFT;
 				
-		int getARPixelFormatForImage(const osg::Image& _image) const;
+		static int getARPixelFormatForImage(const osg::Image& image);
 	 
 	};
 };
