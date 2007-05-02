@@ -356,14 +356,23 @@ namespace osgART {
 			osg::notify(osg::WARN) << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
+	
+		// lock agains video updates
+		GenericVideo* video = dynamic_cast<GenericVideo*>(m_imagesource.get());
+		if (video)
+		{
+			video->getMutex().lock();
+		}
 
 		// Detect the markers in the video frame.
-		if (arDetectMarker(m_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) {
+		if (arDetectMarker(m_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) 
+		{
 			osg::notify(osg::FATAL) << "Error detecting markers in image." << std::endl;
+			// TODO: unlock the mutex for a graceful shutdown
 			return;
 		}
 
-		// Debug Image.
+		// Debug Image
 		if (arDebug) {
 			GLenum internalformat_GL;
 			GLenum format_GL;
@@ -421,6 +430,11 @@ namespace osgART {
 			} else {
 				std::cerr << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
 			}
+		}
+
+		if (video)
+		{
+			video->getMutex().unlock();
 		}
 	}
 
