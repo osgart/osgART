@@ -7,7 +7,7 @@ require "plugins"
 
 
 project.name = "osgART"
-project.configs = { "Debug", "Release" }
+project.configs = { "Debug", "Release", "DebugProf", "ReleaseProf" }
 
 if     (target == "vs2003") then
 	project.path = "../VisualStudio/VS2003"
@@ -365,7 +365,7 @@ if (OS == "windows") then
 
     table.insert(package.includepaths,"$(ARTOOLKIT_2_ROOT)/DSVL2/src")
     table.insert(package.includepaths,"$(DXSDK_DIR)/Extras/DirectShow/Samples/C++/DirectShow/BaseClasses")
-    table.insert(package.libpaths,"$(ARTOOLKIT_2_ROOT)/DSVL/lib")
+    table.insert(package.libpaths,"$(ARTOOLKIT_2_ROOT)/DSVL2/lib")
 	table.insert(package.libpaths,"$(DXSDK_DIR)/Extras/DirectShow/Samples//C++/DirectShow/BaseClasses/Release")
 	
 	table.insert(package.links,"DSVL2")
