@@ -29,6 +29,27 @@ osgART::PluginProxy<osgART::ARToolKitTracker_Plus> g_artoolkitplus("tracker_arto
 
 #define YCK_GENERIC_TRACKER 0
 
+
+
+// Make sure that required OpenGL constant definitions are available at compile-time.
+// N.B. These should not be used unless the renderer indicates (at run-time) that it supports them.
+// Define constants for extensions (not yet core).
+#ifndef GL_APPLE_ycbcr_422
+#  define GL_YCBCR_422_APPLE				0x85B9
+#  define GL_UNSIGNED_SHORT_8_8_APPLE		0x85BA
+#  define GL_UNSIGNED_SHORT_8_8_REV_APPLE	0x85BB
+#endif
+#ifndef GL_EXT_abgr
+#  define GL_ABGR_EXT						0x8000
+#endif
+#ifndef GL_MESA_ycbcr_texture
+#  define GL_YCBCR_MESA						0x8757
+#  define GL_UNSIGNED_SHORT_8_8_MESA		0x85BA
+#  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
+#endif
+
+
+
 namespace osgART {
 
 	
@@ -69,6 +90,7 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 			m_poseEstimMode	(_ART_PLUS_DFLT_POSE_ESTIM),
 			m_undistortMode	(_ART_PLUS_DFLT_UNDISTORT_MODE),
 			m_AutoThresholdRetriesNbr(_ART_PLUS_DFLT_THRESHOLD_AUTO_RETRY_NBR),
+			m_AutoThreshold	(_ART_PLUS_DFLT_THRESHOLD_AUTO),
 			m_useDetectLite	(_ART_PLUS_DFLT_USE_LITE),
 			m_PlusTracker	(NULL)
 	{
@@ -77,15 +99,16 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 		m_version	= "2.1";
 //		__AR_DO_PROFILE(m_version+="(Prf)");
 
-#if	AR_TRACKER_PROFILE
-		{
-			std::cout << "Profiling Mode"<< std::endl;
-			std::cout << std::endl << "should be : osgart_artoolkitplus_tracker_profiler.dll"<< std::endl;
-		}
-#else
-		std::cout << std::endl << "should be : osgart_artoolkitplus_tracker.dll"<< std::endl;
+		if(m_debugMode)
+		#if	AR_TRACKER_PROFILE
+			{
+				std::cout << "Profiling Mode"<< std::endl;
+				std::cout << std::endl << "should be : osgart_artoolkitplus_tracker_profiler.dll"<< std::endl;
+			}
+		#else
+			std::cout << std::endl << "should be : osgart_artoolkitplus_tracker.dll"<< std::endl;
 
-#endif
+		#endif
 
 
 
@@ -194,6 +217,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 			setMarkerMode(m_markerMode);
 // #if YCK_GENERIC_TRACKER
 			setPixelFormat(ARToolKitPlus::PIXEL_FORMAT_BGR);
+			
 			// ConvertOSGARTPixelFormatToART(m_arInternalFormat));
 // #endif			
 			
@@ -656,6 +680,29 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		m_lastModifiedCount = m_imagesource->getModifiedCount();
 
 
+		// \TODO: hse25: check here for the moment, the function needs to be extended
+		if (m_PlusTracker->getPixelFormat() != getARPixelFormatForImage(*m_imagesource.get()))
+		{
+			//check if format is compatible:
+			int NewVideoFormat = getARPixelFormatForImage(*m_imagesource.get());
+			if(NewVideoFormat > 0)
+			{
+				setPixelFormat((ARToolKitPlus::PIXEL_FORMAT) NewVideoFormat);
+			}
+			else
+			{
+				osg::notify(osg::WARN) << "osgart_artoolkit_tracker::update() Incompatible pixelformat!" << std::endl;
+                return;
+			}
+		}
+
+		// lock agains video updates
+		GenericVideo* video = dynamic_cast<GenericVideo*>(m_imagesource.get());
+		if (video)
+		{
+			video->getMutex().lock();
+		}
+
 	ARToolKitPlus::ARMarkerInfo    *marker_info;
 	float confidence = 0.0f;  
 
@@ -665,6 +712,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 	AR_BENCH_TIME(ThisFct, 
 		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imagesource->data()), m_threshold, &marker_info, &m_marker_num) < 0)
 		{
+			// TODO: unlock the mutex for a graceful shutdown
 			return;
 		}
 	, 1, //pattern in memory
@@ -672,11 +720,12 @@ bool ARToolKitTracker_Plus::CreateTracker(
 #else 
 		if(m_PlusTracker->arDetectMarker(const_cast<unsigned char*>(m_imagesource->data()), m_threshold, &marker_info, &m_marker_num) < 0)
 		{
+			// TODO: unlock the mutex for a graceful shutdown
 			return;
 		}
 #endif
 
-	osg::notify() << "arDetectMarker() => Markerdetected = " <<m_marker_num<<std::endl;
+		osg::notify() << "arDetectMarker() => Markerdetected = " <<m_marker_num<<std::endl;
 
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
@@ -751,8 +800,169 @@ bool ARToolKitTracker_Plus::CreateTracker(
 					osg::notify(osg::WARN)<< "ARToolKitPlusTracker::update() : Unknown marker type id!" << std::endl;
 				}
 			}
+
+		if (video)
+		{
+			video->getMutex().unlock();
+		}
+
 		if(m_debugMode)
 			osg::notify() << "<-Stop" <<  getLabel() << "::update()" << std::endl;
+	}
+
+	int ARToolKitTracker_Plus::getARPixelFormatForImage(const osg::Image& _image) const
+	{
+		int format = 0, size = 0;
+		
+		if (_image.valid()) {
+			switch (_image.getPixelFormat()) {
+				case GL_RGBA:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = ARToolKitPlus::PIXEL_FORMAT_RGBA;
+						size = 4;
+					}
+					break;
+				case GL_ABGR_EXT:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = ARToolKitPlus::PIXEL_FORMAT_ABGR;
+						size = 4;
+					}
+					break;
+				case GL_BGRA:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = ARToolKitPlus::PIXEL_FORMAT_BGRA;
+						size = 4;
+					}
+#if 0
+	#ifdef AR_BIG_ENDIAN
+					else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8_REV) {
+						format = ARToolKitPlus::PIXEL_FORMAT_ARGB;
+						size = 4;
+					}
+	#else
+					else if (_image.getDataType() == GL_UNSIGNED_INT_8_8_8_8) {
+						format = ARToolKitPlus::PIXEL_FORMAT_ARGB;
+						size = 4;
+					}
+	#endif
+#endif
+					break;
+				case GL_RGB:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = ARToolKitPlus::PIXEL_FORMAT_RGB;
+						size = 3;
+					}
+					break;
+				case GL_BGR:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = ARToolKitPlus::PIXEL_FORMAT_BGR;
+						size = 3;
+					}
+					break;
+#if 0
+				case GL_YCBCR_422_APPLE:
+				case GL_YCBCR_MESA:
+	#ifdef AR_BIG_ENDIAN
+					if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+						format = AR_PIXEL_FORMAT_2vuy; // N.B.: GL_UNSIGNED_SHORT_8_8_REV_APPLE = GL_UNSIGNED_SHORT_8_8_REV_MESA
+						size = 2;
+					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+						format = AR_PIXEL_FORMAT_yuvs; // GL_UNSIGNED_SHORT_8_8_APPLE = GL_UNSIGNED_SHORT_8_8_MESA
+						size = 2;
+					}
+	#else
+					if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_APPLE) {
+						format = AR_PIXEL_FORMAT_2vuy;
+						size = 2;
+					} else if (_image.getDataType() == GL_UNSIGNED_SHORT_8_8_REV_APPLE) {
+						format = AR_PIXEL_FORMAT_yuvs;
+						size = 2;
+					}
+	#endif
+					break;
+#endif
+				case GL_LUMINANCE:
+					if (_image.getDataType() == GL_UNSIGNED_BYTE) {
+						format = ARToolKitPlus::PIXEL_FORMAT_LUM;
+						size = 1;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		return (format);
+	}
+
+	int ARToolKitTracker_Plus::getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) const
+	{
+		// Translate the internal pixelformat to an OpenGL texture2D triplet.
+		switch (arPixelFormat) {
+			case ARToolKitPlus::PIXEL_FORMAT_RGB:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_RGB;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case ARToolKitPlus::PIXEL_FORMAT_BGR:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_BGR;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case ARToolKitPlus::PIXEL_FORMAT_RGBA:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_RGBA;
+				*type_GL = GL_UNSIGNED_BYTE;
+			case ARToolKitPlus::PIXEL_FORMAT_BGRA:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_BGRA;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+#if 0
+			case AR_PIXEL_FORMAT_ARGB:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_BGRA;
+#ifdef AR_BIG_ENDIAN
+				*type_GL = GL_UNSIGNED_INT_8_8_8_8_REV;
+#else
+				*type_GL = GL_UNSIGNED_INT_8_8_8_8;
+#endif
+				break;
+#endif
+			case ARToolKitPlus::PIXEL_FORMAT_ABGR:
+				*internalformat_GL = GL_RGBA;
+				*format_GL = GL_ABGR_EXT;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+			case ARToolKitPlus::PIXEL_FORMAT_LUM:
+				*internalformat_GL = GL_LUMINANCE8;
+				*format_GL = GL_LUMINANCE;
+				*type_GL = GL_UNSIGNED_BYTE;
+				break;
+#if 0
+			case AR_PIXEL_FORMAT_2vuy:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_YCBCR_422_APPLE; //GL_YCBCR_MESA
+#ifdef AR_BIG_ENDIAN
+				*type_GL = GL_UNSIGNED_SHORT_8_8_REV_APPLE; //GL_UNSIGNED_SHORT_8_8_REV_MESA
+#else
+				*type_GL = GL_UNSIGNED_SHORT_8_8_APPLE; //GL_UNSIGNED_SHORT_8_8_MESA
+#endif
+				break;
+			case AR_PIXEL_FORMAT_yuvs:
+				*internalformat_GL = GL_RGB;
+				*format_GL = GL_YCBCR_422_APPLE; //GL_YCBCR_MESA
+#ifdef AR_BIG_ENDIAN
+				*type_GL = GL_UNSIGNED_SHORT_8_8_APPLE; //GL_UNSIGNED_SHORT_8_8_MESA
+#else
+				*type_GL = GL_UNSIGNED_SHORT_8_8_REV_APPLE; //GL_UNSIGNED_SHORT_8_8_REV_MESA
+#endif
+				break;
+#endif
+			default:
+				return (-1);
+				break;
+		}
+		return (0);
 	}
 
 //==============================================================================

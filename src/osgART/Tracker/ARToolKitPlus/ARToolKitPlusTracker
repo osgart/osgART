@@ -337,7 +337,7 @@ protected:
 
 public:
 	unsigned char* getDebugImage();
-	void	setImageRaw(unsigned char * image, PixelFormatType format);
+	//void	setImageRaw(unsigned char * image, PixelFormatType format);
 
 //++++++++++++++++++++++++++++++++++++
 //	Accessing Functions Get/Set......
@@ -394,6 +394,9 @@ protected:
 		*/
 	virtual ~ARToolKitTracker_Plus();	
 	
+//	virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
+		
+	
 protected:
 	bool	CreateTracker(ARToolKitPlus::MARKER_MODE _markerMode, int _Width, 	int _Height);
 	bool	setupMarkers(const std::string& patternListFile);
@@ -413,6 +416,10 @@ private :
 	bool 				m_debugMode;							//!< Debug mode flag.
 	int					m_marker_num;							//!< Number of potential markers found in the previous image.
 	
+	int getARPixelFormatForImage(const osg::Image& _image) const;
+	int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) const;
+
+
 	//ARToolKit plus features
 	ARToolKitPlus::IMAGE_PROC_MODE		m_imageProcMode;		//!< Image processing mode: {IMAGE_HALF_RES,IMAGE_FULL_RES}.
 	int									m_AutoThreshold;		//!< Automatic threshold flag.
