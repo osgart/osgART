@@ -161,6 +161,7 @@
 		4AA81F290B81336700BA6D59 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7842DE9609184FA400414BD5 /* OpenGL.framework */; };
 		4AA822C50B82874C00BA6D59 /* TransformFilterCallback in Headers */ = {isa = PBXBuildFile; fileRef = 4AA822C40B82874C00BA6D59 /* TransformFilterCallback */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AA822C70B82877500BA6D59 /* TransformFilterCallback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AA822C60B82877500BA6D59 /* TransformFilterCallback.cpp */; };
+		4AB4CABD0BF044AB00D1AF18 /* VideoConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AB4CABC0BF044AB00D1AF18 /* VideoConfig.cpp */; };
 		4AE1D4870B701A80001CB3B5 /* VideoImageStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */; };
 		4AE1D48D0B701AC1001CB3B5 /* VideoImageStream in Headers */ = {isa = PBXBuildFile; fileRef = 4AE1D4890B701AA1001CB3B5 /* VideoImageStream */; settings = {ATTRIBUTES = (Public, ); }; };
 		4AE1ED6B0A630FD8007D0FA4 /* GenericTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ED570A630FD8007D0FA4 /* GenericTracker.cpp */; };
@@ -267,77 +268,77 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 7842DB5609183C2F00414BD5 /* osgART */;
+			remoteGlobalIDString = 7842DB5609183C2F00414BD5;
 			remoteInfo = osgART;
 		};
 		4AFFA64D0BE160C70096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
+			remoteGlobalIDString = 4A55AB1E0AA7A376005EDC69;
 			remoteInfo = osgart_video_artoolkit;
 		};
 		4AFFA64F0BE160C70096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
+			remoteGlobalIDString = 4A38FA870AD5EB78006DC8DB;
 			remoteInfo = osgart_tracker_artoolkit;
 		};
 		4AFFA6510BE160C70096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 78BDBDDB091B00CA00D9D0B9 /* osgart_simple */;
+			remoteGlobalIDString = 78BDBDDB091B00CA00D9D0B9;
 			remoteInfo = osgart_simple;
 		};
 		4AFFA6540BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 7842DB5609183C2F00414BD5 /* osgART */;
+			remoteGlobalIDString = 7842DB5609183C2F00414BD5;
 			remoteInfo = osgART;
 		};
 		4AFFA6560BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A55AB1E0AA7A376005EDC69 /* osgart_video_artoolkit */;
+			remoteGlobalIDString = 4A55AB1E0AA7A376005EDC69;
 			remoteInfo = osgart_video_artoolkit;
 		};
 		4AFFA6580BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A9969AB0AC785D10068A373 /* osgart_video_dummyimage */;
+			remoteGlobalIDString = 4A9969AB0AC785D10068A373;
 			remoteInfo = osgart_video_dummyimage;
 		};
 		4AFFA65A0BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A38FA870AD5EB78006DC8DB /* osgart_tracker_artoolkit */;
+			remoteGlobalIDString = 4A38FA870AD5EB78006DC8DB;
 			remoteInfo = osgart_tracker_artoolkit;
 		};
 		4AFFA65C0BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A174BAB0AD9D66000B9FC9B /* osgart_tracker_artoolkit4 */;
+			remoteGlobalIDString = 4A174BAB0AD9D66000B9FC9B;
 			remoteInfo = osgart_tracker_artoolkit4;
 		};
 		4AFFA65E0BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 4A38FAB00AD5EC05006DC8DB /* osgart_tracker_artoolkit4nft */;
+			remoteGlobalIDString = 4A38FAB00AD5EC05006DC8DB;
 			remoteInfo = osgart_tracker_artoolkit4nft;
 		};
 		4AFFA6600BE160F10096CDF8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7842DB1509182F5200414BD5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 78BDBDDB091B00CA00D9D0B9 /* osgart_simple */;
+			remoteGlobalIDString = 78BDBDDB091B00CA00D9D0B9;
 			remoteInfo = osgart_simple;
 		};
 		78BDBDE2091B00CE00D9D0B9 /* PBXContainerItemProxy */ = {
@@ -571,6 +572,7 @@
 		4A996A330AC7865B0068A373 /* VidereDesignVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VidereDesignVideo.cpp; sourceTree = "<group>"; };
 		4AA822C40B82874C00BA6D59 /* TransformFilterCallback */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 30; path = TransformFilterCallback; sourceTree = "<group>"; };
 		4AA822C60B82877500BA6D59 /* TransformFilterCallback.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = TransformFilterCallback.cpp; sourceTree = "<group>"; };
+		4AB4CABC0BF044AB00D1AF18 /* VideoConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = VideoConfig.cpp; sourceTree = "<group>"; };
 		4AE1D4520B70199D001CB3B5 /* GazeInteraction.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = GazeInteraction.cpp; sourceTree = "<group>"; };
 		4AE1D4530B70199D001CB3B5 /* GazeInteractionHit.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = GazeInteractionHit.cpp; sourceTree = "<group>"; };
 		4AE1D4540B70199D001CB3B5 /* GazeInteractionSphereTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = GazeInteractionSphereTarget.cpp; sourceTree = "<group>"; };
@@ -1467,7 +1469,6 @@
 		7842DB3609182F8200414BD5 /* osgART */ = {
 			isa = PBXGroup;
 			children = (
-				E6AF12DB0BD18B4500663E13 /* PluginManager.cpp */,
 				4AE1D4500B70199D001CB3B5 /* Interaction */,
 				4A38FA2E0AD5E077006DC8DB /* Tracker */,
 				4A55A7050AA78759005EDC69 /* Video */,
@@ -1481,11 +1482,13 @@
 				4AE1ED5A0A630FD8007D0FA4 /* GenericVideoShader.cpp */,
 				4A8F9F5009D8FA5800E57FEA /* Marker.cpp */,
 				4A9969880AC783A20068A373 /* PlaneARShadowRenderer.cpp */,
+				E6AF12DB0BD18B4500663E13 /* PluginManager.cpp */,
 				4A9969890AC783A20068A373 /* ShadowRenderer.cpp */,
 				4AE1ED600A630FD8007D0FA4 /* TrackerManager.cpp */,
 				4AA822C60B82877500BA6D59 /* TransformFilterCallback.cpp */,
 				4A6AC5CD0B55CB7100BFED12 /* Utils.cpp */,
 				4A8F9F5309D8FA5800E57FEA /* VideoBillboard.cpp */,
+				4AB4CABC0BF044AB00D1AF18 /* VideoConfig.cpp */,
 				4AE1D4840B701A80001CB3B5 /* VideoImageStream.cpp */,
 				4AE1ED630A630FD8007D0FA4 /* VideoLayer.cpp */,
 				7842DB4209182F8200414BD5 /* VideoManager.cpp */,
@@ -1922,6 +1925,7 @@
 				7842DB8209184AA900414BD5 /* VideoManager.cpp in Sources */,
 				7842DB8309184AA900414BD5 /* VideoPlane.cpp in Sources */,
 				E6AF12DC0BD18B4500663E13 /* PluginManager.cpp in Sources */,
+				4AB4CABD0BF044AB00D1AF18 /* VideoConfig.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
