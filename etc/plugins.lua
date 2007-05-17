@@ -29,7 +29,7 @@ function createVideoPlugin(fullname, shortname)
 		"$(OSG_ROOT)/include"
 	}
 
-	package.libpaths = { "$(OSG_ROOT)/lib" }
+	package.libpaths = { "$(OSG_ROOT)/lib", "$(OSG_ROOT)/lib/release", "$(OSG_ROOT)/lib/debug" }
 
 	package.links = {
 		"osg",
@@ -71,7 +71,7 @@ function createTrackerPlugin(fullname, shortname)
 		"$(OSG_ROOT)/include"
 	}
 
-	package.libpaths = { "$(OSG_ROOT)/lib" }
+	package.libpaths = { "$(OSG_ROOT)/lib", "$(OSG_ROOT)/lib/release", "$(OSG_ROOT)/lib/debug" }
 
 	package.links = {
 		"osg",

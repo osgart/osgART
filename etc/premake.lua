@@ -5,7 +5,6 @@
 require "globals"
 require "plugins"
 
-
 project.name = "osgART"
 project.configs = { "Debug", "Release", "DebugProf", "ReleaseProf" }
 
@@ -14,7 +13,6 @@ if     (target == "vs2003") then
 elseif (target == "vs2005") then
 	project.path = "../VisualStudio/VS2005"
 end
-
 
 --
 -- osgART
@@ -52,20 +50,18 @@ package.includepaths = {
 }
 
 package.excludes = {
-	"../../src/osgART/VideoForeground.cpp",
-	"../../src/osgART/VideoBackground.cpp",
 	}
 
+package.libpaths = globals.osg.libpaths()
 
-package.libpaths = { "$(OSG_ROOT)/lib" }
 package.links = { "osg", "osgDB"}
 
 if (OS == "windows") then
-	table.insert(package.links, {"OpenGL32", "OpenThreadsWin32" })
+	table.insert(package.links, {"OpenGL32"})
+	table.insert(package.links, globals.openthreads.libs())
 end
 
 package.config["Debug"].target = package.target .. globals.targetsuffix
-
 
 --
 -- osgART Introspection Wrapper
@@ -94,7 +90,7 @@ package.includepaths = {
 	"$(OSG_ROOT)/include"
 }
 
-package.libpaths = { "$(OSG_ROOT)/lib" }
+package.libpaths = globals.osg.libpaths()
 
 package.links = {
 	"osg",
@@ -104,7 +100,7 @@ package.links = {
 }
 
 if (OS == "windows") then
-	table.insert(package.links,"OpenThreadsWin32")
+	table.insert(package.links,globals.openthreads.libs())
 	table.insert(package.links,"OpenGL32")
 end
 
@@ -146,7 +142,7 @@ package.includepaths = {
 	"$(OSG_ROOT)/include"
 }
 
-package.libpaths = { "$(OSG_ROOT)/lib" }
+package.libpaths = globals.osg.libpaths()
 
 package.links = {
 	"osg",
@@ -155,7 +151,8 @@ package.links = {
 }
 
 if (OS == "windows") then
-	table.insert(package.links,"OpenThreadsWin32")
+	table.insert(package.links,globals.openthreads.libs())
+	table.insert(package.links,"OpenGL32")
 end
 
 
@@ -192,7 +189,7 @@ package.includepaths = {
 	"$(OSG_ROOT)/include"
 }
 
-package.libpaths = { "$(OSG_ROOT)/lib" }
+package.libpaths = globals.osg.libpaths()
 
 package.links = {
 	"osg",
@@ -200,8 +197,6 @@ package.links = {
 	"Producer",
 	"osgProducer"
 }
-
-
 
 package.files = {
   matchfiles("../../src/osgARTTest/*.cpp"),
@@ -307,8 +302,7 @@ if (OS == "windows") then
     table.insert(package.includepaths,"$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include")
 	table.insert(package.libpaths,"$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib")
 	table.insert(package.links,"PGRFlyCapture")
-	table.insert(package.links,"OpenThreadsWin32")
-
+	table.insert(package.links,globals.openthreads.libs())
 
 	package.files = {
 		matchfiles("../../src/osgART/Video/PtGrey/*"),
@@ -329,7 +323,10 @@ if (OS == "windows") then
 	table.insert(package.links,"winmm")
 	table.insert(package.links,"quartz")
 
-	table.insert(package.links,"OpenThreadsWin32")
+	if (OS == "windows") then
+		table.insert(package.links,globals.openthreads.libs())
+		table.insert(package.links,"OpenGL32")
+	end
 
 	package.files = {
 		matchfiles("../../src/osgART/Video/Intranel/*"),
@@ -350,7 +347,7 @@ if (OS == "windows") then
 	
 	table.insert(package.links,"DSVL")
 
-	table.insert(package.links,"OpenThreadsWin32")
+	table.insert(package.links,globals.openthreads.libs())
 
 	package.files = {
 		matchfiles("../../src/osgART/Video/DSVL/*"),
@@ -370,7 +367,7 @@ if (OS == "windows") then
 	
 	table.insert(package.links,"DSVL2")
 
-	table.insert(package.links,"OpenThreadsWin32")
+	table.insert(package.links,globals.openthreads.libs())
 
 	package.files = {
 		matchfiles("../../src/osgART/Video/DSVL2/*"),
