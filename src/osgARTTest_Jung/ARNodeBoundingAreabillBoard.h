@@ -11,7 +11,7 @@
 #include <osg/BlendFunc>
 #include <osgDB/Registry>
 #include <osgDB/ReadFile>
-#include <osgProducer/Viewer>
+//#include <osgProducer/Viewer>
 #include <osg/PositionAttitudeTransform>
 #include <osg/AlphaFunc>
 
@@ -28,15 +28,19 @@ public:
 	ARNodeBoundingAreaBillboard();
 	~ARNodeBoundingAreaBillboard();
 
-	void addBillboardFor( osg::ref_ptr<ARNode> arNode, float sacle = 1.0 );
+	void addBillboardFor( osg::ref_ptr<ARNode> arNode, float sacle = 1.0, osg::Vec3f offset = osg::Vec3f(0,0,0) );
 
 private:
+
 };
 
 class BillboardUpdateHandlerForARNode : public BillboardUpdateHandler
 {
 public:
-	BillboardUpdateHandlerForARNode(){};
+	BillboardUpdateHandlerForARNode()
+	{
+		setOnOffType(DYNAMIC_IMPORTANTVAL);
+	};
 	~BillboardUpdateHandlerForARNode(){};
 
 	virtual void setNode(osg::ref_ptr<osg::Node> _node)
@@ -51,33 +55,39 @@ public:
 
 		bool isMarkerVisible = arNode->getMarkerTrans()->getMarker()->isValid();
 
-		osg::Vec3 ppp = arNode->getMarkerTrans()->getMatrix().getTrans();
+		osg::Vec3 ppp = arNode->getMarkerTrans()->getMatrix().getTrans() + offset;
 
+		int numDrawables = nodeBoundingAreaBillboard->getNumDrawables();
 		osg::Drawable *drawable = nodeBoundingAreaBillboard->getDrawable(id);
 		osg::StateSet *drawableStateSet = drawable->getOrCreateStateSet();
 
 		osg::ColorMask *colorMask = new osg::ColorMask();
 		colorMask->setMask( isMarkerVisible,isMarkerVisible,isMarkerVisible,isMarkerVisible);
-		drawableStateSet->setAttributeAndModes(colorMask, osg::StateAttribute::ON);
+		drawableStateSet->setAttributeAndModes(colorMask, osg::StateAttribute::ON | osg::StateAttribute::PROTECTED);
 
 		osg::Vec3 pos = this->getPosition() + ppp;
 		nodeBoundingAreaBillboard->setPosition(id, pos);
 
+		
+		//numDrawables
 		//if ( isMarkerVisible )
+		//std::cout << numDrawables << " " << id  << std::endl;
 		//	std::cout << ppp[0] << " " << ppp[1] << " " << ppp[2] << std::endl;
 
 
 		if ( isMarkerVisible )
-		{			
-			arNode->increaseImportanceVal();
-			arNode->increaseImportanceVal();
-			arNode->increaseImportanceVal();
-			arNode->increaseImportanceVal();
+		{		
+			if ( onoffType == DYNAMIC_IMPORTANTVAL )
+			{
+				arNode->increaseImportanceVal();
+			}
 
 			osg::Geometry *geo = dynamic_cast<osg::Geometry*>(drawable);
 
 			osg::Vec4Array* colorArray = dynamic_cast<osg::Vec4Array*>(geo->getColorArray());
-			static float alpha =0;
+			
+			
+
 			colorArray->at(0) = osg::Vec4(1,1,1, arNode->getImportanceVal() );
 			
 			geo->dirtyDisplayList();
@@ -85,20 +95,16 @@ public:
 		}
 		else
 		{
-			arNode->decreaseImportanceVal();
-			arNode->decreaseImportanceVal();
-			arNode->decreaseImportanceVal();
-			arNode->decreaseImportanceVal();
-			arNode->decreaseImportanceVal();
-			//std::cout << "Decreasing" << std::endl;
-		
+			if ( onoffType == DYNAMIC_IMPORTANTVAL )
+			{
+				arNode->decreaseImportanceVal();
+			}
 		}
-
-	
 	};
 
 protected:
-
+	
 };
+
 
 #endif

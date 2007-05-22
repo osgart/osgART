@@ -1,10 +1,11 @@
 
 #include "ARNode.h"
+#include "ARScene.h"
 
 ARNode::ARNode()
 {
 	importanceVal = 1.0f;
-	importanceValUnit = 0.01f;
+	importanceValUnit = 0.03f;
 }
 
 ARNode::~ARNode()
@@ -34,6 +35,16 @@ void ARNode::init(int markerID, osgART::GenericTracker* tracker)
 	}
 }
 	
+void ARNode::setParentScene(osg::ref_ptr<ARScene> _arScene)
+{
+	arScene = _arScene;
+}
+
+osg::ref_ptr<ARScene> ARNode::getParentScene()
+{
+	return arScene;
+}
+
 void ARNode::addModel(osg::ref_ptr<osg::Node> model)
 {
 	markerTrans->addChild(model.get());

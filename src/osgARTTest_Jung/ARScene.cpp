@@ -38,7 +38,10 @@ void ARScene::addARNode(osg::ref_ptr<ARNode> arNode, int binNum,  bool addToScen
 	arNode->getOrCreateStateSet()->setRenderBinDetails(binNum, "RenderBin");
 
 	if ( addToSceneGraph )
+	{
 		foregroundGroup->addChild( arNode.get() );	
+		arNode->setParentScene( this );
+	}
 }
 	
 osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int binNum, bool addToSceneGraph)
@@ -49,7 +52,10 @@ osg::ref_ptr<ARNode> ARScene::addNewARNodeWith(osg::ref_ptr<osg::Node> node, int
 	arNode->init(lastIndex,  tracker.get());
 	arNode->addModel(node);
 	
+
 	addARNode( arNode, binNum, addToSceneGraph  );
+
+
 	return arNode;
 }
 

@@ -1,8 +1,9 @@
 #ifndef ARSCENE_H
 #define ARSCENE_H
 
-#include <Producer/RenderSurface>
-#include <osgProducer/Viewer>
+//#include <Producer/RenderSurface>
+//#include <osgProducer/Viewer>
+#include <osgViewer/Viewer>
 
 #include <osg/Node>
 #include <osg/Group>

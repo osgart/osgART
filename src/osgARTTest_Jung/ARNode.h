@@ -11,6 +11,8 @@
 #include <osg/Matrixf>
 
 
+class ARScene;
+
 class ARNode : public osg::Group
 {
 public:
@@ -57,12 +59,17 @@ public:
 			importanceVal = temp;
 	};
 
+
+	void setParentScene(osg::ref_ptr<ARScene> _arScene);
+	osg::ref_ptr<ARScene> getParentScene();
+
 private:
 
 	osg::ref_ptr<osgART::ARTTransform> markerTrans;
 
 	float importanceVal;
 	float importanceValUnit;
+	osg::ref_ptr<ARScene> arScene;
 };
 
 #endif

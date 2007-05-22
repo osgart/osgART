@@ -7,8 +7,17 @@
  *
  */
 
-#include <Producer/RenderSurface>
-#include <osgProducer/Viewer>
+//#include <Producer/RenderSurface>
+//#include <osgProducer/Viewer>
+
+
+#define USE_ARTOOLKIT
+
+#define WORKING_SPACE_DIST_THRESH 1200
+//#define USE_ARTOOLKITPLUS
+
+#include <osgViewer/Viewer>
+#include <osgViewer/StatsHandler>
 
 #include <osg/Node>
 #include <osg/Group>
@@ -17,6 +26,18 @@
 #include <osg/AutoTransform>
 #include <osg/ShapeDrawable>
 #include <osg/Geometry>
+#include <osg/Drawable>
+#include <osg/ShapeDrawable>
+#include <osg/Geometry>
+
+#include <osgGA/TrackballManipulator>
+#include <osgGA/FlightManipulator>
+#include <osgGA/DriveManipulator>
+#include <osgGA/KeySwitchMatrixManipulator>
+#include <osgGA/AnimationPathManipulator>
+#include <osgGA/TerrainManipulator>
+#include <osgGA/AnimationPathManipulator>
+#include <osgGA/StateSetManipulator>
 
 #include <osgART/Foundation>
 #include <osgART/VideoManager>
@@ -28,6 +49,10 @@
 #include <osg/Matrixf>
 #include <osgDB/ReadFile>
 #include <osgART/PluginManager>
+
+#include <string>
+using namespace std;
+
 
 // shader stuff
 #include "ShaderFactory.h"
@@ -46,6 +71,9 @@
 #include "ShaderEffectHandler.h"
 
 #include "HistogramUpdateCallback.h"
+
+
+#include "ARNodeImportanceValHandler.h"
 
 #define AR_VIDEO_WIN32_DIRECTSHOW_2_71
 
@@ -66,7 +94,7 @@
 osg::Vec3 lightPos;
 ShaderFactory sf;
 osg::ref_ptr<FBOManager> fboManager;
-osg::ref_ptr<DummyImageLayer> backgroundFiltered1;
+//osg::ref_ptr<DummyImageLayer> backgroundFiltered1;
 
 class SimpleKeyboardHandler : public osgGA::GUIEventHandler 
 {
@@ -199,6 +227,287 @@ private:
 	ShaderEffectHandler* shaderEffect;
 };
 
+class FullScreenToggleHandler : public osgGA::GUIEventHandler 
+{
+public: 
+
+    FullScreenToggleHandler() {}
+        
+    bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
+    {
+        osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
+        if (!viewer) return false;
+    
+        switch(ea.getEventType())
+        {
+            case(osgGA::GUIEventAdapter::KEYUP):
+            {
+                if (ea.getKey()=='f')
+                {
+                    osgViewer::Viewer::Windows windows;
+                    viewer->getWindows(windows);
+                    
+                    for(osgViewer::Viewer::Windows::iterator itr = windows.begin();
+                        itr != windows.end();
+                        ++itr)
+                    {
+                        toggleFullscreen(*itr);
+                    }
+                }
+            }
+            default: break;
+        }
+        
+        return false;
+    }
+    
+    /** Get the keyboard and mouse usage of this manipulator.*/
+    virtual void getUsage(osg::ApplicationUsage& usage) const
+    {
+        usage.addKeyboardMouseBinding("f","Toggle full screen.");
+    }
+
+
+    void toggleFullscreen(osgViewer::GraphicsWindow* window)
+    {
+
+        osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+        if (!wsi) 
+        {
+            osg::notify(osg::NOTICE)<<"Error, no WindowSystemInterface available, cannot toggle window fullscreen."<<std::endl;
+            return;
+        }
+        
+        unsigned int screen_width, screen_height;
+        wsi->getScreenResolution(*(window->getTraits()), screen_width, screen_height);
+        
+        int x, y, width, height;
+        window->getWindowRectangle(x, y, width, height);
+        
+        bool isFullScreen = x==0 && y==0 && width==screen_width && height==screen_height;
+        if (isFullScreen)
+        {
+            window->setWindowRectangle(screen_width/4, screen_height/4, screen_width/2, screen_height/2);
+            window->setWindowDecoration(true);
+        }
+        else
+        {
+            window->setWindowDecoration(false);
+            window->setWindowRectangle(0, 0, screen_width, screen_height);
+        }
+        
+        window->grabFocusIfPointerInWindow();
+        
+        return;
+        
+    }
+        
+
+
+    bool _done;
+};
+
+class ARNodImportanceValAniKeyboardHandler : public osgGA::GUIEventHandler 
+{
+
+public:
+
+	ARNodImportanceValAniKeyboardHandler() : osgGA::GUIEventHandler() 
+	{
+	};
+
+	virtual ~ARNodImportanceValAniKeyboardHandler() {};
+
+	void init( ARNodeImportanceValHandler *_impHandle)
+	{
+		impHandle = _impHandle;
+	};
+
+	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us) 
+	{
+
+		//
+		int key;
+		static int nn=0;
+
+		switch (ea.getEventType()) {
+
+			case osgGA::GUIEventAdapter::KEYUP:
+				
+				key = ea.getKey();
+
+				if (key == osgGA::GUIEventAdapter::KEY_Home )
+				{
+					impHandle->turnSingleNodeOn(nn);
+
+					nn++;
+					if ( nn > 12 )
+						nn = 0;
+				}
+				else
+				if ( key == osgGA::GUIEventAdapter::KEY_F1 )
+				{
+					std::cout << "F1" << std::endl;
+					impHandle->turnSingleNodeOn(0);
+				}
+				else
+				if ( key == osgGA::GUIEventAdapter::KEY_F2 )
+				{
+					std::cout << "F2" << std::endl;
+					impHandle->turnSingleNodeOn(1);
+				}				
+				else
+				if ( key == osgGA::GUIEventAdapter::KEY_F3 )
+				{
+					std::cout << "F3" << std::endl;
+					impHandle->turnSingleNodeOn(2);
+				}
+				else
+				if ( key == osgGA::GUIEventAdapter::KEY_F4 )
+				{
+					std::cout << "F4" << std::endl;
+					impHandle->turnSingleNodeOn(3);
+				}
+				
+				return true;
+
+			case osgGA::GUIEventAdapter::PUSH:
+				return true;
+
+			default:
+				break;
+		}
+
+		return false;
+
+	};
+
+private:
+	ARNodeImportanceValHandler* impHandle;
+};
+
+
+class FindNearARNodeCallback : public osg::NodeCallback
+{
+public:
+	FindNearARNodeCallback()
+	{
+	};
+
+	virtual ~FindNearARNodeCallback()
+	{
+	};
+
+	void linkTo( osg::Node *n)
+	{
+		if ( n->getUpdateCallback() != NULL)
+		{
+			setWrappedCallback( n->getUpdateCallback() );
+			n->setUpdateCallback( this );
+		}
+		else
+		{
+			n->setUpdateCallback( this );
+		}
+	};
+
+	void setWrappedCallback( osg::NodeCallback *_callback)
+	{
+		wrappedCallback = _callback;
+	};
+
+	virtual void operator()(osg::Node *nd, osg::NodeVisitor* nv)
+	{
+
+		//std::cout << "!!!!!!!" << std::endl;
+		ARNode *arNode =  dynamic_cast<ARNode*>( nd);
+		ARScene *arScene = arNode->getParentScene().get();
+
+		for ( int k=0; k < arScene->size(); k++)
+		{
+			if ( arScene->at(k) != arNode)
+			{
+				
+				if ( arScene->at(k)->getMarkerTrans()->getMarker()->isValid()
+					&&
+					arNode->getMarkerTrans()->getMarker()->isValid()
+					&&
+					arScene->at(k)->getImportanceVal() > 0.9 )
+				{
+					osg::Vec3f aa =getWorldCoorinate( arScene->at(k)->getChild(0) );
+					osg::Vec3f bb =getWorldCoorinate( arNode->getChild(0) );
+
+					//std::cout << aa << std::endl;
+					//std::cout << bb << std::endl;
+					//std::cout << getDist(aa,bb) << std::endl;
+					float dist = getDist(aa,bb) ;
+					if ( dist != 0.0 && dist < WORKING_SPACE_DIST_THRESH)
+					{
+						arNode->setImportanceVal(1.0);
+						std::cout << getDist(aa,bb) << std::endl;
+					}
+					else
+					{
+						arNode->setImportanceVal(0.0);
+					}
+
+				}
+			}
+		}
+
+		if ( wrappedCallback.valid() )
+		{
+			wrappedCallback->operator()(nd, nv);
+		}
+
+		traverse(nd,nv);
+	};
+
+private:
+	osg::Vec3f getWorldCoorinate( osg::Node* n)
+	{
+		osg::MatrixList matrices = n->getWorldMatrices();
+
+		osg::Vec3 trans;
+
+		for ( osg::MatrixList::const_iterator iter = matrices.begin();iter != matrices.end();iter++)
+		{
+			osg::Matrix m=(*iter);
+			trans += m.getTrans();
+		}
+		return trans;
+	};
+
+	float getDist( osg::Vec3f a, osg::Vec3f b)
+	{
+		return (a-b).length();
+	};
+
+	osg::ref_ptr<osg::NodeCallback> wrappedCallback;
+};
+
+osg::ref_ptr<ARNodeBoundingAreaBillboard> createARBillboard(osg::ref_ptr<osg::Texture2D> maskTexture, osg::ref_ptr<ARNode> nd , float scale)
+{
+	osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs = new ARNodeBoundingAreaBillboard;
+	bbs->setOnOffType( STATIC_IMPORTANTVAL );
+	
+	bbs->init( maskTexture );
+	bbs->addBillboardFor( nd, scale );
+
+	osg::Program* shaderPrograme = new osg::Program;
+	bbs->getOrCreateStateSet()->setAttributeAndModes(shaderPrograme, osg::StateAttribute::OFF);
+
+	return bbs;
+}
+
+osg::Drawable* createTransparentDrawable()
+{
+	osg::ShapeDrawable *drawable = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),30));
+	drawable->setColor( osg::Vec4f(0,0,0,0) );
+	
+	return drawable;
+}
+
 osg::Node* addARTModel(char* name,float sizeModel,float shiftX, float shiftY, float heightMarker)
 {
 
@@ -239,6 +548,39 @@ osg::Node* addARTModel(char* name,float sizeModel,float shiftX, float shiftY, fl
 	return myObject;
 }
 
+void toggleFullscreen(osgViewer::GraphicsWindow* window)
+{
+
+    osg::GraphicsContext::WindowingSystemInterface* wsi = osg::GraphicsContext::getWindowingSystemInterface();
+    if (!wsi) 
+    {
+        osg::notify(osg::NOTICE)<<"Error, no WindowSystemInterface available, cannot toggle window fullscreen."<<std::endl;
+        return;
+    }
+    
+    unsigned int screen_width, screen_height;
+    wsi->getScreenResolution(*(window->getTraits()), screen_width, screen_height);
+    
+    int x, y, width, height;
+    window->getWindowRectangle(x, y, width, height);
+    
+    bool isFullScreen = x==0 && y==0 && width==screen_width && height==screen_height;
+    if (isFullScreen)
+    {
+        window->setWindowRectangle(screen_width/4, screen_height/4, screen_width/2, screen_height/2);
+        window->setWindowDecoration(true);
+    }
+    else
+    {
+        window->setWindowDecoration(false);
+        window->setWindowRectangle(0, 0, screen_width, screen_height);
+    }
+    
+    window->grabFocusIfPointerInWindow();
+    
+    return;
+    
+}
 osg::ref_ptr<osg::Texture2D> loadTexture( const std::string filename )
 {
     osg::ref_ptr<osgDB::ReaderWriter::Options> options;
@@ -285,28 +627,54 @@ osg::MatrixTransform* addLightAt(osg::StateSet* rootStateSet, osg::Vec3 pos)
     return lightTransform;
 }
 
+
+
 int main(int argc, char* argv[]) {
 
+#ifdef USE_ARTOOLKIT
 	// preload the tracker
 	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit");
+#endif
+
+#ifdef USE_ARTOOLKITPLUS
+	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkitplus");
+#endif
 
 	// preload the video
 	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
 
-	osgProducer::Viewer viewer;
-	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
-	viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	
+	//osgProducer::Viewer viewer;
+	osgViewer::Viewer viewer;
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 
-#ifndef __linux
-	// somehow on Ubuntu Dapper this ends up in a segmentation fault
-	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
-#endif
+
+	
+    //viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
+    // add stats
+    //viewer.addEventHandler( new osgViewer::StatsHandler() );
+	viewer.addEventHandler(new FullScreenToggleHandler);
+
+	//viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
+	//viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	
+	viewer.getCamera()->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+		
+	//viewer.getCamera()
+	//c.setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+
+
+//#ifndef __linux
+//	// somehow on Ubuntu Dapper this ends up in a segmentation fault
+//	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
+//#endif
 
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::GenericVideo> video = 
 		dynamic_cast<osgART::GenericVideo*>(osgART::PluginManager::getInstance()->get("video_artoolkit"));
-	
+
+
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
 	{   
@@ -315,9 +683,36 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 
+
+#ifdef USE_ARTOOLKIT
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
 		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit"));
+#endif
+
+#ifdef USE_ARTOOLKITPLUS
+	// Load a tracker plugin.
+	osg::ref_ptr<osgART::GenericTracker> tracker = 
+		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkitplus"));
+
+	osg::ref_ptr< osgART::TypedField<int> > _markerMode = 
+		dynamic_cast< osgART::TypedField<int>* >(tracker->get("marker_mode"));
+
+	if ( _markerMode.valid() )
+	{
+		//_markerMode->set(ARToolKitPlus::MARKER_ID_SIMPLE);
+		_markerMode->set(0);
+	}
+	else
+	{
+		std::cout << "FFFFFF" << std::endl;
+	}
+	osg::ref_ptr< osgART::TypedField<bool> > _debugMode = 
+		dynamic_cast< osgART::TypedField<bool>* >(tracker->get("debug"));
+
+	_debugMode->set(true);
+#endif
+
 
     // check if the tracker plugin could be loaded
 	if (!tracker.valid()) 
@@ -342,12 +737,45 @@ int main(int argc, char* argv[]) {
 	osg::ref_ptr<osgART::ARSceneNode> root = new osgART::ARSceneNode;
 	osg::ref_ptr<ARScene> arScene = new ARScene;
 		
-	if (!root->connect(tracker.get(),video.get())) {
+#ifdef USE_ARTOOLKIT
+	//if (!root->connect(tracker.get(),video.get())) {
+	//	osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
+	//	exit(-1);
+	//}
+
+	//if (!root->connect(tracker.get(),
+	//				   video.get(),
+	//				   "Data/Menual_PLUSmarkers_list.dat",
+	//				   "Data/camera_para.dat"
+	//	)) {
+	//	osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
+	//	exit(-1);
+	//}
+
+	if (!root->connect(tracker.get(),
+					   video.get(),
+					   "Data/Auto_PLUSmarkers_list.dat",
+					   "Data/camera_para.dat"
+		)) {
 		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
 		exit(-1);
 	}
+#endif
 
-	viewer.setSceneData(root.get());
+#ifdef USE_ARTOOLKITPLUS
+	if (!root->connect(tracker.get(),
+					   video.get(),
+					   "Data/ARTPLUSmarkers_list.dat",
+					   "Data/camera_para.dat"
+		)) {
+		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
+		exit(-1);
+	}
+#endif
+
+			//const std::string& markerlist = "Data/markers_list.dat",
+			//const std::string& cameraparam = "Data/camera_para.dat"
+	
 	root->addChild( arScene.get() );
 	arScene->init(tracker);
 	
@@ -360,43 +788,93 @@ int main(int argc, char* argv[]) {
 	osg::ref_ptr<osg::Texture> fgTexture = arScene->initTextureForeground(false);
 	
 
-	osg::ref_ptr<osg::Node> truckModel = addARTModel("dumptruck.osg", 100, 0,0,0);
-	lightPos = osg::Vec3f(0.0,0.0,100);
-	osg::MatrixTransform* lightSubGraph = addLightAt( truckModel->getOrCreateStateSet(), lightPos);
-	lightSubGraph->addChild(truckModel.get());
+	//osg::ref_ptr<osg::Node> truckModel = addARTModel("dumptruck.osg", 100, 0,0,0);
+	//lightPos = osg::Vec3f(0.0,0.0,100);
+	//osg::MatrixTransform* lightSubGraph = addLightAt( truckModel->getOrCreateStateSet(), lightPos);
+	//lightSubGraph->addChild(truckModel.get());
 
-	// add marker no1
-	arScene->addNewARNodeWith( lightSubGraph, 100, true);
+	//// add marker no1
+	//arScene->addNewARNodeWith( lightSubGraph, 1500, true);
 	
 
-	// add marker no2 begin
-	// make a plane ( a phantom geometry )
-	float planeWidth = 220.0f;	
-	float planeHeight = 550.0f;	//300
-	//float planeWidth = 100;	
-	//float planeHeight = 100;	
-	osg::ref_ptr<osg::Geode> planeNode = new osg::Geode();
-	float planeHalfWidth = planeWidth / 2.0f;	
-	float planeHalfHeight = planeHeight / 2.0f;	
-
-	planeNode->addDrawable(			
-			osg::createTexturedQuadGeometry(osg::Vec3(0, 0, 0), osg::Vec3(planeWidth, 0, 0), osg::Vec3(0, planeHeight, 0))
-						  );
-	osg::ref_ptr<osg::MatrixTransform> trans = new osg::MatrixTransform;
-	osg::Matrix mt;
-	mt.makeTranslate( osg::Vec3(-planeHalfWidth, -planeHalfHeight, 0) );
-	trans->postMult(mt);
-	trans->addChild( planeNode.get() );
+	//// add marker no2 begin
+	//// make a plane ( a phantom geometry )
+	//float planeWidth = 220.0f;	
+	//float planeHeight = 550.0f;	//300
+	////float planeWidth = 100;	
+	////float planeHeight = 100;	
+	//osg::ref_ptr<osg::Geode> planeNode = new osg::Geode();
+	//float planeHalfWidth = planeWidth / 2.0f;	
+	//float planeHalfHeight = planeHeight / 2.0f;	
+	//planeNode->addDrawable(			
+	//		osg::createTexturedQuadGeometry(osg::Vec3(0, 0, 0), osg::Vec3(planeWidth, 0, 0), osg::Vec3(0, planeHeight, 0))
+	//					  );
+	//osg::ref_ptr<osg::MatrixTransform> trans = new osg::MatrixTransform;
+	//osg::Matrix mt;
+	//mt.makeTranslate( osg::Vec3(-planeHalfWidth, -planeHalfHeight, 0) );
+	//trans->postMult(mt);
+	//trans->addChild( planeNode.get() );
 	// add marker no2 end
-	arScene->addNewARNodeWith( trans.get(), 100, false);
+	//arScene->addNewARNodeWith( trans.get(), 100, false);
 
 
 	//
+
+	// 1
+	//osg::ref_ptr<osg::Geode> abox = new osg::Geode();
+	//abox->addDrawable(new osg::ShapeDrawable( new osg::Box( osg::Vec3f(0,0,0) , 30 ) ));
+
+	//arScene->addNewARNodeWith(abox.get() , 100);
+
+
+	//osg::ref_ptr<osg::Geode> sphere = new osg::Geode();
+	//sphere->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),30)));
+
+	//arScene->addNewARNodeWith(sphere.get() , 100);
+
+	//osg::ref_ptr<osg::Geode> sphere2 = new osg::Geode();
+	//sphere2->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),30)));
+	//arScene->addNewARNodeWith(sphere.get() , 50);
+
+	//2 
+	//osg::ref_ptr<osg::Geode> abox = new osg::Geode();
+	//abox->addDrawable( createTransparentDrawable() );
+
+	//arScene->addNewARNodeWith(abox.get() , 100);
+
+
+	//osg::ref_ptr<osg::Geode> sphere = new osg::Geode();
+	//sphere->addDrawable( createTransparentDrawable());
+
+	//arScene->addNewARNodeWith(sphere.get() , 100);
+
+	//osg::ref_ptr<osg::Geode> sphere2 = new osg::Geode();
+	//sphere2->addDrawable( createTransparentDrawable() );
+	//arScene->addNewARNodeWith(sphere.get() , 50);
+
+	//3
+
+	for ( int k=0; k < 12; k++)
+	{
+		osg::ref_ptr<osg::Geode> sphere = new osg::Geode();
+		sphere->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),30)));
+		arScene->addNewARNodeWith( sphere.get(), 50+k);
+	}
+
+
+	//osg::ref_ptr<osg::Node> emptyPlane = addARTModel("dumptruck.osg", 100, 0,0,0);
+	osg::ref_ptr<osg::Node> emptyPlane = addARTModel("emptyPlane.ive", 150, 0,0,0);
+
+	// add marker no1
+	ARNode *truckNode = (arScene->addNewARNodeWith( emptyPlane.get(), 1500, true)).get();
+
+	//
+	
 	//osg::ref_ptr<DummyImageLayer> dummyLayer01 = new DummyImageLayer;
 	//dummyLayer01->init(videoBGWidth, videoBGHeight);
 	
-	osg::ref_ptr<DummyImageLayer> dummyLayer02 = new DummyImageLayer;
-	dummyLayer02->init(videoBGWidth, videoBGHeight);
+	//osg::ref_ptr<DummyImageLayer> dummyLayer02 = new DummyImageLayer;
+	//dummyLayer02->init(videoBGWidth, videoBGHeight);
 
 
 
@@ -409,14 +887,26 @@ int main(int argc, char* argv[]) {
 
 	//osg::ref_ptr<osg::Texture2D> normTexture = loadTexture("./data/image/normalMap.bmp");
 	//planeNode->getOrCreateStateSet()->setTextureAttributeAndModes(0, normTexture.get() ,osg::StateAttribute::ON);	
-
-	osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs = new ARNodeBoundingAreaBillboard;
 	
-	bbs->init( maskTexture );
-	bbs->addBillboardFor( arScene->at(0), 3.5 );
-	osg::Program* shaderPrograme = new osg::Program;
-	bbs->getOrCreateStateSet()->setAttributeAndModes(shaderPrograme, osg::StateAttribute::OFF);
+	////
+	//osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs = new ARNodeBoundingAreaBillboard;
+	//bbs->setOnOffType( STATIC_IMPORTANTVAL );
 	//
+	//bbs->init( maskTexture );
+	////bbs->addBillboardFor( arScene->at(0), 1.5 );
+	//bbs->addBillboardFor( arScene->at(1), 5.5 );
+	//bbs->addBillboardFor( arScene->at(2), 5.5 );
+	//bbs->addBillboardFor( arScene->at(3), 5.5 );
+	//osg::Program* shaderPrograme = new osg::Program;
+	//bbs->getOrCreateStateSet()->setAttributeAndModes(shaderPrograme, osg::StateAttribute::OFF);
+	////
+
+	//osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs0 = createARBillboard(maskTexture, arScene->at(0), 3);
+	//osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs1 = createARBillboard(maskTexture, arScene->at(1), 3);
+	//osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs2 = createARBillboard(maskTexture, arScene->at(2), 3);
+	//osg::ref_ptr<ARNodeBoundingAreaBillboard> bbs3 = createARBillboard(maskTexture, arScene->at(3), 3);
+	
+
 
 	fboManager = new FBOManager();
 	fboManager->init(videoBGWidth, videoBGHeight, arScene.get(), true );
@@ -424,17 +914,23 @@ int main(int argc, char* argv[]) {
 		
 
 	osg::Projection *projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
+	//osg::Group *pGroup = new osg::Group();
 
 	// add billboards!!
-	projectionMatrix->addChild(bbs.get());
+	for ( int k=0; k< arScene->size(); k++)
+	{
+		projectionMatrix->addChild( createARBillboard(maskTexture, arScene->at(k), 3).get() );
+	}
+
 	
-	// add model mask
+	//add model mask
 	osg::ref_ptr<ModelMaskRenderer> modelMask = new ModelMaskRenderer;
 	modelMask->init();
 	modelMask->setAlpha(0.3);
-	modelMask->addChild( arScene->at(1).get() );
+	modelMask->addChild( truckNode );
 	projectionMatrix->addChild(modelMask.get());
-	
+	//pGroup->addChild(modelMask.get());
+
 	//// add hand mask!
 	DummyImageLayer *handMaskLayer = new DummyImageLayer();
 	handMaskLayer->init( video->getWidth(), video->getHeight() );
@@ -443,9 +939,13 @@ int main(int argc, char* argv[]) {
 	handMaskLayer->setTexture( bgTexture.get() );
 	//handMaskLayer->getOrCreateStateSet()->setAttributeAndModes
 	//	(new osg::BlendFunc, osg::StateAttribute::ON );
-	projectionMatrix->addChild(handMaskLayer);
+	
+	//projectionMatrix->addChild(handMaskLayer);
+	//pGroup->addChild(handMaskLayer);
 
 	fboManager->attachTarget( projectionMatrix, 1000, osg::Vec4(0.0f,0.0f,0.0f,0.0f));
+	//fboManager->attachTarget( pGroup, 1000, osg::Vec4(0.0f,0.0f,0.0f,0.0f));
+	
 	osg::ref_ptr<osg::Texture> maskTextureForScreen = fboManager->getTexture(0);
 
 
@@ -469,15 +969,15 @@ int main(int argc, char* argv[]) {
 	dummyLayer01->setTexture( fgTexture, 3);
 	
 	//// Darkening mask
-	//sf.addFragmentShaderFromFile("./data/shader/Darkening.frag", dummyLayer01.get());
-	//
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
+	sf.addFragmentShaderFromFile("./data/shader/Darkening.frag", dummyLayer01.get());
+	
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
+	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
 
-	//dummyLayer01->getOrCreateStateSet()->addUniform(
-	//	new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
+	dummyLayer01->getOrCreateStateSet()->addUniform(
+		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
 	
 	
 	//// Skin color test
@@ -584,82 +1084,123 @@ int main(int argc, char* argv[]) {
 
 	//osg::ref_ptr<SimpleKeyboardHandler> keyboardHandler = new SimpleKeyboardHandler;
 	//keyboardHandler->init( dynamic_cast<ShaderEffect*>(darkenEffect) );
-	//viewer.getEventHandlerList().push_back( keyboardHandler.get() );
+	//viewer.addEventHandler( keyboardHandler.get() );
 
-	////// changing effects
-	//// color temp 1
+	//////// changing effects
+	////// color temp 1
+	//
+	//osg::ref_ptr<ShaderEffect> ct = new ColorTemperatureEffect;
+	//ColorTemperatureEffect *colorTempEffect = dynamic_cast<ColorTemperatureEffect*>( ct.get());
+	//colorTempEffect->init(1500);
+	//colorTempEffect->setStEdTemp( 6500, 12000);
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
+
+	///// Darkening mask 2
+	//osg::ref_ptr<ShaderEffect> df = new DarkeningEffect;
+	//DarkeningEffect	*darkenEffect = dynamic_cast<DarkeningEffect*>(df.get());
+	//darkenEffect->init(1500);
+	//	
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
+	//dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
+	//dummyLayer01->getOrCreateStateSet()->addUniform(
+	//	new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
+
+	////// color temp 2
+	//osg::ref_ptr<ShaderEffect> ct2 = new ColorTemperatureEffect;
+	//ColorTemperatureEffect *colorTempEffect2 = dynamic_cast<ColorTemperatureEffect*>( ct2.get());
+	//colorTempEffect2->init(1500);
+	//colorTempEffect2->setStEdTemp( 6500, 4100);
+	//dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
+
+
+	//ShaderEffectHandler *sef = new ShaderEffectHandler();
+	//sef->init( dummyLayer01.get() );
+
+	//sef->addEffect( ct );
+	//sef->addEffect( df );
+	//sef->addEffect( ct2 );
+
+	//sef->linkTo(0);
+
+	//osg::ref_ptr<ShaderEffectKeyboardHandler> keyboardHandler = new ShaderEffectKeyboardHandler;
+	//keyboardHandler->init( sef );
+	////viewer.getEventHandlerList().push_back( keyboardHandler.get() );
+	//viewer.addEventHandler( keyboardHandler.get() );
+
+	////osg::ref_ptr<SimpleKeyboardHandler> keyboardHandler = new SimpleKeyboardHandler;
+	////keyboardHandler->init( ct.get() );
+	////viewer.getEventHandlerList().push_back( keyboardHandler.get() );
+
+
+
+
 	
-	osg::ref_ptr<ShaderEffect> ct = new ColorTemperatureEffect;
-	ColorTemperatureEffect *colorTempEffect = dynamic_cast<ColorTemperatureEffect*>( ct.get());
-	colorTempEffect->init(1500);
-	colorTempEffect->setStEdTemp( 6500, 12000);
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
 
-	/// Darkening mask 2
-	osg::ref_ptr<ShaderEffect> df = new DarkeningEffect;
-	DarkeningEffect	*darkenEffect = dynamic_cast<DarkeningEffect*>(df.get());
-	darkenEffect->init(1500);
-		
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("weightTex", 1)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("paperTex", 2)); 
-	dummyLayer01->getOrCreateStateSet()->addUniform(new osg::Uniform("foregroundTex", 3));
-	dummyLayer01->getOrCreateStateSet()->addUniform(
-		new osg::Uniform("imageDimension", osg::Vec2f( videoBGWidth, videoBGHeight)));
+	/////////////////////////
+	int arSceneSize = arScene->size();
+	for ( int k=0; k < arSceneSize ; k++)
+	{
+		arScene->at(k)->setImportanceVal( 0.0 );
+	}
+	
+	ARNodeImportanceValHandler *valHandle = new ARNodeImportanceValHandler();
+	//valHandle->init( arScene, 0 , arScene->size() - 2);
+	valHandle->init( arScene);
+	arScene->setUpdateCallback( valHandle ); 
 
-	//// color temp 2
-	osg::ref_ptr<ShaderEffect> ct2 = new ColorTemperatureEffect;
-	ColorTemperatureEffect *colorTempEffect2 = dynamic_cast<ColorTemperatureEffect*>( ct2.get());
-	colorTempEffect2->init(1500);
-	colorTempEffect2->setStEdTemp( 6500, 4100);
-	dummyLayer02->getOrCreateStateSet()->addUniform(new osg::Uniform("tex", 0));
+	osg::ref_ptr<ARNodImportanceValAniKeyboardHandler> importValkeyboardHandler = new ARNodImportanceValAniKeyboardHandler;
+	importValkeyboardHandler->init( valHandle );
+
+	viewer.addEventHandler(importValkeyboardHandler.get());
 
 
-	ShaderEffectHandler *sef = new ShaderEffectHandler();
-	sef->init( dummyLayer01.get() );
-
-	sef->addEffect( ct );
-	sef->addEffect( df );
-	sef->addEffect( ct2 );
-
-	sef->linkTo(0);
-
-	osg::ref_ptr<ShaderEffectKeyboardHandler> keyboardHandler = new ShaderEffectKeyboardHandler;
-	keyboardHandler->init( sef );
-	viewer.getEventHandlerList().push_back( keyboardHandler.get() );
-
-	//osg::ref_ptr<SimpleKeyboardHandler> keyboardHandler = new SimpleKeyboardHandler;
-	//keyboardHandler->init( ct.get() );
-	//viewer.getEventHandlerList().push_back( keyboardHandler.get() );
-
+	//linkTo
+	osg::ref_ptr<FindNearARNodeCallback> findCallback = new FindNearARNodeCallback;
+	findCallback->linkTo( truckNode );
 	
 	///////////////////////////////////////////////////////////
-	//viewer.setSceneData(arScene.get());
-	viewer.realize();	
+	viewer.setSceneData(root.get());
+	
+
+	
+	viewer.realize();
+	
+	osgViewer::Viewer::Windows windows;
+    viewer.getWindows(windows);
+                    
+	for(osgViewer::Viewer::Windows::iterator itr = windows.begin();
+		itr != windows.end();
+		++itr)
+	{
+		toggleFullscreen(*itr);
+	}
+	//
 	video->start();
 		
 	
     while (!viewer.done()) {
 		
-		viewer.sync();	
+		//viewer.sync();	
 		
 		//video->update();
 		//tracker->setImage(video.get());
 		//tracker->update();
 		
-		sef->update();
+		//sef->update();
 
-        viewer.update();
+        //viewer.update();
         viewer.frame();
 	
     }
     
-	viewer.sync();
-    viewer.cleanup_frame();
-    viewer.sync();
+	//viewer.sync();
+    //viewer.cleanup_frame();
+    //viewer.sync();
 
 	video->stop();
 	video->close();
 	
-	delete sef;
+	//delete sef;
 }

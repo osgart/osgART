@@ -49,7 +49,7 @@ void NodeBoundingAreaBillboard::init(osg::ref_ptr<osg::Texture2D> texture)
 	
 	
 
-	this->setEventCallback( new BillboardUpdateCallback() );
+	//this->setEventCallback( new BillboardUpdateCallback() );
 	
 
 
@@ -64,7 +64,7 @@ void NodeBoundingAreaBillboard::init(osg::ref_ptr<osg::Texture2D> texture)
 
 }
 
-void NodeBoundingAreaBillboard::addBillboardFor( osg::ref_ptr<osg::Node> node , float scale )
+void NodeBoundingAreaBillboard::addBillboardFor( osg::ref_ptr<osg::Node> node , float scale, osg::Vec3f offset )
 {
 	osg::BoundingSphere bound = node->getBound();
 	osg::Drawable *drawable = createDrawable(bound.radius()* 2 * scale);
@@ -75,18 +75,20 @@ void NodeBoundingAreaBillboard::addBillboardFor( osg::ref_ptr<osg::Node> node , 
 	this->scale = scale;
 	bupdateHandler->init(this);
 	bupdateHandler->setNode( node );
+	bupdateHandler->setID( updateHandlers.size() );
+	node->setUpdateCallback( bupdateHandler );
 
     updateHandlers.push_back( bupdateHandler );
 }
 
-void NodeBoundingAreaBillboard::updateBillboard()
-{
-	for (int k=0; k < (int)(updateHandlers.size()); k++)
-	{
-		updateHandlers.at(k)->update(k);
-	}
-	
-}
+//void NodeBoundingAreaBillboard::updateBillboard()
+//{
+//	for (int k=0; k < (int)(updateHandlers.size()); k++)
+//	{
+//		updateHandlers.at(k)->update(k);
+//	}
+//	
+//}
 
 osg::Drawable* NodeBoundingAreaBillboard::createDrawable(float size)
 {
@@ -137,6 +139,15 @@ osg::Drawable* NodeBoundingAreaBillboard::createDrawable(float size)
    return shrubQuad;
 }
 
+void NodeBoundingAreaBillboard::setOnOffType(ONOFF_TYPE a )
+{
+	for ( int k=0; k < updateHandlers.size(); k++)
+	{
+		updateHandlers.at(k)->setOnOffType( a ) ;
+	}
+	onoffType = a;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -152,5 +163,5 @@ void BillboardUpdateCallback::operator()(osg::Node *nd , osg::NodeVisitor* nv)
 {
 	NodeBoundingAreaBillboard *nbab = dynamic_cast<NodeBoundingAreaBillboard*>( nd ); 
 	
-	nbab->updateBillboard();
+	//nbab->updateBillboard();
 }
