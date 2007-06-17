@@ -18,9 +18,7 @@
  *
  */
 
-#include <Producer/RenderSurface>
-#include <osgProducer/Viewer>
-
+#include <osg/Version>
 #include <osg/Notify>
 #include <osg/Node>
 #include <osg/Group>
@@ -31,11 +29,73 @@
 #include <osg/Geometry>
 #include <osg/Image>
 
+// 
+// A wrapper around the legacy osgProducer and new osgViewer
+//
+#if (OSG_VERSION_MAJOR >= 2)
+	
+	#include <osgViewer/Viewer>
+	
+	namespace osgART {
+		
+		// simple wrapper around osgViewer to be used with osgART
+		struct Viewer : public osgViewer::Viewer {
+
+			Viewer() : osgViewer::Viewer()
+			{
+				this->setThreadingModel(osgViewer::Viewer::SingleThreaded);
+				this->getCamera()->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+				
+			}
+
+			void sync() 
+			{
+			}
+
+			void cleanup_frame() 
+			{
+			}
+		};
+	}
+
+#else
+
+	#include <Producer/RenderSurface>
+	#include <osgProducer/Viewer>
+
+	namespace osgART {
+		
+		struct Viewer : public osgProducer::Viewer {
+
+			Viewer() : osgProducer::Viewer() 
+			{
+				this->setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
+				this->getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+
+			#ifndef __linux
+				// somehow on Ubuntu Dapper this ends up in a segmentation fault
+				this->getCamera(0)->getRenderSurface()->fullScreen(false);
+			#endif
+			}
+
+			void frame() 
+			{
+				this->sync();	
+				this->update();
+				osgProducer::Viewer::frame();	
+			}
+		};
+
+	}
+
+#endif
+
 #include <osgART/Foundation>
 #include <osgART/ARTTransform>
 #include <osgART/VideoLayer>
 #include <osgART/ARSceneNode>
 #include <osgART/PluginManager>
+#include <osgART/TransformFilterCallback>
 
 
 int main(int argc, char* argv[]) 
@@ -47,15 +107,8 @@ int main(int argc, char* argv[])
 	// preload the video
 	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
 	
-	// Set up the osg viewer.
-	osgProducer::Viewer viewer;
-	viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
-	viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
-
-#ifndef __linux
-	// somehow on Ubuntu Dapper this ends up in a segmentation fault
-	viewer.getCamera(0)->getRenderSurface()->fullScreen(false);
-#endif
+	// Set up the osgART viewer (a wrapper around osgProducer or osgViewer).
+	osgART::Viewer viewer;
 
 	osg::ref_ptr<osgART::ARSceneNode> root = new osgART::ARSceneNode;
 
@@ -72,6 +125,19 @@ int main(int argc, char* argv[])
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
 	}
+
+	// found video - configure now
+	osgART::VideoConfiguration* _config = video->getVideoConfiguration();
+
+	// if the configuration is existing
+	if (_config) 
+	{
+		// it is possible to configure the plugin before opening it
+
+		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
+		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
+	}
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
@@ -84,6 +150,8 @@ int main(int argc, char* argv[])
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}
+
+	
 		
 	// flipping the video can be done on the fly or in advance
 	video->setFlip(false,true);
@@ -134,13 +202,23 @@ int main(int argc, char* argv[])
 
 	// create marker with id number '0'
 	osg::ref_ptr<osgART::Marker> marker = tracker->getMarker(0);
-		
+
 	// check before accessing the linked marker
 	if (!marker.valid()) 
 	{
 		osg::notify(osg::FATAL) << "No Marker defined!" << std::endl;
 		exit(-1);
 	}
+
+
+	// add transitional smoothing
+	osgART::TransformFilterCallback* tfc = new osgART::TransformFilterCallback();
+
+	marker->setFilterCallback(tfc);
+
+	tfc->enableTranslationalSmoothing(true);
+	tfc->enableRotationalSmoothing(true);
+
 
 	// activate the marker
 	marker->setActive(true);
@@ -177,9 +255,7 @@ int main(int argc, char* argv[])
 	
     while (!viewer.done()) 
 	{
-		viewer.sync();	
-        viewer.update();
-        viewer.frame();	
+		viewer.frame();
     }
     
 	viewer.sync();
