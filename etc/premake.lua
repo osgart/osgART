@@ -193,10 +193,14 @@ package.libpaths = globals.osg.libpaths()
 
 package.links = {
 	"osg",
-	"osgART",
-	"Producer",
-	"osgProducer"
+	"osgART",		
 }
+
+if globals.osg.two then
+	table.insert(package.links, {"osgGA", "osgViewer"} )
+else
+	table.insert(package.links, {"osgGA", "osgProducer", "Producer"} )
+end
 
 package.files = {
   matchfiles("../../src/osgARTTest/*.cpp"),

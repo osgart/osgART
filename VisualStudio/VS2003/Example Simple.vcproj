@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Example Simple"
-	ProjectGUID="{71042B89-97FB-1849-8BD6-27E2301AF0D1}"
+	ProjectGUID="{C5180AB0-C131-0242-B9A2-DEBCDFD3E106}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,10 +34,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib Producer.lib osgProducer.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib osgGA.lib osgViewer.lib"
 				OutputFile="$(OutDir)/osgart_simple_debug.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_simple_debug.pdb"
 				SubSystem="1"
@@ -89,10 +89,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART.lib Producer.lib osgProducer.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib osgGA.lib osgViewer.lib"
 				OutputFile="$(OutDir)/osgart_simple.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug"
 				GenerateDebugInformation="FALSE"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -110,6 +110,118 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DebugProf|Win32"
+			OutputDirectory="../../bin"
+			IntermediateDirectory="obj/DebugProf"
+			ConfigurationType="1"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"
+				PreprocessorDefinitions="WIN32;_WINDOWS"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib osgGA.lib osgViewer.lib"
+				OutputFile="$(OutDir)/osgart_simple.exe"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/osgart_simple.pdb"
+				SubSystem="1"
+				EntryPointSymbol="mainCRTStartup"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="WIN32;_WINDOWS"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseProf|Win32"
+			OutputDirectory="../../bin"
+			IntermediateDirectory="obj/ReleaseProf"
+			ConfigurationType="1"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"
+				PreprocessorDefinitions="WIN32;_WINDOWS"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib osgGA.lib osgViewer.lib"
+				OutputFile="$(OutDir)/osgart_simple.exe"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../etc;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/osgart_simple.pdb"
+				SubSystem="1"
+				EntryPointSymbol="mainCRTStartup"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="WIN32;_WINDOWS"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>

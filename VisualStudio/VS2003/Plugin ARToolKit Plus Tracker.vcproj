@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin ARToolKit Plus Tracker"
-	ProjectGUID="{C2C01D81-DA1C-9E46-8692-BBECB98C58C8}"
+	ProjectGUID="{EAA6594D-5DEB-9942-AFD9-934ED98F33C4}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -37,7 +37,7 @@
 				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus_debug.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkitplus_debug.pdb"
 				SubSystem="2"
@@ -92,7 +92,7 @@
 				AdditionalDependencies="osg.lib ../../lib/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
 				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -110,6 +110,118 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DebugProf|Win32"
+			OutputDirectory="../../bin"
+			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/DebugProf"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
+				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkitplus.pdb"
+				SubSystem="2"
+				ImportLibrary="../../lib/osgart_tracker_artoolkitplus.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseProf|Win32"
+			OutputDirectory="../../bin"
+			IntermediateDirectory="obj/osgart_tracker_artoolkitplus/ReleaseProf"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib ARToolKitPlus.lib OpenGL32.lib GLU32.lib"
+				OutputFile="$(OutDir)/osgart_tracker_artoolkitplus.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ARTOOLKIT_PLUS_ROOT)/lib/win32"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/osgart_tracker_artoolkitplus.pdb"
+				SubSystem="2"
+				ImportLibrary="../../lib/osgart_tracker_artoolkitplus.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ARTOOLKIT_PLUS_ROOT)/include"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>

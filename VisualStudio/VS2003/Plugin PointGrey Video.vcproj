@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin PointGrey Video"
-	ProjectGUID="{6FEE407E-DE21-0344-9CB9-A7F68106D6C5}"
+	ProjectGUID="{99C59E1D-D63F-FA49-87A5-53AC340F7DC1}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -34,10 +34,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART_debug.lib PGRFlyCapture.lib OpenThreads.lib"
 				OutputFile="$(OutDir)/osgart_video_ptgrey_debug.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey_debug.pdb"
 				SubSystem="2"
@@ -89,10 +89,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreadsWin32.lib"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreads.lib"
 				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -110,6 +110,118 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DebugProf|Win32"
+			OutputDirectory="../../bin"
+			IntermediateDirectory="obj/osgart_video_ptgrey/DebugProf"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreads.lib"
+				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey.pdb"
+				SubSystem="2"
+				ImportLibrary="../../lib/osgart_video_ptgrey.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseProf|Win32"
+			OutputDirectory="../../bin"
+			IntermediateDirectory="obj/osgart_video_ptgrey/ReleaseProf"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="osg.lib ../../lib/osgART.lib PGRFlyCapture.lib OpenThreads.lib"
+				OutputFile="$(OutDir)/osgart_video_ptgrey.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="../../lib;$(OSG_ROOT)/lib;$(OSG_ROOT)/lib/release;$(OSG_ROOT)/lib/debug;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/lib"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/osgart_video_ptgrey.pdb"
+				SubSystem="2"
+				ImportLibrary="../../lib/osgart_video_ptgrey.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="OSGART_PLUGIN_EXPORT;WIN32;_WIN32;_WINDOWS"
 				AdditionalIncludeDirectories="../../include;$(OSG_ROOT)/include;$(ProgramFiles)/Point Grey Research/PGR FlyCapture/include"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>

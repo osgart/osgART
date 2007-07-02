@@ -173,8 +173,10 @@ namespace osgART {
 
 	    arParamChangeSize(&wparam, xsize, ysize, &(m_cparam->cparam));
 	    arInitCparam(&(m_cparam->cparam));
-	    std::cout << "*** Camera Parameter ***" << std::endl;
-	    arParamDisp(&(m_cparam->cparam));
+
+		osg::notify() << "*** Camera Parameter ***" << std::endl;
+	    
+		arParamDisp(&(m_cparam->cparam));
 
 		arFittingMode = AR_FITTING_TO_IDEAL;
 	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;
@@ -214,7 +216,8 @@ namespace osgART {
 
 		int patternNum = 0;
 		markerFile >> patternNum;
-		//std::cout << "Loading " << patternNum << " patterns." << std::endl;
+		
+		osg::notify() << "ARToolKitTracker::setupMarkers() Loading '" << patternNum << "' patterns." << std::endl;
 
 		std::string patternName, patternType;
 
@@ -235,11 +238,13 @@ namespace osgART {
 
 			if (patternType == "SINGLE")
 			{
+
+				osg::notify(osg::WARN) << "Loading single pattern: '" << patternName << "'." << std::endl;
 				
 				double width, center[2];
 				markerFile >> width >> center[0] >> center[1];
 				if (addSingleMarker(patternName, width, center) == -1) {
-					std::cerr << "Error adding single pattern: " << patternName << std::endl;
+					osg::notify(osg::WARN) << "Error adding single pattern: " << patternName << std::endl;
 					ret = false;
 					break;
 				}
@@ -248,7 +253,7 @@ namespace osgART {
 			else if (patternType == "MULTI")
 			{
 				if (addMultiMarker(patternName) == -1) {
-					std::cerr << "Error adding multi-marker pattern: " << patternName << std::endl;
+					osg::notify(osg::WARN) << "Error adding multi-marker pattern: " << patternName << std::endl;
 					ret = false;
 					break;
 				}
@@ -256,9 +261,9 @@ namespace osgART {
 			} 
 			else 
 			{
-				std::cerr << "Unrecognized pattern type: " << patternType << std::endl;
-				ret = false;
-				break;
+				osg::notify(osg::WARN) << "Unrecognized pattern type: " << patternType << std::endl;
+				
+				continue;
 			}
 		}
 
@@ -428,7 +433,10 @@ namespace osgART {
 				multiMarker->update(marker_info, m_marker_num);
 				
 			} else {
-				std::cerr << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
+				
+				osg::notify(osg::WARN) << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
+
+				continue;
 			}
 		}
 

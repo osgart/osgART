@@ -14,11 +14,15 @@ osgLua.loadWrapper("osgGA")
 osgLua.loadWrapper("osgProducer")
 osgLua.loadWrapper("osgART")
 
+
 -- create the scene root
 root = osg.Group()
 
 -- create a video capture object
-video = osgART.VideoContainer(osgART.VideoManager.createVideoFromPlugin("osgart_artoolkit"));
+osgART.PluginManager.getInstance():load("osgart_video_artoolkit",true)
+
+-- get the plugin interface
+video = osgART.PluginManager.getInstance():get("video_artoolkit")
 
 -- open the video stream
 video:open()
