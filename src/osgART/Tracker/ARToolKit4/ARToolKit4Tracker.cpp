@@ -82,6 +82,13 @@ namespace osgART {
 		// create a field for the debug image
 		m_fields["debug_image"] = new TypedField<osg::ref_ptr<osg::Image> >(&m_debugimage);
 		
+				m_fields["patternDetectionMode"]	= new CallbackField<ARToolKit4Tracker,int>(this,
+																		   &ARToolKit4Tracker::getPatternDetectionMode,
+																		   &ARToolKit4Tracker::setPatternDetectionMode);
+
+
+
+
 	}
 
 	ARToolKit4Tracker::~ARToolKit4Tracker()
@@ -145,10 +152,9 @@ namespace osgART {
 																		   &ARToolKit4Tracker::setThreshold);
 		setThreshold(AR_DEFAULT_LABELING_THRESH);
 		
-		m_fields["patternDetectionMode"]	= new CallbackField<ARToolKit4Tracker,int>(this,
-																		   &ARToolKit4Tracker::getPatternDetectionMode,
-																		   &ARToolKit4Tracker::setPatternDetectionMode);
-		setPatternDetectionMode(AR_DEFAULT_PATTERN_DETECTION_MODE);
+
+		setPatternDetectionMode(2);
+
 
 		if ((gAR3DHandle = ar3DCreateHandle(&(m_cparam->cparam))) == NULL) {
 			osg::notify(osg::FATAL) << "osgART::ARToolKit4Tracker::init : Error: Could not create AR3DHandle." << endl;

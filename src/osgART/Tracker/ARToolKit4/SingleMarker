@@ -77,6 +77,8 @@ namespace osgART {
 		
 		double			m_confidence;
 		
+		bool			m_idBased;
+		
 		friend class ARToolKit4Tracker;
 		
 	};

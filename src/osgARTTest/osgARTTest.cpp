@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
 {
 
 	// preload the tracker
-	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit");
+	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit4");
 
 	// preload the video
 	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit"));
+		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit4"));
 
     // check if the tracker plugin could be loaded
 	if (!tracker.valid()) 
@@ -161,11 +161,7 @@ int main(int argc, char* argv[])
 	// for the connected tracker
 	video->open();
 
-	// Connect the video to a tracker. This will also init the tracker.
-	if (!root->connect(tracker.get(),video.get())) {
-		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
-		exit(-1);
-	}
+
 	// Tracker parameters are read and written via a field mechanism.
 	// Init access to a field within the tracker, in this case, the binarization threshhold.
 	osg::ref_ptr< osgART::TypedField<int> > _threshold = 
@@ -180,6 +176,18 @@ int main(int argc, char* argv[])
 		osg::notify(osg::WARN) << "Field 'threshold' not supported for this tracker" << std::endl;
 	}
 	
+
+	  osg::ref_ptr< osgART::TypedField<int> > _detectMode = reinterpret_cast< osgART::TypedField<int>* >(tracker->get("patternDetectionMode"));
+     if (_detectMode.valid())  {                  
+		 _detectMode->set(2);//AR_MATRIX_CODE_DETECTION);
+       std::cout << "Marker Detection set to AR_MATRIX_CODE_DETECTION" << std::endl;
+   }
+
+	// Connect the video to a tracker. This will also init the tracker.
+	if (!root->connect(tracker.get(),video.get())) {
+		osg::notify(osg::FATAL) << "Error connecting video with tracker!" << std::endl;
+		exit(-1);
+	}
 	
 	// Creating a video background
 	osg::Group* foregroundGroup	= new osg::Group();
@@ -214,7 +222,7 @@ int main(int argc, char* argv[])
 	// add transitional smoothing
 	osgART::TransformFilterCallback* tfc = new osgART::TransformFilterCallback();
 
-	marker->setFilterCallback(tfc);
+	//marker->setFilterCallback(tfc);
 
 	tfc->enableTranslationalSmoothing(true);
 	tfc->enableRotationalSmoothing(true);

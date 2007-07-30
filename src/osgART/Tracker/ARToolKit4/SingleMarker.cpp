@@ -14,7 +14,7 @@
 #include "SingleMarker"
 
 #include <AR/gsub_lite.h>
-
+#include <sstream>
 
 namespace osgART {
 
@@ -23,6 +23,7 @@ namespace osgART {
 		patt_id(-1),
 		patt_width(80),
 		m_confidence(0),
+		m_idBased(false),
 		arHandle(NULL)
 	{
 			m_fields["confidence"] = new TypedField<double>(&m_confidence);
@@ -30,9 +31,9 @@ namespace osgART {
 
 	SingleMarker::~SingleMarker()
 	{
-		// jcl64: Free the pattern
-		if (patt_id > 0)// arFreePatt(patt_id);
-			arPattFree(AR4_PattList,patt_id );
+		// jcl64: Free the pattern (not for ID based markers)
+		if (patt_id > 0 && !m_idBased) arPattFree(AR4_PattList,patt_id);
+
 		patt_id = -1;
 		arHandle = NULL;
 	}
@@ -45,13 +46,22 @@ namespace osgART {
 	bool SingleMarker::initialise(ARHandle		*_arHandle,const std::string& pattFile, double width, double center[2])
 	{
 		if (!_arHandle)	return false;
-		if (patt_id >= 0) return (false);
-		if (arHandle) return (false);
-
+		if (patt_id >= 0) return false;
+		if (arHandle) return false;
+		if (pattFile.length() == 0) return false;
 		
-		patt_id = arPattLoad(AR4_PattList, pattFile.c_str());
+		/* If the pattern file name begins with a hash, then it represents an 
+		 * ID based marker rather than a pattern file. 
+		 */
+		m_idBased = (pattFile[0] == '#');
+
+		if (m_idBased) {
+			std::istringstream(pattFile.substr(1)) >> patt_id;
+		} else {
+			patt_id = arPattLoad(AR4_PattList, pattFile.c_str());
+		}
+
 		if (patt_id < 0) return false;
-		//arPattAttach(arHandle, AR4_PattList);//>????
 
 		patt_width = width;
 		patt_center[0] = center[0];
@@ -75,8 +85,7 @@ namespace osgART {
 			m_confidence = _markerInfo->cf;
 			double modelView[16];
 			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
-			osg::Matrix tmp(modelView);
-			updateTransform(tmp);
+			updateTransform(osg::Matrix(modelView));
 		}
 	}
 
