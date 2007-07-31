@@ -150,14 +150,11 @@ int main(int argc, char* argv[])
 	}
 
 
-	// add transitional smoothing
-	osgART::TransformFilterCallback* tfc = new osgART::TransformFilterCallback();
-
+	// optionally add transitional smoothing
+	//osgART::TransformFilterCallback* tfc = new osgART::TransformFilterCallback();
 	//marker->setFilterCallback(tfc);
-
-	tfc->enableTranslationalSmoothing(true);
-	tfc->enableRotationalSmoothing(true);
-
+	//tfc->enableTranslationalSmoothing(true);
+	//tfc->enableRotationalSmoothing(true);
 
 	// activate the marker
 	marker->setActive(true);
