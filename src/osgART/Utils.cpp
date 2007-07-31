@@ -21,6 +21,32 @@ namespace osgART{
 		return r.erase(0,r.find_first_not_of(drop));
 	}
 
+	std::vector<std::string> tokenize(const std::string& str, const std::string& delimiters)
+	{
+		std::vector<std::string> tokens;
+	    	
+		// skip delimiters at beginning.
+		std::string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+	    	
+		// find first "non-delimiter".
+		std::string::size_type pos = str.find_first_of(delimiters, lastPos);
+
+		while (std::string::npos != pos || std::string::npos != lastPos)
+    	{
+        	// found a token, add it to the vector.
+        	tokens.push_back(str.substr(lastPos, pos - lastPos));
+		
+        	// skip delimiters.  Note the "not_of"
+        	lastPos = str.find_first_not_of(delimiters, pos);
+		
+        	// find next "non-delimiter"
+        	pos = str.find_first_of(delimiters, lastPos);
+    	}
+
+		return tokens;
+	}
+	
+
 	osg::Matrix GenerateMatrix(const osg::Vec3d & _trans, const osg::Vec3d & _rot)
 	{
 		osg::Matrix tempmatt;

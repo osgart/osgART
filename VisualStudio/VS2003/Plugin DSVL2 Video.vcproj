@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="Plugin DSVL2 Video"
-	ProjectGUID="{FB2EB529-9136-904C-9E80-77D9BFC6E5A3}"
+	ProjectGUID="{8CC58956-7562-7547-B0F9-2CC8577B42B5}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform

@@ -112,6 +112,21 @@ namespace osgART {
 		
 		
 		/**
+		 * Add a marker to the tracker.
+		 * \param config can contain the filename an ID or other tracker specific parameters
+		 * \return Marker as been loaded from the tracker or 0 if it failed
+		 */
+		virtual Marker* addMarker(const std::string& config);
+		
+		/**
+		 * Remove a marker.
+		 * \param marker pointer to the marker to be removed 		 
+		 */
+		virtual void removeMarker(Marker* marker);
+		 
+		
+		
+		/**
 		 * Needed for plugin loaded objects which are used in other
 		 * languages which don't support dynamic casting (e.g. Python)
 		 * \param instance instance to be casted to a tracker

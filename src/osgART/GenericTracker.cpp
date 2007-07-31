@@ -65,6 +65,23 @@ namespace osgART {
 		return false;
 	}
 
+	/*virtual */
+	Marker*
+	GenericTracker::addMarker(const std::string& config)
+	{
+		osg::notify(osg::WARN) << "Method not implemented for this tracker!" << std::endl;
+
+		return 0L;
+	}
+
+	/*virtual */
+	void
+	GenericTracker::removeMarker(Marker *marker)
+	{
+	}
+
+
+
 	Marker* 
 	GenericTracker::getMarker(int id) 
 	{

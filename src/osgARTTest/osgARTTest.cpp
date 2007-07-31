@@ -29,73 +29,13 @@
 #include <osg/Geometry>
 #include <osg/Image>
 
-// 
-// A wrapper around the legacy osgProducer and new osgViewer
-//
-#if (OSG_VERSION_MAJOR >= 2)
-	
-	#include <osgViewer/Viewer>
-	
-	namespace osgART {
-		
-		// simple wrapper around osgViewer to be used with osgART
-		struct Viewer : public osgViewer::Viewer {
-
-			Viewer() : osgViewer::Viewer()
-			{
-				this->setThreadingModel(osgViewer::Viewer::SingleThreaded);
-				this->getCamera()->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
-				
-			}
-
-			void sync() 
-			{
-			}
-
-			void cleanup_frame() 
-			{
-			}
-		};
-	}
-
-#else
-
-	#include <Producer/RenderSurface>
-	#include <osgProducer/Viewer>
-
-	namespace osgART {
-		
-		struct Viewer : public osgProducer::Viewer {
-
-			Viewer() : osgProducer::Viewer() 
-			{
-				this->setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
-				this->getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
-
-			#ifndef __linux
-				// somehow on Ubuntu Dapper this ends up in a segmentation fault
-				this->getCamera(0)->getRenderSurface()->fullScreen(false);
-			#endif
-			}
-
-			void frame() 
-			{
-				this->sync();	
-				this->update();
-				osgProducer::Viewer::frame();	
-			}
-		};
-
-	}
-
-#endif
-
 #include <osgART/Foundation>
 #include <osgART/ARTTransform>
 #include <osgART/VideoLayer>
 #include <osgART/ARSceneNode>
 #include <osgART/PluginManager>
 #include <osgART/TransformFilterCallback>
+#include <osgART/Viewer>
 
 
 int main(int argc, char* argv[]) 

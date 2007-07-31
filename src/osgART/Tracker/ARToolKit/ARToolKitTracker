@@ -133,6 +133,12 @@ namespace osgART {
 		*/
 		void update();
 		
+		
+		/**
+		 * Adding a single or multimarker
+		 */
+		virtual Marker* addMarker(const std::string& config);
+				
 	protected:
 	
 		/** 

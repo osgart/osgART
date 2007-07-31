@@ -14,7 +14,7 @@
 #include "ARToolKitTracker"
 
 #include "osgART/PluginManager"
-
+#include "osgART/Utils"
 
 // initializer for dynamic loading
 osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker("tracker_artoolkit");
@@ -193,16 +193,9 @@ namespace osgART {
 		return true;
 	}
 
-
-	std::string trim(std::string& s,const std::string& drop = " ")
-	{
-		std::string r=s.erase(s.find_last_not_of(drop)+1);
-		return r.erase(0,r.find_first_not_of(drop));
-	}
-
-
 	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
 	{
+
 		std::ifstream markerFile;
 
 		// Need to check whether the passed file even exists
@@ -304,6 +297,71 @@ namespace osgART {
 		return m_markerlist.size() - 1;
 
 	}
+
+	/*virtual*/
+	Marker* ARToolKitTracker::addMarker(const std::string& config)
+	{
+		/* format is 
+		
+		single;data/pattern.dat;80;0;0 
+		multi;data/multifile.dat
+
+		 */
+		std::vector<std::string> _tokens = tokenize(config," ");
+
+		if (_tokens.size() < 2) 
+		{
+			osg::notify(osg::WARN) << "Invalid configuration string" << std::endl;
+
+			return 0L;
+		}
+		
+		if (_tokens[0] == "single")
+		{
+			if (_tokens.size() < 5)
+			{
+				osg::notify(osg::WARN) << "Invalid configuration string" << std::endl;
+				return 0L;
+			}
+
+			double _center[2];
+			double _size = atof(_tokens[2].c_str());			 
+			_center[0] = atof(_tokens[3].c_str());
+			_center[1] = atof(_tokens[4].c_str());
+
+			SingleMarker* singleMarker = new SingleMarker();
+
+			if (!singleMarker->initialise(_tokens[1], _size, _center))
+			{
+				singleMarker->unref();
+				return 0L;
+			}
+
+			m_markerlist.push_back(singleMarker);
+
+			return singleMarker;
+
+		}
+
+		if (_tokens[0] == "multi")
+		{
+			MultiMarker* multiMarker = new MultiMarker();
+	
+			if (!multiMarker->initialise(_tokens[1]))
+			{
+				multiMarker->unref();
+				return 0L;
+			}
+
+			m_markerlist.push_back(multiMarker);
+
+			return multiMarker;
+		}
+
+		return 0L;
+
+	}
+
 
 	void ARToolKitTracker::setThreshold(const int& thresh)	
 	{
