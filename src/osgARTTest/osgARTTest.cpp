@@ -18,16 +18,7 @@
  *
  */
 
-#include <osg/Version>
-#include <osg/Notify>
-#include <osg/Node>
-#include <osg/Group>
-#include <osg/Geode>
-#include <osg/Projection>
-#include <osg/AutoTransform>
 #include <osg/ShapeDrawable>
-#include <osg/Geometry>
-#include <osg/Image>
 
 #include <osgART/Foundation>
 #include <osgART/ARTTransform>
