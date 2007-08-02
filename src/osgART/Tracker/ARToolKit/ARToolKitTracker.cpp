@@ -203,7 +203,7 @@ namespace osgART {
 		markerFile.open(patternListFile.c_str());
 
 		// Need to check for error when opening file
-		if (!markerFile.is_open()) return false;
+		if (!markerFile.is_open()) return true;
 
 		bool ret = true;
 
@@ -303,10 +303,12 @@ namespace osgART {
 	{
 		/* format is 
 		
-		single;data/pattern.dat;80;0;0 
-		multi;data/multifile.dat
+		single data/pattern.dat 80 0 0 
+		multi data/multifile.dat
 
-		 */
+		*/
+
+
 		std::vector<std::string> _tokens = tokenize(config," ");
 
 		if (_tokens.size() < 2) 
@@ -318,6 +320,8 @@ namespace osgART {
 		
 		if (_tokens[0] == "single")
 		{
+			osg::notify(osg::INFO) << "Loading type:'" << _tokens[0] << "' Marker" << std::endl;
+
 			if (_tokens.size() < 5)
 			{
 				osg::notify(osg::WARN) << "Invalid configuration string" << std::endl;
@@ -359,7 +363,6 @@ namespace osgART {
 		}
 
 		return 0L;
-
 	}
 
 

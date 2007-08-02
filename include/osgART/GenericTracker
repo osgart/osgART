@@ -60,7 +60,7 @@ namespace osgART {
 		 *		camera parameters. Default value is "Data/camera_para.dat".
 		 */
 		virtual bool init(int xsize, int ysize, 
-			const std::string& pattlist_name="Data/markers_list.dat",
+			const std::string& pattlist_name="",
 			const std::string& camera_name="Data/camera_para.dat");
 
 		/**

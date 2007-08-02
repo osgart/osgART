@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 {
 
 	// preload the tracker
-	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit4");
+	osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit");
 
 	// preload the video
 	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	
 	// Load a tracker plugin.
 	osg::ref_ptr<osgART::GenericTracker> tracker = 
-		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit4"));
+		dynamic_cast<osgART::GenericTracker*>(osgART::PluginManager::getInstance()->get("tracker_artoolkit"));
 
     // check if the tracker plugin could be loaded
 	if (!tracker.valid()) 
@@ -81,8 +81,6 @@ int main(int argc, char* argv[])
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}
-
-	
 		
 	// flipping the video can be done on the fly or in advance
 	video->setFlip(false,true);
@@ -108,8 +106,8 @@ int main(int argc, char* argv[])
 	}
 	
 
-	  osg::ref_ptr< osgART::TypedField<int> > _detectMode = reinterpret_cast< osgART::TypedField<int>* >(tracker->get("patternDetectionMode"));
-     if (_detectMode.valid())  {                  
+	osg::ref_ptr< osgART::TypedField<int> > _detectMode = reinterpret_cast< osgART::TypedField<int>* >(tracker->get("patternDetectionMode"));
+	if (_detectMode.valid())  {                  
 		 _detectMode->set(2);//AR_MATRIX_CODE_DETECTION);
        std::cout << "Marker Detection set to AR_MATRIX_CODE_DETECTION" << std::endl;
    }
@@ -140,7 +138,7 @@ int main(int argc, char* argv[])
 	osg::Projection* projectionMatrix = new osg::Projection(osg::Matrix(tracker->getProjectionMatrix()));
 
 	// create marker with id number '0'
-	osg::ref_ptr<osgART::Marker> marker = tracker->getMarker(0);
+	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("single Data/patt.hiro 80 0 0");
 
 	// check before accessing the linked marker
 	if (!marker.valid()) 
