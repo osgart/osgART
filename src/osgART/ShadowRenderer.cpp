@@ -163,10 +163,14 @@ class UpdateCameraAndTexGenCallback : public osg::NodeCallback
 		osg::Program* program = new osg::Program;   
 
 		osg::Shader* vertShader = new osg::Shader(osg::Shader::VERTEX);
+
+		// TODO: replace with a static string
 		vertShader->loadShaderSourceFromFile("shaders/shadow.vert");
 		program->addShader(vertShader);
 
 		osg::Shader* fragShader = new osg::Shader(osg::Shader::FRAGMENT);
+
+		// TODO: replace with a static string
 		fragShader->loadShaderSourceFromFile("shaders/shadow.frag");
 		program->addShader(fragShader);
 		

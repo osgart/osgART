@@ -78,6 +78,7 @@ namespace osgART {
 	void
 	GenericTracker::removeMarker(Marker *marker)
 	{
+		// TODO: implement
 	}
 
 

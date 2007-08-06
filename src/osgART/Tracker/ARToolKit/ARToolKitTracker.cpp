@@ -303,13 +303,13 @@ namespace osgART {
 	{
 		/* format is 
 		
-		single data/pattern.dat 80 0 0 
-		multi data/multifile.dat
+		single;data/pattern.dat;80;0;0 
+		multi;data/multifile.dat
 
 		*/
 
 
-		std::vector<std::string> _tokens = tokenize(config," ");
+		std::vector<std::string> _tokens = tokenize(config,";");
 
 		if (_tokens.size() < 2) 
 		{
