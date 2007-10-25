@@ -6,6 +6,7 @@
  *	
  *	Rev		Date		Who		Changes
  *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *  1.1   	2007-27-04  ---     Using osgViewer
  *
  */
 // @@OSGART_LICENSE_HEADER_BEGIN@@
@@ -17,9 +18,6 @@
  * By Julian Looser, Philip Lamb, Raphael Grasset, Hartmut Seichter.
  *
  */
-
-//#include <Producer/RenderSurface>
-//#include <osgProducer/Viewer>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/StatsHandler>
@@ -127,20 +125,11 @@ int main(int argc, char* argv[])
 	// preload the video
 	osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
 	
-	// Set up the osg viewer.
-	//osgProducer::Viewer viewer;
-	//viewer.setUpViewer(osgProducer::Viewer::ESCAPE_SETS_DONE);
-	//viewer.getCullSettings().setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 
 	osgViewer::Viewer viewer;
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 
-	//SingleThreaded ( only Main screen when DUAL MODE)
-	//CullDrawThreadPerContext, ( both screen like clone screen when DUAL MODE)
-	//DrawThreadPerContext (both screen like CLONE MODE when DUAL MODE) and (NOT SAFE IF YOU USE FBO AND DUAL MODE)
-	//CullThreadPerCameraDrawThreadPerContext (both screen like CLONE MODE when DUAL MODE) and (NOT SAFE IF YOU USE FBO AND DUAL MODE)
-	//AutomaticSelection ( only Main screen when DUAL MODE)
-
+	// add a the handler for changing fullscreen/windowed
 	viewer.addEventHandler(new FullScreenToggleHandler);
 
 	viewer.getCamera()->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);

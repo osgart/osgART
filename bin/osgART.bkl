@@ -8,7 +8,7 @@
 		<include>../include</include>
 		<include>/home/seichter/Projects/artoolkit/include</include>
 
-		<sources> $(addPrefixToList('../src/osgART/','ARSceneNode.cpp Foundation.cpp Marker.cpp VideoBillboard.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp VideoPlane.cpp GenericTracker.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp TransformFilterCallback.cpp Utils.cpp VideoImageStream.cpp'))</sources>
+		<sources> $(addPrefixToList('../src/osgART/','ARSceneNode.cpp Foundation.cpp Marker.cpp VideoBillboard.cpp VideoLayer.cpp ARTTransform.cpp VideoManager.cpp VideoPlane.cpp GenericTracker.cpp GenericVideo.cpp TrackerManager.cpp GenericVideoObject.cpp GenericVideoShader.cpp TransformFilterCallback.cpp Utils.cpp VideoImageStream.cpp PluginManager.cpp'))</sources>
 
 		<lib-path>/home/seichter/Projects/artoolkit/lib/</lib-path>
 
@@ -23,8 +23,7 @@
 		
 		<sys-lib>osg</sys-lib>
 		<sys-lib>osgDB</sys-lib>
-		<sys-lib>osgProducer</sys-lib>
-		<sys-lib>Producer</sys-lib>
+		<sys-lib>osgViewer</sys-lib>
 		<include>../include</include>
 		<sources>$(addPrefixToList('../src/osgARTTest/','osgARTTest.cpp'))</sources>
 	</exe>
