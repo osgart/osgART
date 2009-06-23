@@ -1,0 +1,178 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+
+#ifndef OSGART_ARTAGTRACKER
+#define OSGART_ARTAGTRACKER
+
+/**
+ * \file  ARTagTracker
+ * \brief A wrapper class for ARTag tracking system.
+ *
+ * Support Marker-Based tracking based on computer vision based on ARTag
+ * Algorithm. This class provided video/graphic independent marker detection and
+ * support multiple marker tracking.
+ *	
+ * \author Yannick Allusse yannick.allusse@hitlabnz.org
+ */
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/GenericVideo"
+#include "osgART/GenericTracker"
+#include "ARToolKitTrackerProfiler"
+#include "artag_rev2.h"
+
+namespace osgART {
+
+	/**
+	* \class ARTagTracker
+	* \brief A tracker based on ARTag rev2. 
+	* 
+	* This tracker supports single and multi-markers.
+	*
+	*/
+	class ARTagTracker :
+#if	AR_TRACKER_PROFILE
+		public ARToolKitTrackerProfiler<int>
+#else
+		public GenericTracker
+#endif	
+	{
+	public:        
+		#define AR_PIXEL_FORMAT_MONO 0
+		#define	AR_PIXEL_FORMAT_RGB	 1
+	   
+		/** 
+		* \brief constructor.
+		*/
+		ARTagTracker(void);
+
+		/** 
+		* \brief set the openGL parameters for the projection matrix.
+		* 
+		* Initialize internal parameters computation for delivers an openGL Matrix (modify
+		* nothing to openGL state machine). 
+		* \param n near field of view
+		* \param f far field of view
+		*/
+		void setProjection(const double n, const double f);
+		
+		
+#if 0		
+		/** 
+		* \brief Set the threshold value for the tracking algorithm.
+		* 
+		* Define the threshold used to binarize the image in ARToolkit.
+		* \param thresh integer value between 0 (dark) and 255 (bright) 
+		*/
+		void setThreshold(const int& thresh);
+		
+		/**
+		* \brief Get the current threshold value for the tracking algorithm.
+		*
+		* \return The current threshold.
+		*/
+		int getThreshold() const;	
+		
+#endif
+		unsigned char* getDebugImage();	
+		void setDebugMode(const bool &d);
+		bool getDebugMode()const;
+		
+		
+		/** 
+		* \brief Initialize ARToolKit.
+		* 
+		* This core function initializes different parameters of ARToolKit: load tracked markers, initialize
+		* camera parameters.
+		* \param xsize width of the image to analyze
+		* \param ysize height of the image to analyze
+		* \param pattlist_name a file structure of the marker
+		* \param camera_name description file of the camera used (pinhole model)
+		*/
+		virtual bool init(int xsize, int ysize, 
+			const std::string& pattlist_name = "Data/markers_list.dat", 
+			const std::string& camera_name="Data/camera_para.dat");
+		
+		/** 
+		* \brief Register a single marker with the tracker.
+		* 
+		* \param pattFile the pattern file name
+		* \param width the width of the physical marker
+		* \param center the x-y coordinates of the center of the marker (usually 0,0)
+		* \return the internal ID of the new marker, or -1 on failure 
+		*/
+		int addSingleMarker(const std::string& pattFile); 
+			//,double width, double center[2]);
+		
+		/** 
+		* \brief Register a multi-marker with the tracker
+		* 
+		* \param multiFile the multi-marker configuration file name
+		* \return the internal ID of the new marker, or -1 on failure
+		*/
+		int addMultiMarker(const std::string& multiFile, const std::string& multiName);
+		
+		/** 
+		* \brief set the image which will be used for tracking.
+		* 
+		* \param image Pointer to raw image pixels.
+		* \param format OSGART-defined pixel format of the raw pixels. This will be converted
+		*		to a format understood by ARToolKit internally.
+		*/
+		virtual void setImageRaw(unsigned char * image, PixelFormatType format = VIDEOFORMAT_GREY8);
+		
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
+		*/
+		void update();
+		
+		/**
+		* \brief Convert the ARToolkit format type to osgART format type.
+		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
+		*/
+		//virtual 
+		PixelFormatType ConvertARTPixelFormatToOSGART(int format)const;
+		
+		/**
+		* \brief Convert the osgART format type to ARToolkit format type.
+		* Must be redefined for in all the trackers, depending on the format supported by the different trackers.
+		*/
+		//virtual 
+		int ConvertOSGARTPixelFormatToART(PixelFormatType format)const;
+	protected:
+	
+		/** 
+		 * \brief destructor.
+		 */
+		virtual ~ARTagTracker();
+		
+		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
+	private:
+		
+//		struct				CameraParameter;
+		
+//		CameraParameter*	m_cparam;
+	
+		bool setupMarkers(const std::string& patternListFile);
+		void cleanupMarkers(void);
+
+//		std::string 		m_cparamName;
+//		int					m_threshold;
+		bool 				m_debugmode;
+//		int					m_marker_num;
+//        int                 m_artag_pixformat;
+//        int                 m_artag_pixsize;
+	};
+};
+
+#endif 
+
+

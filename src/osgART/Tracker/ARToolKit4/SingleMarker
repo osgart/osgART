@@ -1,0 +1,87 @@
+/*
+ *	osgART/Tracker/ARToolKit4/SingleMarker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+#ifndef OSGART_SINGLEMARKER
+#define OSGART_SINGLEMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Marker"
+#ifdef AR_TRACKER_PROFILE
+	#include "ProfilerTools"
+#endif
+
+// AR ToolKit include
+#include <AR/ar.h>
+
+namespace osgART {
+
+	/**
+	* \class SingleMarker.
+	* \brief A marker consisting of a single pattern.
+	*/
+	class SingleMarker : public Marker
+	{
+	public:       
+    
+		/** 
+		 * \brief default constructor.
+		 * \param _PattMainHdle => Handle to the corresponding ARPattHandle* container to Marker is affected to.
+		 *
+		 */
+		SingleMarker(ARPattHandle  *_PattMainHdle);
+		
+	    
+		bool initialise(ARHandle		*_arHandle,const std::string& pattFile, double width, double center[2]);
+
+		virtual void setActive(bool a);
+
+		void update(ARMarkerInfo* _markerInfo, AR3DHandle *_gAR3DHandle);
+		
+		int getPatternID();
+		double getPatternWidth();
+		double* getPatternCenter();
+
+		
+		MarkerType getType() const;
+	
+	    
+	protected:
+	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~SingleMarker();	    
+
+		ARPattHandle	*AR4_PattList;//struct to store a set of patterns.
+		ARHandle		*arHandle; //struct to store ARToolKit global state.
+	 
+	    int             patt_id;
+		double          patt_width;
+		double          patt_center[2];
+		double          patt_trans[3][4];
+		
+		double			m_confidence;
+		
+		bool			m_idBased;
+		
+		friend class ARToolKit4Tracker;
+		
+	};
+};
+
+#endif

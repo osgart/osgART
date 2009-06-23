@@ -1,0 +1,102 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef OSGART_Calibration
+#define OSGART_Calibration 1
+
+
+#include "osgART/Export"
+
+#include <osg/Camera>
+#include <osg/Geometry>
+#include <osg/Vec2b>
+
+#include "osgART/VideoGeode"
+
+
+namespace osgART 
+{
+
+	class OSGART_EXPORT Calibration : public osg::Referenced
+	{
+	public:
+
+		/**
+		 * C'tor for the calibration 
+		 */
+		Calibration();
+
+		/**
+		 * Set the size of the actual camera image in pixels
+		 *
+		 * \param width width of the camera image 
+		 * \param height height of the camera image
+		 */
+		virtual void setSize(int width, int height);
+		
+
+		/**
+		 * Set the size of the actual camera image in pixels
+		 *
+		 * \param image image to be used by the calibration
+		 */
+		void setSize(const osg::Image& image);
+		
+
+		/**
+		 * Load a stored calibration from an external file
+		 * 
+		 * \param filename resource to be loaded into the calibration
+		 * \return true if the resource could be loaded successful
+		 */
+		virtual bool load(const std::string& filename);
+
+		/**
+ 		 * Creates a camera with a projection matrix representing the 
+		 * loaded intrinsic parameters
+		 *
+		 * \return camera object
+		 */
+		osg::Camera* createCamera() const;
+		
+		
+		inline virtual 
+		void undistort(double x, double y, double* u_x, double* u_y) {
+			*u_x = x;
+			*u_y = y;
+		}
+		
+	protected:
+
+		virtual ~Calibration();
+
+		osg::Matrix _intrinsics;
+		osg::Vec4	_distortion;
+
+		osg::Matrix _projection;
+
+	};
+
+}
+
+
+#endif // OSGART_Calibration

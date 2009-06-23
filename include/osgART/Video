@@ -1,0 +1,134 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+#ifndef OSGART_VIDEO
+#define OSGART_VIDEO 1
+
+// OSG include
+#include <osg/ref_ptr>
+#include <osg/Image>
+#include <osg/ImageStream>
+#include <osg/Object>
+
+// Local include
+#include "osgART/Export"
+#include "osgART/VideoImageStream"
+#include "osgART/VideoConfig"
+#include "osgART/Field"
+
+// OpenThreads
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
+namespace osgART {
+	/**
+	 * Video encapsulates different capturing devices and sources. 
+	 * 
+	 */	
+	class OSGART_EXPORT Video : public VideoImageStream, 
+		public FieldContainer<Video>
+	{
+	public:
+
+		META_Object(osgART,Video);
+	
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
+		Video();
+	    
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+		Video(const Video& container,
+			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+	    
+		/** 
+		 * \brief assignemnt operator.
+		 *
+		 */
+		Video& operator = (const Video &);
+	
+		
+		/** 
+		 * Get the mutex for a video object to lock against read/write operations
+		 * \return reference to the internal mutex
+		 */
+		inline OpenThreads::Mutex& getMutex()
+		{
+			return _mutex;		
+		}
+		
+		/**
+		 * Access a field by its name. You need to cast
+		 * the field into its respective type in order
+		 * to access it.
+		 * \param name Name of the field
+		 * \return pointer to the field (0L if not found)
+		 */
+		Field* get(const std::string& name);
+		
+		
+		/**
+		 * Get the video configuration struct
+		 * \return struct VideoConfiguration
+		 */
+		virtual VideoConfiguration* getVideoConfiguration();
+		
+		
+		/**
+		 * Set internal flipping. 
+		 * \param horizontal switch on and off horizontal flipping
+		 * \param vertical switch on and off vertical flipping
+		 */
+		void setFlip(bool horizontal, bool vertical);
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted to a tracker
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static Video* cast(osg::Referenced* instance);
+	   
+	protected:
+	
+		bool m_vertical_flip;
+		bool m_horizontal_flip;
+		
+		/** 
+		 * \brief destructor.
+		 *
+		 */
+		virtual ~Video();   
+
+		// used for locking
+		OpenThreads::Mutex _mutex;
+		
+	}; // class Video
+
+	
+}; // namespace osgART
+
+#endif

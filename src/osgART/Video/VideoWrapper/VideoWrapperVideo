@@ -1,0 +1,150 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  VideoWrapperVideo
+*  \brief A Video class for VideoWrapper input.
+*
+* 
+* A wrapper of the VideoWrapper library:
+* http://sourceforge.net/projects/videowrapper/
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 01/12/07
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_VIDEOWRAPPERVIDEO
+#define OSGART_VIDEOWRAPPERVIDEO
+
+/* --------------------------------------------------------------------------
+* include file
+*----------------------------------------------------------------------------*/
+
+//standard include
+
+#include <iostream>
+#include <string>
+
+//graphics include
+#include <osgART/Export>
+#include <OpenThreads/Mutex>
+
+//personnal include
+#include <osgART/GenericVideo>
+#include "VideoWrapper.h"
+
+
+/** --------------------------------------------------------------------------
+* class VideoWrapperVideo.
+*----------------------------------------------------------------------------*/
+
+class VideoWrapperVideo: public osgART::GenericVideo
+{
+public:        
+// Standard Services
+    
+    /** 
+    * \brief default constructor.
+    * The default constructor.
+    * @param config a string definition of the Video. See documentation
+    * of VideoWrapper for further details.
+    */
+    VideoWrapperVideo(const char* config);
+    
+    /** 
+    * \brief copy constructor.
+    *
+    // VideoWrapperVideo(const VideoWrapperVideo &);
+    
+    /** 
+    * \brief destructor.
+    *
+    */
+    ~VideoWrapperVideo();   
+    
+    /** 
+    * \brief affectation operator.
+    *
+    */
+    VideoWrapperVideo& operator=(const VideoWrapperVideo &);
+    
+// Interface
+
+    // mutator
+
+    // services
+    
+    /**
+    * \brief open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	void open();
+	
+	/**
+    * \brief close the Video stream.
+    * Terminate the connection with the Video stream and clean handle.
+    */
+	void close();
+	
+	/**
+    * \brief start the Video stream grabbing.
+    * Start to get image from the Video stream. In function of the implementation on different
+    * platform, this function can run a thread, signal or real-time function. 
+    */
+	void start();
+	
+	/**
+    * \brief stop the Video stream grabbing.
+    * Stop to get image from the Video stream. In function of the implementation on different
+    * platform, this function can stop a thread, signal or real-time function. 
+    */
+	void stop();
+	
+	/**
+    * \brief update the Video stream grabbing.
+    * Try to get an image of the Video instance, usable by your application.
+    */
+	void update();
+	
+	virtual void releaseImage();
+// Public Type
+    
+// Public Datas
+    
+    
+protected: 
+    
+//Protected Services
+
+//Protected Type
+
+//Protected Data
+	
+private:
+
+//Private Services
+
+
+//Private Type
+
+//Private Data
+
+	VWHVideo g_hVideo;
+
+	std::string videoConfig;
+};
+
+#endif

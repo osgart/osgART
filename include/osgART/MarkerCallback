@@ -1,0 +1,148 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ *  \file  MarkerCallback
+ *  \brief MarkerCallbacks map data from a Marker into the scenegraph
+ *  
+ *  To connect a marker with a scenegraph node the node needs to support
+ *  the data a specific callback will emit. 
+ * \Example
+   \code
+   // create a matrix transform related to the marker
+	osg::ref_ptr<osg::MatrixTransform> markerTrans = 
+		new osg::MatrixTransform();
+
+	// create a visibility callback which maps visibility of the marker onto a node
+	osg::NodeCallback* _cb = new osgART::MarkerVisibilityCallback(marker.get());
+
+	// create a nested callback for transformation
+	_cb->setNestedCallback(new osgART::MarkerTransformCallback(marker.get()));
+	
+	// attach the callback to a transform
+	markerTrans->addUpdateCallback(_cb);
+	
+   \endcode
+ */
+
+#ifndef OSGART_MARKERCALLBACK
+#define OSGART_MARKERCALLBACK 1
+
+#include <osg/NodeCallback>
+
+#include <osgART/Export>
+#include <osgART/Marker>
+
+
+namespace osgART
+{
+
+	/**
+	 * Appends an event callback to a node. It is a convenience wrapper around
+	 * osg::NodeCallback and its nested callbacks
+	 *
+	 * \param node Node affected by the callback
+	 * \param cb callback to be added	 	 
+	 */
+ 	OSGART_EXPORT void addEventCallback(osg::Node* node, osg::NodeCallback* cb);
+	
+	/**
+	 * Creates and attaches a callback chain for a marker to 
+	 * a node. This binds the marker to the node. This will attach a 
+	 * osgART::MarkerTransformCallback and a osgART::MarkerVisibilityCallback 
+     *
+	 * \param node Node which should be mapped to a marker
+	 * \param marker Marker which provides visibility and transformation information	 	 
+	 */
+	OSGART_EXPORT void attachDefaultEventCallbacks(osg::Node* node, Marker* marker);
+
+
+	class OSGART_EXPORT SingleMarkerCallback : public osg::NodeCallback
+	{	
+	public:
+	
+		SingleMarkerCallback(Marker* marker);
+		
+		inline const Marker* getMarker() const {
+			return m_marker;
+		}
+		
+	protected:
+	
+		Marker* m_marker;
+
+	};
+
+	class OSGART_EXPORT DoubleMarkerCallback : public osg::NodeCallback
+	{	
+	public:
+	
+		DoubleMarkerCallback(Marker* markerA, Marker* b);
+		
+	protected:
+	
+		Marker* m_markerA;
+		Marker* m_markerB;
+
+	};
+
+
+	class OSGART_EXPORT MarkerTransformCallback : public SingleMarkerCallback
+	{
+	public:
+	
+		MarkerTransformCallback(Marker* marker);
+	
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+		
+	};
+		
+	
+	class OSGART_EXPORT MarkerVisibilityCallback : public SingleMarkerCallback 
+	{
+	public:
+		MarkerVisibilityCallback(Marker* marker);
+	
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);		
+	};
+	
+	class OSGART_EXPORT MarkerDebugCallback : public SingleMarkerCallback 
+	{
+	public:
+		MarkerDebugCallback(Marker* marker);
+	
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);		
+	};
+	
+		
+	class OSGART_EXPORT LocalTransformationCallback : public DoubleMarkerCallback 
+	{
+	public:
+		LocalTransformationCallback(Marker* base, Marker* paddle);
+	
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);		
+	};
+	
+}
+
+#endif
+

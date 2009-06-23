@@ -1,0 +1,104 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ *  \file  VideoGeode
+ *  \brief Geometry wrapper being used to render a video onto.
+ * 
+ * 
+ * 
+ *
+ *
+ *  \author Hartmut Seichter hartmut.seichter@hitlabnz.org
+ *  \version 1.0
+ *  \date 08/08/2007
+ **/
+
+#ifndef OSGART_VIDEOGEODE
+#define OSGART_VIDEOGEODE
+
+#include <deque>
+
+#include <osg/Drawable>
+#include <osg/Geode>
+
+
+#include "osgART/Export"
+
+
+namespace osgART {
+
+
+	class Calibration; // forward declartion for VideoMesh
+
+	class OSGART_EXPORT VideoGeode : public osg::Geode
+	{
+	public:
+	
+		/** 
+	     * Modes how the video is being rendered.
+	     */
+		enum TextureMode 
+		{			
+			USE_TEXTURE_2D,				/**< Video is being pasted into a 2D texture */
+			USE_TEXTURE_RECTANGLE,		/**< Video is being attached to a 2D rectangle */
+		};
+
+
+		/** Constructor */
+		VideoGeode();
+		
+		VideoGeode(
+				osg::Image* image,					// Image to texture
+		osgART::Calibration* calibration,	// Calibration object for undistortion calculation
+		double width,
+		double height,
+		int cols,							// Number of columns
+		int rows,							// Number of rows
+		TextureMode textureMode			// Mode to texture with
+		);
+
+        /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
+        VideoGeode(const VideoGeode&, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+        META_Node(osgART, VideoGeode);
+		 
+		 
+		static osg::Geometry* createVideoMesh(osg::Image* image, 
+			osgART::Calibration* calibration = NULL,
+			double width = 1.0, 
+			double height = 1.0,
+			int cols = 20, 
+			int rows = 20, 
+			TextureMode textureMode = USE_TEXTURE_2D);
+		
+	protected:	
+
+		virtual ~VideoGeode();		
+		
+		TextureMode _textureMode;
+
+	};
+
+}
+
+#endif

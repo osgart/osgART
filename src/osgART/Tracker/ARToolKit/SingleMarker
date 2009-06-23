@@ -1,0 +1,82 @@
+/*
+ *	osgART/Tracker/ARToolKit/SingleMarker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+#ifndef OSGART_SINGLEMARKER
+#define OSGART_SINGLEMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Marker"
+
+// AR ToolKit include
+#include <AR/ar.h>
+
+namespace osgART {
+
+	/**
+	* \class SingleMarker.
+	* \brief A marker consisting of a single pattern.
+	*/
+	class SingleMarker : public Marker
+	{
+	public:	
+		
+        virtual bool isSameKindAs(const osg::Object* obj) const {
+            return dynamic_cast<const SingleMarker*>(obj) != 0L;
+        }
+        virtual const char* className() const { return "SingleMarker"; }
+        
+    
+		/** 
+		 * \brief default constructor.
+		 *
+		 */
+		SingleMarker();
+		
+	    
+		bool initialise(const std::string& pattFile, double width, double center[2]);
+
+		virtual void setActive(bool a);
+
+		void update(ARMarkerInfo* markerInfo);
+		
+		int getPatternID();
+		double getPatternWidth();
+		double* getPatternCenter();
+
+		
+		MarkerType getType() const;
+	
+	    
+	protected:
+	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~SingleMarker();	    
+
+	    int             patt_id;
+		double          patt_width;
+		double          patt_center[2];
+		double          patt_trans[3][4];
+		
+		friend class ARToolKitTracker;
+		
+	};
+};
+
+#endif

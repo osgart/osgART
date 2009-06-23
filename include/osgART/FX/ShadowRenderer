@@ -1,0 +1,84 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef OSGART_SHADOWRENDERER
+#define OSGART_SHADOWRENDERER
+
+// graphics include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericVideoObject"
+#include "osgART/GenericVideo"
+
+namespace osgART {
+
+	/**
+	* \class ShadowRenderer.
+	* Implement the depth shadow rendering based on depth shadow with GLSL shaders support.
+	* This class just defined Virtual to Virtual shadow
+	*/
+	class OSGART_EXPORT ShadowRenderer : public osg::Group
+	{
+	public:        
+		/** 
+		 * \brief default constructor.
+		 * \param model defined the model
+		 * \param lightTransform defined the light position 
+		 * \param markerId is the marker id 	
+		 */
+		ShadowRenderer(osg::Node*,osg::MatrixTransform*,int markerId = 0);
+		
+		ShadowRenderer(const ShadowRenderer& video);
+	    
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~ShadowRenderer();
+
+		/**
+		 * Initialize
+		 */    
+		virtual void init();
+		
+		virtual void setShadowResolution(int width, int height) {m_shadowWidth=width;m_shadowHeight=height;};
+
+	protected:
+		osg::Node* m_shadowedScene;
+
+	private:
+
+		osg::MatrixTransform* m_lightTransform;
+		int m_markerId;
+
+		int m_shadowWidth;
+		int m_shadowHeight;
+	
+	};
+};
+#endif

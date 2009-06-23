@@ -1,0 +1,77 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef OSGART_PLANEARSHADOWRENDERER
+#define OSGART_PLANEARSHADOWRENDERER
+
+// graphics include
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Geometry>
+#include <osg/Projection>
+
+
+// local include
+#include "osgART/Export"
+#include "osgART/GenericVideoObject"
+#include "osgART/GenericVideo"
+#include "osgART/ShadowRenderer"
+
+namespace osgART {
+
+	/**
+	* \class PlaneARShadowRenderer.
+	* Implement the depth shadow rendering with GLSL shaders.
+	* This class support V -> R AR lighting based on a semi-transparent virtual plane.
+	* it can be use for doing AR on the table or on tangible Marker.
+	* REM: actually only supporting one light.
+	*/
+	class OSGART_EXPORT PlaneARShadowRenderer : public ShadowRenderer
+	{
+	public:        
+		/** 
+		 * \brief default constructor.
+		 * \param model defined the model
+		 * \param lightTransform defined the light position 
+		 * \param markerId is the marker id 	
+		 */
+		PlaneARShadowRenderer(osg::Node*,osg::MatrixTransform*,osg::Vec2f size,int markerId = 0);
+		
+
+		/**
+		 * Initialize
+		 */    
+		virtual void init();
+	
+	protected:
+		
+		osg::Vec2f m_planeSize;
+		
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~PlaneARShadowRenderer();
+	
+	};
+};
+#endif

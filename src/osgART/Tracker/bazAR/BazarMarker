@@ -1,0 +1,65 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_BAZARMARKER
+#define OSGART_BAZARMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Marker"
+
+// AR ToolKit include
+#include <AR/ar.h>
+
+// OpenCV
+#include <cv.h>
+#include <highgui.h>
+#include <cxcore.h>
+#include <cvaux.h>
+
+namespace osgART {
+
+	/**
+	* \class BazARMarker.
+	*/
+	
+	class BazARMarker : public Marker
+	{
+	public:       
+    
+		/** 
+		 * \brief default constructor.
+		 *
+		 */
+		BazARMarker();
+	    
+		bool initialise();
+
+		virtual void setActive(bool a);
+
+		void update(CvMat*);
+				
+		MarkerType getType() const;
+	
+	    
+	protected:
+	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~BazARMarker();	    
+		
+	};
+};
+
+#endif

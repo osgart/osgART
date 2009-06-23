@@ -1,0 +1,240 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef OSGART_Tracker
+#define OSGART_Tracker 1
+
+
+// std include
+#include <map>
+#include <iostream>
+
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Video"
+#include "osgART/Marker"
+#include "osgART/Field"
+#include "osgART/Calibration"
+
+namespace osgART {
+
+	/* Forward declaration */
+	class VideoLayer;
+
+	/**
+	 * \class Tracker.
+	 * 
+	 * Base class for a tracker which in the context of AR is an entity 
+	 * that connects video streams, markers and their representation in
+	 * the virtual environment.
+	 */
+	class OSGART_EXPORT Tracker : public osg::Referenced, 
+		public FieldContainer<Tracker>
+	{
+	public:        
+		/**
+		 * \brief Constructor.
+		 *
+		 */
+		Tracker();
+
+		/** 
+		 * \brief Set the image to analyzed.
+		 * 
+		 * \param video the video object to use
+		 */
+		virtual void setImage(osg::Image* image);
+
+
+		/**
+		 * Creates or gets the calibration object
+		 * 
+		 * \return calibration object
+		 */
+		virtual Calibration* getOrCreateCalibration();
+	
+    
+		/** 
+		 * \brief update the tracking.
+		 * 
+		 * Request that the tracker update the position of tracked
+		 * markers, using the most recent image supplied by setImage.
+		 * \param nv NodeVisitor which should be used to get stats information
+		 */
+		virtual void update(osg::NodeVisitor* nv = 0L);
+		
+		/** 
+		 * \brief XXX.
+		 * 
+		 * XXX.
+		 */
+		virtual Marker* getMarker(int markerId);
+		
+		unsigned int getMarkerCount() const;
+		
+		/** 
+		 * \brief get the openGL projection matrix.
+		 * 
+		 * delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
+		 * @param proj the openGL projection matrix computed
+		 */
+		virtual const double* getProjectionMatrix() const;
+			
+		/**
+		 * \brief Return a string that contains the tracker name and version.
+		 */	
+		std::string		getLabel()const;
+		
+		virtual void	setEnable(const bool & _enable);
+		virtual bool	getEnable()const;
+		
+		
+		/**
+		 * Add a marker to the tracker.
+		 * \param config can contain the filename an ID or other tracker specific parameters
+		 * \return Marker as been loaded from the tracker or 0 if it failed
+		 */
+		virtual Marker* addMarker(const std::string& config);
+		
+		/**
+		 * Remove a marker.
+		 * \param marker pointer to the marker to be removed 		 
+		 */
+		virtual void removeMarker(Marker* marker);
+		 
+		
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted to a tracker
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static Tracker* cast(osg::Referenced* instance);
+		
+		
+		inline osg::Stats* getStats() { return _stats.get(); };
+		
+		inline void setStats(osg::Stats* stats) { _stats = stats; } ;
+		
+		
+	protected:
+	
+		osg::ref_ptr<osg::Stats> _stats;		
+	
+		/**
+		 * Creates an undistorted mesh, according to the 
+		 * camera lens distortion parameters known to the tracker.
+		 * \param width width of the actual video
+		 * \param height height of the actual video
+		 * \param maxU texture coordinate maximum in u direction
+		 * \param maxV texture coordinate maximum in v direction
+		 * \param geometry geometry to be filled with an
+		 * undistorted mesh
+		 */
+		virtual void 
+		createUndistortedMesh(int width, int height,
+			float maxU, float maxV,
+			osg::Geometry &geometry);
+		
+		/* only videolayer and the container needs to access protected methods */	
+		friend class VideoLayer;
+		friend class TrackerContainer;
+	
+		/** 
+		 * \brief destructor.
+		 */
+		virtual ~Tracker();
+	
+		/**
+		 * type for a vector of reference counted markers.
+		 */
+		typedef std::vector< osg::ref_ptr<Marker> > MarkerList;
+		
+		/**
+		 * A list of markers associated with this tracker.
+		 */ 
+		MarkerList m_markerlist;
+		
+		double m_projectionMatrix[16];
+		std::string		m_name;		//!< Store the name of the tracker.
+		std::string		m_version;	//!< Store the version of the tracker.
+		bool			m_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
+		
+		osg::ref_ptr<osg::Image> m_imagesource;
+		
+		unsigned int m_lastModifiedCount;
+
+
+		osg::ref_ptr<Calibration> _calibration;
+
+		
+	private:
+
+		// int trackerId;
+		// static int trackerNum;
+	}; // class Tracker
+	
+	
+		
+	
+	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {	
+	public:
+		
+		/**
+		 * Add or sets a TrackerCallback to any node
+		 * \param node Node which will trigger an update on the attached tracker
+		 * \param tracker an instance of osgART::Tracker which is been updated
+		 */
+		static TrackerCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
+				
+
+	
+		/**
+		 * Creates a tracker callback
+		 */
+		TrackerCallback(Tracker* tracker);
+	
+	protected:	
+			
+		/** 
+		 * Updates the tracker within here. The tracker will 
+		 * not update the image it is attached to. 
+		 */
+		void operator()(osg::Node* node, osg::NodeVisitor* nv);
+		
+		
+	private:
+	
+		osg::ref_ptr<Tracker> _tracker;
+		int _framenumber;
+	};
+
+	
+}; // namespace osgART
+
+#endif

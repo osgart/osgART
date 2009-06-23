@@ -1,0 +1,119 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef OSGART_SCENE
+#define OSGART_SCENE 1
+
+
+#include "osgART/Export"
+
+#include "osgART/Marker"
+#include "osgART/Tracker"
+#include "osgART/Calibration"
+
+#include <osg/Group>
+#include <osg/MatrixTransform>
+#include <osg/Camera>
+
+namespace osgART {
+
+	class Scene;
+
+	class OSGART_EXPORT SceneSetting {
+	public:
+
+		friend class Scene;
+
+		SceneSetting();
+
+		SceneSetting& setMarkerActive(bool active);
+
+		SceneSetting& useTextureRectangle(bool use = true);
+
+	protected:
+
+		bool _default_active;
+		bool _use_texturerect;
+
+		int _background_renderbin;
+		std::string _videoplugin;
+		std::string _trackerplugin;
+
+	};
+
+	class OSGART_EXPORT Scene : public osg::Group {
+	public:
+		
+		/**
+		 * Scene is the grand master class of osgART. In basic 
+		 * applications it should be the only thing needed to 
+		 * create an AR application.
+		 *
+		 * \code 
+		 * osgART::Scene* scene = new osgART::Scene();
+		 * scene->addVideoBackground("osgart_video_artoolkit2");
+		 * scene->addTracker("osgart_tracker_artoolkit2");
+		 * scene->addTrackedTransform("single;data/patt.hiro;80;0;0")->addChild(osgART::testCube());
+		 *
+		 */	
+		Scene();
+		
+		        
+        /** Copy constructor using CopyOp to manage deep vs shallow copy. */
+        Scene(const Scene&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
+        META_Node(osgART, Scene);
+
+        virtual Scene* asScene() { return this; }
+        virtual const Scene* asScene() const { return this; }
+
+		
+		
+		void addVideoBackground(const std::string& v);
+		void addTracker(const std::string& t);
+
+		osgART::Marker* addMarker(const std::string& cfg);
+		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
+		
+		inline const osg::Camera* getCamera() const {
+			return _camera.get();
+		}
+
+		inline SceneSetting& getSetting() { return _settings; };
+	
+	protected:
+	
+		virtual ~Scene();
+
+		SceneSetting _settings;
+	
+		osg::ref_ptr<osgART::Tracker> _tracker;
+		osg::ref_ptr<osgART::Video> _video;
+		osg::ref_ptr<osg::Camera> _camera;
+		osg::ref_ptr<osgART::Calibration> _calibration;
+
+	};
+
+
+}
+
+#endif

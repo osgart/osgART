@@ -1,0 +1,58 @@
+#
+# CPack template for osgART
+#
+# (c) Copyrights 2008 Hartmut Seichter, HIT Lab NZ
+#
+
+include(InstallRequiredSystemLibraries)
+
+set(CPACK_PACKAGE_NAME "osgART")
+set(CPACK_PACKAGE_VENDOR "Human Interface Technology Laboratory New Zealand")
+
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "osgART 2.0 SDK for ${CMAKE_GENERATOR} is an All-In-One package for developing AR applications with OpenSceneGraph")
+
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.txt")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
+
+set(CPACK_PACKAGE_VERSION_MAJOR "2")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "osgART 2.0 SDK")
+
+set(CPACK_PACKAGE_EXECUTABLES "osgartsimple;osgART Simple Example;osgartvideobackground;osgART Video Background Example;osgartpick;osgART Picking Example")
+
+if(WIN32)
+
+	#
+	# For MSVC compilers (and probably others) we need to copy the runtime
+	# to the plugins folder as well
+	# 
+	install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
+		DESTINATION bin/osgPlugins-${OSG_VERSION})
+		
+	set(CPACK_NSIS_MENU_LINKS
+		"bin" "osgART application folder"
+		"share/osgART" "osgART 2.0 extras folder"
+		"share/osgART/ChangeLog.txt" "osgART 2.0 ChangeLog"
+		"share/osgART/AUTHORS.txt" "osgART 2.0 Authors"
+		"share/osgART/README.txt" "osgART ReadMe"
+		"share/osgART/LICENSE.txt" "osgART 2.0 GPL3 License"
+		"share/osgART/doc/html/index.html" "osgART 2.0 API Documentation"
+		"http://www.osgart.org" "osgART 2.0 website"
+		"http://www.hitlabnz.org" "HIT Lab NZ website"
+    )
+	
+	set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.osgart.org")
+	set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.osgart.org")
+	set(CPACK_NSIS_CONTACT "info@osgart.org")
+ 	set(CPACK_NSIS_DISPLAY_NAME "osgART 2.0 SDK")
+	
+else(WIN32)
+	if   (APPLE)
+		set(CPACK_GENERATOR "PackageMaker;STGZ")
+		INCLUDE(CPack)
+	endif(APPLE)
+endif(WIN32)	
+	
+include(CPack)

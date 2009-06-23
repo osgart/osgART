@@ -1,0 +1,75 @@
+/*
+ * osgART / AR Toolkit for OpenSceneGraph
+ * (C) 2004-2006 HIT Lab NZ, University of Canterbury
+ *
+ * Licensing is governed by the LICENSE.txt which is 
+ * part of this library distribution.
+ *
+ */
+ 
+#ifndef OSGART_SINGLEMARKER
+#define OSGART_SINGLEMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Marker"
+
+// AR ToolKit include
+#include <artag_rev2.h>
+
+
+namespace osgART {
+
+	/**
+	* \class SingleMarker.
+	* \rief A marker consisting of a single pattern.
+	*/
+	class SingleMarker : public Marker
+	{
+	public:       
+    
+		/** 
+		 * \brief default constructor.
+		 *
+		 */
+		SingleMarker();
+		
+	    
+		bool initialise(const std::string& pattFile);//, double width, double center[2]);
+
+		virtual void setActive(bool a);
+		void update();
+		
+		int getPatternID();
+		int getARTagCode(void);
+/*		double getPatternWidth();
+		double* getPatternCenter();
+*/
+		MarkerType getType() const;
+	
+	    
+	protected:
+	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~SingleMarker();	    
+
+	    int             m_patt_artag_code; //!< Contains the artag pattern code.
+	    int             m_patt_id; //!< Contains the pattern id, depending on the creation order, start from 0.
+	    //double			m_confidence;
+//		double          patt_width;
+//		double          patt_center[2];
+//		double          patt_trans[3][4];
+		
+		
+		friend class ARToolKitTracker;
+		
+	};
+};
+
+#endif

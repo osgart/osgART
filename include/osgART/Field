@@ -1,0 +1,234 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+/**
+ *  \file  Field
+ *  \brief Types and templates for passing data to and from plugins.
+ *  \author Hartmut Seichter <hartmut@technotecture.com>
+ *  \version 1.0
+ *
+ *  A generic system for passing data to and from plugins into the 
+ *  main application.
+ */
+
+#ifndef OSGART_FIELD
+#define OSGART_FIELD 1
+
+// include STL
+#include <map>
+#include <iostream>
+
+// include OSG
+#include <osg/Referenced>
+#include <osg/ref_ptr>
+#include <osg/io_utils>
+
+namespace osgART {
+
+	class Field : public osg::Referenced {		
+	public:
+		Field();
+		
+		inline virtual void operator = (const Field&);
+		
+		inline virtual void serialize(std::ostream&) = 0;
+	
+	protected:
+
+		Field(const Field&);
+
+		virtual ~Field();
+	};	
+
+	
+	typedef std::map<std::string, osg::ref_ptr<Field> > FieldMap;
+	
+	
+	template <typename T> class TypedField : public Field 
+	{
+	public:
+	
+		TypedField(T* value = 0) : Field(),			
+			m_value(value) 
+		{
+		}
+		
+		virtual 
+		T 
+		get() const
+		{
+			return *m_value;
+		}
+		
+		virtual 
+		void 
+		set(const T& value) 
+		{			
+			*m_value = value;
+		}
+		
+		virtual void serialize(std::ostream& out) 
+		{			
+			out << *m_value;
+		}
+		
+		void (TypedField<T>::*f_sethandler)(T&, const T&);	
+		
+						
+	protected:
+				
+		TypedField<T>& operator = (const T& value) {
+			*m_value = value;		
+			return *this;
+		}
+	
+		void operator = (const TypedField<T>& value) {
+			*m_value = value.get();		
+		}
+		
+		T* m_value;
+	};
+	
+	template <class C, typename T> class CallbackField : public TypedField<T> 
+	{
+	public:	
+	
+		typedef T (C::* GetHandler)() const;
+		typedef void (C::* SetHandler)(const T&);
+								
+		CallbackField(C *object, 
+			GetHandler ghandler = 0,
+			SetHandler shandler = 0) : 
+			f_gethandler(ghandler),			
+			f_sethandler(shandler),
+			mp_object(object)
+		{
+		}
+		
+		virtual 
+		T get() const
+		{
+			return (mp_object->*f_gethandler)();
+		}
+		
+		virtual 
+		void set(const T& value) 
+		{
+			if (f_sethandler) 
+			{
+				(mp_object->*f_sethandler)(value);			
+			} else 
+			{
+				std::cerr << "osgART::Field, no set accessor defined!" << std::endl;
+			}
+		}
+		
+		void setAccessor(GetHandler ghandler, 
+			SetHandler shandler)
+		{
+			f_gethandler = ghandler;
+			f_sethandler = shandler;
+		} 
+		
+	protected:	
+	
+		GetHandler f_gethandler;
+		SetHandler f_sethandler;
+		
+		C* mp_object;				
+	};
+	
+	
+	inline Field::Field() : osg::Referenced() 
+	{
+	}
+	
+	inline void Field::operator = (const Field&) 
+	{
+	}
+	
+	inline Field::~Field() 
+	{
+	}
+
+	inline Field::Field(const Field&) : osg::Referenced()
+	{
+	}
+
+	
+	template <typename T> class FieldContainer {
+	public:
+	
+		void serialize(std::ostream& out) 
+		{
+			FieldMap::iterator _i = m_fields.begin();
+						
+			while (_i != m_fields.end()) 
+			{	
+				out << _i->first << ":";
+				_i->second->serialize(out);				
+				_i++;
+				out << std::endl;
+			}
+		}
+		
+	    /** 
+		* Return a data field within the plugin
+		* \param name identifier of the field
+		* \return pointer to the Field. Has to casted 
+		* to the correct type.
+		*/
+		Field* get(const std::string& name);		
+
+
+		void dump();
+	
+	protected:
+	
+		FieldMap m_fields;
+		
+	};
+	
+	
+	template <typename T> Field* FieldContainer<T>::get(const std::string& name)
+	{
+		FieldMap::iterator _found = m_fields.find(name);
+		return (_found != m_fields.end()) ? _found->second.get() : 0L;
+	}
+
+	template <typename T> void FieldContainer<T>::dump()
+	{
+		
+
+		for (FieldMap::iterator _i = m_fields.begin();
+			_i != m_fields.end(); 
+			++_i) 
+		{
+			std::cout << "Field: " << (*_i).first << std::endl;
+		}
+
+	}
+
+ };
+ 
+ #endif

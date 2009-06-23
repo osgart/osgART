@@ -1,0 +1,66 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+ 
+/**
+ *  \file  Export
+ *  \brief Preprocessor macros to help with correct linkage of exported symbols.
+ *
+ * Preprocessor macros to help with correct linkage of exported symbols.
+ */
+
+#ifndef OSGART_EXPORT_
+#define OSGART_EXPORT_ 1
+
+#include <osg/Version>
+
+
+#if defined(_MSC_VER)
+#if OSG_VERSION_MAJOR > 0 && OSG_VERSION_MINOR > 0
+# undef  OSGART_PIXELBIAS_NO_PERFORMANCE
+#endif
+#else 
+# define OSGART_PIXELBIAS_NO_PERFORMANCE 1
+#endif
+
+#if defined(_MSC_VER)
+#	pragma warning ( disable : 4251 )
+#endif
+
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)  || defined( __MWERKS__)
+	# if defined(OSG_LIBRARY_STATIC)
+	#    define OSGART_EXPORT
+	# elif defined(OSGART_LIBRARY)
+    #    define OSGART_EXPORT   __declspec(dllexport)
+    # else
+    #    define OSGART_EXPORT   __declspec(dllimport)
+    # endif /* OSGART_LIBRARY */
+#else
+    #  define OSGART_EXPORT
+#endif
+
+#ifdef __GNUC__
+#  if (__GNUC__ < 3)
+#    define OSGART_NO_LOCALES
+#  endif
+#endif
+
+#endif

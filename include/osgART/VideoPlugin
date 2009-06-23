@@ -1,0 +1,67 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ *  \file  VideoPlugin
+ *  \brief Preprocessor macros to help with correct linkage of exported symbols in video plugins.
+ *
+ * Preprocessor macros to help with correct linkage of exported symbols in video plugins.
+ */
+
+#ifndef OSGART_VIDEOPLUGIN
+#define OSGART_VIDEOPLUGIN 1
+
+#if defined(_WIN32)
+	#if defined(OSGART_PLUGIN_EXPORT)
+		#define DLL_API extern "C" __declspec(dllexport)
+	#else
+		#define DLL_API __declspec(dllimport)
+	#endif
+	#define DCALL // __stdcall
+#else
+	#define DLL_API extern "C"
+	#define DCALL
+#endif
+
+
+#if defined(_WIN32)
+#include <windows.h>
+#define OSGART_PLUGIN_ENTRY()	\
+extern "C" int __stdcall DllMain(HINSTANCE hInst,DWORD reason,LPVOID reserved) { \
+	switch (reason) {										\
+      case DLL_PROCESS_ATTACH:								\
+        break;												\
+      case DLL_PROCESS_DETACH:								\
+        break;												\
+      case DLL_THREAD_ATTACH:								\
+        break;												\
+      case DLL_THREAD_DETACH:								\
+        break;												\
+    }														\
+    return TRUE;											\
+}
+#else
+	#define OSGART_PLUGIN_ENTRY()
+#endif
+
+
+#endif

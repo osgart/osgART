@@ -1,0 +1,127 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  DSVL2Video
+*  \brief A video class for video input stream.
+*
+* 
+* A wrapper class for using the new DsVideoLib from Thomas Pintaric
+*	http://ims.tuwien.ac.at/~thomas
+*   \remark class to use since version 0.08 of the DsVideoLib
+*
+*   History :
+*
+*  \author Julian Looser Julian.Looser@hitlabnz.org
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 05/12/14
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_DSVL2Video
+#define OSGART_DSVL2Video
+
+/* --------------------------------------------------------------------------
+* include file
+*----------------------------------------------------------------------------*/
+
+#include <DSVL2.h>
+#include <string>
+
+// OSG include
+#include <osgART/Export>
+#include <OpenThreads/Mutex>
+
+// local include
+#include <osgART/Video>
+
+
+namespace osgART {
+
+	/**
+	* class Video.
+	*
+	*/
+	class DSVL2Video : public osgART::Video
+	{
+	public:        
+	    
+		/** 
+		* \brief default constructor.
+		* The default constructor.
+		* @param videoName a string definition of the video background. See documentation
+		* of ARToolKit for further details.
+		*/
+		DSVL2Video();
+	    
+    
+		/** 
+		* \brief affectation operator.
+		*
+		*/
+		DSVL2Video& operator=(const DSVL2Video &);
+	    
+	    
+		/**
+		* \brief open the video stream.
+		* Access the video stream (hardware or file) and get an handle on it.
+		*/
+		virtual void open();
+		
+		/**
+		* \brief close the video stream.
+		* Terminate the connection with the video stream and clean handle.
+		*/
+		virtual void close();
+		
+		/**
+		* \brief start the video stream grabbing.
+		* Start to get image from the video stream. In function of the implementation on different
+		* platform, this function can run a thread, signal or real-time function. 
+		*/
+		virtual void start();
+		
+		/**
+		* \brief stop the video stream grabbing.
+		* Stop to get image from the video stream. In function of the implementation on different
+		* platform, this function can stop a thread, signal or real-time function. 
+		*/
+		virtual void stop();
+		
+		/**
+		* \brief update the video stream grabbing.
+		* Try to get an image of the video instance, usable by your application.
+		*/
+		virtual void update();
+		
+		inline virtual void releaseImage() {};
+		
+		VideoConfiguration* getVideoConfiguration();
+		
+	protected:
+
+		/** 
+		* \brief destructor.
+		*
+		*/
+		virtual ~DSVL2Video(); 
+		
+		
+	private:	
+
+		DSVL_VideoSource	*graphManager;
+		MemoryBufferHandle  m_Handle;
+		std::string videoName;
+		
+		VideoConfiguration m_videoconfig;
+	};
+}
+
+#endif

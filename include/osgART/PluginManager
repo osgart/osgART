@@ -1,0 +1,138 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef OSGART_PLUGINMANAGER
+#define OSGART_PLUGINMANAGER 1
+
+// osg
+#include <osg/ref_ptr>
+#include <osg/Referenced>
+
+// osgDB
+#include <osgDB/DynamicLibrary>
+
+// STL
+#include <string>
+#include <deque>
+#include <map>
+
+// Local include
+#include "osgART/Export"
+#include "osgART/Video"
+#include "osgART/Tracker"
+
+namespace osgART 
+{
+
+	/**
+	 * PluginManager realises an autodiscovery capable plugin system
+	 * in order to load and unload plugins on the fly. It is loosely 
+	 * based on the implementation of osgDB::Registry
+	 */
+	class OSGART_EXPORT PluginManager : public osg::Referenced {
+	public:
+		
+		/**
+		 * Returns an instance of a plugin manager as it is 
+		 * singleton.
+		 * \param erase exlicitly deletes the instance of the plugin manager
+		 * \return instance of the PluginManager or 0 if erase was true
+		 */
+		static PluginManager* instance(bool erase = false);
+				
+		/**
+		 * Load an external plugin. The plugin will be loaded and 
+		 * stays in memory unless explicitly unloaded.
+		 * \param filename short version or complete path (use \param resolveName with false)
+		 * \return -1 if failed, otherwise this is the ID of the tracker loaded
+		 */
+		int load(const std::string& pluginname, bool resolveName = true);
+		
+		/**
+		 * Return a pointer to the plugin
+		 * \param identifier to get the plugin instance
+		 * \return 0 if unsuccessfull or a pointer to the plugin
+		 */
+		osg::Referenced* get(int id);		
+		
+		/**
+		 * Shorthand for the get method. 
+		 * \param identifier to get the plugin instance
+		 * \return 0 if unsuccessfull or a pointer to the plugin
+		 */
+		osg::Referenced* operator[](int id);
+		
+		/**
+		 * Add a new instance of a dynamically loaded class
+		 * \param name identifier to retrieve the object
+		 * \param plugin pointer to the instantiated class
+		 * \return id of the loaded plugin
+		 */
+		int add(const std::string& name, osg::Referenced* plugin);
+		
+	
+	protected:
+		
+		typedef std::deque< osg::ref_ptr<osgDB::DynamicLibrary> > PluginArray;
+		typedef std::map< int, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
+		typedef std::map< int, std::string > PluginTagMap;
+		
+		
+		PluginArray m_plugins;
+		PluginInterfaceMap m_plugininterfaces;
+		PluginTagMap m_plugintags;
+		
+	private:
+	
+		int m_id;
+	
+		PluginManager();
+		virtual ~PluginManager();
+		
+	};
+	
+		
+	/**
+	 * PluginProxy is a helper to dynamicly instanciate and 
+	 * register plugins in the libaries PluginManager.
+	 */
+	template <typename T> class PluginProxy 
+	{
+	public:
+		/**
+		 * Constructor for the dynamic loaded object
+		 * \param name identifier to retrieve an instance
+		 */
+		PluginProxy(const std::string& name) : _plugininterface(new T)
+		{			
+			PluginManager::instance()->add(name, _plugininterface.get());
+		}
+		
+	protected:
+		/**
+		 * Stored instance of the plugiin
+		 */
+		osg::ref_ptr<osg::Referenced> _plugininterface;		
+	};
+}
+
+#endif

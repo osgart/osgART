@@ -1,0 +1,55 @@
+#ifndef OSGART_PROFILER_DEFINITION
+#define OSGART_PROFILER_DEFINITION
+
+
+//basic c++ include file:
+#include <stdio.h>
+#include <string>
+#include <iostream>
+
+//main osg include files
+#include <osg/Matrix>
+#include <osg/Vec4>
+#include <osg/notify>
+
+
+//main osgART include files
+#include "osgART/Utils"
+#include "osgART/Export"
+
+
+#ifndef AR_TRACKER_PROFILE 
+	#define AR_TRACKER_PROFILE 0
+#else
+	//set to 1
+	#undef AR_TRACKER_PROFILE
+	#define AR_TRACKER_PROFILE 1
+#endif
+
+#if AR_TRACKER_PROFILE
+	#include <SG_TRC_appli.h>
+	#include <SG_TLS_cl_vectors_template.h>
+	#include <SG_TLS_cl_vector4.h>
+	#include <SG_TLS_cl_vector3.h>
+	#include <SG_TLS_xml_container.h>
+	#include <SG_TRC_appli.h>
+	#include <SG_TLS_exceptions.h>
+	#include <SG_TLS_cl_base_obj.h>
+
+#endif
+
+#ifndef SG_Assert
+	#define SG_Assert(condition, msg){\
+		if (!(condition))\
+		{\
+			std::cout << msg << std::endl;\
+			exit(-1);\
+		}\
+		}
+#endif
+
+#ifndef SG_NOTICE_LOG		
+	#define SG_NOTICE_LOG(msg) std::cout << msg << std::endl
+#endif
+
+#endif //OSGART_PROFILER_DEFINITION

@@ -1,0 +1,86 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+#ifndef OSGART_UTILS
+#define OSGART_UTILS 1
+
+// General
+#include <iostream>
+
+// STL
+#include <string>
+#include <vector>
+
+// OpenSceneGraph
+#include <osg/Notify>
+#include <osg/Matrix>
+#include <osg/Vec2>
+#include <osg/Texture>
+#include <osg/Texture2D>
+#include <osg/TextureRectangle>
+
+// OSGART
+#include "osgART/Export"
+#include "osgART/Field"
+
+
+namespace osgART {
+
+	OSGART_EXPORT unsigned int nextPowerOfTwo(unsigned int x);
+	
+	OSGART_EXPORT osg::Vec2 getTextureMaxUV(const osg::Texture* texture);
+
+	OSGART_EXPORT std::string	trim		(std::string& s,const std::string& drop = " ");
+	// OSGART_EXPORT void			PrintMatrix	(std::string name, const osg::Matrix &Transform);	
+	OSGART_EXPORT osg::Matrix	GenerateMatrix	(const osg::Vec3d & _trans, const osg::Vec3d & _rot);
+	OSGART_EXPORT osg::Matrix	DiffMatrix		(const osg::Matrix & _base, const osg::Matrix & _m2);
+	// OSGART_EXPORT void			PrintVector3D	(std::string name, const osg::Vec3d &Vec3d);
+	
+	OSGART_EXPORT std::vector<std::string> tokenize(const std::string& str, const std::string& delimiters);
+	
+#if defined(OSGART_USE_DEPRECATED)
+	template <typename ContainerType, typename ObjType> 
+		osg::ref_ptr< osgART::TypedField<ObjType> >
+		SetField(osg::ref_ptr<ContainerType> Container, std::string Name, ObjType Value, std::string ErrorMsg="", bool ExitOnerror=false)
+		{
+			osg::ref_ptr< osgART::TypedField<ObjType> > _Field = 
+					dynamic_cast< osgART::TypedField<ObjType>* >(Container->get(Name));
+			
+			if (_Field.valid())
+			{	
+				_Field->set(Value);
+			}
+			else 
+			{
+				if (ErrorMsg!= "")
+					osg::notify(osg::WARN) << ErrorMsg << std::endl;
+				if (ExitOnerror)
+					exit(-1);
+			}
+			return _Field;
+		}
+#endif
+
+};
+
+#endif

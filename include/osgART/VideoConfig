@@ -1,0 +1,146 @@
+/* -*-c++-*- 
+ * 
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * 
+ * This file is part of osgART 2.0
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+/**
+ *  \file  VideoConfig
+ *  \brief Types used in defining configuration of video data.
+ *
+ * Types used in defining configuration of video data.
+ */
+
+#ifndef OSGART_VIDEOCONFIG
+#define OSGART_VIDEOCONFIG 1
+
+#include <osg/Vec2s>
+
+#include "osgART/Export"
+
+#include <string>
+
+namespace osgART {
+
+	/** 
+	* \brief Pixel Format type 
+	*
+	*/
+	typedef enum {
+		VIDEOFORMAT_ANY = 0x0,
+		VIDEOFORMAT_RGB555,
+		VIDEOFORMAT_RGB565,
+		VIDEOFORMAT_RGB24,		// GL_RGB, GL_UNSIGNED_BYTE
+		VIDEOFORMAT_BGR24,		// GL_BGR, GL_UNSIGNED_BYTE
+		VIDEOFORMAT_RGBA32,		// GL_RGBA, GL_UNSIGNED_BYTE
+		VIDEOFORMAT_BGRA32,		// GL_BGRA, GL_UNSIGNED_BYTE (Win 32 native)
+		VIDEOFORMAT_ARGB32,		// GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV (BE) or GL_UNSIGNED_INT_8_8_8_8 (LE) (Mac OS native)
+		VIDEOFORMAT_ABGR32,		// GL_ABGR_EXT, GL_UNSIGNED_BYTE (SGI native)
+		VIDEOFORMAT_Y8,			// GL_LUMINANCE, GL_UNSIGNED_BYTE
+		VIDEOFORMAT_Y16,		// GL_LUMINANCE, GL_UNSIGNED_SHORT
+		VIDEOFORMAT_YUV444,
+		VIDEOFORMAT_YUV422,
+		VIDEOFORMAT_YUV422P,
+		VIDEOFORMAT_YUV411,
+		VIDEOFORMAT_YUV411P,
+		VIDEOFORMAT_YUV420P,
+		VIDEOFORMAT_YUV410P,
+		VIDEOFORMAT_GREY8,		// GL_LUMINANCE, GL_UNSIGNED_BYTE
+		VIDEOFORMAT_MJPEG,
+		VIDEOFORMAT_422YpCbCr8,	// GL_YCBCR_422_APPLE/GL_YCBCR_MESA, GL_UNSIGNED_SHORT_8_8_REV_APPLE/GL_UNSIGNED_SHORT_8_8_REV_MESA (BE) or GL_UNSIGNED_SHORT_8_8_APPLE/GL_UNSIGNED_SHORT_8_8_MESA (LE) (Mac OS '2vuy').
+		VIDEOFORMAT_422YpCbCr8R,// GL_YCBCR_422_APPLE/GL_YCBCR_MESA, GL_UNSIGNED_SHORT_8_8_APPLE/GL_UNSIGNED_SHORT_8_8_MESA (BE) or GL_UNSIGNED_SHORT_8_8_REV_APPLE/GL_UNSIGNED_SHORT_8_8_REV_MESA (LE) (Mac OS 'yuvs'). 
+	} PixelFormatType;
+	
+	
+	/** 
+		* \brief Framerate type - define frame rate of the video flux
+		*
+		*/
+	typedef enum {
+		VIDEOFRAMERATE_ANY = 0x0,
+		VIDEOFRAMERATE_1_875,
+		VIDEOFRAMERATE_3_75,
+		VIDEOFRAMERATE_5,
+		VIDEOFRAMERATE_7_5,
+		VIDEOFRAMERATE_10,
+		VIDEOFRAMERATE_15,
+		VIDEOFRAMERATE_30,
+		VIDEOFRAMERATE_PAL,
+		VIDEOFRAMERATE_NTSC,
+		VIDEOFRAMERATE_50,	
+		VIDEOFRAMERATE_60,
+		VIDEOFRAMERATE_120,
+		VIDEOFRAMERATE_240,
+		VIDEOFRAMERATE_MAX = 0xFF // force short
+	} FrameRateType;
+	
+	
+	typedef struct {
+		int id;
+		int	width, height;
+		FrameRateType framerate;
+		PixelFormatType type;
+		std::string deviceconfig;
+	} VideoConfiguration;
+	
+	class OSGART_EXPORT VideoConfig {
+	public:
+	
+		VideoConfig();
+		virtual ~VideoConfig();
+		
+		virtual int getID() const { return _id; };	
+		virtual void setID(int id) {_id = id;};
+		
+		virtual float getFramerate() const { return _framerate;};
+		void setFrameRate(float framerate) { _framerate = framerate; };
+						
+		virtual const std::string& getDevice() const { return _device; };
+		void setDevice(const std::string& devicename) { _device = devicename; };
+		
+		virtual const osg::Vec2s& getSize() const { return _size;};
+		virtual void setSize(const osg::Vec2s& size) {_size = size;};
+		virtual void setSize(short width, short height) { _size = osg::Vec2s(width,height);};
+		
+		virtual void setPixelFormat(const std::string& fourcc);
+		
+		
+		
+		virtual void showDeviceDialog();
+		virtual void showFormatDialog();
+		
+		
+	protected:
+
+		int _id;
+		osg::Vec2s _size;
+		float _framerate;
+	
+		std::string _device;
+		
+		// FrameRateType framerate;
+		PixelFormatType _pixelformat;
+		
+	};
+
+};
+
+
+#endif

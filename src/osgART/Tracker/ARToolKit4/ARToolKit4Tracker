@@ -1,0 +1,176 @@
+/*
+ *	osgART/Tracker/ARToolKit4/ARToolKit4Tracker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+#ifndef OSGART_ARTTOOLKIT4TRACKER
+#define OSGART_ARTTOOLKIT4TRACKER
+
+/**
+ * \file  ARToolKit4Tracker
+ * \brief A wrapper class for ARToolkit4 tracking system.
+ *
+ * Support Marker-Based tracking based on computer vision based on ARToolKit
+ * Algorithm. This class provided video/graphic independent marker detection and
+ * support multiple marker tracking.
+ *	
+ * \author Yannick Allusse Yannick.Allusse@hitlabnz.org
+ * \author Philip Lamb phil@eden.net.nz
+ */
+
+#include "osgART/Export"
+#include "osgART/Marker"
+#include "osgART/Video"
+#include "osgART/Tracker"
+
+#include <string>
+
+#include <AR/ar.h>
+
+
+namespace osgART {
+
+	/**
+	* \class ARToolKit4Tracker
+	* \brief A tracker based on ARToolKit 4x. 
+	* 
+	* This tracker supports single and multi-markers.
+	*
+	*/
+	class ARToolKit4Tracker : public Tracker
+	{
+
+	public:        
+	   
+		/** 
+		* \brief constructor.
+		*/
+		ARToolKit4Tracker(void);
+
+		/** 
+		* \brief set the openGL parameters for the projection matrix.
+		* 
+		* Initialize internal parameters computation for delivers an openGL Matrix (modify
+		* nothing to openGL state machine). 
+		* \param n near field of view
+		* \param f far field of view
+		*/
+		void setProjection(const double n, const double f);
+		
+		/** 
+		* \brief Set the threshold value for the tracking algorithm.
+		* 
+		* Define the threshold used to binarize the image in ARToolKit4.
+		* \param thresh integer value between 0 (dark) and 255 (bright) 
+		*/
+		void setThreshold(const int& thresh);
+		
+		/**
+		* \brief Get the current threshold value for the tracking algorithm.
+		*
+		* \return The current threshold.
+		*/
+		int getThreshold() const;	
+		
+		/** 
+		* \brief Switch on or off the debug mode in ARToolKit
+		* 
+		* \param b true = debug mode on/ false debug mode of
+		*/
+		void setDebugMode(const bool& b);
+		
+		/**
+		* \brief Query if debug mode is switched on or off.
+		*
+		* \return Current state of debug mode.
+		*/
+		bool getDebugMode() const;
+		
+		void setImageProcMode(const int &mode);
+		int getImageProcMode(void)const;
+
+		void setPatternDetectionMode(const int &mode);
+		int getPatternDetectionMode(void)const;
+
+		/** 
+		* \brief Initialize ARToolKit4.
+		* 
+		* This core function initializes different parameters of ARToolKit4: load tracked markers, initialize
+		* camera parameters.
+		* \param xsize width of the image to analyze
+		* \param ysize height of the image to analyze
+		* \param pattlist_name a file structure of the marker
+		* \param camera_name description file of the camera used (pinhole model)
+		*/
+		virtual bool init(int xsize, int ysize, 
+			const std::string& pattlist_name = "Data/markers_list.dat", 
+			const std::string& camera_name="Data/camera_para.dat");
+		
+		/** 
+		* \brief Register a single marker with the tracker.
+		* 
+		* \param pattFile the pattern file name
+		* \param width the width of the physical marker
+		* \param center the x-y coordinates of the center of the marker (usually 0,0)
+		* \return the internal ID of the new marker, or -1 on failure 
+		*/
+		int addSingleMarker(const std::string& pattFile, 
+			double width, double center[2]);
+		
+		/** 
+		* \brief Register a multi-marker with the tracker
+		* 
+		* \param multiFile the multi-marker configuration file name
+		* \return the internal ID of the new marker, or -1 on failure
+		*/
+		int addMultiMarker(const std::string& multiFile);
+				
+		/** 
+		* \brief update the tracking.
+		* 
+		* This core function applies the ARToolKit4 algorithm to the last image defined by setImage.
+		*/
+		void update();
+				
+	protected:
+	
+		/** 
+		 * \brief destructor.
+		 */
+		virtual ~ARToolKit4Tracker();
+		
+		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
+		
+	private:
+	
+		osg::ref_ptr<osg::Image> m_debugimage;
+		
+		ARPattHandle		*gARPattHandle;//main list of patterns
+		ARHandle			*gARHandle;
+		AR3DHandle			*gAR3DHandle;
+		
+		struct				CameraParameter;
+		CameraParameter*	m_cparam;
+	
+		bool setupMarkers(const std::string& patternListFile);
+		void cleanupMarkers(void);
+
+		std::string 		cparamName;
+		
+        int getARPixelFormatForImage(const osg::Image& _image) const;
+		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) const;
+	};
+
+};
+
+#endif // !OSGART_ARTTOOLKIT4TRACKER
+
+

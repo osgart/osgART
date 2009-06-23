@@ -1,0 +1,138 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  DummyImageVideo
+*  \brief A Video class for image input
+*
+* 
+* A video class that just displaying always the same image, ideal for
+* debugging or taking snapshot. The image format is mainly the one
+* implicitly supported in OpenSceneGraph.
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 07/05/31
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_DUMMYIMAGEVIDEO
+#define OSGART_DUMMYIMAGEVIDEO
+
+#include <iostream>
+#include <string>
+
+// graphics include
+#include <osgART/Export>
+#include <OpenThreads/Mutex>
+#include <osg/Image>
+
+// local include
+#include <osgART/GenericVideo>
+
+
+/**
+ * class DummyImageVideo.
+ *
+ */
+  class DummyImageVideo : public osgART::GenericVideo
+{
+public:        
+// Standard Services
+    
+    /** 
+    * \brief default constructor.
+    * The default constructor.
+    * @param config a string definition of the Video. See documentation
+    * of DummyImage for further details.
+    */
+    DummyImageVideo(const char* imageFile);
+    
+    /** 
+    * \brief copy constructor.
+    */
+    // DummyImageVideo(const DummyImageVideo &);
+    
+
+    
+    /** 
+    * \brief affectation operator.
+    *
+    */
+    DummyImageVideo& operator=(const DummyImageVideo &);
+    
+    /**
+    * \brief open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	void open();
+	
+	
+ //yannick	
+	/**
+    * \brief Select a new image and open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	void setImageFile(const std::string &_NewFile);
+	
+	/**
+    * \brief Get the image filename.
+    */	
+	std::string getImageFile()const;
+ //==================
+	
+	/**
+    * \brief close the Video stream.
+    * Terminate the connection with the Video stream and clean handle.
+    */
+	void close();
+	
+	/**
+    * \brief start the Video stream grabbing.
+    * Start to get image from the Video stream. In function of the implementation on different
+    * platform, this function can run a thread, signal or real-time function. 
+    */
+	void start();
+	
+	/**
+    * \brief stop the Video stream grabbing.
+    * Stop to get image from the Video stream. In function of the implementation on different
+    * platform, this function can stop a thread, signal or real-time function. 
+    */
+	void stop();
+	
+	/**
+    * \brief update the Video stream grabbing.
+    * Try to get an image of the Video instance, usable by your application.
+    */
+	void update();
+    
+    inline virtual void releaseImage() {};
+protected:
+
+	/** 
+    * \brief destructor.
+    *
+    */
+    virtual ~DummyImageVideo();       
+    
+
+private:
+
+	std::string videoName;
+	bool m_flip_horizontal;
+	bool m_flip_vertical;
+
+};
+
+#endif

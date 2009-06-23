@@ -1,0 +1,71 @@
+/*
+ *	osgART/Tracker/ARToolKit/MultiMarker
+ *	osgART: AR ToolKit for OpenSceneGraph
+ *
+ *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
+ *	
+ *	Rev		Date		Who		Changes
+ *  1.0   	2006-12-08  ---     Version 1.0 release.
+ *
+ */
+// @@OSGART_LICENSE_HEADER_BEGIN@@
+// @@OSGART_LICENSE_HEADER_END@@
+
+#ifndef OSGART_MULTIMARKER
+#define OSGART_MULTIMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Marker"
+
+// ARToolKit multimarker include
+#include <AR/arMulti.h>
+
+namespace osgART {
+
+	/**
+	* \class MultiMarker
+	* \brief A marker consisting of many patterns which can be treated as one.
+	*/
+	class MultiMarker : public Marker
+	{
+	public:       
+
+		/** 
+		* \brief default constructor.
+		*
+		*/
+		MultiMarker();
+	    
+		bool initialise(const std::string& multiFile);
+		
+		virtual void setActive(bool a);
+		
+		void update(ARMarkerInfo* markerInfo, int markerCount);
+		
+		/**
+		* \brief return the type of the maker.
+		* return if the marker is a single or multi-pattern marker.
+		* \return the type of the marker
+		*/
+		MarkerType getType() const;
+		
+	    
+	protected: 
+	
+		/**
+		* \brief destructor.
+		*/
+		virtual ~MultiMarker();
+		
+
+		ARMultiMarkerInfoT* m_multi;
+			
+	};
+};
+
+#endif
