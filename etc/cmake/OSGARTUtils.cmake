@@ -21,7 +21,7 @@ macro(install_osgart_plugin target)
 	
 #	message(STATUS "\n----------------\n${OSGART_FILES_PLUGINS}")
 	
-	set(lib_libinstalldir lib)
+	set(lib_libinstalldir ${OSGART_LIB_PREFIX})
 	
 	if(WIN32)
 		set(lib_libinstalldir bin)

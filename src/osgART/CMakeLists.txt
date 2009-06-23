@@ -107,7 +107,7 @@ set_source_files_properties(${lib_hdrs}
 	HEADER_FILE_ONLY TRUE
 	)
 
-set(lib_libinstalldir lib)
+set(lib_libinstalldir ${OSGART_LIB_PREFIX})
 
 if(WIN32)
 	set(lib_libinstalldir bin)
@@ -117,7 +117,7 @@ if (NOT OSGART_USE_FRAMEWORKS)
 	install(TARGETS ${lib_name} 
 			RUNTIME DESTINATION bin
 			LIBRARY DESTINATION ${lib_libinstalldir}
-			ARCHIVE DESTINATION lib
+			ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
 	#		FRAMEWORK DESTINATION /Library/Frameworks
 			)
 endif(NOT OSGART_USE_FRAMEWORKS)
@@ -126,6 +126,15 @@ install(FILES ${lib_hdrs}
 		DESTINATION include/${lib_name}
 		)
 		
+
+#
+# Install share/
+#
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/share
+	DESTINATION ${CMAKE_INSTALL_PREFIX}
+	PATTERN ".svn" EXCLUDE
+    )
+
 #
 # Optional SDK packaging (default is on)
 #
@@ -136,12 +145,6 @@ if(WIN32)
 			DIRECTORY "${OSG_INCLUDE_DIR}/../"
 			DESTINATION "."
 		)
-	endif(OSGART_BUILD_SDK)
-endif(WIN32)
-
-
-
-		
-		
-
+	endif()
+endif()
 

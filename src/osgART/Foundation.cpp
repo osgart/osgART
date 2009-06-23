@@ -40,9 +40,7 @@ namespace osgART {
 		{
 
 			osg::notify() << "osgART::Initializer()" << std::endl;
-			
-			osgDB::appendPlatformSpecificResourceFilePaths(osgDB::getDataFilePathList());
-			osgDB::appendPlatformSpecificLibraryFilePaths(osgDB::getLibraryFilePathList());
+
 		}
 
 		~Initializer() 
@@ -53,10 +51,10 @@ namespace osgART {
 
 	};
 
-
-
 }
 
 /* global initializer */
-osgART::Initializer g_Initializer;
+static osgART::Initializer g_Initializer;
+osgART::Initializer* p_gInitializer = &g_Initializer;
+
 

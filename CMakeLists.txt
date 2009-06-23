@@ -1,3 +1,5 @@
+set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
+
 cmake_minimum_required(VERSION 2.6.1)
 
 project(osgART)
@@ -6,7 +8,9 @@ if(COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
 
-
+#
+# Patch in the osgART CMake module directory
+# 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/etc/cmake)
 
 if(APPLE)
@@ -36,6 +40,7 @@ include(OSGARTUtils)
 # Finding various packages
 find_package(OSG REQUIRED)
 find_package(OpenThreads REQUIRED)
+
 # Find OpenGL
 find_package(OpenGL REQUIRED)
 
@@ -63,6 +68,14 @@ if(APPLE)
     find_library(QUICKTIME_LIBRARY QuickTime REQUIRED)
 endif(APPLE)
 
+#
+# If we are on 64bit machines we use lib64 for installing
+#
+set(OSGART_LIB_PREFIX "lib")
+if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+	set(OSGART_LIB_PREFIX "lib64")
+endif()
+
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
@@ -80,7 +93,6 @@ install(FILES
 add_subdirectory(src)
 add_subdirectory(applications)
 add_subdirectory(examples)
-
 
 #
 # Build API docs / but only if Doxygen is available
@@ -107,8 +119,6 @@ if   (DOXYGEN_FOUND)
 			DESTINATION "share/osgART"
 			# COMPONENT "API Documentation" reenable when moving up to 2.6
 			)	
-				
-
 	endif(OSGART_BUILD_APIDOC)
 endif(DOXYGEN_FOUND)
 
@@ -133,7 +143,7 @@ if   (OSGART_BUILD_PACKAGE)
 	configure_file(
 		${CMAKE_SOURCE_DIR}/etc/cmake/Packaging.cmake.in
 		${CMAKE_BINARY_DIR}/.cpack/OSGARTPackaging.cmake	
-		@ONLY
+		@ONLY IMMEDIATE
 	)		
 	include(${CMAKE_BINARY_DIR}/.cpack/OSGARTPackaging.cmake)			
 endif (OSGART_BUILD_PACKAGE)

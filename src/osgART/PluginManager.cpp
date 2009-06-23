@@ -26,6 +26,7 @@
 #include <osg/Notify>
 
 #include <osgDB/Registry>
+#include <osgDB/FileUtils>
 
 #include <sstream>
 
@@ -33,6 +34,18 @@ namespace osgART {
 
 	PluginManager::PluginManager() : osg::Referenced(), m_id(0)
 	{
+			osgDB::appendPlatformSpecificResourceFilePaths(osgDB::getDataFilePathList());
+			osgDB::appendPlatformSpecificLibraryFilePaths(osgDB::getLibraryFilePathList());
+
+			osgDB::FilePathList& fpl = osgDB::Registry::instance()->getDataFilePathList();
+
+			osgDB::appendPlatformSpecificResourceFilePaths(fpl);
+
+			fpl.push_front("/usr/share/osgART");
+			fpl.push_front("/usr/local/share/osgART");
+			fpl.push_front("../share/osgART");
+
+			osg::notify() << "Added osgART specific paths" << std::endl;
 	}
 
 	PluginManager::~PluginManager()
@@ -69,7 +82,7 @@ namespace osgART {
 	PluginManager* PluginManager::instance(bool erase /* = false */) 
 	{
 		
-		static osg::ref_ptr<PluginManager> s_pluginmanager = new PluginManager;
+		static osg::ref_ptr<PluginManager> s_pluginmanager = new PluginManager();
 		
 		if (erase)
 		{

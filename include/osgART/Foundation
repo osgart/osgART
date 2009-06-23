@@ -23,6 +23,8 @@
 #ifndef __OSGART_FOUNDATION__
 #define __OSGART_FOUNDATION__
 
+#include "osgART/Export"
+
 /*! \mainpage OSGART
  *
  *  \htmlinclude main.html

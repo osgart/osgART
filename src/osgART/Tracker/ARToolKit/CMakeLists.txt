@@ -49,10 +49,10 @@ file(GLOB ARTOOLKIT2_MISC_FILES
 	${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/*.dat
 	)
 	
-file(GLOB ARTOOLKIT2_PATT_PRINT
-	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.pdf
-	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.gif
-	)
+#file(GLOB ARTOOLKIT2_PATT_PRINT
+#	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.pdf
+#	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.gif
+#	)
 
 if(WIN32)
 	file(GLOB GLUT_DLL 
@@ -78,13 +78,13 @@ if(WIN32)
 endif(WIN32)	
 	
 
-install(FILES
-	${ARTOOLKIT2_PATT_PRINT}
-	DESTINATION share/osgART/patterns
-	)
+#install(FILES
+#	${ARTOOLKIT2_PATT_PRINT}
+#	DESTINATION share/osgART/patterns
+#	)
 	
-install(FILES 
-		${ARTOOLKIT2_MISC_FILES}
-		DESTINATION bin/data
-		)
+#install(FILES 
+#		${ARTOOLKIT2_MISC_FILES}
+#		DESTINATION bin/data
+#		)
 	
