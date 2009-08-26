@@ -281,8 +281,8 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 
 		osg::Timer t;
 
-		if (0 == ar2VideoCapNext(video))
-		{
+		//if (0 == ar2VideoCapNext(video))
+		//{
 			if (newImage = (unsigned char*)ar2VideoGetImage(video)) 
 			{
 				this->setImage(this->s(), this->t(), 
@@ -302,7 +302,10 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 					}
 				}
 			}
-		}
+		//}
+
+		ar2VideoCapNext(video);
+
 	}
 }
 
