@@ -94,6 +94,8 @@ namespace osgART {
 		osgART::Marker* addMarker(const std::string& cfg);
 		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
 		
+		osg::MatrixTransform* addTrackedTransform(osgART::Marker* marker);
+		
 		inline const osg::Camera* getCamera() const {
 			return _camera.get();
 		}

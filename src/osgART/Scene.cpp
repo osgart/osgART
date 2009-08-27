@@ -151,11 +151,9 @@ namespace osgART {
 
 	}
 
-	osg::MatrixTransform* Scene::addTrackedTransform( const std::string& cfg )
-	{
-		osg::ref_ptr<osgART::Marker> marker = addMarker(cfg);
+	osg::MatrixTransform* Scene::addTrackedTransform(osgART::Marker* marker) {
 
-		if (!marker.valid()) 
+		if (!marker) 
 		{
 			// Without marker an AR application can not work. Quit if none found.
 			osg::notify(osg::FATAL) << "Could not add marker!" << std::endl;
@@ -167,7 +165,7 @@ namespace osgART {
 
 		osg::MatrixTransform* arTransform = new osg::MatrixTransform();
 
-		osgART::attachDefaultEventCallbacks(arTransform,marker.get());
+		osgART::attachDefaultEventCallbacks(arTransform, marker);
 		//osgART::addEventCallback(arTransform, new osgART::MarkerDebugCallback(marker.get()));
 
 
@@ -175,10 +173,14 @@ namespace osgART {
 
 		_camera->addChild(arTransform);
 
-
 		return arTransform;
 
+	}
 
+	osg::MatrixTransform* Scene::addTrackedTransform( const std::string& cfg )
+	{
+		osg::ref_ptr<osgART::Marker> marker = addMarker(cfg);
+		return addTrackedTransform(marker.get());
 	}
 
 	Scene::~Scene()
