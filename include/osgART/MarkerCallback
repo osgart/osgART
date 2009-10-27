@@ -52,6 +52,7 @@
 #include <osgART/Export>
 #include <osgART/Marker>
 
+#include <osg/Timer>
 
 namespace osgART
 {
@@ -120,9 +121,32 @@ namespace osgART
 	class OSGART_EXPORT MarkerVisibilityCallback : public SingleMarkerCallback 
 	{
 	public:
+	
+		enum VisibilityMode {
+			VISIBILITY_NORMAL,		// Normal behavior: hide when marker not tracked
+			VISIBILITY_TIMEOUT,		// Timeout: keep visible for n milliseconds after tracking lost
+			VISIBILITY_ALWAYS,		// Always: keep visible always
+			VISIBILITY_NEVER		// Never: keep hidden
+			
+		};
+	
 		MarkerVisibilityCallback(Marker* marker);
 	
-		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);		
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+		
+		void setVisibilityMode(VisibilityMode mode);
+		VisibilityMode getVisibilityMode();
+		
+		void setMillisecondsToKeepVisible(double ms);
+		double getMillisecondsToKeepVisible();
+		
+	protected:
+	
+		VisibilityMode m_visibilityMode;
+		double m_millisecondsToKeepVisible;
+		
+		osg::Timer m_timer;
+		
 	};
 	
 	class OSGART_EXPORT MarkerDebugCallback : public SingleMarkerCallback 

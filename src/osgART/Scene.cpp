@@ -159,7 +159,7 @@ namespace osgART {
 			osg::notify(osg::FATAL) << "Could not add marker!" << std::endl;
 			// exit(-1);
 		}
-
+ 
 		marker->setActive(true);
 
 

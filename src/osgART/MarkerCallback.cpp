@@ -103,24 +103,58 @@ namespace osgART {
 		// TODO: Handle other types of nodes... ?
 
 
+
 		// Traverse the Node's subgraph
 		traverse(node,nv);
 
 	}
 
 	MarkerVisibilityCallback::MarkerVisibilityCallback(Marker* marker) : 
-		SingleMarkerCallback(marker)
+		SingleMarkerCallback(marker),
+		m_visibilityMode(VISIBILITY_NORMAL),
+		m_millisecondsToKeepVisible(0.0f)
 	{
+
 	}
 
 	/*virtual*/ 
 	void MarkerVisibilityCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) {
 
+		bool enableNode = false;
+
+		switch (m_visibilityMode) {
+
+			case VISIBILITY_NORMAL:
+				enableNode = m_marker->valid();
+				break;
+			
+			case VISIBILITY_TIMEOUT:
+
+				if (m_marker->valid()) {
+					m_timer.setStartTick();
+					enableNode = true;
+				} else {
+					enableNode = (m_timer.time_m() < m_millisecondsToKeepVisible);
+				}
+
+				break;
+
+			case VISIBILITY_ALWAYS:
+				enableNode = true;
+				break;
+			case VISIBILITY_NEVER:
+				enableNode = false;
+				break;
+
+		}
+
 		if (osg::Switch* _switch = dynamic_cast<osg::Switch*>(node)) 
 		{
 			// Handle visibilty for switch nodes
 
-			_switch->setSingleChildOn(m_marker->valid() ? 0 : 1);	
+			// _switch->setSingleChildOn(m_marker->valid() ? 0 : 1);	
+			if (enableNode) _switch->setAllChildrenOn();
+			else _switch->setAllChildrenOff();
 		} 
 
 		/*
@@ -141,13 +175,31 @@ namespace osgART {
 			// hidden forever. 
 			nv->setNodeMaskOverride(0xFFFFFFFF);
 
-			node->setNodeMask(m_marker->valid() ? 0xFFFFFFFF : 0x0);
+			node->setNodeMask(enableNode ? 0xFFFFFFFF : 0x0);
 		}
 
 		// must traverse the Node's subgraph            
 		traverse(node,nv);
 
 	}
+
+	void MarkerVisibilityCallback::setVisibilityMode(MarkerVisibilityCallback::VisibilityMode mode) {
+		m_visibilityMode = mode;
+	}
+		
+	MarkerVisibilityCallback::VisibilityMode MarkerVisibilityCallback::getVisibilityMode() {
+		return m_visibilityMode;
+	}
+
+
+	void MarkerVisibilityCallback::setMillisecondsToKeepVisible(double ms) {
+		m_millisecondsToKeepVisible = ms;
+	}
+
+	double MarkerVisibilityCallback::getMillisecondsToKeepVisible() {
+		return m_millisecondsToKeepVisible;
+	}
+
 
 
 	MarkerDebugCallback::MarkerDebugCallback(Marker* marker) : 
