@@ -16,7 +16,7 @@ endif(APPLE)
 
 set_target_properties(${exe_name}
 		PROPERTIES		
-		PROJECT_LABEL "Example ${exe_name}")
+		PROJECT_LABEL "Application ${exe_name}")
 
 target_link_libraries(${exe_name} 
 	osgART 
