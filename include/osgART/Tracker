@@ -39,6 +39,7 @@
 #include "osgART/Marker"
 #include "osgART/Field"
 #include "osgART/Calibration"
+#include "osgART/TrainingSupport"
 
 namespace osgART {
 
@@ -68,7 +69,9 @@ namespace osgART {
 		 * \param video the video object to use
 		 */
 		virtual void setImage(osg::Image* image);
-
+		
+		virtual osg::Image* getImage();
+		
 
 		/**
 		 * Creates or gets the calibration object
@@ -126,7 +129,13 @@ namespace osgART {
 		 */
 		virtual void removeMarker(Marker* marker);
 		 
-		
+		 
+		/**
+		 * Return a training support instance for this tracker.
+		 * \return TrainingSupport instance, or NULL if marker training is not supported.		 
+		 */
+		virtual TrainingSupport* getTrainingSupport() { return NULL; }
+		 
 		
 		/**
 		 * Needed for plugin loaded objects which are used in other

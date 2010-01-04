@@ -24,7 +24,9 @@
 #include "osgART/PluginManager"
 #include "osgART/Utils"
 
+#include "ARToolKitTrainingSupport"
 #include "ARToolKitTracker"
+
 
 
 #include <osg/Image>
@@ -228,6 +230,11 @@ namespace osgART {
 
 		// for statistics
 		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
+
+
+		// Training support
+		mTrainer = new ARToolKitTrainingSupport(this);
+
 	}
 
 	inline ARToolKitTracker::~ARToolKitTracker()
@@ -245,6 +252,11 @@ namespace osgART {
 	}
 
 
+	TrainingSupport* ARToolKitTracker::getTrainingSupport() { 
+		return mTrainer.get(); 
+	}
+
+
 	inline Calibration* ARToolKitTracker::getOrCreateCalibration() 
 	{
 		if (!_calibration.valid()) _calibration = new ARToolKitCalibration;
@@ -259,10 +271,11 @@ namespace osgART {
 		arFittingMode = AR_FITTING_TO_IDEAL;
 	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;
 
-		this->getOrCreateCalibration()->setSize(*image);
-
-		// Initialise debug image to match video image
 		if (image) {
+			
+			this->getOrCreateCalibration()->setSize(*image);
+	
+			// Initialise debug image to match video image		
 			m_debugimage->allocateImage(image->s(), image->t(), 1, image->getPixelFormat(), image->getDataType());
 		}
 
@@ -631,6 +644,11 @@ namespace osgART {
 
 			_stats->setAttribute(framestamp->getFrameNumber(),
 				"Possible candidates", m_marker_num);
+		}
+
+		// Do training if enabled
+		if (mTrainer.valid() && mTrainer->isEnabled()) {
+			mTrainer->processMarkers(marker_info, m_marker_num);
 		}
 
 		// Debug Image

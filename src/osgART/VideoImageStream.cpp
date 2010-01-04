@@ -57,9 +57,10 @@ namespace osgART
 	}
 	
 	/*virtual*/
-	void
+	bool
 	VideoImageStream::open() 
 	{
+		return false;
 	}
 
 	/*virtual*/

@@ -4,12 +4,14 @@ set(SRCS
 	ARToolKitTracker.cpp
 	MultiMarker.cpp
 	SingleMarker.cpp
+	ARToolKitTrainingSupport.cpp
 )
 
 set(HDRS
 	${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitTracker
 	${CMAKE_CURRENT_SOURCE_DIR}/MultiMarker
 	${CMAKE_CURRENT_SOURCE_DIR}/SingleMarker
+	${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitTrainingSupport
 	)
 	
 set_source_files_properties(${HDRS}

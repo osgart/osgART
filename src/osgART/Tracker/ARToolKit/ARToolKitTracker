@@ -30,7 +30,10 @@
 #include "osgART/Video"
 #include "osgART/Tracker"
 
+#include "ARToolKitTrainingSupport"
+
 #include <string>
+
 
 
 namespace osgART {
@@ -148,6 +151,14 @@ namespace osgART {
 		 * Removing a single or multimarker
 		 */		
 		virtual void removeMarker(Marker* marker);
+			
+			
+		/**
+		 * \brief Returns a training support instance for the ARToolKit tracker;
+		 */	
+		virtual TrainingSupport* getTrainingSupport();
+			
+			
 				
 	protected:
 	
@@ -173,6 +184,8 @@ namespace osgART {
 		std::string 		cparamName;
 		int					m_threshold;
 		int					m_marker_num;
+	
+		osg::ref_ptr<ARToolKitTrainingSupport> mTrainer;
 		        
         int getARPixelFormatForImage(const osg::Image& _image) const;
 		int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLenum *internalformat_GL, GLenum *format_GL, GLenum *type_GL) const;

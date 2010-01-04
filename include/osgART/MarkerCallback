@@ -66,6 +66,8 @@ namespace osgART
 	 */
  	OSGART_EXPORT void addEventCallback(osg::Node* node, osg::NodeCallback* cb);
 	
+	OSGART_EXPORT void removeEventCallback(osg::Node* node, osg::NodeCallback* cb);
+	
 	/**
 	 * Creates and attaches a callback chain for a marker to 
 	 * a node. This binds the marker to the node. This will attach a 
@@ -109,11 +111,21 @@ namespace osgART
 
 	class OSGART_EXPORT MarkerTransformCallback : public SingleMarkerCallback
 	{
+	
+	protected:
+		bool mEnabled;
+		
 	public:
 	
 		MarkerTransformCallback(Marker* marker);
 	
+	
+	
 		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+	
+		void setEnabled(bool e);
+		bool getEnabled();
+	
 		
 	};
 		

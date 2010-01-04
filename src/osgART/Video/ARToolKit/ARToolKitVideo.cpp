@@ -82,7 +82,7 @@ public:
 	/**
 		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
 		*/
-	void open();
+	bool open();
 	
 	/**
 		* Close the video stream. Terminates the connection with the video stream and clean handle.
@@ -101,7 +101,7 @@ public:
 		* of the implementation on different platform, this function can stop a thread, signal or 
 		* real-time function. 
 		*/
-	void pause();
+	void stop();
 	
 	/**
 		* Update the video stream grabbing. Try to get an image of the video instance, usable 
@@ -181,7 +181,7 @@ ARToolKitVideo::operator=(const ARToolKitVideo &)
 	return *this;
 }
 
-void
+bool
 ARToolKitVideo::open()
 {
 	char* config = 0;
@@ -194,7 +194,7 @@ ARToolKitVideo::open()
 					&_datatype_GL))
 	{
 		osg::notify(osg::FATAL) << "osgART::ARToolKitVideo::open() << unknown video format! " << std::endl;
-		return;
+		return false;
 	} 
 	else 
 	{
@@ -219,8 +219,14 @@ ARToolKitVideo::open()
 		ar2VideoInqSize(video, &xsize, &ysize);
 
 		// report the actual
-		osg::notify() << std::dec << "ARToolKitVideo::open() size of video " << 
+		osg::notify() << std::dec << "osgART::ARToolKitVideo::open() size of video " << 
 			xsize << " x " << ysize << std::endl;
+
+	} else {
+
+		// error opening video path
+		osg::notify() << "osgART::ARToolKitVideo::open() failed" << std::endl;
+		return false;
 
 	}
 
@@ -228,6 +234,9 @@ ARToolKitVideo::open()
 	this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 
 	this->setDataVariance(osg::Object::DYNAMIC);
+
+	return true;
+
 }
 
 void
@@ -237,7 +246,10 @@ ARToolKitVideo::close(bool waitForThread)
 	// This code was fenced for Windows - if you experience
 	// problems with this code you are using an outdated 
 	// version of ARToolKit!
-#if !defined( WIN32 )
+
+	// jcl64: Not sure about this... the camera never shuts off if you don't call ar2VideoClose
+
+//#if !defined( WIN32 )
 	if (NULL != video) {
 
 		this->pause();
@@ -247,7 +259,7 @@ ARToolKitVideo::close(bool waitForThread)
 			video = NULL;
 		}
 	}
-#endif
+//#endif
 }
 
 void
@@ -261,7 +273,7 @@ ARToolKitVideo::play()
 }
 
 void
-ARToolKitVideo::pause()
+ARToolKitVideo::stop()
 {
 	if (video) {
 		ar2VideoCapStop(video);

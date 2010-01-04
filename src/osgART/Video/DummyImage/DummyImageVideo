@@ -36,16 +36,19 @@
 #include <osgART/Export>
 #include <OpenThreads/Mutex>
 #include <osg/Image>
+#include <osg/Timer>
 
 // local include
-#include <osgART/GenericVideo>
 
+#include "osgART/PluginManager"
+#include "osgART/Video"
+#include "osgART/VideoConfig"
 
 /**
  * class DummyImageVideo.
  *
  */
-  class DummyImageVideo : public osgART::GenericVideo
+  class DummyImageVideo : public osgART::Video
 {
 public:        
 // Standard Services
@@ -56,13 +59,16 @@ public:
     * @param config a string definition of the Video. See documentation
     * of DummyImage for further details.
     */
-    DummyImageVideo(const char* imageFile);
+    DummyImageVideo();
     
     /** 
     * \brief copy constructor.
     */
-    // DummyImageVideo(const DummyImageVideo &);
-    
+     DummyImageVideo(const DummyImageVideo &, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+
+
+	META_Object(osgART,DummyImageVideo);
 
     
     /** 
@@ -75,7 +81,7 @@ public:
     * \brief open the Video stream.
     * Access the Video stream (hardware or file) and get an handle on it.
     */
-	void open();
+	bool open();
 	
 	
  //yannick	
@@ -115,7 +121,10 @@ public:
     * \brief update the Video stream grabbing.
     * Try to get an image of the Video instance, usable by your application.
     */
-	void update();
+	//void update();
+	
+	void update(osg::NodeVisitor* nv);
+	
     
     inline virtual void releaseImage() {};
 protected:
@@ -133,6 +142,9 @@ private:
 	bool m_flip_horizontal;
 	bool m_flip_vertical;
 
+	osg::Timer updateTimer;
+
 };
+
 
 #endif

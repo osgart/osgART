@@ -88,8 +88,8 @@ namespace osgART {
 
 		
 		
-		void addVideoBackground(const std::string& v);
-		void addTracker(const std::string& t);
+		osgART::Video* addVideoBackground(const std::string& v);
+		osgART::Tracker* addTracker(const std::string& t);
 
 		osgART::Marker* addMarker(const std::string& cfg);
 		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
@@ -102,16 +102,27 @@ namespace osgART {
 
 		inline SceneSetting& getSetting() { return _settings; };
 	
+		inline const osgART::Tracker* getTracker() const {
+			return _tracker.get();
+		}
+		
+		inline const osgART::Video* getVideo() const {
+			return _video.get();
+		}
+	
 	protected:
 	
 		virtual ~Scene();
 
 		SceneSetting _settings;
 	
+		osg::ref_ptr<osgART::VideoLayer> _videoBackground;
 		osg::ref_ptr<osgART::Tracker> _tracker;
 		osg::ref_ptr<osgART::Video> _video;
 		osg::ref_ptr<osg::Camera> _camera;
 		osg::ref_ptr<osgART::Calibration> _calibration;
+
+		void configureVideoBackground();
 
 	};
 

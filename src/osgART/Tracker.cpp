@@ -167,6 +167,12 @@ namespace osgART {
 		m_imagesource = image;
 	}
 
+	/*virtual*/ 
+	osg::Image* Tracker::getImage() 
+	{
+		return m_imagesource.get();
+	}
+
 	/*virtual*/
 	void 
 	Tracker::update(osg::NodeVisitor* nv /*=0L*/)

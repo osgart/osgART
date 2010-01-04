@@ -1,1 +1,2 @@
 add_subdirectory(osgartviewer)
+add_subdirectory(osgartmarkertraining)

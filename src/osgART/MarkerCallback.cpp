@@ -48,6 +48,40 @@ namespace osgART {
 	}
 	
 
+	
+	void removeEventCallback(osg::Node* node, osg::NodeCallback* cb) {
+
+       if (!node || !cb) return;    // Sanity check
+
+       osg::NodeCallback* n = node->getEventCallback();
+       if (!n) return;                // There is no callback list
+
+       // Check the first callback
+       if (n == cb) {
+           // The first callback matches, so remove it, and reattach its child (which might be NULL)
+           node->setEventCallback(n->getNestedCallback());
+           return;
+       }
+
+       // Check nested callbacks
+       while (n) {
+
+           osg::NodeCallback* nested = n->getNestedCallback();                      
+		   if (!nested) return;        // Run out of children
+
+           if (nested == cb) {
+               // The callback matches, so remove it, and reattach its child (which might be NULL)
+               n->setNestedCallback(nested->getNestedCallback());
+               return;
+           }
+
+           n = nested; // Move to next callback
+
+       }
+
+   } 
+
+
 	void attachDefaultEventCallbacks(osg::Node* node, Marker* marker)
 	{
 		if (!node) {
@@ -80,29 +114,41 @@ namespace osgART {
 
 
 	MarkerTransformCallback::MarkerTransformCallback(Marker* marker) : 
-		SingleMarkerCallback(marker)
+		SingleMarkerCallback(marker),
+		mEnabled(true)
 	{
 	}
 
+	void MarkerTransformCallback::setEnabled(bool e) {
+		mEnabled = e;	
+	}
+
+	bool MarkerTransformCallback::getEnabled() {
+		return mEnabled;
+	}
 
 	/*virtual*/ 
 	void MarkerTransformCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) {
 
-		// Handler for osg::MatrixTransforms
-		if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {
-			mt->setMatrix(m_marker->getTransform());
+		if (mEnabled) {
+
+			// Handler for osg::MatrixTransforms
+			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {
+				mt->setMatrix(m_marker->getTransform());
+			}
+			
+			// Handler for osg::PositionAttitudeTransforms
+			// TODO: check correct translation/rotation order
+			else if (osg::PositionAttitudeTransform* pat = dynamic_cast<osg::PositionAttitudeTransform*>(node)) {
+				pat->setPosition(m_marker->getTransform().getTrans());
+				pat->setAttitude(m_marker->getTransform().getRotate());
+				pat->setScale(osg::Vec3(1.0f, 1.0f, 1.0f));
+			}
+
+			// TODO: Handle other types of nodes... ?
+
+
 		}
-		
-		// Handler for osg::PositionAttitudeTransforms
-		// TODO: check correct translation/rotation order
-		else if (osg::PositionAttitudeTransform* pat = dynamic_cast<osg::PositionAttitudeTransform*>(node)) {
-			pat->setPosition(m_marker->getTransform().getTrans());
-			pat->setAttitude(m_marker->getTransform().getRotate());
-		}
-
-		// TODO: Handle other types of nodes... ?
-
-
 
 		// Traverse the Node's subgraph
 		traverse(node,nv);

@@ -93,7 +93,7 @@ namespace osgART {
 		 * \brief open the Video stream.
 		 * Access the Video stream (hardware or file) and get an handle on it.
 		 */		
-		virtual void open();
+		virtual bool open();
 				
 		/**
 		 * \brief close the video stream.

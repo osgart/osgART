@@ -20,6 +20,7 @@ set(lib_srcs
 	VideoGeode.cpp
 	VideoImageStream.cpp
 	VideoLayer.cpp
+	TrainingSupport.cpp
 )
 
 set(lib_hdrs 
@@ -42,6 +43,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
+	${CMAKE_SOURCE_DIR}/include/osgART/TrainingSupport
 )
 
 # we are going to build a lib - tell the preprocessor
