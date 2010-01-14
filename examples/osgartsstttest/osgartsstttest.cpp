@@ -20,7 +20,7 @@
  *
  */
 
-// A simple example to demonstrate the StbTracker plugin with osgART
+// A simple example to demonstrate the SSTT plugin with osgART
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
@@ -58,11 +58,13 @@ int main(int argc, char* argv[])  {
 
 	// preload the video and tracker
 	int _video_id = osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_stbtracker");
+	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_sstt");
+
+
+	osg::notify() << "Yo!" << std::endl;
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = 
-		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
@@ -72,14 +74,15 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 	
+	osg::notify() << "Video initialised" << std::endl;
+
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
 	video->open();
 
-	osg::ref_ptr<osgART::Tracker> tracker = 
-		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(_tracker_id));
+	osg::ref_ptr<osgART::Tracker> tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(_tracker_id));
 
 	if (!tracker.valid()) 
 	{
@@ -88,9 +91,13 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
+	osg::notify() << "Tracker initialised" << std::endl;
+
+	
+
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	calibration->load("Data/QuickCamUltraVision.cal");
+	calibration->load("");//"Data/QuickCamUltraVision.cal");
 
 	tracker->setImage(video.get());
 
@@ -103,30 +110,41 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
 
-	for (int i = 0; i < 32; i++) {
+	std::cout << "------------- PROJECTION MATRIX ---------------------" << std::endl;
+	std::cout << cam->getProjectionMatrix() << std::endl;
+	std::cout << "------------- PROJECTION MATRIX ---------------------" << std::endl;
 
-		std::stringstream ss;
-		//ss << "ID;" << i << ";20";
-		ss << "Frame;" << i << ";80";
 
-		osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(ss.str());
-		marker->setActive(true);
+	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("simple.bmp;135;135;0.3");
+	marker->setActive(true);
 
-		osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-		osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
-		
-		osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
-		arTransform->addChild(osgART::testCube(20, c));
-		arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-		cam->addChild(arTransform.get());
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
+	
+	
+	arTransform->addChild(osgART::testCube(80));
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+	cam->addChild(arTransform.get());
 
-	}
-
+	
 	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 	cam->addChild(videoBackground.get());
 	
 	video->start();
-	return viewer.run();
+	
+	while (!viewer.done()) {
+
+		if (marker->valid()) {
+
+			std::cout << "Marker visible" << std::endl;
+
+		}
+
+		viewer.frame();
+
+	}
+	
+	return 0;
 	
 }

@@ -1,5 +1,7 @@
 set(module_name osgart_tracker_sstt)
 
+find_package(DirectShow)
+
 include_directories(${SSTT_INCLUDE_DIR})
 
 add_library(${module_name} MODULE SSTT.cpp)
@@ -19,6 +21,7 @@ target_link_libraries(${module_name}
 	${SSTT_LIBRARIES}
 	${OpenCV_cxcore_LIBRARY}
 	${OpenCV_cv_LIBRARY}
+	${DIRECTSHOW_LIBRARIES}
 	osgART
 )
 

@@ -76,6 +76,7 @@ Calibration::setSize(int width, int height)
 {
 }
 
+/* virtual */
 void 
 Calibration::setSize(const osg::Image& image)
 {

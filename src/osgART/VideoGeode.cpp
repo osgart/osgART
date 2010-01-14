@@ -87,7 +87,8 @@ namespace osgART {
 			glTexImage2D(GL_TEXTURE_2D, 0, 
 				// hse25: internal texture format gets overwritten by the image format 
 				// we need just the components - ???
-				osg::Image::computeNumComponents(_image->getInternalTextureFormat()), 
+				//osg::Image::computeNumComponents(_image->getInternalTextureFormat()), 
+				osg::Image::computeNumComponents(_image->getPixelFormat()), 
 				(float)nextPowerOfTwo((unsigned int)_image->s()), 
 				(float)nextPowerOfTwo((unsigned int)_image->t()), 
 				0, _image->getPixelFormat(), 

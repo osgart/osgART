@@ -59,7 +59,7 @@ namespace osgART
 		 *
 		 * \param image image to be used by the calibration
 		 */
-		void setSize(const osg::Image& image);
+		virtual void setSize(const osg::Image& image);
 		
 
 		/**
