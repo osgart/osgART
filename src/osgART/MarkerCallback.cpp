@@ -158,38 +158,43 @@ namespace osgART {
 	MarkerVisibilityCallback::MarkerVisibilityCallback(Marker* marker) : 
 		SingleMarkerCallback(marker),
 		m_visibilityMode(VISIBILITY_NORMAL),
-		m_millisecondsToKeepVisible(0.0f)
+		m_millisecondsToKeepVisible(0.0f),
+		m_isVisible(false)
 	{
 
+	}
+
+	bool MarkerVisibilityCallback::isVisible() {
+		return m_isVisible;
 	}
 
 	/*virtual*/ 
 	void MarkerVisibilityCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) {
 
-		bool enableNode = false;
+		m_isVisible = false;
 
 		switch (m_visibilityMode) {
 
 			case VISIBILITY_NORMAL:
-				enableNode = m_marker->valid();
+				m_isVisible = m_marker->valid();
 				break;
 			
 			case VISIBILITY_TIMEOUT:
 
 				if (m_marker->valid()) {
 					m_timer.setStartTick();
-					enableNode = true;
+					m_isVisible = true;
 				} else {
-					enableNode = (m_timer.time_m() < m_millisecondsToKeepVisible);
+					m_isVisible = (m_timer.time_m() < m_millisecondsToKeepVisible);
 				}
 
 				break;
 
 			case VISIBILITY_ALWAYS:
-				enableNode = true;
+				m_isVisible = true;
 				break;
 			case VISIBILITY_NEVER:
-				enableNode = false;
+				m_isVisible = false;
 				break;
 
 		}
@@ -199,7 +204,7 @@ namespace osgART {
 			// Handle visibilty for switch nodes
 
 			// _switch->setSingleChildOn(m_marker->valid() ? 0 : 1);	
-			if (enableNode) _switch->setAllChildrenOn();
+			if (m_isVisible) _switch->setAllChildrenOn();
 			else _switch->setAllChildrenOff();
 		} 
 
@@ -221,7 +226,7 @@ namespace osgART {
 			// hidden forever. 
 			nv->setNodeMaskOverride(0xFFFFFFFF);
 
-			node->setNodeMask(enableNode ? 0xFFFFFFFF : 0x0);
+			node->setNodeMask(m_isVisible ? 0xFFFFFFFF : 0x0);
 		}
 
 		// must traverse the Node's subgraph            

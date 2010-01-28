@@ -152,10 +152,14 @@ namespace osgART
 		void setMillisecondsToKeepVisible(double ms);
 		double getMillisecondsToKeepVisible();
 		
+		bool isVisible();
+		
 	protected:
 	
 		VisibilityMode m_visibilityMode;
 		double m_millisecondsToKeepVisible;
+		
+		bool m_isVisible;
 		
 		osg::Timer m_timer;
 		
