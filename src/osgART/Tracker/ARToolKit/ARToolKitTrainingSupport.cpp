@@ -49,6 +49,11 @@ namespace osgART {
 			return mOutline.get();
 		}
 
+		virtual void getSaveInfo(std::string& fileDescription, std::string& fileExtension) { 
+			fileDescription = "ARToolKit Pattern"; 
+			fileExtension = "patt"; 
+		}
+
 		virtual bool save(std::string filename) { 
 
 			if (!mImage.valid()) return false;

@@ -41,6 +41,11 @@ namespace osgART {
 			
 			virtual osg::Vec2Array* getOutline() { return NULL; }
 			
+			virtual void getSaveInfo(std::string& fileDescription, std::string& fileExtension) { 
+				fileDescription = ""; 
+				fileExtension = ""; 
+			}
+			
 			virtual bool save(std::string filename) { return false; }
 			
 		protected:
