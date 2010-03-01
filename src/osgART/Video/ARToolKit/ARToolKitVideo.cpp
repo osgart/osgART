@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * Portions Copyright (C) 2005-2007 ARToolworks Inc 
+ * Portions Copyright (C) 2005-2007 ARToolworks Inc
  *
  * This file is part of osgART 2.0
  *
@@ -33,6 +33,8 @@
 
 #include <iostream>
 #include <iomanip>
+#include <cstring>
+
 
 #include "osgART/PluginManager"
 #include "osgART/Video"
@@ -45,93 +47,93 @@ class ARToolKitVideo : public osgART::Video
 public:
 
 
-	
+
 
 // Standard Services
-	
-	/** 
+
+	/**
 		* Default constructor. It creates a video source from a configuration string
 		* as it is been used in the original AR Toolkit 2.71
 		* \param videoName a string definition of the video background. See documentation
 		* of ARToolKit for further details.
 		*/
 	ARToolKitVideo();
-	
-	/** 
+
+	/**
 		* Copy constructor.
 		*
 		*/
-	ARToolKitVideo(const ARToolKitVideo &, 
+	ARToolKitVideo(const ARToolKitVideo &,
 		const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
-	
-	/** 
+
+	/**
 		* Destructor.
 		*
 		*/
-	virtual ~ARToolKitVideo();   
+	virtual ~ARToolKitVideo();
 
 
 	META_Object(osgART,ARToolKitVideo);
 
-	/** 
+	/**
 	* Affectation operator.
 	*
 	*/
 	ARToolKitVideo& operator = (const ARToolKitVideo &);
-	
+
 	/**
 		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
 		*/
-	bool open();
-	
+	void open();
+
 	/**
 		* Close the video stream. Terminates the connection with the video stream and clean handle.
 		*/
 	void close(bool = true);
-	
+
 	/**
-		* Start the video stream grabbing. Start to get image from the video stream. In function of the 
-		* implementation on different platform, this function can run a thread, signal or 
+		* Start the video stream grabbing. Start to get image from the video stream. In function of the
+		* implementation on different platform, this function can run a thread, signal or
 		* real-time function.
 		*/
 	void play();
-	
+
 	/**
-		* Stop the video stream grabbing. Stop to get image from the video stream. In function 
-		* of the implementation on different platform, this function can stop a thread, signal or 
-		* real-time function. 
+		* Stop the video stream grabbing. Stop to get image from the video stream. In function
+		* of the implementation on different platform, this function can stop a thread, signal or
+		* real-time function.
 		*/
-	void stop();
-	
+	void pause();
+
 	/**
-		* Update the video stream grabbing. Try to get an image of the video instance, usable 
+		* Update the video stream grabbing. Try to get an image of the video instance, usable
 		* by your application.
 		*/
 	void update(osg::NodeVisitor* nv);
-	
 
-	/** 
+
+	/**
 	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
 	* class.
-	*/		 
+	*/
 	void releaseImage();
-	
+
 	virtual osgART::VideoConfiguration* getVideoConfiguration();
-	
-	
+
+
 private:
 
 	AR2VideoParamT *video;
-	
+
 	osgART::VideoConfiguration m_config;
-	
-	GLint _internalformat_GL; 
+
+	GLint _internalformat_GL;
 	GLenum _format_GL;
 	GLenum _datatype_GL;
-	
-	
+
+
 	int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLint *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
-	
+
 };
 
 
@@ -165,42 +167,42 @@ ARToolKitVideo::ARToolKitVideo() : osgART::Video(),
 {
 }
 
-ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &, 
+ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &,
 		const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/)
-{	    
+{
 }
 
-ARToolKitVideo::~ARToolKitVideo() 
+ARToolKitVideo::~ARToolKitVideo()
 {
 	this->close(false);
 }
 
-ARToolKitVideo& 
+ARToolKitVideo&
 ARToolKitVideo::operator=(const ARToolKitVideo &)
 {
 	return *this;
 }
 
-bool
+void
 ARToolKitVideo::open()
 {
 	char* config = 0;
 	int xsize = 0, ysize = 0;
 
 	// Get the format only once for opening the video source
-	if (getGLPixelFormatForARPixelFormat(AR_DEFAULT_PIXEL_FORMAT, 
-					&_internalformat_GL, 
-					&_format_GL, 
+	if (getGLPixelFormatForARPixelFormat(AR_DEFAULT_PIXEL_FORMAT,
+					&_internalformat_GL,
+					&_format_GL,
 					&_datatype_GL))
 	{
 		osg::notify(osg::FATAL) << "osgART::ARToolKitVideo::open() << unknown video format! " << std::endl;
-		return false;
-	} 
-	else 
+		return;
+	}
+	else
 	{
 		osg::notify() << "osgART::ARToolKitVideo::open() using format [GL (internal) " <<
 			"0x" << std::hex << _internalformat_GL << ", " <<
-			"0x" << std::hex << _format_GL << ", " << 
+			"0x" << std::hex << _format_GL << ", " <<
 			"0x" << std::hex << std::uppercase << _datatype_GL << "]" << std::endl;
 	}
 
@@ -211,22 +213,16 @@ ARToolKitVideo::open()
 
 	// open the video capture device
 	video = ar2VideoOpen(config);
-	
+
 	// check if the video was successfully opened
-	if (video) 
+	if (video)
 	{
 		// get the video size
 		ar2VideoInqSize(video, &xsize, &ysize);
 
 		// report the actual
-		osg::notify() << std::dec << "osgART::ARToolKitVideo::open() size of video " << 
+		osg::notify() << std::dec << "ARToolKitVideo::open() size of video " <<
 			xsize << " x " << ysize << std::endl;
-
-	} else {
-
-		// error opening video path
-		osg::notify() << "osgART::ARToolKitVideo::open() failed" << std::endl;
-		return false;
 
 	}
 
@@ -234,9 +230,6 @@ ARToolKitVideo::open()
 	this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 
 	this->setDataVariance(osg::Object::DYNAMIC);
-
-	return true;
-
 }
 
 void
@@ -244,22 +237,19 @@ ARToolKitVideo::close(bool waitForThread)
 {
 
 	// This code was fenced for Windows - if you experience
-	// problems with this code you are using an outdated 
+	// problems with this code you are using an outdated
 	// version of ARToolKit!
-
-	// jcl64: Not sure about this... the camera never shuts off if you don't call ar2VideoClose
-
-//#if !defined( WIN32 )
+#if !defined( WIN32 )
 	if (NULL != video) {
 
 		this->pause();
 		int _ret = ar2VideoClose(video);
-		
+
 		if (0 == _ret) {
 			video = NULL;
 		}
 	}
-//#endif
+#endif
 }
 
 void
@@ -273,7 +263,7 @@ ARToolKitVideo::play()
 }
 
 void
-ARToolKitVideo::stop()
+ARToolKitVideo::pause()
 {
 	if (video) {
 		ar2VideoCapStop(video);
@@ -287,23 +277,28 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 {
 	unsigned char* newImage = NULL;
 
-	if (video) 
-	{			
-		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
+	if (video)
+	{
+	    {
+            OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 
-		osg::Timer t;
 
-		//if (0 == ar2VideoCapNext(video))
-		//{
-			if (newImage = (unsigned char*)ar2VideoGetImage(video)) 
+            osg::Timer t;
+
+
+			if (newImage = (unsigned char*)ar2VideoGetImage(video))
 			{
-				this->setImage(this->s(), this->t(), 
-					1, _internalformat_GL, _format_GL, _datatype_GL, newImage , 
+			    /*
+				this->setImage(this->s(), this->t(),
+					1, _internalformat_GL, _format_GL, _datatype_GL, newImage ,
 					osg::Image::NO_DELETE, 1);
+                */
+
+                memcpy(newImage,this->data(),this->getImageSizeInBytes());
 
 				// hopefully report some interesting data
 				if (nv) {
-					
+
 					const osg::FrameStamp *framestamp = nv->getFrameStamp();
 
 					if (framestamp && _stats.valid())
@@ -314,25 +309,27 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 					}
 				}
 			}
-		//}
+	    }
 
-		ar2VideoCapNext(video);
+	    ar2VideoCapNext(video);
 
 	}
+
+
 }
 
-osgART::VideoConfiguration* 
-ARToolKitVideo::getVideoConfiguration() 
+osgART::VideoConfiguration*
+ARToolKitVideo::getVideoConfiguration()
 {
 	return &m_config;
 }
 
 
-void ARToolKitVideo::releaseImage() 
+void ARToolKitVideo::releaseImage()
 {
 }
 
-int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat, 
+int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat,
 	GLint *internalformat_GL, GLenum *format_GL, GLenum *type_GL)
 {
 	// Translate the internal pixelformat to an OpenGL texture2D triplet.
