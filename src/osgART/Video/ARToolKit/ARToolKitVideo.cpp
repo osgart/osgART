@@ -84,7 +84,7 @@ public:
 	/**
 		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
 		*/
-	void open();
+	bool open();
 
 	/**
 		* Close the video stream. Terminates the connection with the video stream and clean handle.
@@ -183,7 +183,7 @@ ARToolKitVideo::operator=(const ARToolKitVideo &)
 	return *this;
 }
 
-void
+bool
 ARToolKitVideo::open()
 {
 	char* config = 0;
@@ -196,7 +196,7 @@ ARToolKitVideo::open()
 					&_datatype_GL))
 	{
 		osg::notify(osg::FATAL) << "osgART::ARToolKitVideo::open() << unknown video format! " << std::endl;
-		return;
+		return false;
 	}
 	else
 	{
@@ -230,6 +230,9 @@ ARToolKitVideo::open()
 	this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 
 	this->setDataVariance(osg::Object::DYNAMIC);
+
+	return true;
+
 }
 
 void
@@ -288,13 +291,14 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 
 			if (newImage = (unsigned char*)ar2VideoGetImage(video))
 			{
-			    /*
-				this->setImage(this->s(), this->t(),
+			    
+				/*this->setImage(this->s(), this->t(),
 					1, _internalformat_GL, _format_GL, _datatype_GL, newImage ,
-					osg::Image::NO_DELETE, 1);
-                */
+					osg::Image::NO_DELETE, 1);*/
+                
 
-                memcpy(newImage,this->data(),this->getImageSizeInBytes());
+                memcpy(this->data(),newImage, this->getImageSizeInBytes());
+				this->dirty();
 
 				// hopefully report some interesting data
 				if (nv) {

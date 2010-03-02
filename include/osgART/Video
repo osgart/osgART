@@ -34,6 +34,7 @@
 #include "osgART/Export"
 #include "osgART/VideoImageStream"
 #include "osgART/VideoConfig"
+#include "osgART/VideoGeode"
 #include "osgART/Field"
 
 // OpenThreads
@@ -111,7 +112,9 @@ namespace osgART {
 		 * \return 0 if can't cast otherwise correctly typed instance
 		 */
 		static Video* cast(osg::Referenced* instance);
-	   
+	   		
+	
+		
 	protected:
 	
 		bool m_vertical_flip;
@@ -123,9 +126,9 @@ namespace osgART {
 		 */
 		virtual ~Video();   
 
-		// used for locking
+   		// used for locking
 		OpenThreads::Mutex _mutex;
-		
+	
 	}; // class Video
 
 	
