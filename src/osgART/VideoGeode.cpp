@@ -100,8 +100,21 @@ namespace osgART {
 		void
 		Texture2DCallback::subload(const osg::Texture2D& texture, osg::State& state) const 
 		{
-			const osg::Image* _image = texture.getImage();
-			texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
+			
+			osg::Image* _image = const_cast<osg::Image*>(texture.getImage());
+			osgART::Video* vid = dynamic_cast<osgART::Video*>(_image);
+				
+			if (vid) {
+
+				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vid->getMutex());
+				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
+
+			} else {
+
+				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
+
+			}
+
 		}
 	}
 
