@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -61,10 +61,9 @@ std::string askForFileName(std::string defaultValue = "marker.patt") {
 		filename = std::string(ofn.lpstrFile);
 	}
 
-#else 
-	
+#else
+
 	std::cout << "Enter the marker file name (leave blank to cancel): ";
-	std::string filename;
 	getline(std::cin, filename);
 
 #endif
@@ -130,7 +129,7 @@ public:
 		osg::Vec2Array* outline = candidate->getOutline();
 		if (outline->getNumElements() >= 4) {
 			for (int i = 0; i < 4; i++) {
-				(*mVertexArray)[i] = osg::Vec3((*outline)[i].x(), (*outline)[i].y(), 0);	
+				(*mVertexArray)[i] = osg::Vec3((*outline)[i].x(), (*outline)[i].y(), 0);
 			}
 			mCornerText->setPosition((*mVertexArray)[2]);
 		}
@@ -149,7 +148,7 @@ public:
 		if (!mCandidate.valid()) return;
 
 		std::string filename = askForFileName();
-		
+
 		if (!filename.empty()) {
 			if (mCandidate->save(filename)) {
 				std::cout << "Marker saved" << std::endl;
@@ -172,17 +171,17 @@ osg::ref_ptr<osgText::Text> thresholdText;
 osg::ref_ptr<osg::Switch> debugSwitch;
 
 class KeyboardMouseEventHandler : public osgGA::GUIEventHandler {
- 
+
 public:
-	KeyboardMouseEventHandler() : osgGA::GUIEventHandler() { }                                                       
- 
-	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* obj, osg::NodeVisitor* nv) { 
- 
+	KeyboardMouseEventHandler() : osgGA::GUIEventHandler() { }
+
+	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* obj, osg::NodeVisitor* nv) {
+
 		switch (ea.getEventType()) {
-			case osgGA::GUIEventAdapter::PUSH: 
+			case osgGA::GUIEventAdapter::PUSH:
 				trainingNode->save();
-				break;			
- 
+				break;
+
 			case osgGA::GUIEventAdapter::KEYDOWN:
 				switch (ea.getKey()) {
 					case 't':
@@ -232,13 +231,13 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new KeyboardMouseEventHandler());
 
 	osgART::Scene* scene = new osgART::Scene();
-	
+
 	osg::ref_ptr<osgART::Video> video = scene->addVideoBackground("osgart_video_artoolkit2");
 	if (!video.valid()) {
 		std::cout << "No video" << std::endl;
 		return -1;
 	}
-	
+
 	osg::ref_ptr<osgART::Tracker> tracker = scene->addTracker("osgart_tracker_artoolkit2");
 	if (!tracker.valid()) {
 		std::cout << "No tracker" << std::endl;
@@ -323,7 +322,7 @@ int main(int argc, char* argv[])  {
 	while (!viewer.done()) {
 
 		osg::ref_ptr<osgART::TrainingSet> trainingSet = trainer->getLatestTrainingSet();
-		
+
 		if (trainingSet.valid()) {
 			osgART::TrainingSet::TrainingCandidateList& candidates = trainingSet->getTrainingCandidates();
 
@@ -338,7 +337,7 @@ int main(int argc, char* argv[])  {
 		// Show debug image if enabled
 		if (debugField->get()) debugSwitch->setAllChildrenOn();
 		else debugSwitch->setAllChildrenOff();
-		
+
 		// Update onscreen text
 		std::stringstream ss;
 		ss << "Debug Image [d]: " << (debugField->get() ? "On" : "Off") << std::endl << std::endl;
@@ -348,7 +347,7 @@ int main(int argc, char* argv[])  {
 		viewer.frame();
 
 	}
-	
+
 	return 0;
-	
+
 }

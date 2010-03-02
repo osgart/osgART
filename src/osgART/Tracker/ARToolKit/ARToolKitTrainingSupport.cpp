@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -45,16 +45,16 @@ namespace osgART {
 			//OutputDebugString("Candidate destructor\n");
 		}
 
-		virtual osg::Vec2Array* getOutline() { 
+		virtual osg::Vec2Array* getOutline() {
 			return mOutline.get();
 		}
 
-		virtual void getSaveInfo(std::string& fileDescription, std::string& fileExtension) { 
-			fileDescription = "ARToolKit Pattern"; 
-			fileExtension = "patt"; 
+		virtual void getSaveInfo(std::string& fileDescription, std::string& fileExtension) {
+			fileDescription = "ARToolKit Pattern";
+			fileExtension = "patt";
 		}
 
-		virtual bool save(std::string filename) { 
+		virtual bool save(std::string filename) {
 
 			if (!mImage.valid()) return false;
 			if (filename.empty()) return false;
@@ -80,18 +80,18 @@ namespace osgART {
 	class ARToolKitTrainingSet : public TrainingSet
 	{
 		public:
-			
-			ARToolKitTrainingSet::ARToolKitTrainingSet(ARToolKitTracker* tracker, ARMarkerInfo* markers, int markerCount) : TrainingSet() {
+
+			ARToolKitTrainingSet(ARToolKitTracker* tracker, ARMarkerInfo* markers, int markerCount) : TrainingSet() {
 
 				//OutputDebugString("TrainingSet constructor\n");
 
 				float h = 0;
 
 				if (osg::Image* img = tracker->getImage()) {
-					
+
 					// Create a copy of the tracker image as it was when the candidates were detected
 					mImage = new osg::Image(*img);
-					
+
 					// Need the height of the image so we can invert the y value of each outline vertex
 					h = img->t();
 				}
@@ -113,18 +113,18 @@ namespace osgART {
 					osg::ref_ptr<osg::Vec2Array> outline = new osg::Vec2Array();
 					for (int v = 0; v < 4; v++) {
 						double x, y;
-						tracker->getOrCreateCalibration()->undistort(target->vertex[v][0], target->vertex[v][1], &x, &y);						
+						tracker->getOrCreateCalibration()->undistort(target->vertex[v][0], target->vertex[v][1], &x, &y);
 						outline->push_back(osg::Vec2(x, h - y));
 					}
 
 					mCandidates.push_back(new ARToolKitTrainingCandidate(*target, outline.get(), mImage.get()));
 				}
 
-				
-				
+
+
 
 			}
-			
+
 			virtual ~ARToolKitTrainingSet() {
 
 				mCandidates.clear();
@@ -133,16 +133,16 @@ namespace osgART {
 
 			}
 
-			virtual osg::Image* getImage() { 
+			virtual osg::Image* getImage() {
 				return mImage.get();
 			}
-			
+
 		protected:
-			
+
 			osg::ref_ptr<osg::Image> mImage;
-			
-			
-	
+
+
+
 	};
 
 
@@ -162,7 +162,7 @@ namespace osgART {
 	}
 
 	void ARToolKitTrainingSupport::processMarkers(ARMarkerInfo* markers, int markerCount) {
-		
+
 		mTrainingSet = new ARToolKitTrainingSet(mTracker, markers, markerCount);
 
 	}
