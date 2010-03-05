@@ -291,7 +291,12 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 
 			if (newImage = (unsigned char*)ar2VideoGetImage(video))
 			{
-			            
+			    
+				this->setImage(this->s(), this->t(),
+					1, _internalformat_GL, _format_GL, _datatype_GL, newImage ,
+					osg::Image::NO_DELETE, 1);
+                
+
 				{
 					OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 					memcpy(this->data(),newImage, this->getImageSizeInBytes());
