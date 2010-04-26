@@ -30,9 +30,8 @@
 
 namespace osgART {
 
-	TrackerCallback::TrackerCallback(Tracker* tracker)
-		: _tracker(tracker), _framenumber(-1)
-	{
+	TrackerCallback::TrackerCallback(Tracker* tracker): _tracker(tracker), _framenumber(-1) {
+
 	}
 
 	/* static */

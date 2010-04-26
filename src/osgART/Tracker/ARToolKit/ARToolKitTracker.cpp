@@ -245,43 +245,6 @@ namespace osgART {
 
 	}
 
-	inline bool ARToolKitTracker::init(int xsize, int ysize, 
-		const std::string& pattlist_name, 
-		const std::string& camera_name)
-	{
-
-/*
-		ARParam  wparam;
-
-	    // Set the initial camera parameters.
-		cparamName = camera_name;
-	    if(arParamLoad((char*)cparamName.c_str(), 1, &wparam) < 0) {
-			
-			osg::notify(osg::FATAL) 
-				<< "osgART::ARToolKitTracker::init : Error: Can't load camera parameters from '"<<
-				camera_name <<"'." << std::endl;
-			return false;
-	    }
-
-	    arParamChangeSize(&wparam, xsize, ysize, &(m_cparam->cparam));
-	    arInitCparam(&(m_cparam->cparam));
-
-		osg::notify() << "*** Camera Parameter ***" << std::endl;
-		arParamDisp(&(m_cparam->cparam));
-
-
-		//setProjection(ARTOOLKIT_DEFAULT_NEAR_PLANE, ARTOOLKIT_DEFAULT_FAR_PLANE);
-		setThreshold(m_threshold);
-
-
-		if (!setupMarkers(pattlist_name)) {
-			osg::notify(osg::FATAL) << "osgART::ARToolKitTracker::init : Error: Marker setup failed." << std::endl;
-			return false;
-		}
-*/
-		// Success
-		return true;
-	}
 
 	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
 	{
@@ -361,43 +324,6 @@ namespace osgART {
 
 		return ret;
 	}
-
-
-/*
-	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
-	{
-
-		// Check whether the passed file actually exists
-		if (!osgDB::fileExists(patternListFile)) {
-			osg::notify(osg::WARN) << "ARToolKitTracker: Can not find pattern file '" << patternListFile << "'" << std::endl;
-			return false;
-		}
-
-		// Open the specified file
-		std::ifstream markerFile;
-		markerFile.open(patternListFile.c_str());
-
-		// Need to check for error when opening file
-		if (!markerFile.is_open()) 
-		{
-			osg::notify(osg::WARN) << "ARToolKitTracker: Can not load Pattern file '" << patternListFile << "'" << std::endl;
-			return false;
-		}
-
-		bool ret = true;
-		std::string configLine;
-		while (!markerFile.eof()) {
-			getline(markerFile, configLine);
-			if (!addMarker(configLine)) ret = false;
-		}
-			
-		markerFile.close();
-
-		return ret;
-	}
-
-*/
-
 
 	int 
 	ARToolKitTracker::addSingleMarker(const std::string& pattFile, double width, double center[2]) {

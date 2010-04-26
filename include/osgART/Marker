@@ -23,11 +23,7 @@
 #ifndef OSGART_MARKER
 #define OSGART_MARKER 1
 
-
-// General
 #include <string>
-
-// STL headers
 #include <vector>
 
 // local headers
@@ -53,12 +49,12 @@ namespace osgART {
 
 		enum MarkerType
 		{
-			ART_UNKNOWN = 0,	//<! unknown marker type
-			ART_SINGLE,		//<! a single marker
-			ART_MULTI,		//<! a multimarker
-			ART_NFT,		//<! a natural feature
-			ART_NFT_OPIRA,	//<! a natural feature (OPIRA library)
-			ART_BAZAR
+			ART_UNKNOWN = 0,/**< Unknown or unspecified marker type. */
+			ART_SINGLE,		/**< A single marker. */
+			ART_MULTI,		/**< A multi-marker. */
+			ART_NFT,		/**< A natural feature tracking marker. */
+			ART_NFT_OPIRA,	/**< A natural feature tracking marker for the OPIRA library. */
+			ART_BAZAR		/**< A marker for the Bazar library. */
 		};
 
 		virtual osg::Object* cloneType() const { return reinterpret_cast<osg::Object*>(new Marker()); }
@@ -90,7 +86,7 @@ namespace osgART {
 
 		/**
 		* Return the type of the Marker. 
-		* \return type of marker
+		* \return Type of marker
 		*/
 		virtual MarkerType getType() const;
 		
@@ -104,14 +100,14 @@ namespace osgART {
 
 		/**
 		* Obtain the transformation of the marker.
-		* Return return a 4x4 transformation of the marker (european order).
-		* \return a 4x4 matrix
+		* Return return a 4x4 transformation of the marker.
+		* \return a 4x4 transformation matrix matrix
 		*/
 		const osg::Matrix& getTransform() const;		
 		
 		/**
-		* \brief set name of the marker
-		* \param name identifier name for the marker
+		* \brief Set the name of the marker
+		* \param name identifying name for the marker
 		*/
 		void setName(const std::string& name);
 		
@@ -122,7 +118,7 @@ namespace osgART {
 		const std::string& getName() const;
 
 		/**
-		* \brief set the respective marker active 
+		* \brief Set the respective marker active 
 		* \param active set to TRUE if the marker should be tracked
 		*/
 		virtual void setActive(bool active);	
@@ -133,8 +129,11 @@ namespace osgART {
 		*/
 		bool active() const;
 
-		
-		inline float getConfidence() const { return _confidence; };
+		/**
+		* \brief Return the tracking confidence of this marker.
+		* \return Tracking confidence
+		*/
+		inline float getConfidence() const { return m_confidence; };
 
 		
 	protected: 
@@ -148,19 +147,14 @@ namespace osgART {
 	protected:
 
 		/**
-		 * Internal update of matrix
+		 * \brief Internal update of the transformation matrix.
 		 */
 		void updateTransform(const osg::Matrix& transform);
 
-
-		float _confidence;
-		
-		
+		float m_confidence;
 		bool m_valid;		
 		bool m_active;
-		
 		osg::Matrix m_transform;
-		
 		std::string m_name;
 	};
 

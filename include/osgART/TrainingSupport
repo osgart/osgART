@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef OSGART_TrainingSupport
-#define OSGART_TrainingSupport 1
+#ifndef OSGART_TRAININGSUPPORT
+#define OSGART_TRAININGSUPPORT 1
 
 #include "osgART/Export"
 
@@ -33,10 +33,10 @@
 
 namespace osgART {
 
-
-	class OSGART_EXPORT TrainingCandidate : public osg::Referenced 
-	{
+	class OSGART_EXPORT TrainingCandidate : public osg::Referenced {
+		
 		public:
+		
 			TrainingCandidate();
 			
 			virtual osg::Vec2Array* getOutline() { return NULL; }

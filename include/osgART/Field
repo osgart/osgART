@@ -34,11 +34,9 @@
 #ifndef OSGART_FIELD
 #define OSGART_FIELD 1
 
-// include STL
 #include <map>
 #include <iostream>
 
-// include OSG
 #include <osg/Referenced>
 #include <osg/ref_ptr>
 #include <osg/io_utils>

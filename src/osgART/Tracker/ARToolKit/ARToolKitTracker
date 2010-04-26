@@ -99,19 +99,6 @@ namespace osgART {
 		*/
 		bool getDebugMode() const;
 		
-		/** 
-		* \brief Initialize ARToolKit.
-		* 
-		* This core function initializes different parameters of ARToolKit: load tracked markers, initialize
-		* camera parameters.
-		* \param xsize width of the image to analyze
-		* \param ysize height of the image to analyze
-		* \param pattlist_name a file structure of the marker
-		* \param camera_name description file of the camera used (pinhole model)
-		*/
-		virtual bool init(int xsize, int ysize, 
-			const std::string& pattlist_name = "Data/markers_list.dat", 
-			const std::string& camera_name="Data/camera_para.dat");
 		
 		virtual Calibration* getOrCreateCalibration();
 
@@ -143,7 +130,13 @@ namespace osgART {
 		
 		
 		/**
-		 * Adding a single or multimarker
+		 * Adds an ARToolKit marker based on the config string. The format for the configuration string is either:
+		 * single;filename;width;centre_x;centre_y
+		 * for a single marker where filename points to a pattern file, width is the size in mm, and centre_x and centre_y define the tracking offset from the centre of the pattern.		 
+		 * multi;filename
+		 * where filename points to a multimarker configuration file (see the ARToolKit documentation for more information).
+		 * \param config Marker configuration string.
+		 * \return A new marker instance, or NULL if the marker could not be added
 		 */
 		virtual Marker* addMarker(const std::string& config);
 		
@@ -154,7 +147,8 @@ namespace osgART {
 			
 			
 		/**
-		 * \brief Returns a training support instance for the ARToolKit tracker;
+		 * \brief Returns a training support instance for the ARToolKit tracker.
+		 * \return A training support instance for ARToolKit
 		 */	
 		virtual TrainingSupport* getTrainingSupport();
 			
@@ -168,8 +162,6 @@ namespace osgART {
 		virtual ~ARToolKitTracker();
 
 		virtual void setImage(osg::Image* image);
-		
-		//virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
 				
 	private:
 	

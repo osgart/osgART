@@ -79,7 +79,7 @@ void OPIRAMarker::update(OPIRALibrary::MarkerTransform* mt) {
 
 	} else {
 
-		this->_confidence = mt->score;
+		this->m_confidence = mt->score;
 
 		if (mt->score < 10) {
 

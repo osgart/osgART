@@ -82,7 +82,7 @@ namespace osgART {
 				mInitialData = true; // Need to get inital data before arGetTransMatCont can be used
 			}
 
-			_confidence = markerInfo->cf;
+			m_confidence = markerInfo->cf;
 			double modelView[16];
 			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
 			osg::Matrix tmp(modelView);

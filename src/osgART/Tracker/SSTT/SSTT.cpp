@@ -237,7 +237,7 @@ SSTT_Target::update()
 	{
 
 		/* set the confidence of the marker: normalised 0-1 */
-		_confidence = target_info->confidence;
+		m_confidence = target_info->confidence;
 
 		/* parameterize it with our own confidence threshold */
 		m_valid = target_info->confidence > target_info->confidence_threshold;
