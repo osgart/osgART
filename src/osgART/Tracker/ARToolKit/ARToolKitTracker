@@ -169,7 +169,7 @@ namespace osgART {
 
 		virtual void setImage(osg::Image* image);
 		
-		virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
+		//virtual void createUndistortedMesh(int,int,float,float,osg::Geometry&);
 				
 	private:
 	
@@ -184,6 +184,8 @@ namespace osgART {
 		std::string 		cparamName;
 		int					m_threshold;
 		int					m_marker_num;
+		
+		bool				m_useHistory;
 	
 		osg::ref_ptr<ARToolKitTrainingSupport> mTrainer;
 		        

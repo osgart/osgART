@@ -60,9 +60,6 @@ int main(int argc, char* argv[])  {
 	int _video_id = osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
 	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_sstt");
 
-
-	osg::notify() << "Yo!" << std::endl;
-
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
 
@@ -73,8 +70,6 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
 	}
-	
-	osg::notify() << "Video initialised" << std::endl;
 
 
 	// Open the video. This will not yet start the video stream but will
@@ -110,11 +105,6 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
 
-	std::cout << "------------- PROJECTION MATRIX ---------------------" << std::endl;
-	std::cout << cam->getProjectionMatrix() << std::endl;
-	std::cout << "------------- PROJECTION MATRIX ---------------------" << std::endl;
-
-
 	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("simple.bmp;135;135;0.3");
 	marker->setActive(true);
 
@@ -134,15 +124,7 @@ int main(int argc, char* argv[])  {
 	video->start();
 	
 	while (!viewer.done()) {
-
-		if (marker->valid()) {
-
-			std::cout << "Marker visible" << std::endl;
-
-		}
-
 		viewer.frame();
-
 	}
 	
 	return 0;

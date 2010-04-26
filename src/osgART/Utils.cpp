@@ -33,8 +33,11 @@
 #endif
 namespace osgART {
 
-	unsigned int nextPowerOfTwo(unsigned int x)
+	unsigned int equalOrGreaterPowerOfTwo(unsigned int x)
 	{
+		// First check if it is a power of two...
+		if ((x & (x-1))==0) return x;
+
 	#if defined(_MSC_VER) && defined(_X86_)
 		unsigned int result = 0;
 		_asm   bsr  ecx,x;      // Find the base 2 logarithm
@@ -56,8 +59,8 @@ namespace osgART {
 		const osg::TextureRectangle *txrec = dynamic_cast<const osg::TextureRectangle*>(texture);
 		if (tx2d)
 		{
-			ret._v[0] = tx2d->getImage()->s() / (float)nextPowerOfTwo((unsigned int)tx2d->getImage()->s());
-			ret._v[1] = tx2d->getImage()->t() / (float)nextPowerOfTwo((unsigned int)tx2d->getImage()->t());			
+			ret._v[0] = tx2d->getImage()->s() / (float)equalOrGreaterPowerOfTwo((unsigned int)tx2d->getImage()->s());
+			ret._v[1] = tx2d->getImage()->t() / (float)equalOrGreaterPowerOfTwo((unsigned int)tx2d->getImage()->t());			
 		} else if (txrec)
 		{
 			ret._v[0] = txrec->getImage()->s();
@@ -117,5 +120,7 @@ namespace osgART {
 		Base.invert(_base);
 		return _m2 * Base;
 	}
+
+
 
 };//namespace osgART

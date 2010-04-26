@@ -42,7 +42,7 @@ osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker("tracker_artool
 	   
 const int		osgART::ARToolKitTracker::ARTOOLKIT_DEFAULT_THRESHOLD = 100;
 const float		osgART::ARToolKitTracker::ARTOOLKIT_DEFAULT_NEAR_PLANE = 10.0f;
-const float		osgART::ARToolKitTracker::ARTOOLKIT_DEFAULT_FAR_PLANE = 8000.0f;
+const float		osgART::ARToolKitTracker::ARTOOLKIT_DEFAULT_FAR_PLANE = 5000.0f;
 
 
 // Utility for serialization of Fields
@@ -94,44 +94,7 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 #  define GL_UNSIGNED_SHORT_8_8_REV_MESA	0x85BB
 #endif
 
-template <typename T> 
-int Observer2Ideal(	const T dist_factor[4], 
-					const T ox, 
-					const T oy,
-					T *ix, T *iy,
-					int loop = 3 )
-{
-    T  z02, z0, p, q, z, px, py;
-    register int i = 0;
 
-    px = ox - dist_factor[0];
-    py = oy - dist_factor[1];
-    p = dist_factor[2]/100000000.0;
-    z02 = px*px+ py*py;
-    q = z0 = sqrt(px*px+ py*py);
-
-    for( i = 1; ; i++ ) {
-        if( z0 != 0.0 ) {
-            z = z0 - ((1.0 - p*z02)*z0 - q) / (1.0 - 3.0*p*z02);
-            px = px * z / z0;
-            py = py * z / z0;
-        }
-        else {
-            px = 0.0;
-            py = 0.0;
-            break;
-        }
-        if( i == loop ) break;
-
-        z02 = px*px+ py*py;
-        z0 = sqrt(px*px+ py*py);
-    }
-
-    *ix = px / dist_factor[3] + dist_factor[0];
-    *iy = py / dist_factor[3] + dist_factor[1];
-
-    return(0);
-}
 
 
 namespace osgART {
@@ -183,7 +146,7 @@ namespace osgART {
 
 			double d[4] = {_distortion[0], _distortion[1], _distortion[2], _distortion[3]};
 
-			Observer2Ideal<double>(d, x, y, u_x, u_y);
+			observedToIdeal(d, x, y, u_x, u_y);
 		}
 
 
@@ -231,6 +194,7 @@ namespace osgART {
 		// for statistics
 		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
 
+		m_fields["use_history"] = new TypedField<bool>(&m_useHistory);
 
 		// Training support
 		mTrainer = new ARToolKitTrainingSupport(this);
@@ -511,7 +475,7 @@ namespace osgART {
 				return 0L;
 			}
 
-			std::cout << "Added Marker: '" << _tokens[1] << "'" << std::endl;
+			osg::notify(osg::INFO) << "Added Marker: '" << _tokens[1] << "'" << std::endl;
 
 			m_markerlist.push_back(singleMarker);
 
@@ -549,7 +513,7 @@ namespace osgART {
 			std::string n = marker->getName();
 			*i = 0L;
 			m_markerlist.erase(i);
-			std::cout << "Removed marker: " << n << std::endl;
+			osg::notify(osg::INFO) << "Removed marker: " << n << std::endl;
 		}
 	}
 
@@ -665,7 +629,8 @@ namespace osgART {
 		}
 
 		MarkerList::iterator _end = m_markerlist.end();
-			
+	
+
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
 		for (MarkerList::iterator iter = m_markerlist.begin(); iter != _end; iter++)		
@@ -693,7 +658,7 @@ namespace osgART {
 				if(k != -1) 
 				{
 
-					singleMarker->update(&marker_info[k]); 
+					singleMarker->update(&marker_info[k], m_useHistory); 
 				} 
 				else 
 				{
@@ -739,7 +704,7 @@ namespace osgART {
 		arglCameraFrustumRH(&(m_cparam->cparam), n, f, m_projectionMatrix);
 	}
 
-	inline void ARToolKitTracker::createUndistortedMesh(
+	/*inline void ARToolKitTracker::createUndistortedMesh(
 		int width, int height,
 		float maxU, float maxV,
 		osg::Geometry &geometry)
@@ -781,7 +746,7 @@ namespace osgART {
 			geometry.addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 
 				r * 2 * (cols+1), 2 * (cols+1)));
 		}
-	}
+	}*/
 
 	inline int ARToolKitTracker::getARPixelFormatForImage(const osg::Image& _image) const
 	{

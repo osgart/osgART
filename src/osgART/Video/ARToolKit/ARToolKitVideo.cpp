@@ -174,7 +174,7 @@ ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &,
 
 ARToolKitVideo::~ARToolKitVideo()
 {
-	this->close(false);
+	//this->close(false);
 }
 
 ARToolKitVideo&
@@ -242,7 +242,7 @@ ARToolKitVideo::close(bool waitForThread)
 	// This code was fenced for Windows - if you experience
 	// problems with this code you are using an outdated
 	// version of ARToolKit!
-#if !defined( WIN32 )
+//#if !defined( WIN32 )
 	if (NULL != video) {
 
 		this->pause();
@@ -252,7 +252,7 @@ ARToolKitVideo::close(bool waitForThread)
 			video = NULL;
 		}
 	}
-#endif
+//#endif
 }
 
 void
@@ -292,14 +292,22 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 			if (newImage = (unsigned char*)ar2VideoGetImage(video))
 			{
 			    
-				this->setImage(this->s(), this->t(),
+				/*this->setImage(this->s(), this->t(),
 					1, _internalformat_GL, _format_GL, _datatype_GL, newImage ,
-					osg::Image::NO_DELETE, 1);
+					osg::Image::NO_DELETE, 1);*/
                 
 
 				{
 					OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
-					memcpy(this->data(),newImage, this->getImageSizeInBytes());
+
+					//if (getMutex().trylock() == 0) {
+
+						memcpy(this->data(),newImage, this->getImageSizeInBytes());
+						//getMutex().unlock();
+				//}
+
+
+					
 				}
 
 				this->dirty();

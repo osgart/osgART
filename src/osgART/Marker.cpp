@@ -54,7 +54,7 @@ namespace osgART {
 	Marker::MarkerType
 	Marker::getType() const
 	{
-		return ART_UNKOWN;
+		return ART_UNKNOWN;
 	}
 
 	const 

@@ -5,6 +5,8 @@
 find_package(ARToolKit2)
 find_package(SSTT)
 find_package(StbTracker)
+find_package(OPIRA)
+
 
 if(ARTOOLKIT2_FOUND)
 	add_subdirectory(ARToolKit)
@@ -17,3 +19,7 @@ endif(SSTT_FOUND)
 if (STBTRACKER_FOUND)
 	add_subdirectory(StbTracker)
 endif(STBTRACKER_FOUND)
+
+if (OPIRA_FOUND)
+add_subdirectory(OPIRA)
+endif(OPIRA_FOUND)

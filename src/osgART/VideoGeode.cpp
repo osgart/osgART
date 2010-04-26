@@ -38,6 +38,7 @@
 #include <osg/Geometry>
 #include <osg/ImageStream>
 
+#include <fstream>
 
 namespace osgART {
 
@@ -64,11 +65,11 @@ namespace osgART {
 
 
 		Texture2DCallback::Texture2DCallback(osg::Texture2D* texture) : osg::Texture2D::SubloadCallback(),
-			_texCoordX(texture->getImage()->s() / (float)nextPowerOfTwo((unsigned int)texture->getImage()->s())),
-			_texCoordY(texture->getImage()->t() / (float)nextPowerOfTwo((unsigned int)texture->getImage()->t()))
+			_texCoordX(texture->getImage()->s() / (float)equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s())),
+			_texCoordY(texture->getImage()->t() / (float)equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t()))
 		{
-			texture->setTextureSize(nextPowerOfTwo((unsigned int)texture->getImage()->s()),
-				nextPowerOfTwo((unsigned int)texture->getImage()->t()));
+			texture->setTextureSize(equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s()),
+				equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t()));
 
 			texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
 			texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
@@ -89,10 +90,14 @@ namespace osgART {
 				// we need just the components - ???
 				//osg::Image::computeNumComponents(_image->getInternalTextureFormat()), 
 				osg::Image::computeNumComponents(_image->getPixelFormat()), 
-				(float)nextPowerOfTwo((unsigned int)_image->s()), 
-				(float)nextPowerOfTwo((unsigned int)_image->t()), 
+				(float)equalOrGreaterPowerOfTwo((unsigned int)_image->s()), 
+				(float)equalOrGreaterPowerOfTwo((unsigned int)_image->t()), 
 				0, _image->getPixelFormat(), 
 				_image->getDataType(), 0);
+
+			std::ofstream f("c:\\bob.txt");
+			f << "image: " << _image->s() << "x" << _image->t() << ", tex: " << (float)equalOrGreaterPowerOfTwo((unsigned int)_image->s()) << "x" << (float)equalOrGreaterPowerOfTwo((unsigned int)_image->t()) << std::endl;
+			f.close();
 
 		}
 		
@@ -101,13 +106,23 @@ namespace osgART {
 		Texture2DCallback::subload(const osg::Texture2D& texture, osg::State& state) const 
 		{
 			
+			
+			
+			//const osg::Image* _image = texture.getImage();
+
 			osg::Image* _image = const_cast<osg::Image*>(texture.getImage());
 			osgART::Video* vid = dynamic_cast<osgART::Video*>(_image);
-				
+			
+			
 			if (vid) {
+
+				//if (vid->getMutex().trylock() == 0) {
 
 				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vid->getMutex());
 				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
+				
+				//vid->getMutex().unlock();
+				//}
 
 			} else {
 
@@ -191,8 +206,8 @@ namespace osgART {
 			case USE_TEXTURE_2D:
 			default:
 				{
-					maxU = imageWidth / (double)osgART::nextPowerOfTwo((unsigned int)imageWidth);
-					maxV = imageHeight / (double)osgART::nextPowerOfTwo((unsigned int)imageHeight);
+					maxU = imageWidth / (double)osgART::equalOrGreaterPowerOfTwo((unsigned int)imageWidth);
+					maxV = imageHeight / (double)osgART::equalOrGreaterPowerOfTwo((unsigned int)imageHeight);
 					osg::Texture2D* texture = new osg::Texture2D(image);
 					texture->setDataVariance(osg::Object::DYNAMIC);
 					texture->setSubloadCallback(new Internal::Texture2DCallback(texture));

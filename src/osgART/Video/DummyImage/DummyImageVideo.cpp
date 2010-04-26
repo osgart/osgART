@@ -4,17 +4,22 @@
 
 #include <osgDB/Registry>
 #include <osgDB/ReadFile>
+#include <osgDB/WriteFile>
 
 #include <osg/Notify>
 
 DummyImageVideo::DummyImageVideo():
 	osgART::Video(),
 	m_flip_horizontal(false),
-	m_flip_vertical(false)
+	m_flip_vertical(false),
+	m_max_width(640)
 {
 
 	m_fields["flip_horizontal"] = new osgART::TypedField<bool>(&m_flip_horizontal);
 	m_fields["flip_vertical"]	= new osgART::TypedField<bool>(&m_flip_vertical);
+
+	m_fields["max_width"] = new osgART::TypedField<unsigned int>(&m_max_width);
+
 	m_fields["image_file"]		= new osgART::CallbackField<DummyImageVideo, std::string>(this,
 		&DummyImageVideo::getImageFile,
 		&DummyImageVideo::setImageFile);
@@ -51,6 +56,22 @@ bool DummyImageVideo::open() {
 
 	int w = img->s();
 	int h = img->t();
+
+	if (w > m_max_width) {
+		osg::notify() << "DummyImageVideo: Image width exceeds maximum (" << m_max_width << "). Image will be resized";
+
+		float aspect = (float)h / (float)w;
+		w = m_max_width;
+		h = w * aspect;
+
+		img->scaleImage(w, h, 1);
+
+		//osgDB::writeImageFile(*img, "test_resize.jpg");
+
+	}
+
+	
+
 	int components = osg::Image::computeNumComponents(img->getPixelFormat());
 
 	this->allocateImage(w, h, 1, GL_BGRA, GL_UNSIGNED_BYTE);

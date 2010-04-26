@@ -142,6 +142,8 @@ private:
 	bool m_flip_horizontal;
 	bool m_flip_vertical;
 
+	unsigned int m_max_width;
+
 	osg::Timer updateTimer;
 
 };

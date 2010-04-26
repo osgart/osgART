@@ -52,7 +52,7 @@ namespace osgART {
 
 		virtual void setActive(bool a);
 
-		void update(ARMarkerInfo* markerInfo);
+		void update(ARMarkerInfo* markerInfo, bool useHistory = false);
 		
 		int getPatternID();
 		double getPatternWidth();
@@ -73,6 +73,8 @@ namespace osgART {
 		double          patt_width;
 		double          patt_center[2];
 		double          patt_trans[3][4];
+		
+		bool			mInitialData;
 		
 		friend class ARToolKitTracker;
 		

@@ -46,7 +46,7 @@
 
 namespace osgART {
 
-	OSGART_EXPORT unsigned int nextPowerOfTwo(unsigned int x);
+	OSGART_EXPORT unsigned int equalOrGreaterPowerOfTwo(unsigned int x);
 	
 	OSGART_EXPORT osg::Vec2 getTextureMaxUV(const osg::Texture* texture);
 
@@ -80,6 +80,8 @@ namespace osgART {
 			return _Field;
 		}
 #endif
+
+
 
 };
 

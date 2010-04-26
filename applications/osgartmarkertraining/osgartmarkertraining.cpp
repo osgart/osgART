@@ -20,6 +20,9 @@
  *
  */
 
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
@@ -27,13 +30,11 @@
 #include <osgDB/FileUtils>
 
 #include <osgART/Scene>
+#include <osgART/Utils>
 #include <osgART/GeometryUtils>
 
 #include <sstream>
 
-#ifdef WIN32
-#include <windows.h>
-#endif
 
 std::string askForFileName(std::string defaultValue = "marker.patt") {
 

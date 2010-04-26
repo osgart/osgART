@@ -53,10 +53,11 @@ namespace osgART {
 
 		enum MarkerType
 		{
-			ART_UNKOWN = 0,	//<! unknown marker type
+			ART_UNKNOWN = 0,	//<! unknown marker type
 			ART_SINGLE,		//<! a single marker
 			ART_MULTI,		//<! a multimarker
 			ART_NFT,		//<! a natural feature
+			ART_NFT_OPIRA,	//<! a natural feature (OPIRA library)
 			ART_BAZAR
 		};
 

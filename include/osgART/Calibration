@@ -40,6 +40,7 @@ namespace osgART
 	{
 	public:
 
+
 		/**
 		 * C'tor for the calibration 
 		 */
@@ -84,6 +85,16 @@ namespace osgART
 			*u_x = x;
 			*u_y = y;
 		}
+		
+		
+		static int observedToIdeal(	
+			const double dist_factor[4], 
+			const double ox, 
+			const double oy,
+			double *ix, double *iy,
+			int loop = 3);
+					
+
 		
 	protected:
 

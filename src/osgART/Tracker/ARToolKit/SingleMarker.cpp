@@ -30,7 +30,8 @@
 namespace osgART {
 
 	SingleMarker::SingleMarker() : Marker(),
-		patt_id(-1)
+		patt_id(-1),
+		mInitialData(false)
 	{
 			// moved to a real 
 			//m_fields["confidence"] = new TypedField<double>(&_confidence);
@@ -65,7 +66,7 @@ namespace osgART {
 		return true;
 	}
 
-	void SingleMarker::update(ARMarkerInfo* markerInfo)
+	void SingleMarker::update(ARMarkerInfo* markerInfo, bool useHistory)
 	{
 		if (markerInfo == 0L) {
 			m_valid = false;
@@ -73,8 +74,14 @@ namespace osgART {
 			// valid.
 		} else {
 			m_valid = true;
-			//arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
-			arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
+
+			if (useHistory && mInitialData) {
+				arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
+			} else {
+				arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
+				mInitialData = true; // Need to get inital data before arGetTransMatCont can be used
+			}
+
 			_confidence = markerInfo->cf;
 			double modelView[16];
 			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.

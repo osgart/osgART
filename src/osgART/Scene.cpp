@@ -69,12 +69,8 @@ namespace osgART {
 
 		if (!_videoBackground.valid() || !_video.valid()) return;
 
-		std::cout << "1" << std::endl;
-
 		// Clear out all existing children of the video background
 		_videoBackground->removeChildren(0, _videoBackground->getNumChildren());
-
-		std::cout << "2" << std::endl;
 
 		// Add a new background video geode using the current set of parameters
 		_videoBackground->addChild(
@@ -85,8 +81,6 @@ namespace osgART {
 				(_settings._use_texturerect) ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D
 			)
 		);
-		
-		std::cout << "3" << std::endl;
 
 		_videoBackground->getOrCreateStateSet()->setRenderBinDetails(_settings._background_renderbin, "RenderBin");
 
