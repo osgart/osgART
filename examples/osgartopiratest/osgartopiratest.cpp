@@ -57,6 +57,16 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 
+
+	std::string policy = "standard";
+	std::string image = "MagicLand.bmp";
+	std::string featureDetector = "OCVSurf";
+
+	osg::ArgumentParser parser(&argc, argv);
+	parser.read("-policy", policy);
+	parser.read("-image", image);
+	parser.read("-fd", featureDetector);
+
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	viewer.setSceneData(root.get());
 
@@ -72,7 +82,7 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
-	video->getVideoConfiguration()->deviceconfig = "0;640;480";
+	video->getVideoConfiguration()->deviceconfig = "0;320;240";
 	
 
 	// Open the video. This will not yet start the video stream but will
@@ -90,6 +100,22 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}
+	
+	
+	osg::ref_ptr< osgART::TypedField<std::string> > registrationPolicyField = reinterpret_cast< osgART::TypedField<std::string>* >(tracker->get("registration_policy"));
+	if (!registrationPolicyField.valid()) {
+		std::cout << "Registration policy field not available from tracker" << std::endl;
+		return -1;
+	}
+	registrationPolicyField->set(policy);
+
+	osg::ref_ptr< osgART::TypedField<std::string> > featureDetectorField = reinterpret_cast< osgART::TypedField<std::string>* >(tracker->get("feature_detector"));
+	if (!featureDetectorField.valid()) {
+		std::cout << "Feature detector field not available from tracker" << std::endl;
+		return -1;
+	}
+	featureDetectorField->set(featureDetector);
+
 
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
@@ -110,7 +136,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	
-	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("MagicLand.bmp");
+	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(image);
 
 	if (!marker.valid()) {
 		// Without marker an AR application can not work. Quit if none found.

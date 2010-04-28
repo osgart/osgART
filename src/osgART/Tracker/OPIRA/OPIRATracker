@@ -29,6 +29,8 @@
 #include "GestureLibrary.h"
 #include "CaptureLibrary.h"
 #include "OCVSurf.h"
+//#include "SIFT.h"
+//#include "SURF.h"
 #include "highgui.h"
 
 #include <string>
@@ -137,10 +139,12 @@ public:
 				
 	private:
 	
+		std::string _registrationPolicy;
+		std::string _featureDetector;
 	
-		OPIRALibrary::RegistrationOPIRA *mRegistration;
+		OPIRALibrary::Registration *mRegistration;
 	
-		OPIRALibrary::RegistrationOPIRA* getOrCreateRegistration();
+		OPIRALibrary::Registration* getOrCreateRegistration();
 	
 		void cleanupMarkers(void);
 	
