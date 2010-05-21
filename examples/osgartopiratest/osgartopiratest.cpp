@@ -57,10 +57,9 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 
-
-	std::string policy = "standard";
+	std::string policy = "opira";
 	std::string image = "MagicLand.bmp";
-	std::string featureDetector = "OCVSurf";
+	std::string featureDetector = "OCVSURF";
 
 	osg::ArgumentParser parser(&argc, argv);
 	parser.read("-policy", policy);
@@ -70,7 +69,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	viewer.setSceneData(root.get());
 
-	int _video_id = osgART::PluginManager::instance()->load("osgart_video_videoinput");
+	int _video_id = osgART::PluginManager::instance()->load("osgart_video_artoolkit2");//videoinput");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
@@ -82,7 +81,7 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
-	video->getVideoConfiguration()->deviceconfig = "0;320;240";
+	//video->getVideoConfiguration()->deviceconfig = "0;320;240;30";
 	
 
 	// Open the video. This will not yet start the video stream but will

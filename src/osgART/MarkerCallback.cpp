@@ -252,6 +252,42 @@ namespace osgART {
 	}
 
 
+	MatrixOffsetCallback::MatrixOffsetCallback(osg::Matrix offset) : osg::NodeCallback(),
+		_offset(offset) 
+	{
+
+
+	}
+
+	void MatrixOffsetCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
+	{
+
+		osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node);
+
+		if (mt) 
+		{
+			osg::Matrix m = mt->getMatrix();
+			mt->setMatrix(m * _offset);
+
+			std::cout << "--------------------------------------------" << std::endl;
+
+			std::cout << m << std::endl;
+
+			std::cout << _offset << std::endl;
+
+			std::cout << mt->getMatrix() << std::endl;
+
+
+		}
+
+		traverse(node,nv);
+	}
+
+	void MatrixOffsetCallback::setupReflection(bool flipX, bool flipY) 
+	{
+		_offset = osg::Matrix::scale(flipX ? -1 : 1, flipY ? -1 : 1, 1);
+	}
+
 
 	MarkerDebugCallback::MarkerDebugCallback(Marker* marker) : 
 		SingleMarkerCallback(marker)

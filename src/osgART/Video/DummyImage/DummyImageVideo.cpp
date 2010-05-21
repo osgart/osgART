@@ -15,12 +15,12 @@ DummyImageVideo::DummyImageVideo():
 	m_max_width(640)
 {
 
-	m_fields["flip_horizontal"] = new osgART::TypedField<bool>(&m_flip_horizontal);
-	m_fields["flip_vertical"]	= new osgART::TypedField<bool>(&m_flip_vertical);
+	_fields["flip_horizontal"] = new osgART::TypedField<bool>(&m_flip_horizontal);
+	_fields["flip_vertical"]	= new osgART::TypedField<bool>(&m_flip_vertical);
 
-	m_fields["max_width"] = new osgART::TypedField<unsigned int>(&m_max_width);
+	_fields["max_width"] = new osgART::TypedField<unsigned int>(&m_max_width);
 
-	m_fields["image_file"]		= new osgART::CallbackField<DummyImageVideo, std::string>(this,
+	_fields["image_file"]		= new osgART::CallbackField<DummyImageVideo, std::string>(this,
 		&DummyImageVideo::getImageFile,
 		&DummyImageVideo::setImageFile);
 }

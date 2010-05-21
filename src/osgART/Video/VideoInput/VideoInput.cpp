@@ -98,13 +98,6 @@ public:
 		*/
 	void update(osg::NodeVisitor* nv);
 
-
-	/**
-	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
-	* class.
-	*/
-	void releaseImage();
-
 	virtual osgART::VideoConfiguration* getVideoConfiguration();
 
 
@@ -112,6 +105,8 @@ private:
 
 	videoInput mVideoInput;
 
+	int mDeviceID;
+	std::string mDeviceName;
 	int mFrameWidth;
 	int mFrameHeight;
 	int mFrameSize;
@@ -139,6 +134,9 @@ VideoInputVideo::VideoInputVideo(const VideoInputVideo &, const osg::CopyOp& cop
 }
 
 VideoInputVideo::~VideoInputVideo() {
+	
+	osg::notify(osg::WARN) << "VideoInputVideo: destructor" << std::endl;
+
 	this->close(false);
 }
 
@@ -148,28 +146,46 @@ VideoInputVideo& VideoInputVideo::operator=(const VideoInputVideo &) {
 
 bool VideoInputVideo::open() {
 
+	// Get list of devices (for internal use, don't print out)
+	videoInput::listDevices(true);
+
+	mDeviceID = 0;
+	mDeviceName = "";
+
 	// Default values
-	int deviceID = 0;
 	int width = 320;
 	int height = 240;
+	int framerate = 30;
+	
 
 	// Try to get custom values from configuration string
+	// Format for device string:
+	// deviceid;width;height;framerate
 	std::vector<std::string> tokens = osgART::tokenize(m_config.deviceconfig, ";");
-	if (tokens.size() >= 3) {
-		deviceID = atoi(tokens[0].c_str());
-		width = atoi(tokens[1].c_str());
-		height = atoi(tokens[2].c_str());
-	}
+	if (tokens.size() > 0) mDeviceID = atoi(tokens[0].c_str());
+	if (tokens.size() > 1) width = atoi(tokens[1].c_str());
+	if (tokens.size() > 2) height = atoi(tokens[2].c_str());
+	if (tokens.size() > 3) framerate = atoi(tokens[3].c_str());
+
+	// Ask for desired framerate
+	mVideoInput.setIdealFramerate(mDeviceID, framerate);
+
+	//mVideoInput.setUseCallback(true);
 
 	// Open device
-	if (!mVideoInput.setupDevice(deviceID, width, height)) {
-		osg::notify(osg::WARN) << "VideoInput: Error setting up device " << deviceID << " at " << width << "x" << height << std::endl;
+	if (!mVideoInput.setupDevice(mDeviceID, width, height)) {
+		osg::notify(osg::WARN) << "VideoInput: Error setting up device " << mDeviceID << " at " << width << "x" << height << std::endl;
 		return false;
 	}
 
-	mFrameWidth = mVideoInput.getWidth(0);
-	mFrameHeight = mVideoInput.getHeight(0);
-	mFrameSize = mVideoInput.getSize(0);
+	mDeviceName = videoInput::getDeviceName(mDeviceID);
+	mFrameWidth = mVideoInput.getWidth(mDeviceID);
+	mFrameHeight = mVideoInput.getHeight(mDeviceID);
+	mFrameSize = mVideoInput.getSize(mDeviceID);
+
+	osg::notify(osg::WARN) << "VideoInput: Opened device " << mDeviceID << " (" << mDeviceName << ") at " <<
+		mFrameWidth << "x" << mFrameHeight << std::endl;
+
 
 	mFrameData = new unsigned char[mFrameWidth * mFrameHeight * 4];
 
@@ -181,7 +197,11 @@ bool VideoInputVideo::open() {
 }
 
 void VideoInputVideo::close(bool waitForThread) {
-	mVideoInput.stopDevice(0);
+	
+	osg::notify(osg::WARN) << "VideoInput: close" << std::endl;
+
+	mVideoInput.stopDevice(mDeviceID);
+
 	delete[] mFrameData;
 }
 
@@ -195,12 +215,21 @@ void VideoInputVideo::pause() {
 
 void VideoInputVideo::update(osg::NodeVisitor* nv) {
 
-	if (mVideoInput.isFrameNew(0)) {
+	if (!mVideoInput.isDeviceSetup(mDeviceID)) 
+	{
+		return;
+	}
 
-		if (unsigned char* frame = mVideoInput.getPixels(0, false, true)) {
+	if (mVideoInput.isFrameNew(mDeviceID)) 
+	{
 
-			for (int y = 0; y < mFrameHeight; y++) {
-				for (int x = 0; x < mFrameWidth; x++) {
+		if (unsigned char* frame = mVideoInput.getPixels(mDeviceID, false, true)) 
+		{
+
+			for (int y = 0; y < mFrameHeight; y++) 
+			{
+				for (int x = 0; x < mFrameWidth; x++) 
+				{
 					int i = y * mFrameWidth + x;
 					mFrameData[i * 4 + 0] = frame[i * 3 + 0];
 					mFrameData[i * 4 + 1] = frame[i * 3 + 1];
@@ -222,12 +251,11 @@ void VideoInputVideo::update(osg::NodeVisitor* nv) {
 
 }
 
-osgART::VideoConfiguration* VideoInputVideo::getVideoConfiguration() {
+osgART::VideoConfiguration* VideoInputVideo::getVideoConfiguration() 
+{
 	return &m_config;
 }
 
-void VideoInputVideo::releaseImage() {
-}
 
 
 // initializer for dynamic loading

@@ -179,9 +179,9 @@ namespace osgART {
 	
 		void serialize(std::ostream& out) 
 		{
-			FieldMap::iterator _i = m_fields.begin();
+			FieldMap::iterator _i = _fields.begin();
 						
-			while (_i != m_fields.end()) 
+			while (_i != _fields.end()) 
 			{	
 				out << _i->first << ":";
 				_i->second->serialize(out);				
@@ -203,23 +203,23 @@ namespace osgART {
 	
 	protected:
 	
-		FieldMap m_fields;
+		FieldMap _fields;
 		
 	};
 	
 	
 	template <typename T> Field* FieldContainer<T>::get(const std::string& name)
 	{
-		FieldMap::iterator _found = m_fields.find(name);
-		return (_found != m_fields.end()) ? _found->second.get() : 0L;
+		FieldMap::iterator _found = _fields.find(name);
+		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
 
 	template <typename T> void FieldContainer<T>::dump()
 	{
 		
 
-		for (FieldMap::iterator _i = m_fields.begin();
-			_i != m_fields.end(); 
+		for (FieldMap::iterator _i = _fields.begin();
+			_i != _fields.end(); 
 			++_i) 
 		{
 			std::cout << "Field: " << (*_i).first << std::endl;

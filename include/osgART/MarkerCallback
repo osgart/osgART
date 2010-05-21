@@ -165,6 +165,22 @@ namespace osgART
 		
 	};
 	
+	class OSGART_EXPORT MatrixOffsetCallback : public osg::NodeCallback 
+	{
+
+	protected:
+		osg::Matrix _offset;
+
+	public:
+		MatrixOffsetCallback(osg::Matrix offset = osg::Matrix::identity());
+	
+		void setupReflection(bool flipX, bool flipY);
+
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);		
+	};
+
+
+
 	class OSGART_EXPORT MarkerDebugCallback : public SingleMarkerCallback 
 	{
 	public:

@@ -167,34 +167,34 @@ namespace osgART {
 	{
 		
 		// Assign version and name of the tracker.
-		m_name = "ARToolKit";
-		char *version;
+		_name = "ARToolKit";
+		char *version = NULL;
 		arGetVersion(&version);
 		if (version) {
-			m_version = version;
+			_version = version;
 			free(version);
 		} else {
 			osg::notify() << "ARToolKitTracker: Could not get version number from ARToolKit" << std::endl;
 		}
 		
 		// create a new field 
-		m_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
+		_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
 			&ARToolKitTracker::getThreshold,
 			&ARToolKitTracker::setThreshold);
 
 		// create a field for the debug image
-		m_fields["debug_image"] = new TypedField<osg::ref_ptr<osg::Image> >(&m_debugimage);
+		_fields["debug_image"] = new TypedField<osg::ref_ptr<osg::Image> >(&m_debugimage);
 		
 		// attach a new field to the name "debug"
-		m_fields["debug"] = new CallbackField<ARToolKitTracker,bool>
+		_fields["debug"] = new CallbackField<ARToolKitTracker,bool>
 			(this,
 			&ARToolKitTracker::getDebugMode,
 			&ARToolKitTracker::setDebugMode);
 
 		// for statistics
-		m_fields["markercount"] = new TypedField<int>(&m_marker_num);
+		_fields["markercount"] = new TypedField<int>(&m_marker_num);
 
-		m_fields["use_history"] = new TypedField<bool>(&m_useHistory);
+		_fields["use_history"] = new TypedField<bool>(&m_useHistory);
 
 		// Training support
 		mTrainer = new ARToolKitTrainingSupport(this);
@@ -336,10 +336,10 @@ namespace osgART {
 			return -1;
 		}
 
-		m_markerlist.push_back(singleMarker);
+		_markerlist.push_back(singleMarker);
 
 		// Return the index of the marker just added
-		return m_markerlist.size() - 1;
+		return _markerlist.size() - 1;
 	}
 
 	int 
@@ -353,10 +353,10 @@ namespace osgART {
 			return -1;
 		}
 
-		m_markerlist.push_back(multiMarker);
+		_markerlist.push_back(multiMarker);
 
 		// Return the index of the marker just added
-		return m_markerlist.size() - 1;
+		return _markerlist.size() - 1;
 
 	}
 
@@ -373,7 +373,7 @@ namespace osgART {
 
 		if (_tokens.size() < 2) 
 		{
-			osg::notify(osg::WARN) << "Invalid configuration string" << std::endl;
+			osg::notify(osg::WARN) << "Invalid configuration string (too few tokens)" << std::endl;
 
 			return 0L;
 		}
@@ -403,7 +403,7 @@ namespace osgART {
 
 			osg::notify(osg::INFO) << "Added Marker: '" << _tokens[1] << "'" << std::endl;
 
-			m_markerlist.push_back(singleMarker);
+			_markerlist.push_back(singleMarker);
 
 			return singleMarker;
 
@@ -419,7 +419,7 @@ namespace osgART {
 				return 0L;
 			}
 
-			m_markerlist.push_back(multiMarker);
+			_markerlist.push_back(multiMarker);
 
 			return multiMarker;
 		}
@@ -433,12 +433,12 @@ namespace osgART {
 	{
 		if (!marker) return;
 
-		std::vector< osg::ref_ptr<osgART::Marker> >::iterator i = std::find(m_markerlist.begin(), m_markerlist.end(), marker);
+		std::vector< osg::ref_ptr<osgART::Marker> >::iterator i = std::find(_markerlist.begin(), _markerlist.end(), marker);
 
-		if (i != m_markerlist.end()){
+		if (i != _markerlist.end()){
 			std::string n = marker->getName();
 			*i = 0L;
-			m_markerlist.erase(i);
+			_markerlist.erase(i);
 			osg::notify(osg::INFO) << "Removed marker: " << n << std::endl;
 		}
 	}
@@ -446,7 +446,7 @@ namespace osgART {
 
 	inline void ARToolKitTracker::setThreshold(const int& thresh)	
 	{
-		m_threshold = osg::clampBetween(thresh,0,255);		
+		m_threshold = osg::clampBetween<int>(thresh, 0, 255);		
 	}
 
 	inline int ARToolKitTracker::getThreshold() const 
@@ -476,37 +476,37 @@ namespace osgART {
 
 	    register int j, k;
 
-		if (!m_imagesource.valid())
+		if (!_imagesource.valid())
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker: No connected image source for the tracker" << std::endl;
 			return;
 		}
 
 		// Do not update with a null image.
-		if (!m_imagesource->valid())
+		if (!_imagesource->valid())
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker: received NULL pointer as image" << std::endl;
 			return;
 		}
 
 		// hse25: performance measurement: only update if the image was modified
-		if (m_imagesource->getModifiedCount() == m_lastModifiedCount)
+		if (_imagesource->getModifiedCount() == m_lastModifiedCount)
 		{
 			return; 
 		}
 		
 		// update internal modified count
-		m_lastModifiedCount = m_imagesource->getModifiedCount();
+		m_lastModifiedCount = _imagesource->getModifiedCount();
 
 		// \TODO: hse25: check here for the moment, the function needs to be extended
-		if (AR_DEFAULT_PIXEL_FORMAT != getARPixelFormatForImage(*m_imagesource.get()))
+		if (AR_DEFAULT_PIXEL_FORMAT != getARPixelFormatForImage(*_imagesource.get()))
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker::update() Incompatible pixelformat!" << std::endl;
 			return;
 		}
 	
 		// lock agains video updates
-		Video* video = dynamic_cast<Video*>(m_imagesource.get());		
+		Video* video = dynamic_cast<Video*>(_imagesource.get());		
 		if (video)
 		{
 			video->getMutex().lock();
@@ -520,7 +520,7 @@ namespace osgART {
 		t.setStartTick();
 
 		// Detect the markers in the video frame.
-		if (arDetectMarker(m_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) 
+		if (arDetectMarker(_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) 
 		{
 			osg::notify(osg::FATAL) << "ARToolKitTracker: Error detecting markers in image." << std::endl;
 			// TODO: unlock the mutex for a graceful shutdown
@@ -545,21 +545,21 @@ namespace osgART {
 		if (arDebug && arImage && m_debugimage.valid()) {
 
 			m_debugimage->setImage(
-				m_imagesource->s(), m_imagesource->t(), 1, 
-				m_imagesource->getInternalTextureFormat(), 
-				m_imagesource->getPixelFormat(), 
-				m_imagesource->getDataType(), 
+				_imagesource->s(), _imagesource->t(), 1, 
+				_imagesource->getInternalTextureFormat(), 
+				_imagesource->getPixelFormat(), 
+				_imagesource->getDataType(), 
 				arImage, 
 				osg::Image::NO_DELETE, 1);
 
 		}
 
-		MarkerList::iterator _end = m_markerlist.end();
+		MarkerList::iterator _end = _markerlist.end();
 	
 
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
-		for (MarkerList::iterator iter = m_markerlist.begin(); iter != _end; iter++)		
+		for (MarkerList::iterator iter = _markerlist.begin(); iter != _end; iter++)		
 		{
 
 			std::string tag = std::string("Marker update ");
@@ -627,7 +627,7 @@ namespace osgART {
 
 	inline void ARToolKitTracker::setProjection(const double n, const double f) 
 	{
-		arglCameraFrustumRH(&(m_cparam->cparam), n, f, m_projectionMatrix);
+		arglCameraFrustumRH(&(m_cparam->cparam), n, f, _projectionMatrix);
 	}
 
 	/*inline void ARToolKitTracker::createUndistortedMesh(

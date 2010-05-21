@@ -28,51 +28,86 @@
 
 namespace osgART {
 
-	MultiMarker::MultiMarker() : Marker(), m_multi(0L) {
+	MultiMarker::MultiMarker() : Marker(), m_multi(0L) 
+	{
 	}
 
-	MultiMarker::~MultiMarker() {   
-		// jcl64: Free the multimarker
+	MultiMarker::~MultiMarker() 
+	{   	
 		if (m_multi) arMultiFreeConfig(m_multi);
 	}
 
 	/* virtual */
-	Marker::MarkerType MultiMarker::getType() const {
+	Marker::MarkerType MultiMarker::getType() const 
+	{
 		return Marker::ART_MULTI;
 	}
 
 	bool 
 	MultiMarker::initialise(const std::string& multiFile) {
 
+		if (m_multi) 
+		{
+			osg::notify(osg::WARN) << "MultiMarker: Cannot initialise Marker. Already initialised." << std::endl;
+			return false;
+		}
+
 		std::string actualMultiFile = osgDB::findDataFile(multiFile);
 
-		// Check if multifile exists!!!
+		// Check if multi-markre configuration file exists
+		if (actualMultiFile.empty() || !osgDB::fileExists(actualMultiFile)) 
+		{
+			osg::notify(osg::WARN) << "MultiMarker: Cannot initialise MultiMarker. File " << multiFile << " not found" << std::endl;
+			return false;
+		}
+		
 		m_multi = arMultiReadConfigFile(actualMultiFile.c_str());
-		if (m_multi == NULL) return false;
+		if (m_multi == NULL) 
+		{
+			osg::notify(osg::WARN) << "MultiMarker: Cannot initialise MultiMarker. Error reading config file." << std::endl;
+			return false;
+		}
 		
 		setName(multiFile);
 		setActive(false);
+		_valid = false;
 		
 		return true;
 	}
 
 	void
-	MultiMarker::setActive(bool a) {
-		m_active = a;
+	MultiMarker::setActive(bool a) 
+	{
+		_active = a;
 		
-		if (m_active) arMultiActivate(m_multi);
+		if (_active) arMultiActivate(m_multi);
 		else arMultiDeactivate(m_multi);
 	}
 
 	void 
 	MultiMarker::update(ARMarkerInfo* markerInfo, int markerCount) 
 	{
-		m_valid = (arMultiGetTransMat(markerInfo, markerCount, m_multi) >= 0);
-		if (m_valid) {
+
+		if (_active == false) 
+		{
+			// If the marker isn't active, then it can't be valid, and should not be updated either.
+			_valid = false;
+			return;
+		}
+
+		// Sanity check
+		if (!markerInfo) 
+		{
+			_valid = false;
+			return;
+		}
+
+		_valid = (arMultiGetTransMat(markerInfo, markerCount, m_multi) >= 0);
+
+		if (_valid) {
 			double modelView[16];
-			arglCameraViewRH(m_multi->trans, modelView, 1.0); // scale = 1.0.
-			osg::Matrix tmp(modelView);
-			updateTransform(tmp);
+			arglCameraViewRH(m_multi->trans, modelView, 1.0f);
+			updateTransform(osg::Matrix(modelView));
 		}
 	}
 	

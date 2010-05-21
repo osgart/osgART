@@ -237,17 +237,17 @@ SSTT_Target::update()
 	{
 
 		/* set the confidence of the marker: normalised 0-1 */
-		m_confidence = target_info->confidence;
+		_confidence = target_info->confidence;
 
 		/* parameterize it with our own confidence threshold */
-		m_valid = target_info->confidence > target_info->confidence_threshold;
+		_valid = target_info->confidence > target_info->confidence_threshold;
 
-		if (m_valid) {
+		if (_valid) {
 			std::cout << "Visible" << std::endl;
 			
 			/* use the model view to set the marker transformation matrix */
-			m_transform.set( &target_info->modelview[0] );
-			std::cout << m_transform << std::endl;
+			_transform.set( &target_info->modelview[0] );
+			std::cout << _transform << std::endl;
 
 			/* set the magic four values */
 			_border.set( target_info->border[0], target_info->border[1], target_info->border[2], target_info->border[3] );
@@ -340,7 +340,7 @@ SSTT_Tracker::addMarker(const std::string& config)
 
 	target->init(config);
 
-	m_markerlist.push_back(target);
+	_markerlist.push_back(target);
 
 	/* 
 	 * make sure the target is attached to the tracker,
@@ -355,30 +355,30 @@ SSTT_Tracker::addMarker(const std::string& config)
 inline void 
 SSTT_Tracker::update(osg::NodeVisitor* nv)
 {
-	if (!m_imagesource.valid())
+	if (!_imagesource.valid())
 		return;
 
-	if (m_imagesource->valid() && m_imagesource->getModifiedCount() != _modifiedCount && m_imagesource->data() != NULL) {
+	if (_imagesource->valid() && _imagesource->getModifiedCount() != _modifiedCount && _imagesource->data() != NULL) {
 
 		osg::notify() << "SSTT_Tracker::update()" << std::endl;
 
-		std::cout << "Image: " << m_imagesource->s() << "x" << m_imagesource->t() << ", " << osg::Image::computeNumComponents(m_imagesource->getPixelFormat()) << std::endl;
+		std::cout << "Image: " << _imagesource->s() << "x" << _imagesource->t() << ", " << osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
 
 		/* we need to inject the osg::Image into the tracking pipeline 
 		 * thus we need a temporary image */
 		sstt_image image;
-		image.width = m_imagesource->s();
-		image.height = m_imagesource->t();
-		image.stride = m_imagesource->s() * 3;
+		image.width = _imagesource->s();
+		image.height = _imagesource->t();
+		image.stride = _imagesource->s() * 3;
 		image.channels = 3;
 
-		image.data = new unsigned char[m_imagesource->s() * m_imagesource->t() * 3];
+		image.data = new unsigned char[_imagesource->s() * _imagesource->t() * 3];
 
-		for (int y = 0; y < m_imagesource->t(); y++) {
-			for (int x = 0; x < m_imagesource->s(); x++) {
+		for (int y = 0; y < _imagesource->t(); y++) {
+			for (int x = 0; x < _imagesource->s(); x++) {
 			
-				unsigned char* src = m_imagesource->data(x, y);
-				unsigned char* dst = &(image.data[(y * m_imagesource->s() + x) * 3]);
+				unsigned char* src = _imagesource->data(x, y);
+				unsigned char* dst = &(image.data[(y * _imagesource->s() + x) * 3]);
 
 				dst[0] = src[0];
 				dst[1] = src[1];
@@ -410,7 +410,7 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 			sstt_tracker_pose( _tracker, (sstt_calibration*)calib->getCalibration() );
 
 			/* now sync all osgART markers with their SSTT counterparts */
-			for(osgART::Tracker::MarkerList::iterator iter = m_markerlist.begin(); iter != m_markerlist.end(); iter++) {
+			for(osgART::Tracker::MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
 				
 				if (SSTT_Target* target = dynamic_cast<SSTT_Target*>((*iter).get())) {
 						
@@ -425,7 +425,7 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 		
 		delete[] image.data;
 		
-		_modifiedCount = m_imagesource->getModifiedCount();
+		_modifiedCount = _imagesource->getModifiedCount();
 	}
 }
 

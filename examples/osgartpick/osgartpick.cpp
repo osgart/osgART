@@ -41,13 +41,27 @@
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
 
+osg::ref_ptr<osgART::VideoFlipper> flipper;
+
+osg::ref_ptr<osgART::MatrixOffsetCallback> offsetCallback;
+
 osg::Group* createImageBackground(osg::Image* video, osgART::Calibration* calibration = NULL, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
 	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, calibration, 1, 1, 20, 20, 
 		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
 	//addTexturedQuad(*_geode,video->s(),video->t());
-	_layer->addChild(_geode);
+	
+	
+	flipper = new osgART::VideoFlipper(false, false);
+	
+	flipper->addChild(_geode);
+	
+	_layer->addChild(flipper.get());
+
+
+	//_layer->addChild(_geode);
+
 	return _layer;
 }
 
@@ -59,6 +73,20 @@ public:
 	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* obj, osg::NodeVisitor* nv) { 
 
 		switch (ea.getEventType()) {
+
+			case osgGA::GUIEventAdapter::KEYDOWN:
+				switch (ea.getKey()) {
+					case 'h':
+						flipper->setFlipH(!flipper->getFlipH());
+						offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());
+						break;
+					case 'v':
+						flipper->setFlipV(!flipper->getFlipV());
+						offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());
+						break;
+				}
+				break;
+
 
 			case osgGA::GUIEventAdapter::PUSH:
 
@@ -177,10 +205,17 @@ int main(int argc, char* argv[])  {
 	marker->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-	arTransform->setUpdateCallback(new osgART::MarkerTransformCallback(marker.get()));
-	arTransform->getUpdateCallback()->setNestedCallback(new osgART::MarkerVisibilityCallback(marker.get()));
-	arTransform->getUpdateCallback()->getNestedCallback()->setNestedCallback(new osgART::TransformFilterCallback());
 	
+	
+	offsetCallback = new osgART::MatrixOffsetCallback();
+
+	osgART::addEventCallback(arTransform.get(), new osgART::MarkerTransformCallback(marker.get()));
+	osgART::addEventCallback(arTransform.get(), new osgART::MarkerVisibilityCallback(marker.get()));
+	osgART::addEventCallback(arTransform.get(), offsetCallback.get());
+	osgART::addEventCallback(arTransform.get(), new osgART::TransformFilterCallback());
+	
+
+
 	osg::Geode* cube = osgART::testCube(20);
 	cube->setName("target");
 	arTransform->addChild(cube);
@@ -197,6 +232,8 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransform.get());
 	cam->addChild(videoBackground.get());
 	root->addChild(cam.get());
+
+	offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());
 
 	video->start();
 	return viewer.run();

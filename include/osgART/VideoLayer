@@ -94,6 +94,27 @@ namespace osgART {
 
 	};
 
+	class OSGART_EXPORT VideoFlipper : public osg::MatrixTransform 
+	{
+
+	protected:
+		bool _flipH;
+		bool _flipV;
+
+		void updateFlip();
+
+	public:
+		VideoFlipper(bool flipH = false, bool flipV = false);
+
+		void setFlipH(bool flipH);
+		bool getFlipH();
+
+		void setFlipV(bool flipV);
+		bool getFlipV();
+
+	};
+
+
 
 }
 

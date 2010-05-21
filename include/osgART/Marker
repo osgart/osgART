@@ -133,7 +133,7 @@ namespace osgART {
 		* \brief Return the tracking confidence of this marker.
 		* \return Tracking confidence
 		*/
-		inline float getConfidence() const { return m_confidence; };
+		inline float getConfidence() const { return _confidence; };
 
 		
 	protected: 
@@ -151,11 +151,11 @@ namespace osgART {
 		 */
 		void updateTransform(const osg::Matrix& transform);
 
-		float m_confidence;
-		bool m_valid;		
-		bool m_active;
-		osg::Matrix m_transform;
-		std::string m_name;
+		float _confidence;
+		bool _valid;		
+		bool _active;
+		osg::Matrix _transform;
+		std::string _name;
 	};
 
 

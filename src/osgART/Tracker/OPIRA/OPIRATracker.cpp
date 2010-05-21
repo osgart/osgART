@@ -57,37 +57,46 @@ namespace osgART {
 // OPIRA Marker
 // --------------------------------------------------------------
 
-OPIRAMarker::OPIRAMarker(std::string filename) : Marker() {
+OPIRAMarker::OPIRAMarker(std::string filename) : Marker() 
+{
 	setName(filename);
 	setActive(true);
 }
 
 
-bool OPIRAMarker::isSameKindAs(const osg::Object* obj) const {
+bool OPIRAMarker::isSameKindAs(const osg::Object* obj) const 
+{
     return dynamic_cast<const OPIRAMarker*>(obj) != 0L;
 }
 
-const char* OPIRAMarker::className() const { return "OPIRAMarker"; }
+const char* OPIRAMarker::className() const 
+{ 
+	return "OPIRAMarker"; 
+}
 
-Marker::MarkerType OPIRAMarker::getType() const { return ART_NFT_OPIRA; }
+Marker::MarkerType OPIRAMarker::getType() const 
+{ 
+	return ART_NFT_OPIRA; 
+}
 
-void OPIRAMarker::update(OPIRALibrary::MarkerTransform* mt) {
+void OPIRAMarker::update(OPIRALibrary::MarkerTransform* mt) 
+{
 
 	if (mt == NULL) {
 		
-		m_valid = false;
+		_valid = false;
 
 	} else {
 
-		this->m_confidence = mt->score;
+		this->_confidence = mt->score;
 
 		if (mt->score < 10) {
 
-			m_valid = false;
+			_valid = false;
 
 		} else {
 
-			m_valid = true;
+			_valid = true;
 			this->updateTransform(osg::Matrix::rotate(osg::PI, osg::X_AXIS) * osg::Matrix(mt->transMat));
 		
 		}
@@ -96,32 +105,39 @@ void OPIRAMarker::update(OPIRALibrary::MarkerTransform* mt) {
 
 }
 
-OPIRAMarker::~OPIRAMarker() {  }
+OPIRAMarker::~OPIRAMarker() 
+{  
+}
 
 // --------------------------------------------------------------
 // OPIRA Calibration
 // --------------------------------------------------------------
 
 OPIRACalibration::OPIRACalibration() : Calibration(),
-	mCapture(new Capture()) {
+	mCapture(new Capture()) 
+{
 
 }
 
-OPIRACalibration::~OPIRACalibration() {
+OPIRACalibration::~OPIRACalibration() 
+{
 	if (mCapture) delete mCapture;
 }
 
-Capture* OPIRACalibration::getCapture() {
+Capture* OPIRACalibration::getCapture() 
+{
 	return mCapture;
 }
 
 
-inline bool OPIRACalibration::load(const std::string& filename) {
+inline bool OPIRACalibration::load(const std::string& filename) 
+{
 	mCalibFilename = osgDB::findDataFile(filename);
 	return mCapture->loadCaptureParams((char*)mCalibFilename.c_str());
 }
 
-inline void OPIRACalibration::setSize(int width, int height) {
+inline void OPIRACalibration::setSize(int width, int height) 
+{
 
 	// Load capture parameters and scale them to match new image size
 	if (!mCapture->loadCaptureParams((char*)mCalibFilename.c_str())) {//, true, width, height)) {
@@ -138,11 +154,10 @@ inline void OPIRACalibration::setSize(int width, int height) {
 
 	_distortion.set(distortion->data.db[0], distortion->data.db[1], distortion->data.db[2], distortion->data.db[3]);
 
-	std::cout << "here" << std::endl;
-
 }
 
-void OPIRACalibration::undistort(double x, double y, double* u_x, double* u_y) {
+void OPIRACalibration::undistort(double x, double y, double* u_x, double* u_y) 
+{
 	double d[4] = {_distortion[0], _distortion[1], _distortion[2], _distortion[3]};
 	observedToIdeal(d, x, y, u_x, u_y, 3);
 }
@@ -154,22 +169,28 @@ void OPIRACalibration::undistort(double x, double y, double* u_x, double* u_y) {
 
 OPIRATracker::OPIRATracker() : Tracker(),
 	mRegistration(NULL),
-	mFrame(NULL) {
+	mFrame(NULL) 
+{
 
-	m_name = "OPIRA";
-	m_version = "1.0";
+	osg::notify(osg::WARN) << "OPIRATracker: Constructor" << std::endl;
 	
-	_registrationPolicy = "standard";
-	m_fields["registration_policy"] = new TypedField<std::string>(&_registrationPolicy);
+	_name = "OPIRA";
+	_version = "1.0";
+	
+	_registrationPolicy = "opira";
+	_fields["registration_policy"] = new TypedField<std::string>(&_registrationPolicy);
 
-	_featureDetector = "OCVSURF";
-	m_fields["feature_detector"] = new TypedField<std::string>(&_featureDetector);
+	_featureDetectorType = "OCVSURF";
+	_fields["feature_detector"] = new TypedField<std::string>(&_featureDetectorType);
 
 
 }
 
-inline OPIRATracker::~OPIRATracker() {
+inline OPIRATracker::~OPIRATracker() 
+{
 	
+	osg::notify(osg::WARN) << "OPIRATracker: Destructor" << std::endl;
+
 	if (mRegistration) delete mRegistration;
 
 	if (mFrame) cvReleaseImage(&mFrame);
@@ -177,58 +198,91 @@ inline OPIRATracker::~OPIRATracker() {
 }
 
 
-TrainingSupport* OPIRATracker::getTrainingSupport() { return NULL; }
+TrainingSupport* OPIRATracker::getTrainingSupport() 
+{ 
+	// Currently there is no training support in the OPIRA plugin
+	return NULL; 
+}
 	
+OPIRALibrary::Registration* OPIRATracker::getRegistration() {
+	return mRegistration;
+}
 
-OPIRALibrary::Registration* OPIRATracker::getOrCreateRegistration() {
 
-	if (mRegistration == NULL) {
+OPIRALibrary::Registration* OPIRATracker::getOrCreateRegistration() 
+{
 
-		OPIRALibrary::RegistrationAlgorithm* algorithm = NULL;
+	if (mRegistration == NULL) 
+	{
 
-		if (_featureDetector == "OCVSURF") algorithm = new OCVSurf();
-		//else if (_featureDetector == "SIFT") algorithm = new SIFT();
-		//else if (_featureDetector == "SURF") algorithm = new SURF();
-		else {
-			osg::notify(osg::WARN) << "OPIRATracker: Unknown feature detector: " << _featureDetector << std::endl;
-			algorithm = NULL;
+		OPIRALibrary::RegistrationAlgorithm* featureDetector = NULL;
+
+		if (_featureDetectorType == "OCVSURF") featureDetector = new OCVSurf();
+		//else if (_featureDetectorType == "SIFT") featureDetector = new SIFT();
+		//else if (_featureDetectorType == "SURF") featureDetector = new SURF();
+		else 
+		{
+			osg::notify(osg::WARN) << "OPIRATracker: Unknown Feature Detector: " << _featureDetectorType << std::endl;
+			featureDetector = NULL;
 		}
 
-		if (algorithm == NULL) {
-			// ERROR!
+		if (featureDetector == NULL) 
+		{
+		
+			// Error: no feature detector
+			osg::notify(osg::WARN) << "OPIRATracker: Cannot create Registration, there is no Feature Detector." << std::endl;
+		
+		} 
+		else 
+		{
+
+			// Created Feature Detector, now create Registration
+			osg::notify(osg::WARN) << "OPIRATracker: Using Feature Detector: " << _featureDetectorType << std::endl;
+
+
+			if (_registrationPolicy == "standard") 
+			{
+
+				osg::notify(osg::WARN) << "OPIRATracker: Using standard registration" << std::endl;
+				mRegistration = new OPIRALibrary::RegistrationStandard(std::vector<std::string>(), featureDetector);
+
+			} 
+			else if (_registrationPolicy == "optical_flow") 
+			{
+
+				osg::notify(osg::WARN) << "OPIRATracker: Using optical flow registration" << std::endl;
+				mRegistration = new OPIRALibrary::RegistrationOpticalFlow(std::vector<std::string>(), featureDetector);
+
+			} 
+			else if (_registrationPolicy == "opira") 
+			{
+
+				osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA registration" << std::endl;
+				mRegistration = new OPIRALibrary::RegistrationOPIRA(std::vector<std::string>(), featureDetector);
+
+			} 
+			else if (_registrationPolicy == "opira_mt") 
+			{
+
+				osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA multithreaded registration" << std::endl;
+				mRegistration = new OPIRALibrary::RegistrationOPIRAMT(std::vector<std::string>(), featureDetector);
+				//mRegistration = new OPIRALibrary::RegistrationOPIRAMT("MagicLand.bmp", featureDetector);
+
+			} 
+			else 
+			{
+				osg::notify(osg::WARN) << "OPIRATracker: Cannot create Registration, unknown type: " << _registrationPolicy << std::endl;			
+				mRegistration = NULL;
+			}
+
 		}
 
-
-		if (_registrationPolicy == "standard") {
-
-			osg::notify(osg::WARN) << "OPIRATracker: Using standard registration" << std::endl;
-			mRegistration = new OPIRALibrary::RegistrationStandard(std::vector<std::string>(), algorithm);
-
-		} else if (_registrationPolicy == "optical_flow") {
-
-			osg::notify(osg::WARN) << "OPIRATracker: Using optical flow registration" << std::endl;
-			mRegistration = new OPIRALibrary::RegistrationOpticalFlow(std::vector<std::string>(), algorithm);
-
-		} else if (_registrationPolicy == "opira") {
-
-			osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA registration" << std::endl;
-			mRegistration = new OPIRALibrary::RegistrationOPIRA(std::vector<std::string>(), algorithm);
-
-		} else if (_registrationPolicy == "homography") {
-
-			osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA registration (with homography)" << std::endl;
-			mRegistration = new OPIRALibrary::RegistrationOPIRAHomography(std::vector<std::string>(), algorithm);
-
-		} else {
-
-			osg::notify(osg::WARN) << "OPIRATracker: Unknown registration: " << _registrationPolicy << std::endl;
-			
-			mRegistration = NULL;
-
+		// Configure registration if it has been created
+		if (mRegistration) 
+		{
+			mRegistration->displayImage = false;
 		}
 
-
-		mRegistration->displayImage = false;
 	}
 
 	return mRegistration;
@@ -236,16 +290,19 @@ OPIRALibrary::Registration* OPIRATracker::getOrCreateRegistration() {
 }
 
 
-inline Calibration* OPIRATracker::getOrCreateCalibration()  {
+inline Calibration* OPIRATracker::getOrCreateCalibration()
+{
 	if (!_calibration.valid()) _calibration = new OPIRACalibration;
 	return Tracker::getOrCreateCalibration();
 }
 
-inline void OPIRATracker::setImage(osg::Image* image) {
+inline void OPIRATracker::setImage(osg::Image* image) 
+{
 	
 	Tracker::setImage(image);
 
-	if (image) {
+	if (image) 
+	{
 		this->getOrCreateCalibration()->setSize(*image);
 
 		if (mFrame) cvReleaseImage(&mFrame);
@@ -254,14 +311,19 @@ inline void OPIRATracker::setImage(osg::Image* image) {
 	}
 }
 
-Marker* OPIRATracker::addMarker(const std::string& config) {
+Marker* OPIRATracker::addMarker(const std::string& config) 
+{
 	
 	OPIRAMarker* marker = new OPIRAMarker(config);
-	m_markerlist.push_back(marker);
+	_markerlist.push_back(marker);
 
-	getOrCreateRegistration()->addMarker(config);
+	if (OPIRALibrary::Registration* r = getOrCreateRegistration()) 
+	{
+		r->addMarker(config);
+		osg::notify(osg::WARN) << "OPIRATracker: Added Marker: '" << marker->getName() << "'" << std::endl;
+	}
 
-	osg::notify(osg::WARN) << "Added Marker: '" << marker->getName() << "'" << std::endl;
+	
 
 	return marker;
 
@@ -273,20 +335,24 @@ void OPIRATracker::removeMarker(Marker* marker)
 {
 	if (!marker) return;
 
-	std::vector< osg::ref_ptr<osgART::Marker> >::iterator i = std::find(m_markerlist.begin(), m_markerlist.end(), marker);
+	std::vector< osg::ref_ptr<osgART::Marker> >::iterator i = std::find(_markerlist.begin(), _markerlist.end(), marker);
 
-	if (i != m_markerlist.end()){
+	if (i != _markerlist.end())
+	{
 		std::string n = marker->getName();
 
-		if (!getOrCreateRegistration()->removeMarker(n)) 
+		if (OPIRALibrary::Registration* r = getOrCreateRegistration()) 
 		{
-			// Could not remove marker
+			if (!r->removeMarker(n)) 
+			{
+				// Could not remove marker
+			}
 		}
 
 		*i = 0L;
-		m_markerlist.erase(i);
+		_markerlist.erase(i);
 		
-		osg::notify(osg::WARN) << "Removed marker: " << n << std::endl;
+		osg::notify(osg::WARN) << "OPIRATracker: Removed marker: " << n << std::endl;
 
 	}
 }
@@ -295,76 +361,106 @@ void OPIRATracker::removeMarker(Marker* marker)
 
 
 	
-	inline void OPIRATracker::update(osg::NodeVisitor* nv) {
+inline void OPIRATracker::update(osg::NodeVisitor* nv) 
+{
+
+	// Ensure there is an OPIRA registration algorithm available
+	if (!getOrCreateRegistration()) 
+	{
+		osg::notify(osg::WARN) << "OPIRATracker: No registration algorithm available. Cannot update tracking" << std::endl;
+		return;
+	}
+
 
 		const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;
 	
-		if (!m_imagesource.valid()) {
+		if (!_imagesource.valid()) 
+		{
 			osg::notify(osg::WARN) << "OPIRATracker: No connected image source for the tracker" << std::endl;
 			return;
 		}
 
 		// Do not update with a null image.
-		if (!m_imagesource->valid()) {
+		if (!_imagesource->valid()) 
+		{
 			osg::notify(osg::WARN) << "OPIRATracker: received NULL pointer as image" << std::endl;
 			return;
 		}
 
 		// hse25: performance measurement: only update if the image was modified
-		if (m_imagesource->getModifiedCount() == m_lastModifiedCount) return; 
+		if (_imagesource->getModifiedCount() == m_lastModifiedCount) return; 
 		
 		// update internal modified count
-		m_lastModifiedCount = m_imagesource->getModifiedCount();
+		m_lastModifiedCount = _imagesource->getModifiedCount();
 
 
-		// lock against video updates
-		Video* video = dynamic_cast<Video*>(m_imagesource.get());		
-		if (video) video->getMutex().lock();
+std::vector<OPIRALibrary::MarkerTransform> detectedMarkerTransforms;
 
+	
+		if (Video* video = dynamic_cast<Video*>(_imagesource.get())) {
+			
+			//osg::notify(osg::WARN) << "OPIRATracker: image update started" << std::endl;
 
-		// hse25: above is unsafe! Use below. 
-		//OpenThreads::ScopedLock<OpenThreads::Mutex> lock
+			//if (video) video->getMutex().lock();
 
-		osg::Timer t;
-		t.setStartTick();
+			// hse25: above is unsafe! Use below. 
+			OpenThreads::ScopedLock<OpenThreads::Mutex> lock(video->getMutex());
 
-		// Convert image into RGB/BGR (3 components) rather than BGRA (4 components)
-		for (int y = 0; y < m_imagesource->t(); y++) {
-			for (int x = 0; x < m_imagesource->s(); x++) {
-				int i = y * m_imagesource->s() + x;
-				mFrame->imageData[i * 3 + 0] = m_imagesource->data()[i * 4 + 0];
-				mFrame->imageData[i * 3 + 1] = m_imagesource->data()[i * 4 + 1];
-				mFrame->imageData[i * 3 + 2] = m_imagesource->data()[i * 4 + 2];
+			osg::Timer t;
+			t.setStartTick();
+
+			// Convert image into RGB/BGR (3 components) rather than BGRA (4 components)
+			for (int y = 0; y < _imagesource->t(); y++) 
+			{
+				for (int x = 0; x < _imagesource->s(); x++) 
+				{
+					int i = y * _imagesource->s() + x;
+					mFrame->imageData[i * 3 + 0] = _imagesource->data()[i * 4 + 0];
+					mFrame->imageData[i * 3 + 1] = _imagesource->data()[i * 4 + 1];
+					mFrame->imageData[i * 3 + 2] = _imagesource->data()[i * 4 + 2];
+				}
 			}
-		}
+
+			// Release mutex
+			//if (video) video->getMutex().unlock();
+
+			//osg::notify(osg::WARN) << "OPIRATracker: image update done" << std::endl;
+
+
+			}
 
 		
-		vector<OPIRALibrary::MarkerTransform> detectedMarkerTransforms;
+		
 
-		if (OPIRACalibration* calib = dynamic_cast<OPIRACalibration*>(this->getOrCreateCalibration())) {
+		if (OPIRACalibration* calib = dynamic_cast<OPIRACalibration*>(this->getOrCreateCalibration())) 
+		{
 		
 			CvMat* captureParams = calib->getCapture()->getParameters();
 			CvMat* captureDistortion = calib->getCapture()->getDistortion();
 			
-			if (captureParams && captureDistortion) {
+			if (captureParams && captureDistortion) 
+			{
 				detectedMarkerTransforms = getOrCreateRegistration()->performRegistration(mFrame, captureParams, captureDistortion);
 			}
 
 		}
 
-		// Release mutex
-		if (video) video->getMutex().unlock();
+				
+		
 
 		
 		// Iterator over the markers added to this tracker
-		for (MarkerList::iterator iter = m_markerlist.begin(); iter != m_markerlist.end(); iter++) {
+		for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
+		{
 
 			// Cast to the OPIRAMarker type (should be the only type in the collection)
-			if (OPIRAMarker* marker = dynamic_cast<OPIRAMarker*>(iter->get())) {
+			if (OPIRAMarker* marker = dynamic_cast<OPIRAMarker*>(iter->get())) 
+			{
 
 				// Find the detected transform whose name matches the current OPIRAMarker
 				OPIRALibrary::MarkerTransform* matchingTransform = NULL;
-				for (vector<OPIRALibrary::MarkerTransform>::iterator opiraIter = detectedMarkerTransforms.begin(); opiraIter != detectedMarkerTransforms.end(); opiraIter++) {
+				for (std::vector<OPIRALibrary::MarkerTransform>::iterator opiraIter = detectedMarkerTransforms.begin(); opiraIter != detectedMarkerTransforms.end(); opiraIter++) 
+				{
 					std::string opiraMarkerName = opiraIter->marker.name;
 					if (opiraMarkerName == marker->getName()) matchingTransform = &(*opiraIter);
 				}
@@ -376,7 +472,9 @@ void OPIRATracker::removeMarker(Marker* marker)
 
 		}
 		
-		for (unsigned int i=0; i<detectedMarkerTransforms.size(); i++) { 
+		// Cleanup
+		for (unsigned int i = 0; i< detectedMarkerTransforms.size(); i++) 
+		{ 
 			detectedMarkerTransforms.at(i).clear();
 		}
 

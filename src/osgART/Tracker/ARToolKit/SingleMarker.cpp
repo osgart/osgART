@@ -32,16 +32,12 @@ namespace osgART {
 	SingleMarker::SingleMarker() : Marker(),
 		patt_id(-1),
 		mInitialData(false)
-	{
-			// moved to a real 
-			//m_fields["confidence"] = new TypedField<double>(&_confidence);
+	{			
 	}
 
 	SingleMarker::~SingleMarker()
 	{
-		// jcl64: Free the pattern
 		if (patt_id >= 0) arFreePatt(patt_id);
-		patt_id = -1;
 	}
 
 	Marker::MarkerType SingleMarker::getType() const
@@ -51,50 +47,84 @@ namespace osgART {
 
 	bool SingleMarker::initialise(const std::string& pattFile, double width, double center[2])
 	{
+		// Check if this marker has already been initialised
 		if (patt_id >= 0) 
-			return (false);
+		{
+			osg::notify(osg::WARN) << "SingleMarker: Cannot initialise Marker. Already initialised." << std::endl;
+			return false;
+		}
 
+		// Locate the specified pattern file
 		std::string actualPattFile = osgDB::findDataFile(pattFile);
+		if (!osgDB::fileExists(actualPattFile)) 
+		{
+			osg::notify(osg::WARN) << "SingleMarker: Cannot find pattern file: " << pattFile << std::endl;
+			return false;
+		}
 
+		// Attempt to load pattern file
 		patt_id = arLoadPatt(actualPattFile.c_str());
-		if (patt_id < 0) return false;
+		if (patt_id < 0) 
+		{
+			osg::notify(osg::WARN) << "SingleMarker: Error loading pattern file: " << pattFile << std::endl;
+			return false;
+		}
+		
 		patt_width = width;
 		patt_center[0] = center[0];
 		patt_center[1] = center[1];
+		
 		setName(pattFile);
 		setActive(false);
+		_valid = false;
+
 		return true;
 	}
 
 	void SingleMarker::update(ARMarkerInfo* markerInfo, bool useHistory)
 	{
-		if (markerInfo == 0L) {
-			m_valid = false;
-			// We won't call update in the parent class if marker is not
-			// valid.
-		} else {
-			m_valid = true;
 
-			if (useHistory && mInitialData) {
-				arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
-			} else {
-				arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
-				mInitialData = true; // Need to get inital data before arGetTransMatCont can be used
-			}
-
-			m_confidence = markerInfo->cf;
-			double modelView[16];
-			arglCameraViewRH(patt_trans, modelView, 1.0); // scale = 1.0.
-			osg::Matrix tmp(modelView);
-			updateTransform(tmp);
+		if (_active == false) 
+		{
+			// If the marker isn't active, then it can't be valid, and should not be updated either.
+			_valid = false;
+			return;
 		}
+
+		if (markerInfo == 0L) 
+		{
+			// Invalid marker info cannot be used for update
+			_valid = false;
+			return;
+		} 
+
+		// Valid marker info means the tracker detected and tracked the marker
+		_valid = true;
+
+		// Use history-based arGetTransMatCont if flag is set and we have inital data from a call to arGetTransMat
+		if (useHistory && mInitialData) 
+		{
+			arGetTransMatCont(markerInfo, patt_trans, patt_center, patt_width, patt_trans);
+		} 
+		else 
+		{
+			arGetTransMat(markerInfo, patt_center, patt_width, patt_trans);
+			mInitialData = true; // Need to get inital data before arGetTransMatCont can be used
+		}
+
+		_confidence = markerInfo->cf;
+
+		double modelView[16];
+		arglCameraViewRH(patt_trans, modelView, 1.0f);
+		updateTransform(osg::Matrix(modelView));
+
 	}
 
 	void SingleMarker::setActive(bool a)
 	{
-		m_active = a;
+		_active = a;
 		
-		if (m_active) arActivatePatt(patt_id);
+		if (_active) arActivatePatt(patt_id);
 		else arDeactivatePatt(patt_id);
 
 	}

@@ -30,7 +30,9 @@ namespace osgART {
 		: VideoImageStream(), 
 		FieldContainer<Video>()
 	{
-		osg::notify(osg::INFO) << "Generic Video c'tor" << std::endl;
+
+		this->setPixelBufferObject(new osg::PixelBufferObject(this));
+		
 	}
 
 	Video::Video(const Video& container,
@@ -38,7 +40,7 @@ namespace osgART {
 		VideoImageStream(container),
 		FieldContainer<Video>()
 	{
-		osg::notify(osg::INFO) << "Copy C'tor" << std::endl;
+		
 	}
 
 	Video* Video::cast(osg::Referenced* instance)
@@ -49,7 +51,7 @@ namespace osgART {
 	
 	Video::~Video()
 	{	    
-		osg::notify(osg::INFO) << "Shut down video" << std::endl;
+		this->setPixelBufferObject(NULL);
 	}
 
 	Video& 
@@ -61,9 +63,9 @@ namespace osgART {
 	Field*
 	Video::get(const std::string& name)
 	{
-		FieldMap::iterator _found = m_fields.find(name);
+		FieldMap::iterator _found = _fields.find(name);
 		// return 0 if the field is not existant
-		return (_found != m_fields.end()) ? _found->second.get() : 0L;
+		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
 
 	/* virtual */

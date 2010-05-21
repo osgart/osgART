@@ -28,21 +28,22 @@
 namespace osgART {
 
 
-	Marker::Marker() : osg::Referenced(), 
-		m_valid(false),
-		m_active(false),
-		m_name("Marker")		
+	Marker::Marker() : osg::Referenced() 
 	{
-		// hse25: No fields within osgART
-		//m_fields["name"] = new TypedField<std::string>(&m_name);
-		//m_fields["active"] = new TypedField<bool>(&m_active);
+
+		setName("Marker");
+		setActive(false);
+		_valid = false;
+
 	}
 
-	Marker::Marker( const Marker& container, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/ ) :
-		m_valid(container.m_valid),
-		m_active(container.m_active),
-		m_name(container.m_name)
+	Marker::Marker( const Marker& container, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/ ) 
 	{
+
+		setName(container._name);
+		setActive(container._active);
+		_valid = container._valid;
+
 	}
 
 
@@ -60,39 +61,39 @@ namespace osgART {
 	const 
 	osg::Matrix& Marker::getTransform() const 
 	{
-		return m_transform;
+		return _transform;
 	}
 
 	/*virtual */
 	bool
 	Marker::valid() const
 	{
-		return m_valid;
+		return _valid;
 	}
 
 	/*virtual*/ 
 	bool
 	Marker::active() const 
 	{
-		return m_active;
+		return _active;
 	}
 
 	void
 	Marker::setName(const std::string& name) 
 	{
-		m_name = name;
+		_name = name;
 	}
 
 	const std::string&
 	Marker::getName() const 
 	{
-		return m_name;
+		return _name;
 	}
 
 	void 
 	Marker::updateTransform(const osg::Matrix& transform) 
 	{
-		m_transform = transform;
+		_transform = transform;
 	}
 
 	
@@ -100,7 +101,7 @@ namespace osgART {
 	void 
 	Marker::setActive(bool active /*= true*/)
 	{
-		this->m_active = active;
+		_active = active;
 	}
 
 	Marker& Marker::operator=( const Marker & )

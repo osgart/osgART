@@ -44,17 +44,21 @@ namespace osgART {
 
 
 	// VideoLayer
-	VideoLayer::VideoLayer() : 
-		osg::Camera()
+	VideoLayer::VideoLayer() : osg::Camera()
 	{		
+		
 		this->setProjectionMatrixAsOrtho2D(0.0f, 1.0f, 0.0f, 1.0f);
 		this->setViewMatrix(osg::Matrix::identity());
-		this->setRenderOrder(osg::Camera::NESTED_RENDER);
-		this->setClearMask(GL_DEPTH_BUFFER_BIT);
-		this->getOrCreateStateSet()->setMode(GL_LIGHTING, GL_FALSE);
-		this->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, GL_FALSE);
 		this->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
-		//this->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
+		this->setRenderOrder(osg::Camera::NESTED_RENDER);
+
+		this->getOrCreateStateSet()->setMode(GL_LIGHTING, GL_FALSE);
+
+		this->setClearMask(GL_DEPTH_BUFFER_BIT);
+		this->getOrCreateStateSet()->setMode(GL_DEPTH_TEST, GL_FALSE);
+		this->getOrCreateStateSet()->setAttributeAndModes(new osg::Depth(osg::Depth::LESS, 0, 1, false));
+
+		
 	}
 
 	VideoLayer::VideoLayer(const VideoLayer& videolayer,
@@ -68,4 +72,40 @@ namespace osgART {
 	{	    
 	}
 	
+
+
+	VideoFlipper::VideoFlipper(bool flipH, bool flipV) : osg::MatrixTransform(),
+		_flipH(flipH),
+		_flipV(flipV)
+	{
+		updateFlip();
+	}
+
+	void VideoFlipper::updateFlip() 
+	{
+		this->setMatrix(osg::Matrix::scale(_flipH ? -1 : 1, _flipV ? -1 : 1, 1) * osg::Matrix::translate(_flipH ? 1 : 0, _flipV ? 1 : 0, 0));
+	}
+
+	void VideoFlipper::setFlipH(bool flipH) 
+	{
+		_flipH = flipH;
+		updateFlip();
+	}
+	
+	bool VideoFlipper::getFlipH()
+	{
+		return _flipH;
+	}
+
+	void VideoFlipper::setFlipV(bool flipV) 
+	{
+		_flipV = flipV;
+		updateFlip();
+	}
+	
+	bool VideoFlipper::getFlipV()
+	{
+		return _flipV;
+	}
+
 };

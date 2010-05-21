@@ -177,6 +177,8 @@ namespace osgART {
 		osg::Geometry* geom = new osg::Geometry();
 		geom->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED);	
 
+		geom->getOrCreateStateSet()->setMode(GL_CULL_FACE, GL_FALSE);
+
 		osg::Vec2Array* verts = new osg::Vec2Array();
 		geom->setVertexArray(verts);
 		osg::Vec2Array* tcs = new osg::Vec2Array();

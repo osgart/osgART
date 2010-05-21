@@ -66,13 +66,13 @@ namespace osgART {
 
 	Tracker::Tracker() 
 		: osg::Referenced(),
-		m_enable(true),
+		_enable(true),
 		m_lastModifiedCount(0xFFFFF),
 		_stats(new osg::Stats("tracker"))
 	{
-		m_fields["name"]	= new TypedField<std::string>(&m_name);
-		m_fields["version"]	= new TypedField<std::string>(&m_version);
-		m_fields["enable"]	= new CallbackField<Tracker,bool>(this,
+		_fields["name"]	= new TypedField<std::string>(&_name);
+		_fields["version"]	= new TypedField<std::string>(&_version);
+		_fields["enable"]	= new CallbackField<Tracker,bool>(this,
 			&Tracker::getEnable,
 			&Tracker::setEnable);
 	}
@@ -83,8 +83,8 @@ namespace osgART {
 		// 
 		// Explicitly delete/unref all markers 
 		//
-		for( MarkerList::iterator mi = m_markerlist.begin();
-			 mi != m_markerlist.end();
+		for( MarkerList::iterator mi = _markerlist.begin();
+			 mi != _markerlist.end();
 			 mi++)
 		{
 			(*mi) = 0L;
@@ -92,7 +92,7 @@ namespace osgART {
 
 		// Markers are associated with a specific tracker instance,
 		// so will be deleted when the tracker is deleted.
-		m_markerlist.clear();		
+		_markerlist.clear();		
 	}
 
 	/*virtual*/
@@ -132,7 +132,7 @@ namespace osgART {
 
 		try 
 		{
-			_m = m_markerlist[id].get();
+			_m = _markerlist[id].get();
 
 		} catch(...) 
 		{
@@ -147,7 +147,7 @@ namespace osgART {
 	unsigned int 
 	Tracker::getMarkerCount() const 
 	{
-		return (unsigned int)m_markerlist.size();
+		return (unsigned int)_markerlist.size();
 	}
 
 	/*virtual*/ 
@@ -163,13 +163,13 @@ namespace osgART {
 	void 
 	Tracker::setImage(osg::Image* image)
 	{
-		m_imagesource = image;
+		_imagesource = image;
 	}
 
 	/*virtual*/ 
 	osg::Image* Tracker::getImage() 
 	{
-		return m_imagesource.get();
+		return _imagesource.get();
 	}
 
 	/*virtual*/
@@ -182,26 +182,26 @@ namespace osgART {
 	const double* 
 	Tracker::getProjectionMatrix() const 
 	{
-		return m_projectionMatrix;
+		return _projectionMatrix;
 	}
 
 	/* virtual */
-	void	Tracker::setEnable(const bool & _enable)
+	void	Tracker::setEnable(const bool &e)
 	{
-		m_enable = _enable;
+		_enable = e;
 	}
 
 	/* virtual */
 	bool	Tracker::getEnable() const
 	{
-		return m_enable;
+		return _enable;
 	}
 
 	std::string Tracker::getLabel() const 
 	{
-		std::string Result = m_name;
+		std::string Result = _name;
 		Result += "-";
-		Result += m_version;
+		Result += _version;
 		return Result;
 	}
 	

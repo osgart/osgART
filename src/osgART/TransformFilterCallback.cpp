@@ -30,8 +30,8 @@
 namespace osgART {
 
 	TransformFilterCallback::TransformFilterCallback() : osg::NodeCallback(),
-		m_translationSmoothFactor(0.15f),
-		m_rotationSmoothFactor(0.15f),
+		m_translationSmoothFactor(0.75f),
+		m_rotationSmoothFactor(0.75f),
 		m_TransOutlierDistance(50),				// i.e. 5cm
 		m_maxNumOfTransRejections(10),			// max number of subsequent rejections
 		m_TransRejectionCount(0),				// current number of rejections
