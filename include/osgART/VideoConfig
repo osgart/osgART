@@ -98,6 +98,11 @@ namespace osgART {
 		FrameRateType framerate;
 		PixelFormatType type;
 		std::string deviceconfig;
+
+		int selectedWidth;
+		int selectedHeight;
+		float selectedFrameRate;
+
 	} VideoConfiguration;
 	
 	class OSGART_EXPORT VideoConfig {
