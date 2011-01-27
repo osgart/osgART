@@ -27,7 +27,6 @@
 
 #include "OpiraLibrary.h"
 #include "GestureLibrary.h"
-#include "CaptureLibrary.h"
 #include "OPIRALibraryMT.h"
 #include "OCVSurf.h"
 #include "highgui.h"
@@ -62,21 +61,26 @@ class OPIRACalibration : public Calibration {
 protected:
 
 	std::string mCalibFilename;
-	Capture* mCapture;
 
 	~OPIRACalibration();
+	int calibWidth, calibHeight;
+	double principalX, principalY;
+	CvMat *calibParams, *calibDistortion;
 
+	
 public:
 	
 	OPIRACalibration();
 	
 	
-	Capture* getCapture();
 	inline bool load(const std::string& filename);
 
 	inline void setSize(int width, int height);
 	
 	virtual void undistort(double x, double y, double* u_x, double* u_y);
+
+	CvMat *getParameters();
+	CvMat *getDistortion();
 
 };
 
@@ -150,6 +154,7 @@ public:
 	
 		IplImage* mFrame;
 		
+		int curWidth, curHeight;
 	};
 
 };

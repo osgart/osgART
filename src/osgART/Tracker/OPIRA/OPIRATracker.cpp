@@ -113,46 +113,74 @@ OPIRAMarker::~OPIRAMarker()
 // OPIRA Calibration
 // --------------------------------------------------------------
 
-OPIRACalibration::OPIRACalibration() : Calibration(),
-	mCapture(new Capture()) 
+OPIRACalibration::OPIRACalibration() : Calibration()
 {
-
+	calibParams=0; calibDistortion=0;
 }
 
 OPIRACalibration::~OPIRACalibration() 
 {
-	if (mCapture) delete mCapture;
-}
-
-Capture* OPIRACalibration::getCapture() 
-{
-	return mCapture;
+	if (calibParams!=0) cvReleaseMat(&calibParams);
+	if (calibDistortion!=0) cvReleaseMat(&calibDistortion);
 }
 
 
 inline bool OPIRACalibration::load(const std::string& filename) 
 {
 	mCalibFilename = osgDB::findDataFile(filename);
-	return mCapture->loadCaptureParams((char*)mCalibFilename.c_str());
+
+	CvFileStorage* fs = cvOpenFileStorage( mCalibFilename.c_str(), 0, CV_STORAGE_READ );
+	if (fs==0) return false; 
+
+	CvFileNode* fileparams;
+	//Read the Image Width
+	fileparams = cvGetFileNodeByName( fs, NULL, "image_width" );
+	calibWidth = cvReadInt(fileparams,-1);
+	//Read the Image Height
+	fileparams = cvGetFileNodeByName( fs, NULL, "image_height" );
+	calibHeight = cvReadInt(fileparams,-1);
+	//Read the Camera Parameters
+	fileparams = cvGetFileNodeByName( fs, NULL, "camera_matrix" );
+	calibParams = (CvMat*)cvRead( fs, fileparams );
+	principalX = calibParams->data.db[2]; principalY = calibParams->data.db[5];
+	//Read the Camera Distortion 
+	fileparams = cvGetFileNodeByName( fs, NULL, "distortion_coefficients" );
+	calibDistortion = (CvMat*)cvRead( fs, fileparams );
+	cvReleaseFileStorage( &fs );
+
+	/*
+	//Initialize Undistortion Maps
+	mDistortX = cvCreateMat(captureHeight, captureWidth, CV_32F);
+	mDistortY = cvCreateMat(captureHeight, captureWidth, CV_32F);
+	cvInitUndistortMap(captureParams, captureDistortion, mDistortX, mDistortY);
+	*/
+
+	return true;
+}
+
+CvMat* OPIRACalibration::getParameters() { 
+	return calibParams;
+}
+
+CvMat* OPIRACalibration::getDistortion() {
+	return calibDistortion;
 }
 
 inline void OPIRACalibration::setSize(int width, int height) 
 {
+	//Change Principal Point
+	calibParams->data.db[2] = width/2.0;
+	calibParams->data.db[5] = height/2.0; 
 
-	// Load capture parameters and scale them to match new image size
-	if (!mCapture->loadCaptureParams((char*)mCalibFilename.c_str())) {//, true, width, height)) {
-		// Error loading capture parameters
-		return;
-	}
+	//Change Scale Factor
+	calibParams->data.db[0] *= float(width)/float(calibWidth);
+	calibParams->data.db[4] *= float(height)/float(calibHeight);
 
-	CvMat* parameters = mCapture->getParameters();
-	CvMat* distortion = mCapture->getDistortion();
-
-	double* projMat = OPIRALibrary::calcProjection(parameters, distortion, cvSize(width, height), 10.0f, 10000.0f);
+	double* projMat = OPIRALibrary::calcProjection(getParameters(), getDistortion(), cvSize(width, height), 10.0f, 10000.0f);
 	_projection = osg::Matrix(projMat);
 	free(projMat);
 
-	_distortion.set(distortion->data.db[0], distortion->data.db[1], distortion->data.db[2], distortion->data.db[3]);
+	_distortion.set(getDistortion()->data.db[0], getDistortion()->data.db[1], getDistortion()->data.db[2], getDistortion()->data.db[3]);
 
 }
 
@@ -169,7 +197,8 @@ void OPIRACalibration::undistort(double x, double y, double* u_x, double* u_y)
 
 OPIRATracker::OPIRATracker() : Tracker(),
 	mRegistration(NULL),
-	mFrame(NULL) 
+	mFrame(NULL),
+	curWidth(0), curHeight(0)
 {
 
 	osg::notify(osg::WARN) << "OPIRATracker: Constructor" << std::endl;
@@ -303,11 +332,14 @@ inline void OPIRATracker::setImage(osg::Image* image)
 
 	if (image) 
 	{
-		this->getOrCreateCalibration()->setSize(*image);
+		if (curWidth != image->s() || curHeight !=image->t()) {
+			curWidth = image->s(); curHeight = image->t();
+			this->getOrCreateCalibration()->setSize(curWidth, curHeight);
 
-		if (mFrame) cvReleaseImage(&mFrame);
-		mFrame = cvCreateImage(cvSize(image->s(), image->t()), IPL_DEPTH_8U, 3);
+			if (mFrame) cvReleaseImage(&mFrame);
+			mFrame = cvCreateImage(cvSize(image->s(), image->t()), IPL_DEPTH_8U, 3);
 
+		}
 	}
 }
 
@@ -410,16 +442,10 @@ std::vector<OPIRALibrary::MarkerTransform> detectedMarkerTransforms;
 			t.setStartTick();
 
 			// Convert image into RGB/BGR (3 components) rather than BGRA (4 components)
-			for (int y = 0; y < _imagesource->t(); y++) 
-			{
-				for (int x = 0; x < _imagesource->s(); x++) 
-				{
-					int i = y * _imagesource->s() + x;
-					mFrame->imageData[i * 3 + 0] = _imagesource->data()[i * 4 + 0];
-					mFrame->imageData[i * 3 + 1] = _imagesource->data()[i * 4 + 1];
-					mFrame->imageData[i * 3 + 2] = _imagesource->data()[i * 4 + 2];
-				}
-			}
+			IplImage *RGBAIm = cvCreateImageHeader(cvSize(_imagesource->s(), _imagesource->t()), IPL_DEPTH_8U, 4);
+			RGBAIm->imageData = (char*)_imagesource->data();
+			cvCvtColor(RGBAIm, mFrame, CV_RGBA2RGB);
+			cvReleaseImageHeader(&RGBAIm);
 
 			// Release mutex
 			//if (video) video->getMutex().unlock();
@@ -435,12 +461,9 @@ std::vector<OPIRALibrary::MarkerTransform> detectedMarkerTransforms;
 		if (OPIRACalibration* calib = dynamic_cast<OPIRACalibration*>(this->getOrCreateCalibration())) 
 		{
 		
-			CvMat* captureParams = calib->getCapture()->getParameters();
-			CvMat* captureDistortion = calib->getCapture()->getDistortion();
-			
-			if (captureParams && captureDistortion) 
+			if (calib->getParameters())
 			{
-				detectedMarkerTransforms = getOrCreateRegistration()->performRegistration(mFrame, captureParams, captureDistortion);
+				detectedMarkerTransforms = getOrCreateRegistration()->performRegistration(mFrame, calib->getParameters(), calib->getDistortion());
 			}
 
 		}
