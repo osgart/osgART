@@ -212,7 +212,6 @@ OPIRATracker::OPIRATracker() : Tracker(),
 	_featureDetectorType = "OCVSURF";
 	_fields["feature_detector"] = new TypedField<std::string>(&_featureDetectorType);
 
-
 }
 
 inline OPIRATracker::~OPIRATracker() 
@@ -273,30 +272,29 @@ OPIRALibrary::Registration* OPIRATracker::getOrCreateRegistration()
 			{
 
 				osg::notify(osg::WARN) << "OPIRATracker: Using standard registration" << std::endl;
-				mRegistration = new OPIRALibrary::RegistrationStandard(std::vector<std::string>(), featureDetector);
+				mRegistration = new OPIRALibrary::RegistrationStandard(featureDetector);
 
 			} 
 			else if (_registrationPolicy == "optical_flow") 
 			{
 
 				osg::notify(osg::WARN) << "OPIRATracker: Using optical flow registration" << std::endl;
-				mRegistration = new OPIRALibrary::RegistrationOpticalFlow(std::vector<std::string>(), featureDetector);
+				mRegistration = new OPIRALibrary::RegistrationOpticalFlow(featureDetector);
 
 			} 
 			else if (_registrationPolicy == "opira") 
 			{
 
 				osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA registration" << std::endl;
-				mRegistration = new OPIRALibrary::RegistrationOPIRA(std::vector<std::string>(), featureDetector);
+				mRegistration = new OPIRALibrary::RegistrationOPIRA(featureDetector);
 
 			} 
 			else if (_registrationPolicy == "opira_mt") 
 			{
 
 				osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA multithreaded registration" << std::endl;
-				mRegistration = new OPIRALibrary::RegistrationOPIRAMT(std::vector<std::string>(), featureDetector);
-				//mRegistration = new OPIRALibrary::RegistrationOPIRAMT("MagicLand.bmp", featureDetector);
-
+				mRegistration = new OPIRALibrary::RegistrationOPIRAMT(featureDetector);
+				//mRegistration = new OPIRALibrary::RegistrationOPIRAMT(featureDetector);
 			} 
 			else 
 			{
@@ -340,22 +338,65 @@ inline void OPIRATracker::setImage(osg::Image* image)
 			mFrame = cvCreateImage(cvSize(image->s(), image->t()), IPL_DEPTH_8U, 3);
 
 		}
+
+		// if the input image is too big, resize the image to to improve tracking speed
+		float aspect = ((float)curWidth/(float)curHeight);
+		if (curWidth > 320 && aspect < 1.4f) {
+			// image is 4:3 and is too big - scale to 800x600
+			curWidth = 320; curHeight = 240;
+			this->getOrCreateCalibration()->setSize(curWidth, curHeight);
+
+			if (mFrame) cvReleaseImage(&mFrame);
+			mFrame = cvCreateImage(cvSize(curWidth, curHeight), IPL_DEPTH_8U, 3);
+		} else if (curWidth > 368 && aspect > 1.65f) {
+			// image is 16:9 and is too big - scale to 928x522
+			curWidth = 368; curHeight = 207;
+			this->getOrCreateCalibration()->setSize(curWidth, curHeight);
+
+			if (mFrame) cvReleaseImage(&mFrame);
+			mFrame = cvCreateImage(cvSize(curWidth, curHeight), IPL_DEPTH_8U, 3);
+		} else if (curWidth > 360 && aspect > 1.55f && aspect < 1.65f) {
+			// image is 16:10 and is too big - scale to 848x565
+			curWidth = 360; curHeight = 225;
+			this->getOrCreateCalibration()->setSize(curWidth, curHeight);
+
+			if (mFrame) cvReleaseImage(&mFrame);
+			mFrame = cvCreateImage(cvSize(curWidth, curHeight), IPL_DEPTH_8U, 3);
+		} 
 	}
 }
 
 Marker* OPIRATracker::addMarker(const std::string& config) 
 {
+	// format is: "path/to/marker.jpg" or "path/to/marker.jpg;maxLengthSize;maxLengthScale" where maxLengthSize
+	// is the integer number of pixels that the marker image's longest edge will be scaled to while maintaining
+	// the aspect ratio, and maxLengthScale is the length of the longest side of the physical marker in mm
+	std::vector<std::string> _tokens = tokenize(config,";");
+
+	if (_tokens.size() < 1 || _tokens.size() > 3) 
+		{
+			osg::notify(osg::WARN) << "Invalid configuration string" << std::endl;
+
+			return 0L;
+		}
 	
-	OPIRAMarker* marker = new OPIRAMarker(config);
+
+	OPIRAMarker* marker = new OPIRAMarker(_tokens[0]);
 	_markerlist.push_back(marker);
+
 
 	if (OPIRALibrary::Registration* r = getOrCreateRegistration()) 
 	{
-		r->addMarker(config);
-		osg::notify(osg::WARN) << "OPIRATracker: Added Marker: '" << marker->getName() << "'" << std::endl;
-	}
 
-	
+		if (_tokens.size() == 1) {
+			r->addMarker(_tokens[0]);
+		} else if (_tokens.size() == 2) {
+			r->addResizedMarker(_tokens[0], atoi(_tokens[1].c_str()));
+		} else if (_tokens.size() == 3) {
+			r->addResizedScaledMarker(_tokens[0], atoi(_tokens[1].c_str()), atoi(_tokens[2].c_str()));
+		}
+		osg::notify(osg::WARN) << "OPIRATracker: Added Marker: '" << _tokens[0] << "'" << std::endl;
+	}
 
 	return marker;
 
@@ -438,13 +479,48 @@ std::vector<OPIRALibrary::MarkerTransform> detectedMarkerTransforms;
 			// hse25: above is unsafe! Use below. 
 			OpenThreads::ScopedLock<OpenThreads::Mutex> lock(video->getMutex());
 
+
+			// ADDED BY GILES
+
+			//osg::ref_ptr<osg::Image> myImage = (osg::Image*)(_imagesource.get()->clone(osg::CopyOp::SHALLOW_COPY));
+			//osg::Image* myImage = (osg::Image*)(_imagesource.get()->clone(osg::CopyOp::DEEP_COPY_ALL));
+
+			/**
+			if (myImage) {
+				// if the input image is too big, resize the image to to improve tracking speed
+				float aspect = ((float)myImage->s()/(float)myImage->t());
+				if (myImage->s() > 800 && aspect < 1.4f) {
+					// image is 4:3 and it's too big - scale to 800x600
+					//image = (osg::Image*)image->clone(osg::CopyOp::DEEP_COPY_ALL);
+					myImage->scaleImage(800, 600, myImage->r());
+				} else if (myImage->s() > 928 && aspect > 1.65f) {
+					// image is is 16:9 and is too big - scale to 928x522
+					//image = (osg::Image*)image->clone(osg::CopyOp::DEEP_COPY_ALL);
+					myImage->scaleImage(928, 522, myImage->r());
+				} else if (myImage->s() > 848 && aspect > 1.55f && aspect < 1.65f) {
+					// image is 16:10 and is too big - scale to 848x565
+					//image = (osg::Image*)image->clone(osg::CopyOp::DEEP_COPY_ALL);
+					myImage->scaleImage(848, 565, myImage->r());
+				}
+			}
+			*/
+
+			// END ADDED BY GILES
+
+
 			osg::Timer t;
 			t.setStartTick();
 
 			// Convert image into RGB/BGR (3 components) rather than BGRA (4 components)
 			IplImage *RGBAIm = cvCreateImageHeader(cvSize(_imagesource->s(), _imagesource->t()), IPL_DEPTH_8U, 4);
 			RGBAIm->imageData = (char*)_imagesource->data();
-			cvCvtColor(RGBAIm, mFrame, CV_RGBA2RGB);
+
+			IplImage *RGBIm = cvCreateImage(cvGetSize(RGBAIm), IPL_DEPTH_8U, 3);
+			cvCvtColor(RGBAIm, RGBIm, CV_RGBA2RGB);
+
+			cvResize(RGBIm, mFrame);
+			//cvCvtColor(RGBAIm, mFrame, CV_RGBA2RGB);
+			cvReleaseImage(&RGBIm);
 			cvReleaseImageHeader(&RGBAIm);
 
 			// Release mutex
