@@ -168,19 +168,32 @@ CvMat* OPIRACalibration::getDistortion() {
 
 inline void OPIRACalibration::setSize(int width, int height) 
 {
-	//Change Principal Point
-	calibParams->data.db[2] = width/2.0;
-	calibParams->data.db[5] = height/2.0; 
 
-	//Change Scale Factor
-	calibParams->data.db[0] *= float(width)/float(calibWidth);
-	calibParams->data.db[4] *= float(height)/float(calibHeight);
+	float scaleFactor;
+	if ((float)calibWidth/(float)calibHeight > (float)width/(float)height) {
+		scaleFactor = (float)calibHeight/(float)height;
+	} else {
+		scaleFactor = (float)calibWidth/(float)width;
+	}
 
-	double* projMat = OPIRALibrary::calcProjection(getParameters(), getDistortion(), cvSize(width, height), 10.0f, 10000.0f);
+	//float scaleFactor = (float)calibWidth/(float)width;
+	calibParams->data.db[0]/= scaleFactor;
+	calibParams->data.db[4]/= scaleFactor;
+	calibParams->data.db[2]=(float)width/2.0;
+	calibParams->data.db[5]=(float)height/2.0;
+
+	principalX = calibParams->data.db[2];
+	principalY = calibParams->data.db[5];
+
+	double* projMat = OPIRALibrary::calcProjection(getParameters(), 0, cvSize(width, height), 10.0f, 10000.0f);
 	_projection = osg::Matrix(projMat);
 	free(projMat);
 
-	_distortion.set(getDistortion()->data.db[0], getDistortion()->data.db[1], getDistortion()->data.db[2], getDistortion()->data.db[3]);
+	_distortion.set(0,0,0,0);
+	getDistortion()->data.db[0] = 0;
+	getDistortion()->data.db[1] = 0;
+	getDistortion()->data.db[2] = 0;
+	getDistortion()->data.db[3] = 0;
 
 }
 
@@ -294,7 +307,6 @@ OPIRALibrary::Registration* OPIRATracker::getOrCreateRegistration()
 
 				osg::notify(osg::WARN) << "OPIRATracker: Using OPIRA multithreaded registration" << std::endl;
 				mRegistration = new OPIRALibrary::RegistrationOPIRAMT(featureDetector);
-				//mRegistration = new OPIRALibrary::RegistrationOPIRAMT(featureDetector);
 			} 
 			else 
 			{
@@ -539,7 +551,7 @@ std::vector<OPIRALibrary::MarkerTransform> detectedMarkerTransforms;
 		
 			if (calib->getParameters())
 			{
-				detectedMarkerTransforms = getOrCreateRegistration()->performRegistration(mFrame, calib->getParameters(), calib->getDistortion());
+				detectedMarkerTransforms = getOrCreateRegistration()->performRegistration(mFrame, calib->getParameters(), 0);//calib->getDistortion());
 			}
 
 		}
