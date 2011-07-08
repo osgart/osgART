@@ -40,11 +40,11 @@ endmacro(install_osgart_plugin target)
 macro(osgart_get_data)
 
 	set(ARTOOLKIT_2_DATAFILES
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/camera_para.dat
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/patt.hiro
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/patt.kanji
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/patt.sample1
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/patt.sample2
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/camera_para.dat
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.hiro
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.kanji
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.sample1
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.sample2
 		)
 
 	if(APPLE)

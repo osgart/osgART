@@ -1,28 +1,11 @@
-set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
-
-cmake_minimum_required(VERSION 2.6.1)
+cmake_minimum_required(VERSION 2.8.2)
 
 project(osgART)
-
-if(COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
 
 #
 # Patch in the osgART CMake module directory
 # 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/etc/cmake)
-
-if(APPLE)
-	option(OSGART_BUILD_BUNDLES "Builds bundles and frameworks for the library and examples")
-endif(APPLE)
-
-#
-# Check if somebody wants to build in-tree
-#
-if   (${CMAKE_BINARY_DIR} EQUAL ${CMAKE_SOURCE_DIR})
-	MESSAGE("In-source builds are discouraged!")
-endif(${CMAKE_BINARY_DIR} EQUAL ${CMAKE_SOURCE_DIR})
 
 if(WIN32)
 	set(CMAKE_DEBUG_POSTFIX  "_debug")
@@ -30,36 +13,29 @@ endif(WIN32)
 
 set(OSGART_VERSION_MAJOR 2)
 set(OSGART_VERSION_MINOR 0)
-set(OSGART_VERSION_PATCH 0)
+set(OSGART_VERSION_PATCH 2)
 
 set(OSGART_VERSION_FULL ${OSGART_VERSION_MAJOR}.${OSGART_VERSION_PATCH}.${OSGART_VERSION_PATCH})
+
+
+# make executable style configurable
+set(OSGART_EXECUTABLE_TYPE)
 
 # some include
 include(OSGARTUtils)
 
 # Finding various packages
-find_package(OSG REQUIRED)
-find_package(OpenThreads REQUIRED)
+find_package(OpenSceneGraph 2.8.0 REQUIRED osgUtil osgDB osgGA osgText osgViewer)
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)
 
 # on *nix we need to make sure the local include
 # directory is first
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
-if(APPLE)
-	# darn bug in CMake: http://www.cmake.org/Bug/view.php?id=7407
-	include_directories("/${OSG_INCLUDE_DIR}")
-else(APPLE)
-	include_directories(${OSG_INCLUDE_DIR})
-endif(APPLE)
-
-# we might want to honor the actual OSG Version
-include(parse_OSG_version)
-
-# check the real version
-check_osg_version(${OSG_INCLUDE_DIR}/osg/Version)
+include_directories(
+		${CMAKE_SOURCE_DIR}/include
+		${OPENSCENEGRAPH_INCLUDE_DIRS}
+		)
 
 # Mac needs these for building the examples
 if(APPLE)

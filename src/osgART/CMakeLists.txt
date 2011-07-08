@@ -61,18 +61,18 @@ if (WIN32)
 	# some target properties
 	set_target_properties(${lib_name} 
 		PROPERTIES	
-		PREFIX "osg${OSG_VERSION_SO}-"
+#		PREFIX "osg${OSG_VERSION_SO}-"
 		IMPORT_PREFIX ""
-		VERSION ${OSGART_VERSION_MAJOR}
-		SOVERSION ${OSG_VERSION_SO}
+#		VERSION ${OSGART_VERSION_MAJOR}
+#		SOVERSION ${OSG_VERSION_SO}
 	)
 else(WIN32)
 	# some target properties
-	set_target_properties(${lib_name} 
-		PROPERTIES	
-		VERSION ${OSGART_VERSION_MAJOR}
-		SOVERSION ${OSG_VERSION_SO}
-	)
+#	set_target_properties(${lib_name} 
+#		PROPERTIES	
+#		VERSION ${OSGART_VERSION_MAJOR}
+#		SOVERSION ${OSG_VERSION_SO}
+#	)
 endif(WIN32)
 
 # some finiky magic around Apple specifics

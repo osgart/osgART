@@ -4,16 +4,10 @@ set(SRCS
 	osgartmarkertraining.cpp
 	)
 
-
-
 osgart_get_data()
 
-if   (APPLE)
-	add_executable(${exe_name} MACOSX_BUNDLE ${SRCS} ${OSGART_MISC_DATA})
-else (APPLE)
-	add_executable(${exe_name} ${SRCS})
-endif(APPLE)
-
+add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
+		
 set_target_properties(${exe_name}
 		PROPERTIES		
 		PROJECT_LABEL "Application ${exe_name}")

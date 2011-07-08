@@ -5,12 +5,7 @@ set(SRCS
 	)
 
 
-if   (NOT APPLE)
-	add_executable(${exe_name} ${SRCS})
-else (NOT APPLE)
-	add_executable(${exe_name} MACOSX_BUNDLE ${SRCS})
-endif(NOT APPLE)
-
+add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
 
 set_target_properties(${exe_name}
 		PROPERTIES		
