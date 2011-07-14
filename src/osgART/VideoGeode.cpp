@@ -71,9 +71,10 @@ namespace osgART {
 		};
 
 
-		Texture2DCallback::Texture2DCallback(osg::Texture2D* texture) : osg::Texture2D::SubloadCallback(),
-			_texCoordX(texture->getImage()->s() / (float)equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s())),
-			_texCoordY(texture->getImage()->t() / (float)equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t()))
+		Texture2DCallback::Texture2DCallback(osg::Texture2D* texture) 
+			: osg::Texture2D::SubloadCallback()
+			, _texCoordX(texture->getImage()->s() / (float)equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s()))
+			, _texCoordY(texture->getImage()->t() / (float)equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t()))
 		{
 			texture->setTextureSize(equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s()),
 				equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t()));
@@ -111,23 +112,12 @@ namespace osgART {
 			
 			osg::Image* _image = const_cast<osg::Image*>(texture.getImage());
 			osgART::Video* vid = dynamic_cast<osgART::Video*>(_image);
-			
 			if (vid) {
-
-				//if (vid->getMutex().trylock() == 0) {
-
 				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vid->getMutex());
 				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
-				
-				//vid->getMutex().unlock();
-				//}
-
 			} else {
-
 				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
-
 			}
-
 		}
 	}
 
