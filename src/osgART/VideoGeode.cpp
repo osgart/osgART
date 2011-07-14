@@ -55,6 +55,13 @@ namespace osgART {
 
 			inline float getTexCoordX() const { return (_texCoordX);};
 			inline float getTexCoordY() const { return (_texCoordY);};
+			
+			// needed for OSG 3.0
+			inline bool textureObjectValid(const osg::Texture2D& texture, osg::State& state) const
+            {
+				return true;
+            }
+			
 
 		protected:
 			
