@@ -105,6 +105,9 @@ target_link_libraries(${lib_name}
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
 
 
+# make tracker and video stuff optional
+option(OSGART_WITH_SSTT FALSE)
+
 add_subdirectory(Tracker)
 add_subdirectory(Video)
 	

@@ -72,8 +72,6 @@ namespace osgART
 
 	VideoImageStream::~VideoImageStream()
 	{
-		osg::notify() << "VideoImageStream D'tor" << std::endl; 
-
 		this->close(false);
 	}
 	

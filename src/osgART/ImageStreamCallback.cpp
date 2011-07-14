@@ -25,13 +25,12 @@
 
 #include "osgART/ImageStreamCallback"
 
-
-
 namespace osgART {
 
 
 ImageStreamCallback::ImageStreamCallback(osg::ImageStream* imagestream)
-	: _imagestream(imagestream), _framenumber(-1)
+	: _imagestream(imagestream)
+	, _framenumber(-1)
 {
 }
 
@@ -55,7 +54,7 @@ void ImageStreamCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
 #if (OPENSCENEGRAPH_SOVERSION > 41)
 			_imagestream->update(nv);
 #else
-			_imagestream->update();
+			#error Unsupported version of OpenSceneGraph
 #endif
 			
 			_framenumber = nv->getFrameStamp()->getFrameNumber();

@@ -145,7 +145,8 @@ SSTT_Target::SSTT_Target(sstt_tracker* tracker)
 	: osgART::Marker(), _target(0L)
 {
 
-	if (sstt_tracker_create_target( tracker, &_target ) != 0) {
+	if (sstt_tracker_create_target( tracker, &_target ) != 0) 
+	{
 		osg::notify() << "SSTT Tracker: Error in sstt_target_create" << std::endl;
 		return;
 	}	

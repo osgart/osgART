@@ -1,6 +1,6 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - ARToolKit for OpenSceneGraph 
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
  * Portions Copyright (C) 2005-2007 ARToolworks Inc
  *
@@ -38,8 +38,6 @@
 #include "osgART/VideoConfig"
 
 #include <sstt/sstt.h>
-
-
 
 class SSTT_Video : public osgART::Video {
 
@@ -119,13 +117,12 @@ SSTT_Video::SSTT_Video()
 {
 }
 
-SSTT_Video::SSTT_Video(const SSTT_Video &, const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/) {
+SSTT_Video::SSTT_Video(const SSTT_Video &, const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/) 
+{
 }
 
-SSTT_Video::~SSTT_Video() {
-	
-	osg::notify(osg::WARN) << "SSTT_Video: destructor" << std::endl;
-
+SSTT_Video::~SSTT_Video() 
+{
 	this->close(false);
 }
 
@@ -182,23 +179,25 @@ SSTT_Video::open()
 
 }
 
-void SSTT_Video::close(bool waitForThread) {
-	
-	osg::notify(osg::WARN) << "SSTT_Video: close" << std::endl;
-
+void 
+SSTT_Video::close(bool waitForThread) 
+{
 	sstt_capture_stop(_capture);
-
 }
 
-void SSTT_Video::play() {
+void
+SSTT_Video::play() {
 	osg::ImageStream::play();
 }
 
-void SSTT_Video::pause() {
+void
+SSTT_Video::pause() {
 	osg::ImageStream::pause();
 }
 
-void SSTT_Video::update(osg::NodeVisitor* nv) {
+void
+SSTT_Video::update(osg::NodeVisitor* nv) 
+{
 
 	if (0 == _capture) 
 	{
@@ -206,7 +205,7 @@ void SSTT_Video::update(osg::NodeVisitor* nv) {
 	}
 	
 	sstt_image probe;
-	sstt_capture_get_image(_capture,&probe,0);
+	sstt_capture_get_image( _capture, &probe, SSTT_IMAGE_BGR24 );
 
 	if (probe.frame != this->getModifiedCount()) 
 	{
@@ -224,9 +223,6 @@ osgART::VideoConfiguration* SSTT_Video::getVideoConfiguration()
 	return &_config;
 }
 
-
-
 // initializer for dynamic loading
 osgART::PluginProxy<SSTT_Video> g_sstt_video("video_sstt");
-
 

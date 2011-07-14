@@ -95,10 +95,6 @@ namespace osgART {
 				0, _image->getPixelFormat(), 
 				_image->getDataType(), 0);
 
-			std::ofstream f("c:\\bob.txt");
-			f << "image: " << _image->s() << "x" << _image->t() << ", tex: " << (float)equalOrGreaterPowerOfTwo((unsigned int)_image->s()) << "x" << (float)equalOrGreaterPowerOfTwo((unsigned int)_image->t()) << std::endl;
-			f.close();
-
 		}
 		
 		/*virtual */ 
@@ -106,13 +102,8 @@ namespace osgART {
 		Texture2DCallback::subload(const osg::Texture2D& texture, osg::State& state) const 
 		{
 			
-			
-			
-			//const osg::Image* _image = texture.getImage();
-
 			osg::Image* _image = const_cast<osg::Image*>(texture.getImage());
 			osgART::Video* vid = dynamic_cast<osgART::Video*>(_image);
-			
 			
 			if (vid) {
 
