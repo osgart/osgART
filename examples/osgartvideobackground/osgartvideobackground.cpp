@@ -49,14 +49,20 @@ osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = 
 
 int main(int argc, char* argv[]) 
 {
+	// parse arguments
+	osg::ArgumentParser args(&argc,argv);
+	
+	std::string videoName;
+	std::string videoConfig;
+		
+	while (args.read("--video",videoName)) {};
+	while (args.read("--config",videoConfig)) {};
 
 	// preload the video
-	int _video_id = osgART::PluginManager::instance()->load("osgart_video_sstt");
+	int _video_id = osgART::PluginManager::instance()->load("osgart_video_" + videoName);
 	
 	// Set up the osgART viewer (a wrapper around osgProducer or osgViewer).
 	osgViewer::Viewer viewer;
-
-	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
@@ -80,11 +86,12 @@ int main(int argc, char* argv[])
 	}
 
 	// found video - configure now
-	osgART::VideoConfiguration* _config = video->getVideoConfiguration();
+	osgART::VideoConfiguration* config = video->getVideoConfiguration();
 
 	// if the configuration is existing
-	if (_config) 
+	if (config) 
 	{
+		config->deviceconfig = videoConfig;
 		// it is possible to configure the plugin before opening it
 
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -104,7 +111,7 @@ int main(int argc, char* argv[])
 
 
 	// attach a stats handler
-	video->setStats(new osg::Stats("artoolkit2_video"));
+	video->setStats(new osg::Stats("osgART video " + videoName));
 
 	
 	// Creating a video background
