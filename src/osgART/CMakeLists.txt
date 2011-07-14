@@ -57,6 +57,8 @@ add_library(${lib_name} SHARED ${lib_srcs} ${lib_hdrs})
 # additional libs
 set(addon_libs)
 
+#message(STATUS "OSG: ${OPENSCENEGRAPH_VERSION}")
+
 if (WIN32)
 	# some target properties
 	set_target_properties(${lib_name} 
@@ -99,6 +101,9 @@ target_link_libraries(${lib_name}
 	${OPENGL_LIBRARY} 	
 	${addon_libs}
 	)	
+	
+set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
+
 
 add_subdirectory(Tracker)
 add_subdirectory(Video)

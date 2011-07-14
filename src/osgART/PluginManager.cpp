@@ -29,30 +29,33 @@
 #include <osgDB/FileUtils>
 
 #include <sstream>
+#include <cstdlib>
 
 namespace osgART {
 
-	PluginManager::PluginManager() : osg::Referenced(), m_id(0)
+	PluginManager::PluginManager() 
+	: osg::Referenced()
+	, m_id(0)
 	{
 			osgDB::appendPlatformSpecificResourceFilePaths(osgDB::getDataFilePathList());
 			osgDB::appendPlatformSpecificLibraryFilePaths(osgDB::getLibraryFilePathList());
 
 			osgDB::FilePathList& fpl = osgDB::Registry::instance()->getDataFilePathList();
-
-			osgDB::appendPlatformSpecificResourceFilePaths(fpl);
-
-			fpl.push_front("/usr/share/osgART");
-			fpl.push_front("/usr/local/share/osgART");
-			fpl.push_front("../share/osgART");
-
-			osg::notify() << "Added osgART specific paths" << std::endl;
+			
+			// only do if environment variable exists
+			if (getenv("OSGART_PLUGIN_DIR"))
+			{
+				osgDB::getLibraryFilePathList().push_front(getenv("OSGART_PLUGIN_DIR"));
+				osg::notify() << "Added osgART specific paths" << std::endl;
+			}
 	}
 
 	PluginManager::~PluginManager()
 	{
 	}
 
-	int PluginManager::add(const std::string& name, osg::Referenced* ref)
+	int 
+	PluginManager::add(const std::string& name, osg::Referenced* ref)
 	{
 		this->m_plugininterfaces[m_id] = ref;
 		this->m_plugintags[m_id] = name;
@@ -62,12 +65,14 @@ namespace osgART {
 		return m_id - 1;
 	}
 
-	osg::Referenced* PluginManager::operator[](int identifier)
+	osg::Referenced* 
+	PluginManager::operator[](int identifier)
 	{
 		return this->get(identifier);
 	}
 
-	osg::Referenced* PluginManager::get(int id)
+	osg::Referenced* 
+	PluginManager::get(int id)
 	{
 		if (m_plugininterfaces.find(id) == m_plugininterfaces.end())
 		{
@@ -79,7 +84,8 @@ namespace osgART {
 	}
 
 
-	PluginManager* PluginManager::instance(bool erase /* = false */) 
+	PluginManager* 
+	PluginManager::instance(bool erase /* = false */) 
 	{
 		
 		static osg::ref_ptr<PluginManager> s_pluginmanager = new PluginManager();
@@ -92,7 +98,8 @@ namespace osgART {
 		return s_pluginmanager.get();
 	}
 
-	int PluginManager::load(const std::string& pluginname, bool resolveName /*= true*/)
+	int 
+	PluginManager::load(const std::string& pluginname, bool resolveName /*= true*/)
 	{
 		std::string localLibraryName = pluginname;
 

@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 {
 
 	// preload the video
-	int _video_id = osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
+	int _video_id = osgART::PluginManager::instance()->load("osgart_video_sstt");
 	
 	// Set up the osgART viewer (a wrapper around osgProducer or osgViewer).
 	osgViewer::Viewer viewer;

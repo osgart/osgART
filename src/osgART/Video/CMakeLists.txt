@@ -6,3 +6,4 @@ endif(ARTOOLKIT2_FOUND)
 
 add_subdirectory(DummyImage)
 add_subdirectory(VideoInput)
+add_subdirectory(SSTT)

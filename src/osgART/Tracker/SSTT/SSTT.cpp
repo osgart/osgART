@@ -78,7 +78,7 @@ public:
 		osg::Matrixf temp_projection;
 
 		/* update the projection matrix */
-		sstt_calibration_gl_projection( _calibration, temp_projection.ptr() );
+		sstt_calibration_get_projection( _calibration, temp_projection.ptr(), 0 );
 
 		_projection = temp_projection;
 
@@ -98,7 +98,7 @@ class SSTT_Target : public osgART::Marker
 	
 public:
 
-	SSTT_Target();
+	SSTT_Target(sstt_tracker* tracker);
 
 	void init(const std::string& config);
 
@@ -141,9 +141,14 @@ public:
 /* Implementation */
 
 
-SSTT_Target::SSTT_Target() 
+SSTT_Target::SSTT_Target(sstt_tracker* tracker) 
 	: osgART::Marker(), _target(0L)
 {
+
+	if (sstt_tracker_create_target( tracker, &_target ) != 0) {
+		osg::notify() << "SSTT Tracker: Error in sstt_target_create" << std::endl;
+		return;
+	}	
 }
 
 
@@ -185,11 +190,6 @@ SSTT_Target::init(const std::string& config)
 		osg::notify() << "SSTT Tracker: Target image is " << inputImage->s() << "x" << inputImage->t() << ", " << osg::Image::computeNumComponents(inputImage->getPixelFormat()) << " components"  << std::endl;
 
 	}
-
-	if (sstt_target_create( &_target, SSTT_TARGET_TEXTURERECTANGLE ) != 0) {
-		osg::notify() << "SSTT Tracker: Error in sstt_target_create" << std::endl;
-		return;
-	}
 	
 	if (sstt_target_init( _target) != 0) {
 		osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
@@ -202,14 +202,14 @@ SSTT_Target::init(const std::string& config)
 	}
 
 	/* set some sane default parameters */
-	sstt_target_set_parameter(_target, SSTT_TARGET_KALMANCORNER, 1.0);
+	sstt_target_set_parameter_i(_target, SSTT_TARGET_KALMANCORNER, 1.0);
 	//sstt_target_set_parameter(_target, SSTT_TARGET_KALMANPOSE, 0.0);
-	sstt_target_set_parameter(_target, SSTT_TARGET_SUBPIXREFINE, 1.0);
+	sstt_target_set_parameter_i(_target, SSTT_TARGET_SUBPIXREFINE, 1.0);
 	//sstt_target_set_parameter(_target, SSTT_TARGET_EQUALIZEHISTOGRAM, 0.0);
 	//sstt_target_set_parameter(_target, SSTT_TARGET_BOUNDARY, 1.0);
 
 	if (tokens.size() > 3) {
-		sstt_target_set_parameter(_target, SSTT_TARGET_CONFIDENCE_THRESHOLD, atof(tokens[3].c_str()));
+		sstt_target_set_parameter_f(_target, SSTT_TARGET_CONFIDENCE_THRESHOLD, atof(tokens[3].c_str()));
 	}
 
 	sstt_image in_img;
@@ -237,10 +237,10 @@ SSTT_Target::update()
 	{
 
 		/* set the confidence of the marker: normalised 0-1 */
-		_confidence = target_info->confidence;
+		_confidence = target_info->confidence[0];
 
 		/* parameterize it with our own confidence threshold */
-		_valid = target_info->confidence > target_info->confidence_threshold;
+		_valid = _confidence > target_info->confidence_threshold;
 
 		if (_valid) {
 			std::cout << "Visible" << std::endl;
@@ -283,6 +283,7 @@ SSTT_Tracker::SSTT_Tracker() :
 	_capture(0L),
 	_modifiedCount(0)
 {
+	sstt_tracker_create( &_tracker, SSTT_TRACKER_TEMPLATE );
 
 	/* initialize the SSTT API - it is save to call this multiple times */
 	sstt_init(0,0);
@@ -317,14 +318,13 @@ SSTT_Tracker::setImage(osg::Image* image)
 
 	if (_tracker == 0L) {
 		/* create a tracker object */
-		sstt_tracker_create( &_tracker );
 		sstt_capture_create( &_capture, SSTT_CAPTURE_EXTERNAL );
 		
 		if (sstt_tracker_init(_tracker, image->s(), image->t()) != 0) {
 			osg::notify() << "SSTT Tracker: Error in sstt_tracker_init" << std::endl;
 		}
 
-		sstt_tracker_set_parameter( _tracker, SSTT_TRACKER_PREPROCESS, 1);
+		sstt_tracker_set_parameter_i( _tracker, SSTT_TRACKER_PREPROCESS, 1);
 
 	}
 
@@ -336,7 +336,7 @@ inline osgART::Marker*
 SSTT_Tracker::addMarker(const std::string& config)
 {
 
-	SSTT_Target* target = new SSTT_Target;
+	SSTT_Target* target = new SSTT_Target(this->_tracker);
 
 	target->init(config);
 
@@ -387,17 +387,8 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 			}
 		}
 
-		/* this converts the image from the GL version to its internal format 
-		 * and attaches it to a capture object - assumption here: its BGR format
-		 * with an unaligned buffer
-		 */
-		sstt_capture_set_image( _capture, &image );
-
-		
-
-
 		/* now we can update the tracker from the capture object */
-		if (sstt_tracker_update( _tracker, _capture ) != 0) {
+		if (sstt_tracker_update( _tracker, &image, 0 ) != 0) {
 			osg::notify() << "SSTT Tracker: Error in sstt_tracker_update" << std::endl;
 		}
 
