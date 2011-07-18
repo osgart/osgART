@@ -1,8 +1,6 @@
-set(module_name osgart_tracker_stbtracker)
+set(module_name osgart_tracker_stbnx)
 
-
-
-include_directories(${STBTRACKER_INCLUDE_DIR})
+include_directories(${STBNX_INCLUDE_DIRS})
 
 add_library(${module_name} MODULE StbTracker.cpp)
 
@@ -12,7 +10,7 @@ set_target_properties(${module_name}
 	PROJECT_LABEL "Tracker Plugin ${module_name}")
 
 target_link_libraries(${module_name}
-	${STBTRACKER_LIBRARIES}
+	${STBNX_LIBRARIES}
 	osgART
 )
 

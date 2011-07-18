@@ -3,23 +3,22 @@
 # 
  
 find_package(ARToolKit2)
-find_package(SSTT)
-find_package(StbTracker)
-find_package(OPIRA)
-
-
 if(ARTOOLKIT2_FOUND)
 	add_subdirectory(ARToolKit)
-endif(ARTOOLKIT2_FOUND)
+endif()
 
+find_package(SSTT)
 if(SSTT_FOUND)
 	add_subdirectory(SSTT)
-endif(SSTT_FOUND) 
+endif() 
 
-if (STBTRACKER_FOUND)
-	add_subdirectory(StbTracker)
-endif(STBTRACKER_FOUND)
+find_package(StbNX)
+message(STATUS "${StbNX_FOUND}")
+if (StbNX_FOUND)
+	add_subdirectory(StbNX)
+endif()
 
+find_package(OPIRA)
 if (OPIRA_FOUND)
-add_subdirectory(OPIRA)
-endif(OPIRA_FOUND)
+	add_subdirectory(OPIRA)
+endif()
