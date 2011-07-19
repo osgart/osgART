@@ -16,5 +16,6 @@ target_link_libraries(${exe_name}
 	${OSGDB_LIBRARY}
 	${OSGGA_LIBRARY}	
 	${OSGVIEWER_LIBRARY}
-)
+	)
+	
 install_osgart_example(${exe_name})

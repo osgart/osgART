@@ -50,15 +50,16 @@ int main(int argc, char* argv[])  {
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
-	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+	
+	
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
 
 
 	// preload the video and tracker
-	int _video_id = osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_stbtracker");
+	int _video_id = osgART::PluginManager::instance()->load("osgart_video_sstt");
+	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_stbnx");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = 
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])  {
 
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	calibration->load("Data/QuickCamUltraVision.cal");
+	calibration->load("data/WebCam.cal");
 
 	tracker->setImage(video.get());
 
