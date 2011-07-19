@@ -47,8 +47,6 @@
 #include <StbTracker/Features/Camera.h>
 #include <StbTracker/Util/ImageTool.h>
 
-
-#include <iostream>
 #include <sstream>
 #include <algorithm>
 
@@ -98,11 +96,11 @@ public:
 		mCamera = StbTracker::Camera::createFromFile(filename.c_str());
 		
 		if (mCamera == 0L) {
-			std::cout << "CalibrationStb: Error loading camera calibration from " << filename << std::endl;
+			osg::notify(osg::FATAL) << "CalibrationStb: Error loading camera calibration from " << filename << std::endl;
 			return false;
 		}
 
-		std::cout << "CalibrationStb: Loaded camera calibration from " << filename << std::endl;
+		osg::notify() << "CalibrationStb: Loaded camera calibration from " << filename << std::endl;
 
 		// TODO: configurable near and far clipping planes
 		float P[16];
@@ -221,7 +219,7 @@ void TrackerStb::registerDetectors() {
 		if (markerType == StbTracker::MarkerSimpleId::getClassType()) {
 			
 			if (tracker->getFeature(StbTracker::MarkerDetectorSimpleIdFixed::getClassType()) == NULL) {
-				std::cout << "TrackerStb: Adding a SimpleId Marker Detector" << std::endl;
+				osg::notify() << "TrackerStb: Adding a SimpleId Marker Detector" << std::endl;
 				StbTracker::MarkerDetectorSimpleIdFixed* markerDetector = StbTracker::MarkerDetectorSimpleIdFixed::create();
 				markerDetector->setBorderWidth(0.125f);
 				markerDetector->setLearnNewMarkers(false);
@@ -231,7 +229,7 @@ void TrackerStb::registerDetectors() {
 		} else if (markerType == StbTracker::MarkerFrameSimpleId::getClassType()) {
 			
 			if (tracker->getFeature(StbTracker::MarkerDetectorFrameSimpleIdFixed::getClassType()) == NULL) {
-				std::cout << "TrackerStb: Adding a FrameSimpleId Marker Detector" << std::endl;
+				osg::notify() << "TrackerStb: Adding a FrameSimpleId Marker Detector" << std::endl;
 				StbTracker::MarkerDetector* markerDetector = StbTracker::MarkerDetectorFrameSimpleIdFixed::create(); // the frame marker detector has only fixed-point implementation
 				//markerDetector->setThreshold(threshold);
 				markerDetector->setBorderWidth(0.04545f);
@@ -240,7 +238,7 @@ void TrackerStb::registerDetectors() {
 		
 		} else {
 
-			std::cout << "TrackerStb: Unhandled marker type when choosing a MarkerDetector" << std::endl;
+			osg::notify() << "TrackerStb: Unhandled marker type when choosing a MarkerDetector" << std::endl;
 			return;
 
 		}
@@ -268,8 +266,9 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 
 	std::vector<std::string> tokens = osgART::tokenize(config, ";");
 
-	if (tokens.size() < 2) {
-		std::cout << "TrackerStb: Invalid marker configuration string" << std::endl;
+	if (tokens.size() < 2) 
+	{
+		osg::notify(osg::FATAL) << "TrackerStb: Invalid marker configuration string" << std::endl;
 		return 0L;
 	}
 	
@@ -288,7 +287,7 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 			ss << "SimpleID_" << id;
 			std::string markerName = ss.str();
 
-			std::cout << "TrackerStb: Adding a SimpleID marker, ID=" << id << ", Size=" << size << " as '" << markerName << "'" << std::endl;
+			osg::notify() << "TrackerStb: Adding a SimpleID marker, ID=" << id << ", Size=" << size << " as '" << markerName << "'" << std::endl;
 
 			// StbTracker's marker
 			StbTracker::Marker* marker = StbTracker::MarkerSimpleId::create(id, size);
@@ -315,7 +314,7 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 			ss << "FrameSimpleID_" << id;
 			std::string markerName = ss.str();
 
-			std::cout << "TrackerStb: Adding a FrameSimpleID marker, ID=" << id << ", Size=" << size << " as '" << markerName << "'" << std::endl;
+			osg::notify() << "TrackerStb: Adding a FrameSimpleID marker, ID=" << id << ", Size=" << size << " as '" << markerName << "'" << std::endl;
 
 			// StbTracker's marker
 			StbTracker::Marker* marker = StbTracker::MarkerFrameSimpleId::create(id, size);
@@ -331,7 +330,7 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 		
 		} else {
 
-			std::cout << "TrackerStb: Found " << tokens.size() << " tokens in config string, expecting 3" << std::endl;
+			osg::notify() << "TrackerStb: Found " << tokens.size() << " tokens in config string, expecting 3" << std::endl;
 
 		}
 
@@ -343,7 +342,7 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 
 	} else {
 
-		std::cout << "TrackerStb: Marker type " << markerType << " not yet supported" << std::endl;
+		osg::notify() << "TrackerStb: Marker type " << markerType << " not yet supported" << std::endl;
 
 	}
 
@@ -362,7 +361,7 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 				tracker->registerFeature(calib->getStbCamera());
 			}
 		} else {
-			std::cout << "TrackerStb: No camera calibration file was loaded" << std::endl;	
+			osg::notify() << "TrackerStb: No camera calibration file was loaded" << std::endl;	
 			return;
 		}
 	}
@@ -388,8 +387,9 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 	}
 	
 	// Update the tracker
-	if (!tracker->update(image)) {
-		std::cout << "TrackerStb: Error updating tracker with image" << std::endl;
+	if (!tracker->update(image)) 
+	{
+		osg::notify(osg::WARN) << "TrackerStb: Error updating tracker with image" << std::endl;
 		return;
 	}
 

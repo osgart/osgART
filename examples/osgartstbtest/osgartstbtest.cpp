@@ -52,6 +52,7 @@ int main(int argc, char* argv[])  {
 	osgViewer::Viewer viewer;
 	
 	
+	//viewer.setWindowTitle("osgART - StbNX demo");
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
