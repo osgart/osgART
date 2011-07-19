@@ -366,10 +366,26 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 			return;
 		}
 	}
-
+	
+	
 	// Update the image
 	if (!_imagesource.valid()) return;
-	image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
+	
+	// use image format to compute components (assume we always use BGR(A) or grayscale)
+	switch (osg::Image::computeNumComponents(_imagesource->getPixelFormat()))
+	{
+		case 1:
+			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_LUM);
+			break;
+		case 3:
+			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGR);
+			break;
+		case 4:
+			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
+			break;
+		default:
+		break;
+	}
 	
 	// Update the tracker
 	if (!tracker->update(image)) {
