@@ -46,20 +46,34 @@ osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = 
 	return _layer;
 }
 
-int main(int argc, char* argv[])  {
+int main(int argc, char* argv[])  
+{
+	
+	osg::ArgumentParser args(&argc,argv);
+
+	std::string videoName = "sstt";
+
+	while(args.read("--video",videoName)) {}
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
 	
-	
-	//viewer.setWindowTitle("osgART - StbNX demo");
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
-
+	
+	viewer.realize();
+	
+	osgViewer::Viewer::Windows windows;
+	viewer.getWindows(windows);
+	
+	for (osgViewer::Viewer::Windows::iterator wi = windows.begin(); wi != windows.end(); ++wi)
+	{
+		(*wi)->setWindowName("osgART - StbNX demo");
+	}
 
 	// preload the video and tracker
-	int _video_id = osgART::PluginManager::instance()->load("osgart_video_sstt");
+	int _video_id = osgART::PluginManager::instance()->load("osgart_video_" + videoName);
 	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_stbnx");
 
 	// Load a video plugin.
