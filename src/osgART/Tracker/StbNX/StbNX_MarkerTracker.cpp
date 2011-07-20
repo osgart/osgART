@@ -412,5 +412,5 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 }
 
 // initializer for dynamic loading
-osgART::PluginProxy<TrackerStb> g_stbtracker("tracker_stbtracker");
+osgART::PluginProxy<TrackerStb> g_stbtracker("osgart_tracker_stbnx");
 

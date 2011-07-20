@@ -167,14 +167,14 @@ int main(int argc, char* argv[])  {
 		
 		if (tokens[0] == "tracker" && tokens.size() == 2)
 		{
-			int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_" + tokens[1]);
-			tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(_tracker_id));
+			osgART::PluginManager::instance()->load("osgart_tracker_" + tokens[1]);
+			tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
 		}
 		
 		if (tokens[0] == "video" && tokens.size() == 2)
 		{
-			int _video_id = osgART::PluginManager::instance()->load("osgart_video_" + tokens[1]);
-			video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
+			osgART::PluginManager::instance()->load("osgart_video_" + tokens[1]);
+			video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + tokens[1]));
 		}
 		
 		if (tokens[0] == "calibration" && tokens.size() == 2)

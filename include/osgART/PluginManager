@@ -54,7 +54,7 @@ namespace osgART
 		/**
 		 * Returns an instance of a plugin manager as it is 
 		 * singleton.
-		 * \param erase exlicitly deletes the instance of the plugin manager
+		 * \param erase explicitly deletes the instance of the plugin manager
 		 * \return instance of the PluginManager or 0 if erase was true
 		 */
 		static PluginManager* instance(bool erase = false);
@@ -63,47 +63,37 @@ namespace osgART
 		 * Load an external plugin. The plugin will be loaded and 
 		 * stays in memory unless explicitly unloaded.
 		 * \param filename short version or complete path (use \param resolveName with false)
-		 * \return -1 if failed, otherwise this is the ID of the tracker loaded
+		 * \return true if plugin exists
 		 */
-		int load(const std::string& pluginname, bool resolveName = true);
+		bool load(const std::string& pluginname, bool resolveName = true);
 		
 		/**
 		 * Return a pointer to the plugin
 		 * \param identifier to get the plugin instance
-		 * \return 0 if unsuccessfull or a pointer to the plugin
+		 * \return 0 if unsuccessful or a pointer to the plugin
 		 */
-		osg::Referenced* get(int id);		
+		osg::Referenced* get(const std::string& name);		
 		
 		/**
 		 * Shorthand for the get method. 
 		 * \param identifier to get the plugin instance
-		 * \return 0 if unsuccessfull or a pointer to the plugin
+		 * \return 0 if unsuccessful or a pointer to the plugin
 		 */
-		osg::Referenced* operator[](int id);
+		osg::Referenced* operator[](const std::string& name);
 		
 		/**
 		 * Add a new instance of a dynamically loaded class
 		 * \param name identifier to retrieve the object
 		 * \param plugin pointer to the instantiated class
-		 * \return id of the loaded plugin
 		 */
-		int add(const std::string& name, osg::Referenced* plugin);
-		
-	
+		void add(const std::string& name, osg::Referenced* plugin);
+
 	protected:
 		
-		typedef std::deque< osg::ref_ptr<osgDB::DynamicLibrary> > PluginArray;
-		typedef std::map< int, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
-		typedef std::map< int, std::string > PluginTagMap;
-		
-		
-		PluginArray m_plugins;
+		typedef std::map< std::string, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
 		PluginInterfaceMap m_plugininterfaces;
-		PluginTagMap m_plugintags;
 		
 	private:
-	
-		int m_id;
 	
 		PluginManager();
 		virtual ~PluginManager();

@@ -92,8 +92,9 @@ namespace osgART {
 	osgART::Video* Scene::addVideoBackground(  const std::string& v )
 	{
 
-		int _video_id = osgART::PluginManager::instance()->load(v);
-		_video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
+		osgART::PluginManager::instance()->load(v);
+		
+		_video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(v));
 
 		// check if an instance of the video stream could be started
 		if (!_video.valid()) 
@@ -131,8 +132,8 @@ namespace osgART {
 	osgART::Tracker* Scene::addTracker( const std::string& t )
 	{
 
-		int _tracker_id = osgART::PluginManager::instance()->load(t);
-		_tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(_tracker_id));
+		osgART::PluginManager::instance()->load(t);
+		_tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(t));
 
 		if (!_tracker.valid()) 
 		{

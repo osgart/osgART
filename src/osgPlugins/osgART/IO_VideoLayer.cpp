@@ -32,13 +32,14 @@ bool VideoLayer_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 	
 	osg::notify() << "Loading VideoLayer" << std::endl;
 
-	int _video_id;
+	std::string _video_id;
 	
 	if (fr[0].matchWord("connected_video")) {
 
-        if (fr[1].getInt(_video_id))
+        if (fr[1].getStr())
 		{
-	
+			_video_id = fr[1].getStr();
+				
 			osg::ref_ptr<osgART::Video> _video = 
 				dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
 

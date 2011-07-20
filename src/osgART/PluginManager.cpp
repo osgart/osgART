@@ -35,11 +35,7 @@ namespace osgART {
 
 	PluginManager::PluginManager() 
 	: osg::Referenced()
-	, m_id(0)
 	{
-			//osgDB::appendPlatformSpecificResourceFilePaths(osgDB::getDataFilePathList());
-			//osgDB::appendPlatformSpecificLibraryFilePaths(osgDB::getLibraryFilePathList());
-
 			osgDB::FilePathList& fpl = osgDB::Registry::instance()->getDataFilePathList();
 			
 			// only do if environment variable exists
@@ -54,33 +50,27 @@ namespace osgART {
 	{
 	}
 
-	int 
+	void 
 	PluginManager::add(const std::string& name, osg::Referenced* ref)
 	{
-		this->m_plugininterfaces[m_id] = ref;
-		this->m_plugintags[m_id] = name;
-
-		m_id++;
-
-		return m_id - 1;
+		this->m_plugininterfaces[name] = ref;
 	}
 
 	osg::Referenced* 
-	PluginManager::operator[](int identifier)
+	PluginManager::operator[]( const std::string& name)
 	{
-		return this->get(identifier);
+		return this->get(name);
 	}
 
 	osg::Referenced* 
-	PluginManager::get(int id)
+	PluginManager::get( const std::string& name )
 	{
-		if (m_plugininterfaces.find(id) == m_plugininterfaces.end())
+		if (m_plugininterfaces.find(name) == m_plugininterfaces.end())
 		{
-			osg::notify(osg::WARN) << "Plugin '" << id << "' unknown!" << std::endl;
-
+			osg::notify(osg::WARN) << "Plugin '" << name << "' unknown!" << std::endl;
 			return 0L;
 		}
-		return ((*m_plugininterfaces.find(id)).second.get());
+		return ((*m_plugininterfaces.find(name)).second.get());
 	}
 
 
@@ -98,9 +88,10 @@ namespace osgART {
 		return s_pluginmanager.get();
 	}
 
-	int 
+	bool 
 	PluginManager::load(const std::string& pluginname, bool resolveName /*= true*/)
 	{
+
 		std::string localLibraryName = pluginname;
 
 		std::string pathSeparator = 
@@ -109,8 +100,6 @@ namespace osgART {
 #else
 			std::string("/");
 #endif
-
-		int _old_id = m_id;
 
 		if (resolveName)
 		{
@@ -144,20 +133,12 @@ namespace osgART {
 		{
 			if ( lib = osgDB::DynamicLibrary::loadLibrary((*i) + pathSeparator + pluginDirName.str() + localLibraryName) )
 			{
-				m_plugins.push_back(lib);
-
-				// sanity check
-				if (m_id == _old_id) {
-					return -1;
-				}
-
-				return m_id - 1;
-				
+				return true;
 			}
 
 			i++;
 		}
 
-		return -1;
+		return false;
 	}
 }
