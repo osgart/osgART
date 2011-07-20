@@ -37,8 +37,8 @@ namespace osgART {
 	: osg::Referenced()
 	, m_id(0)
 	{
-			osgDB::appendPlatformSpecificResourceFilePaths(osgDB::getDataFilePathList());
-			osgDB::appendPlatformSpecificLibraryFilePaths(osgDB::getLibraryFilePathList());
+			//osgDB::appendPlatformSpecificResourceFilePaths(osgDB::getDataFilePathList());
+			//osgDB::appendPlatformSpecificLibraryFilePaths(osgDB::getLibraryFilePathList());
 
 			osgDB::FilePathList& fpl = osgDB::Registry::instance()->getDataFilePathList();
 			
