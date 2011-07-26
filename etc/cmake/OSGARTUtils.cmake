@@ -29,7 +29,7 @@ macro(install_osgart_plugin target)
 	
 	install(TARGETS ${target} 
 			RUNTIME DESTINATION bin
-			LIBRARY DESTINATION ${lib_libinstalldir}/osgPlugins-${OSG_VERSION_FULL}
+			LIBRARY DESTINATION ${lib_libinstalldir}/${OSGART_PLUGINS_PREFIX}
 			# LIBRARY DESTINATION ${lib_libinstalldir}
 			ARCHIVE DESTINATION lib
 			)

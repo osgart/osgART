@@ -73,12 +73,12 @@ int main(int argc, char* argv[])
 	}
 
 	// preload the video and tracker
-	int _video_id = osgART::PluginManager::instance()->load("osgart_video_" + videoName);
-	int _tracker_id = osgART::PluginManager::instance()->load("osgart_tracker_stbnx");
+	osgART::PluginManager::instance()->load("osgart_video_" + videoName);
+	osgART::PluginManager::instance()->load("osgart_tracker_stbnx");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = 
-		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
+		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(videoName));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 	video->open();
 
 	osg::ref_ptr<osgART::Tracker> tracker = 
-		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(_tracker_id));
+		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_stbnx"));
 
 	if (!tracker.valid()) 
 	{

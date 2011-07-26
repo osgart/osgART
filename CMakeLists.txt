@@ -24,7 +24,7 @@ set(OSGART_EXECUTABLE_TYPE)
 # some include
 include(OSGARTUtils)
 
-# Finding various packages
+# Find OpenSceneGraph + NodeKits
 find_package(OpenSceneGraph 2.8.0 REQUIRED osgUtil osgDB osgGA osgText osgViewer)
 
 # Find OpenGL
@@ -55,6 +55,7 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE PATH "Executables go here")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE PATH "Libraries go here")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE PATH "Libraries go here")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/staging CACHE PATH "Installation goes here")
 
 install(FILES
 	${CMAKE_SOURCE_DIR}/AUTHORS.txt
@@ -75,7 +76,7 @@ add_subdirectory(examples)
 # Build API docs / but only if Doxygen is available
 #
 find_package(Doxygen)
-if   (DOXYGEN_FOUND)
+if(DOXYGEN_FOUND)
 	option(OSGART_BUILD_APIDOC "Build API Documentation" OFF)
 	if   (OSGART_BUILD_APIDOC)
 		
@@ -96,8 +97,8 @@ if   (DOXYGEN_FOUND)
 			DESTINATION "share/osgART"
 			# COMPONENT "API Documentation" reenable when moving up to 2.6
 			)	
-	endif(OSGART_BUILD_APIDOC)
-endif(DOXYGEN_FOUND)
+	endif()
+endif()
 
 
 #
@@ -116,13 +117,13 @@ add_custom_target(uninstall
 # Optional packaging for osgART 2.0 SDK
 #
 option(OSGART_BUILD_PACKAGE "Build distribution packages" OFF)
-if   (OSGART_BUILD_PACKAGE)
+if(OSGART_BUILD_PACKAGE)
 	configure_file(
 		${CMAKE_SOURCE_DIR}/etc/cmake/Packaging.cmake.in
 		${CMAKE_BINARY_DIR}/.cpack/OSGARTPackaging.cmake	
 		@ONLY IMMEDIATE
 	)		
 	include(${CMAKE_BINARY_DIR}/.cpack/OSGARTPackaging.cmake)			
-endif (OSGART_BUILD_PACKAGE)
+endif()
 
 

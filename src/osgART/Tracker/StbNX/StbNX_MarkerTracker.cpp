@@ -29,8 +29,11 @@
 #include "osgART/Utils"
 #include "osgART/PluginManager"
 
+#include <StbCore/System.h>
 #include <StbCore/Image.h>
 #include <StbCore/Logger.h>
+
+#include <StbTracker/Base/System.h>
 #include <StbTracker/TrackerMain.h>
 #include <StbTracker/Base/Logger.h>
 #include <StbTracker/Base/TargetSingleMarker.h>
@@ -49,6 +52,9 @@
 
 #include <sstream>
 #include <algorithm>
+
+
+
 
 class StbLogger : public StbTracker::Logger {
 
@@ -412,6 +418,5 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 }
 
 // initializer for dynamic loading
-osgART::PluginProxy<TrackerStb> g_stbtracker("tracker_stbtracker");
-
+osgART::PluginProxy<TrackerStb> g_stbtracker("osgart_tracker_stbnx");
 
