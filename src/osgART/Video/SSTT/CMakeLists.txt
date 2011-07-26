@@ -1,9 +1,8 @@
 set(module_name osgart_video_sstt)
 
-find_package(SSTT)
-
-if(SSTT_FOUND)
-
+if(OSGART_WITH_SSTT)
+	find_package(SSTT)
+	
 	add_library(${module_name} MODULE SSTT.cpp)	
 
 		set_target_properties(${module_name}

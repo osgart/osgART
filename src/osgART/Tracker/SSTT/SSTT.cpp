@@ -423,6 +423,6 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 
 
 // initializer for dynamic loading
-osgART::PluginProxy<SSTT_Tracker> g_sstttracker("tracker_sstt");
+osgART::PluginProxy<SSTT_Tracker> g_sstttracker("osgart_tracker_sstt");
 
 

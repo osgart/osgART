@@ -224,5 +224,5 @@ osgART::VideoConfiguration* SSTT_Video::getVideoConfiguration()
 }
 
 // initializer for dynamic loading
-osgART::PluginProxy<SSTT_Video> g_sstt_video("video_sstt");
+osgART::PluginProxy<SSTT_Video> g_sstt_video("osgart_video_sstt");
 

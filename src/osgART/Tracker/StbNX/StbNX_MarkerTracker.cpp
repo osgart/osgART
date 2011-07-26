@@ -343,7 +343,6 @@ osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 		
 		if (tokens.size() == 3)
 		{
-			StbTracker::
 		}
 		
 		
