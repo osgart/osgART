@@ -70,6 +70,7 @@ namespace osgART {
 			osg::notify(osg::WARN) << "Plugin '" << name << "' unknown!" << std::endl;
 			return 0L;
 		}
+
 		return ((*m_plugininterfaces.find(name)).second.get());
 	}
 
@@ -131,7 +132,11 @@ namespace osgART {
 
 		while (i != osgDB::Registry::instance()->getLibraryFilePathList().end())
 		{
+#if defined(_WINDOWS)
+			if ( lib = osgDB::DynamicLibrary::loadLibrary((*i) + pathSeparator + localLibraryName) )
+#else
 			if ( lib = osgDB::DynamicLibrary::loadLibrary((*i) + pathSeparator + pluginDirName.str() + localLibraryName) )
+#endif
 			{
 				return true;
 			}

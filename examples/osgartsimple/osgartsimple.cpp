@@ -43,7 +43,7 @@ int main(int argc, char* argv[])  {
 
 
 	osgART::Scene* scene = new osgART::Scene();
-	scene->addVideoBackground("osgart_video_videoinput");
+	scene->addVideoBackground("osgart_video_artoolkit2");
 	scene->addTracker("osgart_tracker_artoolkit2");
 	scene->addTrackedTransform("single;data/patt.hiro;80;0;0")->addChild(osgART::testCube());
 
