@@ -81,7 +81,6 @@ public:
 	}
 };
 
-
 class CalibrationStb : public osgART::Calibration {
 
 private:
@@ -256,7 +255,8 @@ void TrackerStb::registerDetectors() {
 }
 
 
-inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
+inline 
+osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 
 	// Format: type,...
 	
@@ -339,7 +339,13 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 			osg::notify() << "TrackerStb: Found " << tokens.size() << " tokens in config string, expecting 3" << std::endl;
 
 		}
-
+	} else if (markerType == "NFT2") {
+		
+		if (tokens.size() == 3)
+		{
+		}
+		
+		
 	} else if (markerType == "DataMatrix") {
 
 	} else if (markerType == "Grid") {
@@ -355,7 +361,6 @@ inline osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 	return 0L;
 
 }
-
 
 
 inline void TrackerStb::update(osg::NodeVisitor* nv) {

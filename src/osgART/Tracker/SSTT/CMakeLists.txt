@@ -2,21 +2,29 @@
 # This module requires at least SSTT 2010.04 with respective export system
 #
 
-set(module_name osgart_tracker_sstt)
 
-add_library(${module_name} MODULE SSTT.cpp)
+if(OSGART_WITH_SSTT)
+	
+	set(module_name osgart_tracker_sstt)
 
-find_package(SSTT)
+	link_directories(${SSTT_LIB_DIR})
 
-set_target_properties(${module_name}
-	PROPERTIES
-	PREFIX ""
-	PROJECT_LABEL "Tracker Plugin ${module_name}")
+	add_library(${module_name} MODULE SSTT.cpp)
 
+	find_package(SSTT)
 
-target_link_libraries(${module_name}
-	${SSTT_LIBRARIES}
-	osgART
-)
-
-install_osgart_plugin(${module_name})
+	set_target_properties(${module_name}
+		PROPERTIES
+		PREFIX ""
+		PROJECT_LABEL "Tracker Plugin ${module_name}"
+		)
+	
+	target_link_libraries(${module_name}
+		${SSTT_LIBRARIES}
+		osgART
+		)
+		
+	message(STATUS "${SSTT_LIB_DIR}")
+	
+	install_osgart_plugin(${module_name})
+endif()

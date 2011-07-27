@@ -65,6 +65,15 @@ install(FILES
 	DESTINATION "share/osgART" 
 )
 
+
+#
+# Options
+#
+option(OSGART_WITH_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
+option(OSGART_WITH_STBNX "Build with StbNX (StudierStube NX)" OFF)
+
+
+
 #
 # Dive into the subdirectories
 #
