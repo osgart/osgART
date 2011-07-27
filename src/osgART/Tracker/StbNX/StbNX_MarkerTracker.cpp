@@ -270,7 +270,7 @@ osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 	// Type=Grid
 	// Type=Split
 
-	std::vector<std::string> tokens = osgART::tokenize(config, ";");
+	std::vector<std::string> tokens = osgART::tokenize(config, ",");
 
 	if (tokens.size() < 2) 
 	{

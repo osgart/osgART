@@ -52,8 +52,14 @@ int main(int argc, char* argv[])
 	osg::ArgumentParser args(&argc,argv);
 
 	std::string videoName = "sstt";
+	std::string trackerName = "stbnx";
+	std::string trackerConfig = "NFT2,soccer/soccerSet,1";
+	std::string trackerNameFeature = "stbnx_nft2";
+	
+	//std::string trackerConfig = "ID,0,80";
 
-	while(args.read("--video",videoName)) {}
+	//while(args.read("--video",videoName)) {}
+	//while(args.read("--tracker",trackerName,trackerConfig)) {}
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
@@ -78,7 +84,7 @@ int main(int argc, char* argv[])
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = 
-		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(videoName));
+		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + videoName));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
@@ -95,7 +101,7 @@ int main(int argc, char* argv[])
 	video->open();
 
 	osg::ref_ptr<osgART::Tracker> tracker = 
-		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_stbnx"));
+		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + trackerNameFeature));
 
 	if (!tracker.valid()) 
 	{
@@ -119,12 +125,27 @@ int main(int argc, char* argv[])
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
 
-	for (int i = 0; i < 32; i++) {
+/*
+	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(trackerConfig);
+	marker->setActive(true);
+
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
+	
+	osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
+	arTransform->addChild(osgART::testCube(20, c));
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+	cam->addChild(arTransform.get());
+*/
+
+/*	for (int i = 0; i < 32; i++) {
 
 		std::stringstream ss;
 		//ss << "ID;" << i << ";20";
-		ss << "Frame;" << i << ";80";
+		//ss << "Frame;" << i << ";80";
 
+		ss << trackerConfig;
+		
 		osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(ss.str());
 		marker->setActive(true);
 
@@ -137,6 +158,7 @@ int main(int argc, char* argv[])
 		cam->addChild(arTransform.get());
 
 	}
+*/
 
 	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
