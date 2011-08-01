@@ -154,4 +154,4 @@ void DummyImageVideo::close() { }
 
 
 
-osgART::PluginProxy<DummyImageVideo> g_dummyimagevideo("video_dummyimage");
+osgART::PluginProxy<DummyImageVideo> g_dummyimagevideo("osgart_video_dummyimage");

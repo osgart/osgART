@@ -51,15 +51,16 @@ int main(int argc, char* argv[])
 	
 	osg::ArgumentParser args(&argc,argv);
 
-	std::string videoName = "sstt";
+	std::string videoName = "dummyimage";
 	std::string trackerName = "stbnx";
-	std::string trackerConfig = "NFT2,soccer/soccerSet,1";
+	std::string trackerConfig = "single,soccer/soccerSet,soccer,SOOCER,soccerSet_0,1";
 	std::string trackerNameFeature = "stbnx_nft2";
 	
 	//std::string trackerConfig = "ID,0,80";
 
-	//while(args.read("--video",videoName)) {}
-	//while(args.read("--tracker",trackerName,trackerConfig)) {}
+	while(args.read("--video",videoName)) {}
+	while(args.read("--tracker",trackerName,trackerConfig)) {}
+	while(args.read("--tracker_config",trackerConfig)) {}
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
@@ -78,14 +79,16 @@ int main(int argc, char* argv[])
 		(*wi)->setWindowName("osgART - StbNX demo");
 	}
 
+
 	// preload the video and tracker
 	osgART::PluginManager::instance()->load("osgart_video_" + videoName);
 	osgART::PluginManager::instance()->load("osgart_tracker_stbnx");
-
+	
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = 
 		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + videoName));
 
+	
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
 	{   
@@ -94,14 +97,18 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}
 	
+	
+	OSG_NOTICE << "Now opening the video" << std::endl;
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
 	video->open();
 
+
 	osg::ref_ptr<osgART::Tracker> tracker = 
 		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + trackerNameFeature));
+
 
 	if (!tracker.valid()) 
 	{
@@ -125,10 +132,10 @@ int main(int argc, char* argv[])
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
 
-/*
+
 	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(trackerConfig);
 	marker->setActive(true);
-
+/*
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
 	
