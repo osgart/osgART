@@ -87,6 +87,12 @@ namespace osgART
 		 * \param plugin pointer to the instantiated class
 		 */
 		void add(const std::string& name, osg::Referenced* plugin);
+		
+		/**
+		 * Remove a plugin interface
+		 * \param plugin interface to be removed
+		 */
+		void remove(osg::Referenced* plugin);
 
 	protected:
 		
@@ -115,6 +121,12 @@ namespace osgART
 		PluginProxy(const std::string& name) : _plugininterface(new T)
 		{			
 			PluginManager::instance()->add(name, _plugininterface.get());
+		}
+		
+		~PluginProxy()
+		{
+			PluginManager::instance()->remove(_plugininterface.get());
+			_plugininterface = 0;
 		}
 		
 	protected:

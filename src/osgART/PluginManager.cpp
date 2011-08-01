@@ -54,6 +54,14 @@ namespace osgART {
 	PluginManager::add(const std::string& name, osg::Referenced* ref)
 	{
 		this->m_plugininterfaces[name] = ref;
+		osg::notify() << "osgART::PluginManager::add() registered " << name << std::endl; 
+	}
+
+	void 
+	PluginManager::remove(osg::Referenced* ref)
+	{
+		//\TODO implement!
+		osg::notify() << "osgART::PluginManager::remove() unregistered " << std::endl;
 	}
 
 	osg::Referenced* 

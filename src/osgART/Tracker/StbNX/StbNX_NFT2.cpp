@@ -53,23 +53,53 @@
 #include <sstream>
 #include <algorithm>
 
+#include <StbTracker/Base/System.h>
+#include <StbTracker/TrackerMain.h>
+
+
+class StbLogger : public StbTracker::Logger {
+
+protected:
+	StbTracker::Logger::TYPE	level;
+	StbCore::Logger*			logger;
+
+public:
+	StbLogger(StbCore::Logger* nLogger, StbTracker::Logger::TYPE nLevel) : logger(nLogger), level(nLevel) {}
+
+	StbTracker::Logger::TYPE getLevel() {
+		return level;
+	}
+
+	void StbTracker_Log(StbTracker::Logger::TYPE nType, const char* nStr) {
+		switch(nType) {
+			case StbTracker::Logger::TYPE_ERROR:
+				//logger->logErrorEx("(StbTracker) %s", nStr);
+				OSG_WARN << nStr << std::endl;
+				return;
+			default:
+				//logger->logInfoEx("(StbTracker) %s", nStr);
+				OSG_NOTICE << nStr << std::endl;
+				return;
+		}
+	}
+};
 
 
 
-class CalibrationStb : public osgART::Calibration {
+class StbNFT2Calibration : public osgART::Calibration {
 
 private:
 	StbCV::Camera* _camera;
 public:
 
-	inline CalibrationStb() 
+	inline StbNFT2Calibration() 
 	: osgART::Calibration()
 	, _camera(new StbCV::Camera()) { }
 	
-	inline ~CalibrationStb() 
+	inline ~StbNFT2Calibration() 
 	{}
 
-	inline StbCV::Camera* 
+	StbCV::Camera* 
 	getStbCamera() 
 	{ 
 		return _camera;
@@ -94,12 +124,13 @@ public:
 		return true;
 	}
 
-	inline void 
+	void 
 	setSize(int width, int height) 
 	{
 		// change to correct size
 		if (_camera) _camera->changeFrameSize(StbMath::Vec2I(width, height));
 	}
+
 
 };
 
@@ -146,6 +177,7 @@ public:
 class StbNFT2 : public osgART::Tracker {
 protected:
 
+//	StbTracker::TrackerMain* _trackerMain;
 	StbCV::NFT2::NFTracker2* _tracker;
 	StbCV::Image* _image;
 
@@ -155,6 +187,8 @@ public:
 	virtual ~StbNFT2();
 
 	void setImage(osg::Image* image);
+	
+	osgART::Calibration* getOrCreateCalibration();
 
 	osgART::Marker* addMarker(const std::string& config);
 
@@ -164,6 +198,7 @@ public:
 
 StbNFT2::StbNFT2() 
 : osgART::Tracker()
+//, _trackerMain(StbTracker::TrackerMain::create(new StbLogger(StbCore::Logger::getInstance(), StbTracker::Logger::TYPE_ERROR)))
 , _tracker(new StbCV::NFT2::NFTracker2())
 , _image(new StbCV::Image())
 {
@@ -174,15 +209,28 @@ StbNFT2::~StbNFT2()
 {
 }
 
-inline void 
-StbNFT2::setImage(osg::Image* image) {
-	osgART::Tracker::setImage(image);
-	this->getOrCreateCalibration()->setSize(*image);
+void 
+StbNFT2::setImage(osg::Image* image) 
+{
+	if (image)
+	{
+		osgART::Tracker::setImage(image);
+		this->getOrCreateCalibration()->setSize(*image);
+	}
 }
 
-inline osgART::Marker* 
+	
+osgART::Calibration* 
+StbNFT2::getOrCreateCalibration() 
+{
+	if (!_calibration.valid()) _calibration = new StbNFT2Calibration();
+	return osgART::Tracker::getOrCreateCalibration();
+}
+
+osgART::Marker* 
 StbNFT2::addMarker(const std::string& config) {
 
+	
 	// Format: type,...
 	
 	// Type=ID
@@ -194,6 +242,8 @@ StbNFT2::addMarker(const std::string& config) {
 	// Type=DataMatrix
 	// Type=Grid
 	// Type=Split
+	
+
 
 	std::vector<std::string> tokens = osgART::tokenize(config, ",");
 
@@ -208,7 +258,7 @@ StbNFT2::addMarker(const std::string& config) {
 
 	// nft2;blah;200
 	
-	OSG_NOTICE << "virtual config file '" << config << "'" << std::endl;
+	OSG_NOTICE << "NFT2 config string '" << config << "'" << std::endl;
 
 	if (markerType == "single") 
 	{
@@ -218,10 +268,22 @@ StbNFT2::addMarker(const std::string& config) {
 		std::vector<std::string> target_names;
 		std::stringstream item;
 
-		item << "target" << _markerlist.size() <<"-name = " << tokens[1] << std::endl;
-		item << "target" << _markerlist.size() <<"-size = " << tokens[2] << std::endl;
+		//item << "<Tracker><StbTrackerNFT2 database=\"" << tokens[1] << "\" "
+		//	<< "target-path=\"" << tokens[2] << "\" "
+		//	<< "<Target name=\"" << tokens[3] << "\"" << " ref=\"" << tokens[4] << "\" />"
+		//	<< "</Tracker>";
 		
+		// single,soccer/soccerSet,soccerSet_0,soccer
+		
+		item << "database = " << tokens[1] << std::endl;
+		item << "target" << _markerlist.size() <<"-name = " << tokens[2] << std::endl;
+		//item << "target" << _markerlist.size() <<"-size = " << tokens[2] << std::endl;
+		
+		// 
 		memoryFile.addData(item.str().c_str(), item.str().size());
+		
+		// should map to the target path
+		memoryFile.setFileName("virtual_config.txt", tokens[3].c_str());
 		
 		OSG_NOTICE << "virtual config file '" << item.str() << "'" << std::endl;
 
@@ -238,12 +300,14 @@ StbNFT2::addMarker(const std::string& config) {
 
 }
 
-
-inline void 
-StbNFT2::update(osg::NodeVisitor* nv) {
-
+void 
+StbNFT2::update(osg::NodeVisitor* nv) 
+{
+	
+	return;
+	
 	// Assign the camera to the tracker if it isn't already set
-	if (CalibrationStb* calib = dynamic_cast<CalibrationStb*>(_calibration.get())) {
+	if (StbNFT2Calibration* calib = dynamic_cast<StbNFT2Calibration*>(_calibration.get())) {
 		if (calib->getStbCamera()) 
 		{
 			_tracker->setCamera(calib->getStbCamera());
