@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 
 	std::string videoName = "sstt";
 	std::string trackerName = "stbnx";
-	//std::string trackerConfig = "single,soccer/soccerSet,soccer,hyper_FCBarcelona";
+	//std::string trackerConfig = "single,soccerSet,soccer,hyper_FCBarcelona";
 	std::string trackerConfig = "single,multiset,multiset,target_vienna3";
 	std::string trackerNameFeature = "stbnx_nft2";
 	
@@ -137,6 +137,16 @@ int main(int argc, char* argv[])
 
 	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(trackerConfig);
 	marker->setActive(true);
+	
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
+	
+	osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
+	arTransform->addChild(osgART::testCube(20, c));
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+	cam->addChild(arTransform.get());
+	
+
 /*
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
