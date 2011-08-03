@@ -51,9 +51,10 @@ int main(int argc, char* argv[])
 	
 	osg::ArgumentParser args(&argc,argv);
 
-	std::string videoName = "dummyimage";
+	std::string videoName = "sstt";
 	std::string trackerName = "stbnx";
-	std::string trackerConfig = "single,soccer/soccerSet,soccer,SOOCER,soccerSet_0,1";
+	//std::string trackerConfig = "single,soccer/soccerSet,soccer,hyper_FCBarcelona";
+	std::string trackerConfig = "single,multiset,multiset,target_vienna3";
 	std::string trackerNameFeature = "stbnx_nft2";
 	
 	//std::string trackerConfig = "ID,0,80";
@@ -68,7 +69,7 @@ int main(int argc, char* argv[])
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
-	
+
 	viewer.realize();
 	
 	osgViewer::Viewer::Windows windows;
@@ -125,7 +126,8 @@ int main(int argc, char* argv[])
 
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 	
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
+	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) 
+	{
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 

@@ -138,37 +138,37 @@ public:
 class StbNFT2Target : public osgART::Marker {
 protected:
 
-	StbCV::NFT2::Target* _target;
+	StbCV::NFT2::Target& _target;
 	
 	virtual ~StbNFT2Target() { }
 
 public:
 
-	StbNFT2Target(StbCV::NFT2::Target* target) 
+	StbNFT2Target(StbCV::NFT2::Target& target) 
 	: osgART::Marker()
 	, _target(target) { }
 
-	inline StbCV::NFT2::Target* getStbTarget() {
+	StbCV::NFT2::Target& 
+	getStbTarget() 
+	{
 		return _target;
 	}
 
-	void update(bool found) 
+	void update(osgART::Tracker& tracker) 
 	{
 		// check if we should query found from target
-		if (false && found) 
-		{
-			
-			StbMath::Matrix34F mat34;
-		    StbMath::Matrix44F mat44;
-		    makeIdent(mat44);
-		
-			_target->getPose().toMatrix(mat34);
-            StbMath::putSlice(mat44, 0,0, mat34);
+		StbMath::Matrix34F mat34;
+		StbMath::Matrix44F mat44;
+		makeIdent(mat44);
 
-			updateTransform(osg::Matrix(mat44.get()));
- 
-			_valid = true;
-		}
+		_target.getPose().toMatrix(mat34);
+		StbMath::putSlice(mat44, 0,0, mat34);
+
+		updateTransform(osg::Matrix(mat44.get()));
+
+		_valid = (_target.getStatus() != StbCV::NFT2::Target::INACTIVE);
+		
+		OSG_NOTICE << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.get()) << std::endl;
 	}
 
 };
@@ -198,7 +198,6 @@ public:
 
 StbNFT2::StbNFT2() 
 : osgART::Tracker()
-//, _trackerMain(StbTracker::TrackerMain::create(new StbLogger(StbCore::Logger::getInstance(), StbTracker::Logger::TYPE_ERROR)))
 , _tracker(new StbCV::NFT2::NFTracker2())
 , _image(new StbCV::Image())
 {
@@ -216,6 +215,9 @@ StbNFT2::setImage(osg::Image* image)
 	{
 		osgART::Tracker::setImage(image);
 		this->getOrCreateCalibration()->setSize(*image);
+		// locally cached image
+		_image->allocPixels(image->s(),image->t(),StbCore::PIXEL_FORMAT_LUM);
+		
 	}
 }
 
@@ -228,22 +230,8 @@ StbNFT2::getOrCreateCalibration()
 }
 
 osgART::Marker* 
-StbNFT2::addMarker(const std::string& config) {
-
-	
-	// Format: type,...
-	
-	// Type=ID
-	// Format: ID, id, width
-
-	// Type=Frame
-	// Format: Frame, id, width
-
-	// Type=DataMatrix
-	// Type=Grid
-	// Type=Split
-	
-
+StbNFT2::addMarker(const std::string& config) 
+{
 
 	std::vector<std::string> tokens = osgART::tokenize(config, ",");
 
@@ -256,42 +244,42 @@ StbNFT2::addMarker(const std::string& config) {
 	// use the tag
 	std::string markerType = tokens[0];
 
-	// nft2;blah;200
-	
-	OSG_NOTICE << "NFT2 config string '" << config << "'" << std::endl;
+	// single,soccer/soccerSet,soccer,hyper_FCBarcelona
+	//single,multiset,multiset,target_vienna3
+		
+	OSG_INFO << "NFT2 config string '" << config << "'" << std::endl;
 
 	if (markerType == "single") 
 	{
-		StbCV::NFT2::Target* target = 0;
 		StbCore::MemoryInFile memoryFile;
 
-		std::vector<std::string> target_names;
-		std::stringstream item;
-
-		//item << "<Tracker><StbTrackerNFT2 database=\"" << tokens[1] << "\" "
-		//	<< "target-path=\"" << tokens[2] << "\" "
-		//	<< "<Target name=\"" << tokens[3] << "\"" << " ref=\"" << tokens[4] << "\" />"
-		//	<< "</Tracker>";
-		
-		// single,soccer/soccerSet,soccerSet_0,soccer
-		
-		item << "database = " << tokens[1] << std::endl;
-		item << "target" << _markerlist.size() <<"-name = " << tokens[2] << std::endl;
-		//item << "target" << _markerlist.size() <<"-size = " << tokens[2] << std::endl;
-		
-		// 
-		memoryFile.addData(item.str().c_str(), item.str().size());
+		// add target path
+		StbCore::StringW path(tokens[2].c_str()), fullPath;
+        if(path.length()>0 && path[path.length()-1]!='/' && path[path.length()-1]!='\\')
+            path += "/";
+        path += "virtual_config.txt";
+        StbCore::FileSystem::getInstance()->extendToAbsolutePath(path, fullPath);
 		
 		// should map to the target path
-		memoryFile.setFileName("virtual_config.txt", tokens[3].c_str());
+		memoryFile.setFileName("virtual_config.txt", fullPath);
 		
-		OSG_NOTICE << "virtual config file '" << item.str() << "'" << std::endl;
+		std::stringstream item;
+		item << "database = " << tokens[1] << std::endl;
+		item << "target" << _markerlist.size() <<"-name = " << tokens[3] << std::endl;
 
+		memoryFile.addData(item.str().c_str(), item.str().size());
+		
+		OSG_INFO << "virtual config file " <<  "'" << item.str() << "'" << std::endl;
+		
+		int oldIndex = _tracker->getNumTargets();
+		
 		if (_tracker->loadTargets(&memoryFile))
 		{
-			StbNFT2Target* osgart_nft_target = new StbNFT2Target(target);
+			OSG_INFO << "new target at index " << oldIndex << std::endl;  
+		
+			_markerlist.push_back( new StbNFT2Target(_tracker->getTarget(oldIndex)) );
 			
-			return osgart_nft_target;
+			return (_markerlist.back());
 		}
 		
 	}
@@ -303,9 +291,7 @@ StbNFT2::addMarker(const std::string& config) {
 void 
 StbNFT2::update(osg::NodeVisitor* nv) 
 {
-	
-	return;
-	
+
 	// Assign the camera to the tracker if it isn't already set
 	if (StbNFT2Calibration* calib = dynamic_cast<StbNFT2Calibration*>(_calibration.get())) {
 		if (calib->getStbCamera()) 
@@ -328,10 +314,13 @@ StbNFT2::update(osg::NodeVisitor* nv)
 			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_LUM);
 			break;
 		case 3:
-			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGR);
+			// this actually should be BGR2LUm ...
+			StbIO::ImageTool::convertImageRGB888toLum(_imagesource->data(),_image->getPixels(),_imagesource->s()*_imagesource->t());
 			break;
-		case 4:
-			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
+		// \TODO implement other colorspace models
+//		case 4:
+//			StbIO::convertImageRGB888toLum(_imagesource->data(),_image->getPixels(),_imagesource->s()*_imagesource->t());
+//			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
 			break;
 		default:
 		break;
@@ -342,18 +331,10 @@ StbNFT2::update(osg::NodeVisitor* nv)
 
 	// Process the found targets
 
-#if 0
-	StbTracker::TargetVector& targets = targetManager->getVisibleTargets();
-	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
-		// The current osgART marker is valid if its target is in the "found targets" vector
-		if (MarkerStb* ms = dynamic_cast<MarkerStb*>(iter->get())) {
-			bool valid = (std::find(targets.begin(), targets.end(), ms->getMarker()->getTarget()) != targets.end());
-			ms->update(valid);
-		}
+	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
+	{
+		(*iter)->update(*this);
 	}
-	
-#endif
-	
 }
 
 // initializer for dynamic loading
