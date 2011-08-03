@@ -199,6 +199,7 @@ public:
 
 StbNFT2::StbNFT2() 
 : osgART::Tracker()
+//, _trackerMain(StbTracker::TrackerMain::create(new StbLogger(StbCore::Logger::getInstance(), StbTracker::Logger::TYPE_ERROR)))
 , _tracker(new StbCV::NFT2::NFTracker2())
 , _image(new StbCV::Image())
 {
@@ -216,13 +217,13 @@ StbNFT2::setImage(osg::Image* image)
 	{
 		osgART::Tracker::setImage(image);
 		this->getOrCreateCalibration()->setSize(*image);
+		
 		// locally cached image
 		_image->allocPixels(image->s(),image->t(),StbCore::PIXEL_FORMAT_LUM);
 		
 	}
 }
 
-	
 osgART::Calibration* 
 StbNFT2::getOrCreateCalibration() 
 {
@@ -234,8 +235,6 @@ osgART::Marker*
 StbNFT2::addMarker(const std::string& config) 
 {
 	
-	update(0);
-
 	std::vector<std::string> tokens = osgART::tokenize(config, ",");
 
 	if (tokens.size() < 2) 
@@ -299,6 +298,7 @@ StbNFT2::update(osg::NodeVisitor* nv)
 	
 	// Assign the camera to the tracker if it isn't already set
 	if (StbNFT2Calibration* calib = static_cast<StbNFT2Calibration*>(this->getOrCreateCalibration())) {
+
 		if (calib->getStbCamera()) 
 		{
 			this->getOrCreateCalibration()->setSize(_imagesource->s(),_imagesource->t());
@@ -309,8 +309,7 @@ StbNFT2::update(osg::NodeVisitor* nv)
 			return;
 		}
 	}
-	
-	
+
 	// use image format to compute components (assume we always use BGR(A) or grayscale)
 	switch (osg::Image::computeNumComponents(_imagesource->getPixelFormat()))
 	{
@@ -327,7 +326,7 @@ StbNFT2::update(osg::NodeVisitor* nv)
 //			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
 			break;
 		default:
-		OSG_NOTICE<<"Warning: unsupported colorspace!" << std::endl;
+			OSG_NOTICE<<"Warning: unsupported colorspace! "<< osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
 			break;
 	}
 	

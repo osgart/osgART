@@ -55,6 +55,7 @@ int main(int argc, char* argv[])
 	std::string trackerName = "stbnx";
 	//std::string trackerConfig = "single,soccerSet,soccer,hyper_FCBarcelona";
 	std::string trackerConfig = "single,multiset,multiset,target_vienna3";
+
 	std::string trackerNameFeature = "stbnx_nft2";
 	
 	//std::string trackerConfig = "ID,0,80";
