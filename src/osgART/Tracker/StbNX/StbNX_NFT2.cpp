@@ -116,7 +116,7 @@ public:
 
 		// TODO: configurable near and far clipping planes		
 		StbMath::Matrix44F pMatrix;
-		_camera->getProjectionMatrix(0.01f,1000.0f,pMatrix);
+		_camera->getProjectionMatrix(0.1f,1000.0f,pMatrix);
 		_projection.set(pMatrix.get());
 		
 		OSG_INFO<<"Projection Matrix "<< _projection << std::endl;
@@ -221,6 +221,14 @@ StbNFT2::setImage(osg::Image* image)
 		// locally cached image
 		_image->allocPixels(image->s(),image->t(),StbCore::PIXEL_FORMAT_LUM);
 		
+		// set the size of the calibrated camera
+		StbNFT2Calibration* calib = static_cast<StbNFT2Calibration*>(this->getOrCreateCalibration());
+		
+		if (calib)
+		{
+			calib->setSize(_imagesource->s(),_imagesource->t());
+			_tracker->setCamera(calib->getStbCamera());
+		}
 	}
 }
 
@@ -293,22 +301,8 @@ StbNFT2::addMarker(const std::string& config)
 void 
 StbNFT2::update(osg::NodeVisitor* nv) 
 {
-	// Update the image
+	// update doesn't work without an image
 	if (!_imagesource.valid()) return;
-	
-	// Assign the camera to the tracker if it isn't already set
-	if (StbNFT2Calibration* calib = static_cast<StbNFT2Calibration*>(this->getOrCreateCalibration())) {
-
-		if (calib->getStbCamera()) 
-		{
-			this->getOrCreateCalibration()->setSize(_imagesource->s(),_imagesource->t());
-			_tracker->setCamera(calib->getStbCamera());
-			
-		} else {
-			osg::notify() << "StbNFT2: No camera calibration file was loaded" << std::endl;	
-			return;
-		}
-	}
 
 	// use image format to compute components (assume we always use BGR(A) or grayscale)
 	switch (osg::Image::computeNumComponents(_imagesource->getPixelFormat()))

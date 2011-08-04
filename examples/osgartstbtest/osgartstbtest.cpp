@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	calibration->load("data/WebCam.cal");
+	calibration->load("data/DefaultCalibration.cal");
 
 	tracker->setImage(video.get());
 
