@@ -60,8 +60,14 @@ namespace osgART {
 	void 
 	PluginManager::remove(osg::Referenced* ref)
 	{
-		//\TODO implement!
 		osg::notify() << "osgART::PluginManager::remove() unregistered " << std::endl;
+
+		for (PluginInterfaceMap::iterator i = m_plugininterfaces.begin();
+			i != m_plugininterfaces.end();
+			++i)
+		{
+			if (ref == i->second) { m_plugininterfaces.erase(i); }		
+		}
 	}
 
 	osg::Referenced* 
