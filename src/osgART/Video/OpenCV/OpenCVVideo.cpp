@@ -191,16 +191,16 @@ OpenCVVideo::open()
 
 	*/
 	xsize=m_video.get(CV_CAP_PROP_FRAME_WIDTH);
-	ysize=m_video.get(CV_CAP_PROP_FRAME_WIDTH);
+	ysize=m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
 	m_video.set(CV_CAP_PROP_FPS,30);
 //	m_video.set(CV_CAP_PROP_CONVERT_RGB,1.0);
 //	m_video.set(CV_CAP_PROP_FOURCC,0x32424752);//RGB
 	_format_GL=GL_RGB;
 	_datatype_GL=GL_UNSIGNED_BYTE;
 
-			m_config.selectedWidth = xsize;
-		m_config.selectedHeight = ysize;
-		m_config.selectedFrameRate = 30;
+	m_config.selectedWidth = xsize;
+	m_config.selectedHeight = ysize;
+	m_config.selectedFrameRate = 30;
 
 	this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 
@@ -219,87 +219,45 @@ OpenCVVideo::close(bool waitForThread)
 void
 OpenCVVideo::play()
 {
-	//if (video)
-	//{
-	//	ar2VideoCapStart(video);
-		osg::ImageStream::play();
-	//}
+	osg::ImageStream::play();
 }
 
 void
 OpenCVVideo::pause()
 {
-	//if (video) {
-	//	ar2VideoCapStop(video);
-
-		osg::ImageStream::pause();
-	//}
+	osg::ImageStream::pause();
 }
 
 void
 OpenCVVideo::update(osg::NodeVisitor* nv)
 {
-	//unsigned char* newImage = NULL;
-
-	/*if (video)
+	osg::Timer t;
+	
+	if (m_video.grab())
 	{
-	    {
-            
+		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
+		
+		m_video>>m_OCVImage;
 
-*/
-            osg::Timer t;
+		Mat bgr_to_rgb;
 
+		cvtColor(m_OCVImage, bgr_to_rgb, CV_BGR2RGB);
+		
+		memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
+		
+		this->dirty();
+		
+	}
+	
+	if (nv) 
+	{
+		const osg::FrameStamp *framestamp = nv->getFrameStamp();
 
-			m_video>>m_OCVImage;
-
-			if (1)//m_OCVImage)
-		//	if (newImage = (unsigned char*)ar2VideoGetImage(video))
-			{
-			 
-				std::cerr<<"get image.."<<std::endl;
-				
-				Mat bgr_to_rgb;
-				cvtColor(m_OCVImage, bgr_to_rgb, CV_BGR2RGB);
-
-				{
-					OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
-
-					//if (getMutex().trylock() == 0) {
-					//this->setImage(640,480, 1, GL_RGBA, GL_RGBA, 
-					//GL_UNSIGNED_BYTE, (unsigned char*)bgr_to_rgb.data, osg::Image::NO_DELETE, 1);	
-
-					//std::cerr<<"DEBUG="<<this->getImageSizeInBytes()<<" "<<640*480*3<<std::endl;
-					//memcpy(this->data(),(unsigned char*)m_OCVImage.data,this->getImageSizeInBytes());
-					//memcpy(this->data(),(unsigned char*)m_OCVImage.data,640*480*3);
-					memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,640*480*3);
-					//getMutex().unlock();
-				//}
-
-
-					
-				}
-
-				this->dirty();
-
-				// hopefully report some interesting data
-				if (nv) {
-
-					const osg::FrameStamp *framestamp = nv->getFrameStamp();
-
-					if (framestamp && _stats.valid())
-					{
-						_stats->setAttribute(framestamp->getFrameNumber(),
-							"Capture time taken", t.time_m());
-
-					}
-				}
-			}
-	    //}
-
-
-//	}
-
-
+		if (framestamp && _stats.valid())
+		{
+			_stats->setAttribute(framestamp->getFrameNumber(), "Capture time taken", t.time_m());
+		}
+	}
 }
 
 osgART::VideoConfiguration*

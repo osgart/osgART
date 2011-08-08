@@ -71,6 +71,7 @@ install(FILES
 #
 option(OSGART_WITH_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
 option(OSGART_WITH_STBNX "Build with StbNX (StudierStube NX)" OFF)
+option(OSGART_WITH_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
 
 
 

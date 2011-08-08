@@ -1,0 +1,32 @@
+set(module_name osgart_video_opencv)
+
+if(OSGART_WITH_OPENCV)
+	find_package(OpenCV)
+	
+	add_library(${module_name} MODULE OpenCVVideo.cpp)	
+		set_target_properties(${module_name}
+		PROPERTIES
+		PREFIX ""
+		PROJECT_LABEL "Video Plugin ${module_name}"
+		)
+		
+	link_directories(${OpenCV_LIB_DIR})
+
+	target_link_libraries(${module_name} 
+		osgART 
+		${OSG_LIBRARY} 
+		${OPENTHREADS_LIBRARY} 
+		${OpenCV_LIBS}
+		)
+	
+	if(APPLE)
+		target_link_libraries(${module_name}
+			"-framework Cocoa"
+			"-framework QTKit"
+			"-framework CoreVideo"
+		)
+	endif()
+	
+	install_osgart_plugin(${module_name})
+
+endif()
