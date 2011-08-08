@@ -385,6 +385,7 @@ int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat,
 #ifdef AR_BIG_ENDIAN
 			*type_GL = GL_UNSIGNED_INT_8_8_8_8_REV;
 #else
+				
 			*type_GL = GL_UNSIGNED_INT_8_8_8_8;
 #endif
 			break;
