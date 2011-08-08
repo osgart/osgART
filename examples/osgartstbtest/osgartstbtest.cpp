@@ -51,9 +51,11 @@ int main(int argc, char* argv[])
 	
 	osg::ArgumentParser args(&argc,argv);
 
-	std::string videoName = "dummyimage";
+	std::string videoName = "sstt";
 	std::string trackerName = "stbnx";
-	std::string trackerConfig = "single,soccer/soccerSet,soccer,SOOCER,soccerSet_0,1";
+	//std::string trackerConfig = "single,soccerSet,soccer,hyper_FCBarcelona";
+	std::string trackerConfig = "single,multiset,multiset,target_vienna3";
+
 	std::string trackerNameFeature = "stbnx_nft2";
 	
 	//std::string trackerConfig = "ID,0,80";
@@ -68,7 +70,7 @@ int main(int argc, char* argv[])
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
-	
+
 	viewer.realize();
 	
 	osgViewer::Viewer::Windows windows;
@@ -119,13 +121,14 @@ int main(int argc, char* argv[])
 
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	calibration->load("data/WebCam.cal");
+	calibration->load("data/DefaultCalibration.cal");
 
 	tracker->setImage(video.get());
 
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 	
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
+	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) 
+	{
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
@@ -135,6 +138,16 @@ int main(int argc, char* argv[])
 
 	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(trackerConfig);
 	marker->setActive(true);
+	
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
+	
+	osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
+	arTransform->addChild(osgART::testCube(20, c));
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+	cam->addChild(arTransform.get());
+	
+
 /*
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());

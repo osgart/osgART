@@ -73,11 +73,9 @@ public:
 	void StbTracker_Log(StbTracker::Logger::TYPE nType, const char* nStr) {
 		switch(nType) {
 			case StbTracker::Logger::TYPE_ERROR:
-				//logger->logErrorEx("(StbTracker) %s", nStr);
 				OSG_WARN << nStr << std::endl;
 				return;
 			default:
-				//logger->logInfoEx("(StbTracker) %s", nStr);
 				OSG_NOTICE << nStr << std::endl;
 				return;
 		}
@@ -118,9 +116,11 @@ public:
 
 		// TODO: configurable near and far clipping planes		
 		StbMath::Matrix44F pMatrix;
-		_camera->getProjectionMatrix(0.01f,1000.0f,pMatrix);
+		_camera->getProjectionMatrix(0.1f,1000.0f,pMatrix);
 		_projection.set(pMatrix.get());
-
+		
+		OSG_INFO<<"Projection Matrix "<< _projection << std::endl;
+		
 		return true;
 	}
 
@@ -138,39 +138,40 @@ public:
 class StbNFT2Target : public osgART::Marker {
 protected:
 
-	StbCV::NFT2::Target* _target;
+	StbCV::NFT2::Target& _target;
 	
 	virtual ~StbNFT2Target() { }
 
 public:
 
-	StbNFT2Target(StbCV::NFT2::Target* target) 
+	StbNFT2Target(StbCV::NFT2::Target& target) 
 	: osgART::Marker()
 	, _target(target) { }
 
-	inline StbCV::NFT2::Target* getStbTarget() {
+	StbCV::NFT2::Target& 
+	getStbTarget() 
+	{
 		return _target;
 	}
 
-	void update(bool found) 
+	void update(osgART::Tracker& tracker) 
 	{
-		// check if we should query found from target
-		if (false && found) 
-		{
-			
-			StbMath::Matrix34F mat34;
-		    StbMath::Matrix44F mat44;
-		    makeIdent(mat44);
 		
-			_target->getPose().toMatrix(mat34);
-            StbMath::putSlice(mat44, 0,0, mat34);
+		if (_valid = (_target.getStatus() != StbCV::NFT2::Target::INACTIVE) == true)
+		{
+			// check if we should query found from target
+			StbMath::Matrix34F mat34;
+			StbMath::Matrix44F mat44;
+			makeIdent(mat44);
+
+			_target.getPose().toMatrix(mat34);
+			StbMath::putSlice(mat44, 0,0, mat34);
 
 			updateTransform(osg::Matrix(mat44.get()));
- 
-			_valid = true;
+			
+			OSG_NOTICE << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.get()) << std::endl;
 		}
 	}
-
 };
 
 
@@ -216,10 +217,21 @@ StbNFT2::setImage(osg::Image* image)
 	{
 		osgART::Tracker::setImage(image);
 		this->getOrCreateCalibration()->setSize(*image);
+		
+		// locally cached image
+		_image->allocPixels(image->s(),image->t(),StbCore::PIXEL_FORMAT_LUM);
+		
+		// set the size of the calibrated camera
+		StbNFT2Calibration* calib = static_cast<StbNFT2Calibration*>(this->getOrCreateCalibration());
+		
+		if (calib)
+		{
+			calib->setSize(_imagesource->s(),_imagesource->t());
+			_tracker->setCamera(calib->getStbCamera());
+		}
 	}
 }
 
-	
 osgART::Calibration* 
 StbNFT2::getOrCreateCalibration() 
 {
@@ -228,23 +240,9 @@ StbNFT2::getOrCreateCalibration()
 }
 
 osgART::Marker* 
-StbNFT2::addMarker(const std::string& config) {
-
+StbNFT2::addMarker(const std::string& config) 
+{
 	
-	// Format: type,...
-	
-	// Type=ID
-	// Format: ID, id, width
-
-	// Type=Frame
-	// Format: Frame, id, width
-
-	// Type=DataMatrix
-	// Type=Grid
-	// Type=Split
-	
-
-
 	std::vector<std::string> tokens = osgART::tokenize(config, ",");
 
 	if (tokens.size() < 2) 
@@ -256,42 +254,42 @@ StbNFT2::addMarker(const std::string& config) {
 	// use the tag
 	std::string markerType = tokens[0];
 
-	// nft2;blah;200
-	
-	OSG_NOTICE << "NFT2 config string '" << config << "'" << std::endl;
+	//single,soccer/soccerSet,soccer,hyper_FCBarcelona
+	//single,multiset,multiset,target_vienna3
+		
+	OSG_INFO << "NFT2 config string '" << config << "'" << std::endl;
 
 	if (markerType == "single") 
 	{
-		StbCV::NFT2::Target* target = 0;
 		StbCore::MemoryInFile memoryFile;
 
-		std::vector<std::string> target_names;
-		std::stringstream item;
-
-		//item << "<Tracker><StbTrackerNFT2 database=\"" << tokens[1] << "\" "
-		//	<< "target-path=\"" << tokens[2] << "\" "
-		//	<< "<Target name=\"" << tokens[3] << "\"" << " ref=\"" << tokens[4] << "\" />"
-		//	<< "</Tracker>";
-		
-		// single,soccer/soccerSet,soccerSet_0,soccer
-		
-		item << "database = " << tokens[1] << std::endl;
-		item << "target" << _markerlist.size() <<"-name = " << tokens[2] << std::endl;
-		//item << "target" << _markerlist.size() <<"-size = " << tokens[2] << std::endl;
-		
-		// 
-		memoryFile.addData(item.str().c_str(), item.str().size());
+		// add target path
+		StbCore::StringW path(tokens[2].c_str()), fullPath;
+        if(path.length()>0 && path[path.length()-1]!='/' && path[path.length()-1]!='\\')
+            path += "/";
+        path += "virtual_config.txt";
+        StbCore::FileSystem::getInstance()->extendToAbsolutePath(path, fullPath);
 		
 		// should map to the target path
-		memoryFile.setFileName("virtual_config.txt", tokens[3].c_str());
+		memoryFile.setFileName("virtual_config.txt", fullPath);
 		
-		OSG_NOTICE << "virtual config file '" << item.str() << "'" << std::endl;
+		std::stringstream item;
+		item << "database = " << tokens[1] << std::endl;
+		item << "target" << _markerlist.size() <<"-name = " << tokens[3] << std::endl;
 
+		memoryFile.addData(item.str().c_str(), item.str().size());
+		
+		OSG_INFO << "virtual config file " <<  "'" << item.str() << "'" << std::endl;
+		
+		int oldIndex = _tracker->getNumTargets();
+		
 		if (_tracker->loadTargets(&memoryFile))
 		{
-			StbNFT2Target* osgart_nft_target = new StbNFT2Target(target);
+			OSG_INFO << "new target at index " << oldIndex << std::endl;  
+		
+			_markerlist.push_back( new StbNFT2Target(_tracker->getTarget(oldIndex)) );
 			
-			return osgart_nft_target;
+			return (_markerlist.back());
 		}
 		
 	}
@@ -303,24 +301,9 @@ StbNFT2::addMarker(const std::string& config) {
 void 
 StbNFT2::update(osg::NodeVisitor* nv) 
 {
-	
-	return;
-	
-	// Assign the camera to the tracker if it isn't already set
-	if (StbNFT2Calibration* calib = dynamic_cast<StbNFT2Calibration*>(_calibration.get())) {
-		if (calib->getStbCamera()) 
-		{
-			_tracker->setCamera(calib->getStbCamera());
-		} else {
-			osg::notify() << "StbNFT2: No camera calibration file was loaded" << std::endl;	
-			return;
-		}
-	}
-	
-	
-	// Update the image
+	// update doesn't work without an image
 	if (!_imagesource.valid()) return;
-	
+
 	// use image format to compute components (assume we always use BGR(A) or grayscale)
 	switch (osg::Image::computeNumComponents(_imagesource->getPixelFormat()))
 	{
@@ -328,13 +311,17 @@ StbNFT2::update(osg::NodeVisitor* nv)
 			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_LUM);
 			break;
 		case 3:
-			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGR);
+			// this actually should be BGR2LUm ...
+			StbIO::ImageTool::convertImageRGB888toLum(_imagesource->data(),_image->getPixels(),_imagesource->s()*_imagesource->t());
 			break;
-		case 4:
-			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
+		// \TODO implement other colorspace models
+//		case 4:
+//			StbIO::convertImageRGB888toLum(_imagesource->data(),_image->getPixels(),_imagesource->s()*_imagesource->t());
+//			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
 			break;
 		default:
-		break;
+			OSG_NOTICE<<"Warning: unsupported colorspace! "<< osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
+			break;
 	}
 	
 	_tracker->update(*_image);
@@ -342,18 +329,10 @@ StbNFT2::update(osg::NodeVisitor* nv)
 
 	// Process the found targets
 
-#if 0
-	StbTracker::TargetVector& targets = targetManager->getVisibleTargets();
-	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
-		// The current osgART marker is valid if its target is in the "found targets" vector
-		if (MarkerStb* ms = dynamic_cast<MarkerStb*>(iter->get())) {
-			bool valid = (std::find(targets.begin(), targets.end(), ms->getMarker()->getTarget()) != targets.end());
-			ms->update(valid);
-		}
+	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
+	{
+		(*iter)->update(*this);
 	}
-	
-#endif
-	
 }
 
 // initializer for dynamic loading

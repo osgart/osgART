@@ -39,6 +39,8 @@
 
 namespace osgART {
 
+	class Tracker;
+
 	/**
 	* \class Marker
 	* \brief A base class from which specific types of markers are derived.
@@ -134,6 +136,11 @@ namespace osgART {
 		* \return Tracking confidence
 		*/
 		inline float getConfidence() const { return _confidence; };
+		
+		/**
+		 * overide for usage in trackers
+		 */
+		virtual void update(Tracker& tracker) {}
 
 		
 	protected: 
