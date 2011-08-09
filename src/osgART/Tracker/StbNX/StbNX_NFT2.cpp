@@ -117,10 +117,15 @@ public:
 		// TODO: configurable near and far clipping planes		
 		StbMath::Matrix44F pMatrix;
 		_camera->getProjectionMatrix(0.1f,1000.0f,pMatrix);
+		
+		// StbNX needs transpose
+		StbMath::transpose(pMatrix);
+
 		_projection.set(pMatrix.get());
-		
+
+
 		OSG_INFO<<"Projection Matrix "<< _projection << std::endl;
-		
+	
 		return true;
 	}
 
@@ -167,9 +172,11 @@ public:
 			_target.getPose().toMatrix(mat34);
 			StbMath::putSlice(mat44, 0,0, mat34);
 
+			StbMath::transpose(mat44);
+
 			updateTransform(osg::Matrix(mat44.get()));
 			
-			OSG_NOTICE << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.get()) << std::endl;
+			OSG_INFO << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.get()) << std::endl;
 		}
 	}
 };

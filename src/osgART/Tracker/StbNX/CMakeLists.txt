@@ -6,12 +6,13 @@ if(OSGART_WITH_STBNX)
 	
 	include_directories(${STBNX_INCLUDE_DIRS})
 
-	add_definitions(-DSTBCORE_STATIC -DSTBTRACKER_STATIC)
+	add_definitions(-DSTBCORE_STATIC -DSTBMATH_STATIC -DSTBCV_STATIC -DSTBIO_STATIC -DSTBTRACKER_STATIC)
 
 	add_library(${module_name} 
 		MODULE 
 		StbNX_MarkerTracker.cpp
 		StbNX_NFT2.cpp
+		StbNX_Video.cpp
 		)
 
 	set_target_properties(${module_name}

@@ -127,16 +127,17 @@ class MarkerStb : public osgART::Marker {
 protected:
 	StbTracker::Marker* mMarker;
 	virtual ~MarkerStb() { }
-
 public:
 
-	MarkerStb(StbTracker::Marker* marker) : osgART::Marker(), mMarker(marker) { }
+	MarkerStb(StbTracker::Marker* marker) 
+		: osgART::Marker()
+		, mMarker(marker) 
+	{}
 
-	inline StbTracker::Marker* getMarker() {
-		return mMarker;
-	}
+	inline StbTracker::Marker* getMarker() { return mMarker; }
 
-	void update(bool found) {
+	void update(bool found) 
+	{
 		if (found) {
 			float T[16];
 			mMarker->getTarget()->getGLMatrix(T, StbTracker::Target::TYPE_RAW);
@@ -339,18 +340,6 @@ osgART::Marker* TrackerStb::addMarker(const std::string& config) {
 			osg::notify() << "TrackerStb: Found " << tokens.size() << " tokens in config string, expecting 3" << std::endl;
 
 		}
-	} else if (markerType == "NFT2") {
-		
-		if (tokens.size() == 3)
-		{
-		}
-		
-		
-	} else if (markerType == "DataMatrix") {
-
-	} else if (markerType == "Grid") {
-
-	} else if (markerType == "Split") {
 
 	} else {
 
@@ -406,11 +395,15 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 
 	// Process the found targets
 	StbTracker::TargetVector& targets = targetManager->getVisibleTargets();
-	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
+	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
+	{
 		// The current osgART marker is valid if its target is in the "found targets" vector
-		if (MarkerStb* ms = dynamic_cast<MarkerStb*>(iter->get())) {
+		if (MarkerStb* ms = dynamic_cast<MarkerStb*>(iter->get())) 
+		{
 			bool valid = (std::find(targets.begin(), targets.end(), ms->getMarker()->getTarget()) != targets.end());
 			ms->update(valid);
+
+			OSG_NOTICE<<"Tracker::update() found target: " << valid << std::endl;
 		}
 	}
 	
