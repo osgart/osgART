@@ -60,13 +60,18 @@ namespace osgART {
 	void 
 	PluginManager::remove(osg::Referenced* ref)
 	{
-		osg::notify() << "osgART::PluginManager::remove() unregistered " << std::endl;
-
+		// iterate over registered plugins
 		for (PluginInterfaceMap::iterator i = m_plugininterfaces.begin();
 			i != m_plugininterfaces.end();
 			++i)
 		{
-			if (ref == i->second) { m_plugininterfaces.erase(i); }		
+			// check if this is the same reference
+			if (ref == i->second) 
+			{
+				// just need to remove the reference from PluginManager
+				osg::notify() << "osgART::PluginManager::remove() unregister " << i->first << std::endl;
+				i->second = 0L; 
+			}		
 		}
 	}
 
