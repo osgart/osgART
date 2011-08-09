@@ -53,13 +53,15 @@ int main(int argc, char* argv[])
 
 	std::string videoName = "sstt";
 	std::string trackerName = "stbnx";
+	
+	//std::string trackerConfig = "Frame,0,80"; // can use ID or Frame
 	//std::string trackerConfig = "single,soccerSet,soccer,hyper_FCBarcelona";
 	std::string trackerConfig = "single,multiset,multiset,target_vienna3";
 
+	//std::string trackerNameFeature = "stbnx";
 	std::string trackerNameFeature = "stbnx_nft2";
 	
-	//std::string trackerConfig = "ID,0,80";
-
+	
 	while(args.read("--video",videoName)) {}
 	while(args.read("--tracker",trackerName,trackerConfig)) {}
 	while(args.read("--tracker_config",trackerConfig)) {}
@@ -115,7 +117,7 @@ int main(int argc, char* argv[])
 	if (!tracker.valid()) 
 	{
 		// Without tracker an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
+		OSG_FATAL << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}
 
@@ -142,43 +144,16 @@ int main(int argc, char* argv[])
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
 	
+	// generate random colour
 	osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
-	arTransform->addChild(osgART::testCube(20, c));
+	// create a cube
+	arTransform->addChild(osgART::testCube(20,c));
+	// need a higher renderbin to be on top of the video background
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+	
+	
 	cam->addChild(arTransform.get());
 	
-
-/*
-	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
-	
-	osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
-	arTransform->addChild(osgART::testCube(20, c));
-	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-	cam->addChild(arTransform.get());
-*/
-
-/*	for (int i = 0; i < 32; i++) {
-
-		std::stringstream ss;
-		//ss << "ID;" << i << ";20";
-		//ss << "Frame;" << i << ";80";
-
-		ss << trackerConfig;
-		
-		osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(ss.str());
-		marker->setActive(true);
-
-		osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-		osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
-		
-		osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
-		arTransform->addChild(osgART::testCube(20, c));
-		arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-		cam->addChild(arTransform.get());
-
-	}
-*/
 
 	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
