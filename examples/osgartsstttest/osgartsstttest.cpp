@@ -57,11 +57,11 @@ int main(int argc, char* argv[])  {
 
 
 	// preload the video and tracker
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
+	osgART::PluginManager::instance()->load("osgart_video_sstt");
 	osgART::PluginManager::instance()->load("osgart_tracker_sstt");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_sstt"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid()) 
@@ -105,11 +105,11 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
 
-	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("simple.bmp;135;135;0.3");
-	marker->setActive(true);
+	//osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("simple.bmp;135;135;0.3");
+	//marker->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
+	//osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());
 	
 	
 	arTransform->addChild(osgART::testCube(80));

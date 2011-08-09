@@ -4,7 +4,6 @@ set(SRCS
 	osgartsstttest.cpp
 	)
 
-
 add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
 
 set_target_properties(${exe_name}
