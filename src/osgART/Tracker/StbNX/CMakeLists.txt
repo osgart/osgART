@@ -7,11 +7,25 @@ if(OSGART_WITH_STBNX)
 	include_directories(${STBNX_INCLUDE_DIRS})
 
 	add_definitions(-DSTBCORE_STATIC -DSTBMATH_STATIC -DSTBCV_STATIC -DSTBIO_STATIC -DSTBTRACKER_STATIC)
-
+	
+	set(stbnx_srcs)
+	set(stbnx_libs)
+	
+	option(STBNX_USE_MARKERTRACKER "Use StbNX Markertracker" OFF)
+	if(STBNX_USE_MARKERTRACKER)
+		list(APPEND stbnx_srcs StbNX_MarkerTracker.cpp)
+		list(APPEND stbnx_libs StbTracker)
+	endif()
+	
+	option(STBNX_USE_NFT2 "Use StbNX NFT2 tracker" ON)
+	if(STBNX_USE_NFT2)
+		list(APPEND stbnx_srcs StbNX_NFT2.cpp)
+		list(APPEND stbnx_libs NFT2)
+	endif()
+	
 	add_library(${module_name} 
 		MODULE 
-		StbNX_MarkerTracker.cpp
-		StbNX_NFT2.cpp
+		${stbnx_srcs}
 		StbNX_Video.cpp
 		)
 
@@ -19,7 +33,6 @@ if(OSGART_WITH_STBNX)
 		PROPERTIES
 		PREFIX ""
 		PROJECT_LABEL "Tracker Plugin ${module_name}")
-
 
 	target_link_libraries(${module_name}
 		${STBNX_LIBRARIES}

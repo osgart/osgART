@@ -33,15 +33,17 @@
 #include "osgART/PluginManager"
 
 #include <StbCore/System.h>
-#include <StbCore/Image.h>
 #include <StbCore/Logger.h>
 
+
+#include <StbBase/StbBase.h>
 #include <StbCore/InFile.h>
 #include <StbCore/OutFile.h>
 #include <StbCore/FileSystem.h>
 #include <StbCore/Video.h>
 #include <StbCore/Logger.h>
-#include <StbCore/StringTool.h>
+
+
 #include <StbIO/VideoImage.h>
 #include <StbCV/Image/Image.h>
 #include <StbCV/Tool/Render.h>
@@ -53,34 +55,33 @@
 #include <sstream>
 #include <algorithm>
 
-#include <StbTracker/Base/System.h>
-#include <StbTracker/TrackerMain.h>
+// #include <StbTracker/Base/System.h>
+// #include <StbTracker/TrackerMain.h>
 
 
-class StbLogger : public StbTracker::Logger {
-
-protected:
-	StbTracker::Logger::TYPE	level;
-	StbCore::Logger*			logger;
-
-public:
-	StbLogger(StbCore::Logger* nLogger, StbTracker::Logger::TYPE nLevel) : logger(nLogger), level(nLevel) {}
-
-	StbTracker::Logger::TYPE getLevel() {
-		return level;
-	}
-
-	void StbTracker_Log(StbTracker::Logger::TYPE nType, const char* nStr) {
-		switch(nType) {
-			case StbTracker::Logger::TYPE_ERROR:
-				OSG_WARN << nStr << std::endl;
-				return;
-			default:
-				OSG_NOTICE << nStr << std::endl;
-				return;
-		}
-	}
-};
+// class StbLogger : public StbTracker::Logger {
+// 
+// protected:
+// 	StbCore::Logger*			logger;
+// 
+// public:
+// 	StbLogger(StbCore::Logger* nLogger, StbTracker::Logger::TYPE nLevel) : logger(nLogger), level(nLevel) {}
+// 
+// 	StbTracker::Logger::TYPE getLevel() {
+// 		return level;
+// 	}
+// 
+// 	void StbTracker_Log(StbTracker::Logger::TYPE nType, const char* nStr) {
+// 		switch(nType) {
+// 			case StbTracker::Logger::TYPE_ERROR:
+// 				OSG_WARN << nStr << std::endl;
+// 				return;
+// 			default:
+// 				OSG_NOTICE << nStr << std::endl;
+// 				return;
+// 		}
+// 	}
+// };
 
 
 
@@ -119,9 +120,10 @@ public:
 		_camera->getProjectionMatrix(0.1f,1000.0f,pMatrix);
 		
 		// StbNX needs transpose
-		StbMath::transpose(pMatrix);
+		//StbMath::transpose(pMatrix);
+		pMatrix.transposeInPlace();
 
-		_projection.set(pMatrix.get());
+		_projection.set(pMatrix.data());
 
 
 		OSG_INFO<<"Projection Matrix "<< _projection << std::endl;
@@ -170,13 +172,16 @@ public:
 			makeIdent(mat44);
 
 			_target.getPose().toMatrix(mat34);
-			StbMath::putSlice(mat44, 0,0, mat34);
-
-			StbMath::transpose(mat44);
-
-			updateTransform(osg::Matrix(mat44.get()));
 			
-			OSG_INFO << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.get()) << std::endl;
+			//StbMath::putSlice(mat44, 0,0, mat34);
+			mat44.block(0,0,3,4) = mat34;
+
+			//StbMath::transpose(mat44);
+			mat44.transposeInPlace();
+
+			updateTransform(osg::Matrix(mat44.data()));
+			
+			OSG_INFO << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.data()) << std::endl;
 		}
 	}
 };
@@ -226,7 +231,7 @@ StbNFT2::setImage(osg::Image* image)
 		this->getOrCreateCalibration()->setSize(*image);
 		
 		// locally cached image
-		_image->allocPixels(image->s(),image->t(),StbCore::PIXEL_FORMAT_LUM);
+		_image->allocPixels(image->s(),image->t(),StbBase::PIXEL_FORMAT_LUM);
 		
 		// set the size of the calibrated camera
 		StbNFT2Calibration* calib = static_cast<StbNFT2Calibration*>(this->getOrCreateCalibration());
@@ -261,6 +266,7 @@ StbNFT2::addMarker(const std::string& config)
 	// use the tag
 	std::string markerType = tokens[0];
 
+
 	//single,soccer/soccerSet,soccer,hyper_FCBarcelona
 	//single,multiset,multiset,target_vienna3
 		
@@ -271,7 +277,7 @@ StbNFT2::addMarker(const std::string& config)
 		StbCore::MemoryInFile memoryFile;
 
 		// add target path
-		StbCore::StringW path(tokens[2].c_str()), fullPath;
+		StbBase::String path(tokens[2]), fullPath;
         if(path.length()>0 && path[path.length()-1]!='/' && path[path.length()-1]!='\\')
             path += "/";
         path += "virtual_config.txt";
@@ -315,7 +321,7 @@ StbNFT2::update(osg::NodeVisitor* nv)
 	switch (osg::Image::computeNumComponents(_imagesource->getPixelFormat()))
 	{
 		case 1:
-			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_LUM);
+			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbBase::PIXEL_FORMAT_LUM);
 			break;
 		case 3:
 			// this actually should be BGR2LUm ...

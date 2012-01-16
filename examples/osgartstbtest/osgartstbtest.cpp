@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 	
 	osg::ArgumentParser args(&argc,argv);
 
-	std::string videoName = "sstt";
+	std::string videoName = "opencv";
 	std::string trackerName = "stbnx";
 	
 	//std::string trackerConfig = "Frame,0,80"; // can use ID or Frame
