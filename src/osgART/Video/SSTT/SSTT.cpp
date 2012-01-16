@@ -156,7 +156,7 @@ SSTT_Video::open()
 	if (tokens.size() > 3) capture_settings.minFPS = atoi(tokens[3].c_str());
 
 	// Open device
-	sstt_capture_open( _capture, (tokens.size()) ? &capture_settings : 0);
+	sstt_capture_open( _capture, &capture_settings);
 	
 	sstt_capture_start(_capture);
 
