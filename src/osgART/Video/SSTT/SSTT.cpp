@@ -148,12 +148,16 @@ SSTT_Video::open()
 
 	// Try to get custom values from configuration string
 	// Format for device string:
-	// Device UID;width;height;framerate
+	// Device UID;width;height;framerate;flip
 	std::vector<std::string> tokens = osgART::tokenize(_config.deviceconfig, ";");
 	if (tokens.size() > 0) capture_settings.uid = const_cast<char*>(tokens[0].c_str());
 	if (tokens.size() > 1) capture_settings.minWidth  = atoi(tokens[1].c_str());
 	if (tokens.size() > 2) capture_settings.minHeight  = atoi(tokens[2].c_str());
 	if (tokens.size() > 3) capture_settings.minFPS = atoi(tokens[3].c_str());
+	if (tokens.size() > 4) capture_settings.flip_control = atoi(tokens[4].c_str());
+
+
+	capture_settings.flip_control = 0;
 
 	// Open device
 	sstt_capture_open( _capture, &capture_settings);
@@ -169,9 +173,13 @@ SSTT_Video::open()
 	// we can immediate unlock because we don't copy the image
 	sstt_capture_get_image( _capture, 0, 0);
 
+	// newer API supports flipping in place
+	sstt_capture_set_param_i(_capture, SSTT_CAPTURE_FLIP, capture_settings.flip_control);
+
 	// now create the image
 	this->allocateImage(probe.width, probe.height, 1, GL_BGR, GL_UNSIGNED_BYTE, 1);
 	this->setDataVariance(osg::Object::DYNAMIC);
+
 	
 	this->update(0);
 

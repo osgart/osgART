@@ -55,34 +55,6 @@
 #include <sstream>
 #include <algorithm>
 
-// #include <StbTracker/Base/System.h>
-// #include <StbTracker/TrackerMain.h>
-
-
-// class StbLogger : public StbTracker::Logger {
-// 
-// protected:
-// 	StbCore::Logger*			logger;
-// 
-// public:
-// 	StbLogger(StbCore::Logger* nLogger, StbTracker::Logger::TYPE nLevel) : logger(nLogger), level(nLevel) {}
-// 
-// 	StbTracker::Logger::TYPE getLevel() {
-// 		return level;
-// 	}
-// 
-// 	void StbTracker_Log(StbTracker::Logger::TYPE nType, const char* nStr) {
-// 		switch(nType) {
-// 			case StbTracker::Logger::TYPE_ERROR:
-// 				OSG_WARN << nStr << std::endl;
-// 				return;
-// 			default:
-// 				OSG_NOTICE << nStr << std::endl;
-// 				return;
-// 		}
-// 	}
-// };
-
 
 
 class StbNFT2Calibration : public osgART::Calibration {
@@ -113,7 +85,7 @@ public:
 			return false;
 		}
 
-		osg::notify() << "CalibrationStb: Loaded camera calibration from " << filename << std::endl;
+		OSG_INFO << "CalibrationStb: Loaded camera calibration from " << filename << std::endl;
 
 		// TODO: configurable near and far clipping planes		
 		StbMath::Matrix44F pMatrix;
@@ -162,10 +134,10 @@ public:
 	}
 
 	void update(osgART::Tracker& tracker) 
-	{
-		
+	{	
 		if (_valid = (_target.getStatus() != StbCV::NFT2::Target::INACTIVE) == true)
 		{
+
 			// check if we should query found from target
 			StbMath::Matrix34F mat34;
 			StbMath::Matrix44F mat44;
@@ -190,7 +162,6 @@ public:
 class StbNFT2 : public osgART::Tracker {
 protected:
 
-//	StbTracker::TrackerMain* _trackerMain;
 	StbCV::NFT2::NFTracker2* _tracker;
 	StbCV::Image* _image;
 
@@ -211,7 +182,6 @@ public:
 
 StbNFT2::StbNFT2() 
 : osgART::Tracker()
-//, _trackerMain(StbTracker::TrackerMain::create(new StbLogger(StbCore::Logger::getInstance(), StbTracker::Logger::TYPE_ERROR)))
 , _tracker(new StbCV::NFT2::NFTracker2())
 , _image(new StbCV::Image())
 {
@@ -254,6 +224,8 @@ StbNFT2::getOrCreateCalibration()
 osgART::Marker* 
 StbNFT2::addMarker(const std::string& config) 
 {
+
+//	ScopedLog<> log;
 	
 	std::vector<std::string> tokens = osgART::tokenize(config, ",");
 
@@ -263,9 +235,8 @@ StbNFT2::addMarker(const std::string& config)
 		return 0L;
 	}
 	
-	// use the tag
+	// use the tag	
 	std::string markerType = tokens[0];
-
 
 	//single,soccer/soccerSet,soccer,hyper_FCBarcelona
 	//single,multiset,multiset,target_vienna3
@@ -306,7 +277,7 @@ StbNFT2::addMarker(const std::string& config)
 		}
 		
 	}
-	
+
 	return 0L;
 
 }
@@ -333,12 +304,14 @@ StbNFT2::update(osg::NodeVisitor* nv)
 //			_image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
 			break;
 		default:
-			OSG_NOTICE<<"Warning: unsupported colorspace! "<< osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
+			OSG_WARN<<"Warning: unsupported colorspace! "<< osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
 			break;
 	}
 	
+	// update targets
 	_tracker->update(*_image);
-	
+
+	//OSG_INFO << _tracker->getMonitor().getReportString().c_str() << std::endl;
 
 	// Process the found targets
 
