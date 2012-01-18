@@ -135,6 +135,9 @@ public:
 
 	void update(osgART::Tracker& tracker) 
 	{	
+
+		//osgART::ScopedLog<> log;
+
 		if (_valid = (_target.getStatus() != StbCV::NFT2::Target::INACTIVE) == true)
 		{
 
@@ -151,9 +154,11 @@ public:
 			//StbMath::transpose(mat44);
 			mat44.transposeInPlace();
 
-			updateTransform(osg::Matrix(mat44.data()));
+			osg::Matrix osgmat(mat44.data());
+
+			updateTransform(osgmat);
 			
-			OSG_INFO << "Valid: " << _valid << "\n Pose:\n" << osg::Matrix(mat44.data()) << std::endl;
+			//OSG_INFO << "Valid: " << _valid << "\n Pose:\n" << osgmat << std::endl;
 		}
 	}
 };

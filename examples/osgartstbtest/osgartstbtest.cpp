@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
-	
+
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
@@ -149,6 +149,7 @@ int main(int argc, char* argv[])
 	
 	
 	cam->addChild(arTransform.get());
+	arTransform->addChild(osgART::testCube());
 	
 
 	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
