@@ -1,6 +1,6 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph 
+ * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
  * Portions Copyright (C) 2005-2007 ARToolworks Inc
  *
@@ -60,7 +60,7 @@ public:
 	virtual ~SSTT_Video();
 
 
-	META_Object(osgART,SSTT_Video);
+	META_Object(osgART,SSTT_Video)
 
 	/**
 	* Affectation operator.
@@ -111,31 +111,31 @@ private:
 };
 
 
-SSTT_Video::SSTT_Video() 
+SSTT_Video::SSTT_Video()
 	: osgART::Video()
 	, _capture(0L)
 {
 }
 
-SSTT_Video::SSTT_Video(const SSTT_Video &, const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/) 
+SSTT_Video::SSTT_Video(const SSTT_Video &, const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/)
 {
 }
 
-SSTT_Video::~SSTT_Video() 
+SSTT_Video::~SSTT_Video()
 {
 	this->close(false);
 }
 
-SSTT_Video& 
+SSTT_Video&
 SSTT_Video::operator=(const SSTT_Video &) {
 	return *this;
 }
 
-bool 
-SSTT_Video::open() 
+bool
+SSTT_Video::open()
 {
 	sstt_capture_setting capture_settings;
-	
+
 	sstt_capture_create(&_capture,SSTT_CAPTURE_DEFAULT);
 
 	// Default values
@@ -144,7 +144,7 @@ SSTT_Video::open()
 	capture_settings.minFPS = 30;
 	capture_settings.name = 0;
 	capture_settings.uid = 0;
-	
+
 
 	// Try to get custom values from configuration string
 	// Format for device string:
@@ -157,13 +157,13 @@ SSTT_Video::open()
 
 	// Open device
 	sstt_capture_open( _capture, &capture_settings);
-	
+
 	sstt_capture_start(_capture);
 
 	sstt_capture_update(_capture);
-	
+
 	sstt_image probe;
-	
+
 	// get_image is locking the video capture
 	sstt_capture_get_image( _capture, &probe, SSTT_IMAGE_BGR24 );
 	// we can immediate unlock because we don't copy the image
@@ -172,15 +172,15 @@ SSTT_Video::open()
 	// now create the image
 	this->allocateImage(probe.width, probe.height, 1, GL_BGR, GL_UNSIGNED_BYTE, 1);
 	this->setDataVariance(osg::Object::DYNAMIC);
-	
+
 	this->update(0);
 
 	return true;
 
 }
 
-void 
-SSTT_Video::close(bool waitForThread) 
+void
+SSTT_Video::close(bool waitForThread)
 {
 	sstt_capture_stop(_capture);
 }
@@ -196,29 +196,29 @@ SSTT_Video::pause() {
 }
 
 void
-SSTT_Video::update(osg::NodeVisitor* nv) 
+SSTT_Video::update(osg::NodeVisitor* nv)
 {
 
-	if (0 == _capture) 
+	if (0 == _capture)
 	{
 		return;
 	}
-	
+
 	sstt_image probe;
 	sstt_capture_get_image( _capture, &probe, SSTT_IMAGE_BGR24 );
 
-	if (probe.frame != this->getModifiedCount()) 
+	if (probe.frame != this->getModifiedCount())
 	{
 		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 		memcpy(this->data(), probe.data, getImageSizeInBytes());
 		this->dirty();
 	}
-	
+
 	sstt_capture_get_image(_capture,0,0);
 
 }
 
-osgART::VideoConfiguration* SSTT_Video::getVideoConfiguration() 
+osgART::VideoConfiguration* SSTT_Video::getVideoConfiguration()
 {
 	return &_config;
 }

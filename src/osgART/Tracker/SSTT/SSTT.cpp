@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 
 #include <osg/Notify>
 
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Tracker"
 #include "osgART/Video"
 #include "osgART/Calibration"
@@ -59,7 +59,7 @@ public:
 
 	inline bool load(const std::string& filename)
 	{
-		/* 0 = loading default camera parameters  
+		/* 0 = loading default camera parameters
 		 * this is a sane choice for most webcams */
 		sstt_calibration_load( _calibration, 0 );
 
@@ -68,7 +68,7 @@ public:
 
 	inline void setSize(int width, int height)
 	{
-		osg::notify() << "SSTT Calibration resize '" << 
+		osg::notify() << "SSTT Calibration resize '" <<
 			width << " x " << height << std::endl;
 
 		/* set the camera image size */
@@ -90,12 +90,12 @@ public:
 class SSTT_Tracker;
 
 
-class SSTT_Target : public osgART::Marker
+class SSTT_Target : public osgART::Target
 {
 	sstt_target *_target;
 
 	osg::Vec4f _border;
-	
+
 public:
 
 	SSTT_Target(sstt_tracker* tracker);
@@ -104,7 +104,7 @@ public:
 
 	void update();
 
-	inline const sstt_target* getTarget() const 
+	inline const sstt_target* getTarget() const
 	{
 		return _target;
 	}
@@ -120,17 +120,17 @@ class SSTT_Tracker : public osgART::Tracker
 	sstt_tracker* _tracker;
 	sstt_capture* _capture;
 	unsigned int _modifiedCount;
-	
+
 public:
 
 	SSTT_Tracker();
 	virtual ~SSTT_Tracker();
-	
+
 	osgART::Calibration* getOrCreateCalibration();
 
 	void setImage(osg::Image* image);
 
-	osgART::Marker* addMarker(const std::string& config);
+	osgART::Target* addTarget(const std::string& config);
 
 	void update(osg::NodeVisitor* nv);
 
@@ -141,15 +141,16 @@ public:
 /* Implementation */
 
 
-SSTT_Target::SSTT_Target(sstt_tracker* tracker) 
-	: osgART::Marker(), _target(0L)
+SSTT_Target::SSTT_Target(sstt_tracker* tracker)
+	: osgART::Target()
+	, _target(0L)
 {
 
-	if (sstt_tracker_create_target( tracker, &_target ) != 0) 
+	if (sstt_tracker_create_target( tracker, &_target ) != 0)
 	{
 		osg::notify() << "SSTT Tracker: Error in sstt_target_create" << std::endl;
 		return;
-	}	
+	}
 }
 
 
@@ -191,7 +192,7 @@ SSTT_Target::init(const std::string& config)
 		osg::notify() << "SSTT Tracker: Target image is " << inputImage->s() << "x" << inputImage->t() << ", " << osg::Image::computeNumComponents(inputImage->getPixelFormat()) << " components"  << std::endl;
 
 	}
-	
+
 	if (sstt_target_init( _target) != 0) {
 		osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
 		return;
@@ -219,7 +220,7 @@ SSTT_Target::init(const std::string& config)
 	in_img.height = inputImage->t();
 	in_img.channels = 3;
 	in_img.stride = inputImage->s() * in_img.channels;
-	
+
 	if (sstt_target_set_image(_target, &in_img) != 0) {
 		osg::notify() << "SSTT Tracker: Error in sstt_target_set_image" << std::endl;
 		return;
@@ -227,14 +228,14 @@ SSTT_Target::init(const std::string& config)
 
 }
 
-void 
+void
 SSTT_Target::update()
 {
 	/* we need a info struct to probe into the SSTT API */
 	sstt_target_info *target_info(0L);
 	sstt_target_get_info( _target, &target_info );
 
-	if ( target_info ) 
+	if ( target_info )
 	{
 
 		/* set the confidence of the marker: normalised 0-1 */
@@ -245,7 +246,7 @@ SSTT_Target::update()
 
 		if (_valid) {
 			std::cout << "Visible" << std::endl;
-			
+
 			/* use the model view to set the marker transformation matrix */
 			_transform.set( &target_info->modelview[0] );
 			std::cout << _transform << std::endl;
@@ -257,15 +258,15 @@ SSTT_Target::update()
 			std::cout << "Not visible" << std::endl;
 		}
 
-		//osg::notify() 
-		std::cout << "SSTT Target confidence " 
-			<< target_info->confidence << "/" 
-			<< target_info->confidence_threshold 
+		//osg::notify()
+		std::cout << "SSTT Target confidence "
+			<< target_info->confidence << "/"
+			<< target_info->confidence_threshold
 			<< std::endl;
 
 		/*
 		// reset the statistical model of SSTT - in the newer SSTT API this might change
-		if ( target_info->confidence > 0.0 ) 
+		if ( target_info->confidence > 0.0 )
 		{
 			// the confidence has a linear degredation of 8% per frame
 			sstt_target_set_parameter(_target, SSTT_TARGET_CONFIDENCE, target_info->confidence - 0.08);
@@ -278,8 +279,8 @@ SSTT_Target::update()
 
 
 
-SSTT_Tracker::SSTT_Tracker() : 
-	osgART::Tracker(), 
+SSTT_Tracker::SSTT_Tracker() :
+	osgART::Tracker(),
 	_tracker(0L),
 	_capture(0L),
 	_modifiedCount(0)
@@ -291,22 +292,22 @@ SSTT_Tracker::SSTT_Tracker() :
 
 }
 
-SSTT_Tracker::~SSTT_Tracker() 
+SSTT_Tracker::~SSTT_Tracker()
 {
 	/* clear up the tracker */
 	sstt_tracker_destroy( &_tracker );
 }
 
 
-inline osgART::Calibration* 
-SSTT_Tracker::getOrCreateCalibration() 
+inline osgART::Calibration*
+SSTT_Tracker::getOrCreateCalibration()
 {
 	if (!_calibration.valid()) _calibration = new SSTT_Calibration;
 
 	return osgART::Tracker::getOrCreateCalibration();
 }
 
-inline void 
+inline void
 SSTT_Tracker::setImage(osg::Image* image)
 {
 
@@ -320,7 +321,7 @@ SSTT_Tracker::setImage(osg::Image* image)
 	if (_tracker == 0L) {
 		/* create a tracker object */
 		sstt_capture_create( &_capture, SSTT_CAPTURE_EXTERNAL );
-		
+
 		if (sstt_tracker_init(_tracker, image->s(), image->t()) != 0) {
 			osg::notify() << "SSTT Tracker: Error in sstt_tracker_init" << std::endl;
 		}
@@ -333,8 +334,8 @@ SSTT_Tracker::setImage(osg::Image* image)
 
 }
 
-inline osgART::Marker* 
-SSTT_Tracker::addMarker(const std::string& config)
+inline osgART::Target*
+SSTT_Tracker::addTarget(const std::string& config)
 {
 
 	SSTT_Target* target = new SSTT_Target(this->_tracker);
@@ -343,17 +344,17 @@ SSTT_Tracker::addMarker(const std::string& config)
 
 	_markerlist.push_back(target);
 
-	/* 
+	/*
 	 * make sure the target is attached to the tracker,
 	 * normally SSTT can share targets between multiple trackers
- 	 */
+	 */
 	sstt_target_attach( (sstt_target*) target->getTarget(), _tracker );
 
 	return target;
 }
 
 
-inline void 
+inline void
 SSTT_Tracker::update(osg::NodeVisitor* nv)
 {
 	if (!_imagesource.valid())
@@ -365,7 +366,7 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 
 		std::cout << "Image: " << _imagesource->s() << "x" << _imagesource->t() << ", " << osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
 
-		/* we need to inject the osg::Image into the tracking pipeline 
+		/* we need to inject the osg::Image into the tracking pipeline
 		 * thus we need a temporary image */
 		sstt_image image;
 		image.width = _imagesource->s();
@@ -377,7 +378,7 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 
 		for (int y = 0; y < _imagesource->t(); y++) {
 			for (int x = 0; x < _imagesource->s(); x++) {
-			
+
 				unsigned char* src = _imagesource->data(x, y);
 				unsigned char* dst = &(image.data[(y * _imagesource->s() + x) * 3]);
 
@@ -396,16 +397,16 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 		if (sstt_tracker_detect( _tracker ) != 0) {
 			osg::notify() << "SSTT Tracker: Error in sstt_tracker_detect" << std::endl;
 		}
-		
+
 		if (SSTT_Calibration* calib = dynamic_cast<SSTT_Calibration*>(this->getOrCreateCalibration())) {
 
 			sstt_tracker_pose( _tracker, (sstt_calibration*)calib->getCalibration() );
 
 			/* now sync all osgART markers with their SSTT counterparts */
 			for(osgART::Tracker::MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
-				
+
 				if (SSTT_Target* target = dynamic_cast<SSTT_Target*>((*iter).get())) {
-						
+
 					std::cout << "target" << rand() << std::endl;
 					target->update();
 
@@ -414,9 +415,9 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 			}
 
 		}
-		
+
 		delete[] image.data;
-		
+
 		_modifiedCount = _imagesource->getModifiedCount();
 	}
 }
