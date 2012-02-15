@@ -46,6 +46,23 @@
 
 namespace osgART {
 
+
+	template <osg::NotifySeverity severity = osg::DEBUG_INFO>
+	struct ScopedLog {
+
+		osg::NotifySeverity oldSeverity;
+
+		ScopedLog() : oldSeverity(osg::getNotifyLevel()) {
+			osg::setNotifyLevel(severity);
+		}
+
+		~ScopedLog() {
+			osg::setNotifyLevel(oldSeverity);
+		}
+
+	};
+
+
 	OSGART_EXPORT unsigned int equalOrGreaterPowerOfTwo(unsigned int x);
 	
 	OSGART_EXPORT osg::Vec2 getTextureMaxUV(const osg::Texture* texture);

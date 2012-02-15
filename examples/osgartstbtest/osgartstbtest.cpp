@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
 	osg::ArgumentParser args(&argc,argv);
 
-	std::string videoName = "opencv";
+	std::string videoName = "sstt";
 	std::string trackerName = "stbnx";
 
 	//std::string trackerConfig = "Frame,0,80"; // can use ID or Frame
@@ -148,12 +148,11 @@ int main(int argc, char* argv[])
 	osg::Vec4 c = osg::Vec4((double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, (double)rand() / (double)RAND_MAX, 1.0f);
 	// create a cube
 	arTransform->addChild(osgART::testCube(20,c));
+	
 	// need a higher renderbin to be on top of the video background
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
-
 	cam->addChild(arTransform.get());
-
 
 	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
