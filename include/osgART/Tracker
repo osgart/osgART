@@ -53,15 +53,19 @@ namespace osgART {
 	 * that connects video streams, markers and their representation in
 	 * the virtual environment.
 	 */
-	class OSGART_EXPORT Tracker : public osg::Referenced,
-		public FieldContainer<Tracker>
-	{
+    class OSGART_EXPORT Tracker : public osg::Object {
 	public:
 		/**
 		 * \brief Constructor.
 		 *
 		 */
 		Tracker();
+
+
+        Tracker(const Tracker& rhs, const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
+
+
+        META_Object(osgART,Tracker)
 
 		/**
 		 * \brief Set the image to analyzed.
@@ -128,7 +132,7 @@ namespace osgART {
 		 * Remove a marker.
 		 * \param marker pointer to the marker to be removed
 		 */
-		virtual void removeTarget(Target* marker);
+        virtual void removeTarget(Target* target);
 
 
 		/**
@@ -183,15 +187,14 @@ namespace osgART {
 		/**
 		 * type for a vector of reference counted markers.
 		 */
-		typedef std::vector< osg::ref_ptr<Target> > MarkerList;
+        typedef std::vector< osg::ref_ptr<Target> > TargetList;
 
 		/**
 		 * A list of markers associated with this tracker.
 		 */
-		MarkerList _markerlist;
+        TargetList _markerlist;
 
 		double			_projectionMatrix[16];
-		std::string		_name;		//!< Store the name of the tracker.
 		std::string		_version;	//!< Store the version of the tracker.
 		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
 

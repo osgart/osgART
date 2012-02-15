@@ -40,10 +40,6 @@
 
 namespace osgART {
 
-	class DataChannels {
-
-		osg::ValueData
-	};
 
 	class Tracker;
 
@@ -118,7 +114,7 @@ namespace osgART {
 		/**
 		 * overide for usage in trackers
 		 */
-		virtual void update(Tracker& tracker) = 0;
+        virtual void update(Tracker& tracker) {}
 
 
 	protected:

@@ -244,7 +244,7 @@ int main(int argc, char* argv[])  {
 		std::cout << "No tracker" << std::endl;
 		return -1;
 	}
-
+#if OSGART_DEPRECATED_FIELDS
 
 	// Threshold field (used to adjust threshold for image binarisation process)
 	thresholdField = reinterpret_cast< osgART::TypedField<int>* >(tracker->get("threshold"));
@@ -266,6 +266,7 @@ int main(int argc, char* argv[])  {
 		std::cout << "Debug image field not available from tracker" << std::endl;
 		return -1;
 	}
+#endif
 
 	// Training support module for the selected tracker
 	osg::ref_ptr<osgART::TrainingSupport> trainer = tracker->getTrainingSupport();

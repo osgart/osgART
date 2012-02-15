@@ -191,8 +191,13 @@ int main(int argc, char* argv[])  {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
+#if OSGART_DEPRECATED_FIELDS
+
 	osg::ref_ptr< osgART::TypedField<bool> > historyField = reinterpret_cast< osgART::TypedField<bool>* >(tracker->get("use_history"));
 	historyField->set(true);
+
+#endif
+
 
 	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("single;data/patt.hiro;80;0;0");
 	if (!marker.valid())

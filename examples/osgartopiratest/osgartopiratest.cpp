@@ -100,6 +100,7 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
+#if OSGART_DEPRECATED_FIELDS
 
 	osg::ref_ptr< osgART::TypedField<std::string> > registrationPolicyField = reinterpret_cast< osgART::TypedField<std::string>* >(tracker->get("registration_policy"));
 	if (!registrationPolicyField.valid()) {
@@ -115,6 +116,7 @@ int main(int argc, char* argv[])  {
 	}
 	featureDetectorField->set(featureDetector);
 
+#endif
 
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();

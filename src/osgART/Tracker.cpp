@@ -28,6 +28,9 @@
 
 #include <iostream>
 
+#include <osg/ValueObject>
+#include <osg/UserDataContainer>
+
 namespace osgART {
 
 	TrackerCallback::TrackerCallback(Tracker* tracker): _tracker(tracker), _framenumber(-1) {
@@ -64,18 +67,34 @@ namespace osgART {
 	}
 
 
+    ///
+
 	Tracker::Tracker()
-		: osg::Referenced(),
-		_enable(true),
-		m_lastModifiedCount(0xFFFFF),
-		_stats(new osg::Stats("tracker"))
+        : osg::Object()
+        , _enable(true)
+        , m_lastModifiedCount(0xFFFFF)
+        , _stats(new osg::Stats("tracker"))
 	{
-		_fields["name"]	= new TypedField<std::string>(&_name);
-		_fields["version"]	= new TypedField<std::string>(&_version);
-		_fields["enable"]	= new CallbackField<Tracker,bool>(this,
-			&Tracker::getEnable,
-			&Tracker::setEnable);
-	}
+        osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
+
+        // *cough*
+        udc->addUserObject(this);
+
+//        osg::Object* o = new osg::TemplateValueObject<std::string>("name",std::string("what?"));
+//        udc->addUserObject(o);
+        //udc->addUserObject(new osg::TemplateValueObject(name,std::string("gah")));
+
+//		_fields["name"]	= new TypedField<std::string>(&_name);
+//		_fields["version"]	= new TypedField<std::string>(&_version);
+//		_fields["enable"]	= new CallbackField<Tracker,bool>(this,
+//			&Tracker::getEnable,
+        //			&Tracker::setEnable);
+    }
+
+    Tracker::Tracker(const Tracker &rhs, const osg::CopyOp &)
+    {
+        //\todo implement!
+    }
 
 	Tracker::~Tracker()
 	{
@@ -83,7 +102,7 @@ namespace osgART {
 		//
 		// Explicitly delete/unref all markers
 		//
-		for( MarkerList::iterator mi = _markerlist.begin();
+        for( TargetList::iterator mi = _markerlist.begin();
 			 mi != _markerlist.end();
 			 mi++)
 		{
@@ -118,7 +137,7 @@ namespace osgART {
 
 	/*virtual */
 	void
-	Tracker::removeTarget(Target *marker)
+    Tracker::removeTarget(Target *target)
 	{
 		// TODO: implement
 	}
@@ -142,12 +161,6 @@ namespace osgART {
 
 		// return the Marker
 		return _m;
-	}
-
-	unsigned int
-	Tracker::getMarkerCount() const
-	{
-		return (unsigned int)_markerlist.size();
 	}
 
 	/*virtual*/

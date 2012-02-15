@@ -102,7 +102,7 @@ public:
 
 	void init(const std::string& config);
 
-	void update();
+    void update(osgART::Tracker &tracker);
 
 	inline const sstt_target* getTarget() const
 	{
@@ -229,7 +229,7 @@ SSTT_Target::init(const std::string& config)
 }
 
 void
-SSTT_Target::update()
+SSTT_Target::update(osgART::Tracker& tracker)
 {
 	/* we need a info struct to probe into the SSTT API */
 	sstt_target_info *target_info(0L);
@@ -402,17 +402,20 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 
 			sstt_tracker_pose( _tracker, (sstt_calibration*)calib->getCalibration() );
 
-			/* now sync all osgART markers with their SSTT counterparts */
-			for(osgART::Tracker::MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
 
-				if (SSTT_Target* target = dynamic_cast<SSTT_Target*>((*iter).get())) {
+            /* now sync all osgART markers with their SSTT counterparts */
+            for(osgART::Tracker::TargetList::iterator iter = _markerlist.begin();
+                iter != _markerlist.end();
+                iter++)
+            {
 
-					std::cout << "target" << rand() << std::endl;
-					target->update();
+                if (SSTT_Target* target = dynamic_cast<SSTT_Target*>((*iter).get())) {
 
-				}
+                    target->update(*this);
 
-			}
+                }
+
+            }
 
 		}
 
