@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 
 #include "osgART/Export"
 
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Tracker"
 #include "osgART/Calibration"
 
@@ -62,60 +62,60 @@ namespace osgART {
 
 	class OSGART_EXPORT Scene : public osg::Group {
 	public:
-		
+
 		/**
-		 * Scene is the grand master class of osgART. In basic 
-		 * applications it should be the only thing needed to 
+		 * Scene is the grand master class of osgART. In basic
+		 * applications it should be the only thing needed to
 		 * create an AR application.
 		 *
-		 * \code 
+		 * \code
 		 * osgART::Scene* scene = new osgART::Scene();
 		 * scene->addVideoBackground("osgart_video_artoolkit2");
 		 * scene->addTracker("osgart_tracker_artoolkit2");
 		 * scene->addTrackedTransform("single;data/patt.hiro;80;0;0")->addChild(osgART::testCube());
 		 *
-		 */	
+		 */
 		Scene();
-		
-		        
-        /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Scene(const Scene&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
-        META_Node(osgART, Scene);
 
-        virtual Scene* asScene() { return this; }
-        virtual const Scene* asScene() const { return this; }
+		/** Copy constructor using CopyOp to manage deep vs shallow copy. */
+		Scene(const Scene&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
-		
-		
-		osgART::Video* addVideoBackground(const std::string& v);
-		osgART::Tracker* addTracker(const std::string& t);
+		META_Node(osgART, Scene)
 
-		osgART::Marker* addMarker(const std::string& cfg);
+		virtual Scene* asScene() { return this; }
+		virtual const Scene* asScene() const { return this; }
+
+
+
+		Video* addVideoBackground(const std::string& v);
+		Tracker* addTracker(const std::string& t);
+
+		Target* addTarget(const std::string& cfg);
 		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
-		
-		osg::MatrixTransform* addTrackedTransform(osgART::Marker* marker);
-		
+
+		osg::MatrixTransform* addTrackedTransform(Target *marker);
+
 		inline const osg::Camera* getCamera() const {
 			return _camera.get();
 		}
 
-		inline SceneSetting& getSetting() { return _settings; };
-	
+		inline SceneSetting& getSetting() { return _settings; }
+
 		inline const osgART::Tracker* getTracker() const {
 			return _tracker.get();
 		}
-		
+
 		inline const osgART::Video* getVideo() const {
 			return _video.get();
 		}
-	
+
 	protected:
-	
+
 		virtual ~Scene();
 
 		SceneSetting _settings;
-	
+
 		osg::ref_ptr<osgART::VideoLayer> _videoBackground;
 		osg::ref_ptr<osgART::Tracker> _tracker;
 		osg::ref_ptr<osgART::Video> _video;

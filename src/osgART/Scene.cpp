@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -55,8 +55,8 @@ namespace osgART {
 		VideoStartCallback(osgART::Video* Video) : _video(Video), _oneshot(false) {}
 
 		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
-		{ 
-			
+		{
+
 			if (!_oneshot) _video->start();
 
 			traverse(node,nv);
@@ -75,9 +75,9 @@ namespace osgART {
 		// Add a new background video geode using the current set of parameters
 		_videoBackground->addChild(
 			new osgART::VideoGeode(
-				_video.get(), 
-				_calibration.get(), 
-				1.0, 1.0, 20, 20, 
+				_video.get(),
+				_calibration.get(),
+				1.0, 1.0, 20, 20,
 				(_settings._use_texturerect) ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D
 			)
 		);
@@ -93,12 +93,12 @@ namespace osgART {
 	{
 
 		osgART::PluginManager::instance()->load(v);
-		
+
 		_video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(v));
 
 		// check if an instance of the video stream could be started
-		if (!_video.valid()) 
-		{   
+		if (!_video.valid())
+		{
 			// Without video an AR application can not work. Quit if none found.
 			osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 			return NULL;
@@ -111,9 +111,9 @@ namespace osgART {
 
 		osgART::addEventCallback(this, new VideoStartCallback(_video.get()));
 
-		configureVideoBackground();		
+		configureVideoBackground();
 
-		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video.get())) 
+		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video.get()))
 		{
 			osgART::addEventCallback(this, new osgART::ImageStreamCallback(imagestream));
 		}
@@ -135,7 +135,7 @@ namespace osgART {
 		osgART::PluginManager::instance()->load(t);
 		_tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(t));
 
-		if (!_tracker.valid()) 
+		if (!_tracker.valid())
 		{
 			// Without tracker an AR application can not work. Quit if none found.
 			osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
@@ -146,7 +146,7 @@ namespace osgART {
 		_calibration = _tracker->getOrCreateCalibration();
 
 		// load a calibration file
-		if (!_calibration->load(std::string("data/camera_para.dat"))) 
+		if (!_calibration->load(std::string("data/camera_para.dat")))
 		{
 
 			// the calibration file was non-existing or couldnt be loaded
@@ -160,7 +160,7 @@ namespace osgART {
 			_tracker->setImage(_video.get());
 
 			// Update the video background with new tracker calibration etc...
-			configureVideoBackground();	
+			configureVideoBackground();
 
 		}
 
@@ -175,23 +175,23 @@ namespace osgART {
 
 
 	//"single;data/patt.hiro;80;0;0"
-	osgART::Marker* Scene::addMarker( const std::string& cfg )
+	osgART::Target* Scene::addTarget( const std::string& cfg )
 	{
-		return _tracker.valid() ? _tracker->addMarker(cfg) : 0L;
+		return _tracker.valid() ? _tracker->addTarget(cfg) : 0L;
 	}
 
-	osg::MatrixTransform* Scene::addTrackedTransform(osgART::Marker* marker) {
+	osg::MatrixTransform* Scene::addTrackedTransform(Target* marker) {
 
 		osg::MatrixTransform* arTransform = new osg::MatrixTransform();
 		_camera->addChild(arTransform);
 
-		if (!marker) 
+		if (!marker)
 		{
 
 			osg::notify(osg::FATAL) << "No marker specified for tracking!" << std::endl;
 
 		} else {
- 
+
 			marker->setActive(true);
 			osgART::attachDefaultEventCallbacks(arTransform, marker);
 
@@ -203,7 +203,7 @@ namespace osgART {
 
 	osg::MatrixTransform* Scene::addTrackedTransform( const std::string& cfg )
 	{
-		return addTrackedTransform(addMarker(cfg));
+		return addTrackedTransform(addTarget(cfg));
 	}
 
 	Scene::~Scene()

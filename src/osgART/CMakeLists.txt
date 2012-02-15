@@ -4,11 +4,11 @@ set(lib_name "osgART")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-set(lib_srcs 
+set(lib_srcs
 	Calibration.cpp
 	Foundation.cpp
 	ImageStreamCallback.cpp
-	Marker.cpp
+	Target.cpp
 	MarkerCallback.cpp
 	PluginManager.cpp
 	Scene.cpp
@@ -23,14 +23,14 @@ set(lib_srcs
 	TrainingSupport.cpp
 )
 
-set(lib_hdrs 
+set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
 	${CMAKE_SOURCE_DIR}/include/osgART/Export
 	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Foundation
 	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
-	${CMAKE_SOURCE_DIR}/include/osgART/Marker
+	${CMAKE_SOURCE_DIR}/include/osgART/Target
 	${CMAKE_SOURCE_DIR}/include/osgART/MarkerCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
 	${CMAKE_SOURCE_DIR}/include/osgART/Scene
@@ -61,8 +61,8 @@ set(addon_libs)
 
 if (WIN32)
 	# some target properties
-	set_target_properties(${lib_name} 
-		PROPERTIES	
+	set_target_properties(${lib_name}
+		PROPERTIES
 #		PREFIX "osg${OSG_VERSION_SO}-"
 		IMPORT_PREFIX ""
 #		VERSION ${OSGART_VERSION_MAJOR}
@@ -70,8 +70,8 @@ if (WIN32)
 	)
 else(WIN32)
 	# some target properties
-#	set_target_properties(${lib_name} 
-#		PROPERTIES	
+#	set_target_properties(${lib_name}
+#		PROPERTIES
 #		VERSION ${OSGART_VERSION_MAJOR}
 #		SOVERSION ${OSG_VERSION_SO}
 #	)
@@ -94,14 +94,14 @@ if   (APPLE)
 endif(APPLE)
 
 # link external libs
-target_link_libraries(${lib_name} 
+target_link_libraries(${lib_name}
 	${OPENTHREADS_LIBRARY}
-	${OSG_LIBRARY} 
-	${OSGDB_LIBRARY} 
-	${OPENGL_LIBRARY} 	
+	${OSG_LIBRARY}
+	${OSGDB_LIBRARY}
+	${OPENGL_LIBRARY}
 	${addon_libs}
-	)	
-	
+	)
+
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
 
 
@@ -110,9 +110,9 @@ option(OSGART_WITH_SSTT FALSE)
 
 add_subdirectory(Tracker)
 add_subdirectory(Video)
-	
 
-set_source_files_properties(${lib_hdrs} 
+
+set_source_files_properties(${lib_hdrs}
 	PROPERTIES
 	HEADER_FILE_ONLY TRUE
 	)
@@ -124,7 +124,7 @@ if(WIN32)
 endif(WIN32)
 
 if (NOT OSGART_USE_FRAMEWORKS)
-	install(TARGETS ${lib_name} 
+	install(TARGETS ${lib_name}
 			RUNTIME DESTINATION bin
 			LIBRARY DESTINATION ${lib_libinstalldir}
 			ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
@@ -132,10 +132,10 @@ if (NOT OSGART_USE_FRAMEWORKS)
 			)
 endif(NOT OSGART_USE_FRAMEWORKS)
 
-install(FILES ${lib_hdrs} 
+install(FILES ${lib_hdrs}
 		DESTINATION include/${lib_name}
 		)
-		
+
 
 #
 # Install share/
@@ -143,14 +143,14 @@ install(FILES ${lib_hdrs}
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/share
 	DESTINATION ${CMAKE_INSTALL_PREFIX}
 	PATTERN ".svn" EXCLUDE
-    )
+	)
 
 #
 # Optional SDK packaging (default is on)
 #
-if(WIN32)		
+if(WIN32)
 	option(OSGART_BUILD_SDK "Build as an SDK which will copy all necessary files into the osgART folder" ON)
-	if(OSGART_BUILD_SDK)		
+	if(OSGART_BUILD_SDK)
 		install(
 			DIRECTORY "${OSG_INCLUDE_DIR}/../"
 			DESTINATION "."

@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Video"
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Field"
 #include "osgART/Calibration"
 #include "osgART/TrainingSupport"
@@ -48,95 +48,96 @@ namespace osgART {
 
 	/**
 	 * \class Tracker.
-	 * 
-	 * Base class for a tracker which in the context of AR is an entity 
+	 *
+	 * Base class for a tracker which in the context of AR is an entity
 	 * that connects video streams, markers and their representation in
 	 * the virtual environment.
 	 */
-	class OSGART_EXPORT Tracker : public osg::Referenced, 
+	class OSGART_EXPORT Tracker : public osg::Referenced,
 		public FieldContainer<Tracker>
 	{
-	public:        
+	public:
 		/**
 		 * \brief Constructor.
 		 *
 		 */
 		Tracker();
 
-		/** 
+		/**
 		 * \brief Set the image to analyzed.
-		 * 
+		 *
 		 * \param video the video object to use
 		 */
 		virtual void setImage(osg::Image* image);
-		
+
 		virtual osg::Image* getImage();
-		
+
 
 		/**
 		 * Creates or gets the calibration object
-		 * 
+		 *
 		 * \return calibration object
 		 */
 		virtual Calibration* getOrCreateCalibration();
-	
-    
-		/** 
+
+
+		/**
 		 * \brief update the tracking.
-		 * 
+		 *
 		 * Request that the tracker update the position of tracked
 		 * markers, using the most recent image supplied by setImage.
 		 * \param nv NodeVisitor which should be used to get stats information
 		 */
 		virtual void update(osg::NodeVisitor* nv = 0L);
-		
-		/** 
+
+		/**
 		 * \brief XXX.
-		 * 
+		 *
 		 * XXX.
 		 */
-		virtual Marker* getMarker(int markerId);
-		
-		unsigned int getMarkerCount() const;
-		
-		/** 
+		virtual Target* getTarget(int markerId);
+
+		inline size_t
+		getTargetNum() const { return _markerlist.size(); }
+
+		/**
 		 * \brief get the openGL projection matrix.
-		 * 
+		 *
 		 * delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
 		 * @param proj the openGL projection matrix computed
 		 */
 		virtual const double* getProjectionMatrix() const;
-			
+
 		/**
 		 * \brief Return a string that contains the tracker name and version.
-		 */	
+		 */
 		std::string		getLabel()const;
-		
+
 		virtual void	setEnable(const bool & e);
 		virtual bool	getEnable()const;
-		
-		
+
+
 		/**
 		 * Add a marker to the tracker.
 		 * \param config can contain the filename an ID or other tracker specific parameters
 		 * \return Marker as been loaded from the tracker or 0 if it failed
 		 */
-		virtual Marker* addMarker(const std::string& config);
-		
+		virtual Target* addTarget(const std::string& config);
+
 		/**
 		 * Remove a marker.
-		 * \param marker pointer to the marker to be removed 		 
+		 * \param marker pointer to the marker to be removed
 		 */
-		virtual void removeMarker(Marker* marker);
-		 
-		 
+		virtual void removeTarget(Target* marker);
+
+
 		/**
 		 * Return a training support instance for this tracker.
-		 * \return TrainingSupport instance, or NULL if marker training is not supported.		 
+		 * \return TrainingSupport instance, or NULL if marker training is not supported.
 		 */
 		virtual TrainingSupport* getTrainingSupport() { return NULL; }
-		 
-		
+
+
 		/**
 		 * Needed for plugin loaded objects which are used in other
 		 * languages which don't support dynamic casting (e.g. Python)
@@ -144,19 +145,19 @@ namespace osgART {
 		 * \return 0 if can't cast otherwise correctly typed instance
 		 */
 		static Tracker* cast(osg::Referenced* instance);
-		
-		
-		inline osg::Stats* getStats() { return _stats.get(); };
-		
-		inline void setStats(osg::Stats* stats) { _stats = stats; } ;
-		
-		
+
+
+		inline osg::Stats* getStats() { return _stats.get(); }
+
+		inline void setStats(osg::Stats* stats) { _stats = stats; }
+
+
 	protected:
-	
-		osg::ref_ptr<osg::Stats> _stats;		
-	
+
+		osg::ref_ptr<osg::Stats> _stats;
+
 		/**
-		 * Creates an undistorted mesh, according to the 
+		 * Creates an undistorted mesh, according to the
 		 * camera lens distortion parameters known to the tracker.
 		 * \param width width of the actual video
 		 * \param height height of the actual video
@@ -165,86 +166,86 @@ namespace osgART {
 		 * \param geometry geometry to be filled with an
 		 * undistorted mesh
 		 */
-		virtual void 
+		virtual void
 		createUndistortedMesh(int width, int height,
 			float maxU, float maxV,
 			osg::Geometry &geometry);
-		
-		/* only videolayer and the container needs to access protected methods */	
+
+		/* only videolayer and the container needs to access protected methods */
 		friend class VideoLayer;
 		friend class TrackerContainer;
-	
-		/** 
+
+		/**
 		 * \brief destructor.
 		 */
 		virtual ~Tracker();
-	
+
 		/**
 		 * type for a vector of reference counted markers.
 		 */
-		typedef std::vector< osg::ref_ptr<Marker> > MarkerList;
-		
+		typedef std::vector< osg::ref_ptr<Target> > MarkerList;
+
 		/**
 		 * A list of markers associated with this tracker.
-		 */ 
+		 */
 		MarkerList _markerlist;
-		
+
 		double			_projectionMatrix[16];
 		std::string		_name;		//!< Store the name of the tracker.
 		std::string		_version;	//!< Store the version of the tracker.
 		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
-		
+
 
 		/**
 		 * Object that provides the image used for registration.
-		 */ 
+		 */
 		osg::ref_ptr<osg::Image> _imagesource;
-		
+
 		unsigned int m_lastModifiedCount;
 
 		/**
 		 * Calibration object that encapsulates the intrinsic camera parameters and distortion parameters.
-		 */ 
+		 */
 		osg::ref_ptr<Calibration> _calibration;
 
 	}; // class Tracker
-	
-	
-		
-	
-	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {	
+
+
+
+
+	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {
 	public:
-		
+
 		/**
 		 * Add or sets a TrackerCallback to any node
 		 * \param node Node which will trigger an update on the attached tracker
 		 * \param tracker an instance of osgART::Tracker which is been updated
 		 */
 		static TrackerCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
-				
 
-	
+
+
 		/**
 		 * Creates a tracker callback
 		 */
 		TrackerCallback(Tracker* tracker);
-	
-	protected:	
-			
-		/** 
-		 * Updates the tracker within here. The tracker will 
-		 * not update the image it is attached to. 
+
+	protected:
+
+		/**
+		 * Updates the tracker within here. The tracker will
+		 * not update the image it is attached to.
 		 */
 		void operator()(osg::Node* node, osg::NodeVisitor* nv);
-		
-		
+
+
 	private:
-	
+
 		osg::ref_ptr<Tracker> _tracker;
 		int _framenumber;
 	};
 
-	
+
 }; // namespace osgART
 
 #endif

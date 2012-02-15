@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
  */
 
 #include "osgART/Tracker"
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Video"
 
 #include <osg/Notify>
@@ -35,7 +35,7 @@ namespace osgART {
 	}
 
 	/* static */
-	TrackerCallback* 
+	TrackerCallback*
 	TrackerCallback::addOrSet(osg::Node* node, osgART::Tracker* tracker)
 	{
 		TrackerCallback *callback = new TrackerCallback(tracker);
@@ -47,24 +47,24 @@ namespace osgART {
 
 	}
 
-	void TrackerCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
-	{			
-		if (_tracker.valid()) 
+	void TrackerCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
+	{
+		if (_tracker.valid())
 		{
-			if (nv->getFrameStamp()->getFrameNumber() != _framenumber) 
+			if (nv->getFrameStamp()->getFrameNumber() != _framenumber)
 			{
 				_tracker->update(nv);
-				
+
 				_framenumber = nv->getFrameStamp()->getFrameNumber();
 			}
 		}
 
-		// must traverse the Node's subgraph            
+		// must traverse the Node's subgraph
 		traverse(node,nv);
 	}
 
 
-	Tracker::Tracker() 
+	Tracker::Tracker()
 		: osg::Referenced(),
 		_enable(true),
 		m_lastModifiedCount(0xFFFFF),
@@ -77,11 +77,11 @@ namespace osgART {
 			&Tracker::setEnable);
 	}
 
-	Tracker::~Tracker() 
+	Tracker::~Tracker()
 	{
 
-		// 
-		// Explicitly delete/unref all markers 
+		//
+		// Explicitly delete/unref all markers
 		//
 		for( MarkerList::iterator mi = _markerlist.begin();
 			 mi != _markerlist.end();
@@ -92,7 +92,7 @@ namespace osgART {
 
 		// Markers are associated with a specific tracker instance,
 		// so will be deleted when the tracker is deleted.
-		_markerlist.clear();		
+		_markerlist.clear();
 	}
 
 	/*virtual*/
@@ -108,8 +108,8 @@ namespace osgART {
 	}
 
 	/*virtual */
-	Marker*
-	Tracker::addMarker(const std::string& config)
+	Target*
+	Tracker::addTarget(const std::string& config)
 	{
 		osg::notify(osg::WARN) << "Method not implemented for this tracker!" << std::endl;
 
@@ -118,23 +118,23 @@ namespace osgART {
 
 	/*virtual */
 	void
-	Tracker::removeMarker(Marker *marker)
+	Tracker::removeTarget(Target *marker)
 	{
 		// TODO: implement
 	}
 
 
 
-	Marker* 
-	Tracker::getMarker(int id) 
+	Target*
+	Tracker::getTarget(int id)
 	{
-		Marker *_m = (Marker*)0L;
+		Target *_m = (Target*)0L;
 
-		try 
+		try
 		{
 			_m = _markerlist[id].get();
 
-		} catch(...) 
+		} catch(...)
 		{
 
 			osg::notify(osg::WARN) << "No Marker with ID: " << id << std::endl;
@@ -144,14 +144,14 @@ namespace osgART {
 		return _m;
 	}
 
-	unsigned int 
-	Tracker::getMarkerCount() const 
+	unsigned int
+	Tracker::getMarkerCount() const
 	{
 		return (unsigned int)_markerlist.size();
 	}
 
-	/*virtual*/ 
-	void 
+	/*virtual*/
+	void
 	Tracker::createUndistortedMesh(int,int,
 		float,float,osg::Geometry&)
 	{
@@ -159,28 +159,28 @@ namespace osgART {
 			"Empty implementation called!" << std::endl;
 	}
 
-	/*virtual*/ 
-	void 
+	/*virtual*/
+	void
 	Tracker::setImage(osg::Image* image)
 	{
 		_imagesource = image;
 	}
 
-	/*virtual*/ 
-	osg::Image* Tracker::getImage() 
+	/*virtual*/
+	osg::Image* Tracker::getImage()
 	{
 		return _imagesource.get();
 	}
 
 	/*virtual*/
-	void 
+	void
 	Tracker::update(osg::NodeVisitor* nv /*=0L*/)
-	{		
+	{
 	}
 
 	/* virtual */
-	const double* 
-	Tracker::getProjectionMatrix() const 
+	const double*
+	Tracker::getProjectionMatrix() const
 	{
 		return _projectionMatrix;
 	}
@@ -197,13 +197,13 @@ namespace osgART {
 		return _enable;
 	}
 
-	std::string Tracker::getLabel() const 
+	std::string Tracker::getLabel() const
 	{
 		std::string Result = _name;
 		Result += "-";
 		Result += _version;
 		return Result;
 	}
-	
+
 
 };

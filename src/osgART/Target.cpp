@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -22,91 +22,72 @@
 
 #include <osg/Notify>
 
+#include "osgART/Target"
 #include "osgART/TransformFilterCallback"
-#include "osgART/Marker"
 
 namespace osgART {
 
 
-	Marker::Marker() : osg::Referenced() 
-	{
-
-		setName("Marker");
-		setActive(false);
-		_valid = false;
-
-	}
-
-	Marker::Marker( const Marker& container, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/ ) 
-	{
-
-		setName(container._name);
-		setActive(container._active);
-		_valid = container._valid;
-
-	}
-
-
-	Marker::~Marker() 
+	Target::Target()
+		: osg::Object()
+		, _valid(false)
+		, _active(false)
 	{
 	}
 
-	/*virtual*/ 
-	Marker::MarkerType
-	Marker::getType() const
+	Target::Target(const Target& target, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/)
+		: osg::Object(target,copyop)
+	{
+		if (this != &target)
+		{
+			_active = target.active();
+			_valid = target.valid();
+		}
+	}
+
+	Target::~Target()
+	{
+	}
+
+	/*virtual*/
+	Target::MarkerType
+	Target::getType() const
 	{
 		return ART_UNKNOWN;
 	}
 
-	const 
-	osg::Matrix& Marker::getTransform() const 
+	const
+	osg::Matrix& Target::getTransform() const
 	{
 		return _transform;
 	}
 
 	/*virtual */
 	bool
-	Marker::valid() const
+	Target::valid() const
 	{
 		return _valid;
 	}
 
-	/*virtual*/ 
+	/*virtual*/
 	bool
-	Marker::active() const 
+	Target::active() const
 	{
 		return _active;
 	}
 
 	void
-	Marker::setName(const std::string& name) 
-	{
-		_name = name;
-	}
-
-	const std::string&
-	Marker::getName() const 
-	{
-		return _name;
-	}
-
-	void 
-	Marker::updateTransform(const osg::Matrix& transform) 
+	Target::updateTransform(const osg::Matrix& transform)
 	{
 		_transform = transform;
 	}
 
-	
+
 	/*virtual */
-	void 
-	Marker::setActive(bool active /*= true*/)
+	void
+	Target::setActive(bool active /*= true*/)
 	{
 		_active = active;
 	}
 
-	Marker& Marker::operator=( const Marker & )
-	{
-		return *this;
-	}
-
-};
+}

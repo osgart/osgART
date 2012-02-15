@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 
 namespace osgART {
 
-	class Initializer 
+	class Initializer
 	{
 	public:
 
@@ -43,7 +43,7 @@ namespace osgART {
 
 		}
 
-		~Initializer() 
+		~Initializer()
 		{
 			// Delete the Plugin Manager
 			osgART::PluginManager::instance(true);
