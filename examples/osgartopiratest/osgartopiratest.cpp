@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@
 
 osg::Group* createImageBackground(osg::Image* video, osgART::Calibration* calibration = NULL, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
-	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, calibration, 1, 1, 20, 20, 
+	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, calibration, 1, 1, 20, 20,
 		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
 	_layer->addChild(_geode);
 	return _layer;
@@ -75,21 +75,21 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
 
 	// check if an instance of the video stream could be started
-	if (!video.valid())  {   
+	if (!video.valid())  {
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
 	}
 
 	//video->getVideoConfiguration()->deviceconfig = "0;320;240;30";
-	
+
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
 	video->open();
 
-		
+
 	osgART::PluginManager::instance()->load("osgart_tracker_opira");
 
 	osg::ref_ptr<osgART::Tracker> tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_opira"));
@@ -99,8 +99,8 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}
-	
-	
+
+
 	osg::ref_ptr< osgART::TypedField<std::string> > registrationPolicyField = reinterpret_cast< osgART::TypedField<std::string>* >(tracker->get("registration_policy"));
 	if (!registrationPolicyField.valid()) {
 		std::cout << "Registration policy field not available from tracker" << std::endl;
@@ -129,13 +129,13 @@ int main(int argc, char* argv[])  {
 	tracker->setImage(video.get());
 
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
-	
+
 	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
-	
-	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker(image);
+
+	osg::ref_ptr<osgART::Target> marker = tracker->addTarget(image);
 
 	if (!marker.valid()) {
 		// Without marker an AR application can not work. Quit if none found.
@@ -146,21 +146,21 @@ int main(int argc, char* argv[])  {
 	marker->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-	arTransform->setUpdateCallback(new osgART::MarkerTransformCallback(marker.get()));
-	arTransform->getUpdateCallback()->setNestedCallback(new osgART::MarkerVisibilityCallback(marker.get()));
+	arTransform->setUpdateCallback(new osgART::TargetTransformCallback(marker.get()));
+	arTransform->getUpdateCallback()->setNestedCallback(new osgART::TargetVisibilityCallback(marker.get()));
 	//arTransform->getUpdateCallback()->getNestedCallback()->setNestedCallback(new osgART::TransformFilterCallback());
-	
+
 
 	osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
 	pat->setScale(osg::Vec3(30, 30, 30));
 	pat->setPosition(osg::Vec3(116, -165, 100));
 	pat->getOrCreateStateSet()->setMode(GL_NORMALIZE, GL_TRUE);
 	pat->addChild(osgDB::readNodeFile("D:\\Content\\Models\\Vehicles\\Military\\Military Ambulance\\ambulance.ive"));
-	
+
 	//osg::Geode* g = new osg::Geode();
 	//g->addDrawable(osg::createTexturedQuadGeometry(osg::Vec3(), osg::X_AXIS * 232, osg::Y_AXIS * -330));
 	//arTransform->addChild(g);
-	
+
 	arTransform->addChild(pat);
 
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
@@ -177,5 +177,5 @@ int main(int argc, char* argv[])  {
 
 	video->start();
 	return viewer.run();
-	
+
 }

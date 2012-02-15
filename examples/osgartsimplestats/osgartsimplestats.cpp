@@ -1,8 +1,8 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - ARToolKit for OpenSceneGraph
  * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
+ *
  * This file is part of osgART 2.0
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@
 osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
-	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20, 
+	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
 		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
 	//addTexturedQuad(*_geode,video->s(),video->t());
 	_layer->addChild(_geode);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
 	osgViewer::Viewer viewer;
-	
+
 	// attach root node to the viewer
 	viewer.setSceneData(root.get());
 
@@ -90,12 +90,12 @@ int main(int argc, char* argv[])  {
 	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = 
+	osg::ref_ptr<osgART::Video> video =
 		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
 
 	// check if an instance of the video stream could be started
-	if (!video.valid()) 
-	{   
+	if (!video.valid())
+	{
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
@@ -106,10 +106,10 @@ int main(int argc, char* argv[])  {
 	// for the connected tracker
 	video->open();
 
-	osg::ref_ptr<osgART::Tracker> tracker = 
+	osg::ref_ptr<osgART::Tracker> tracker =
 		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit2"));
 
-	if (!tracker.valid()) 
+	if (!tracker.valid())
 	{
 		// Without tracker an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
@@ -120,7 +120,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
 
 	// load a calibration file
-	if (!calibration->load("data/camera_para.dat")) 
+	if (!calibration->load("data/camera_para.dat"))
 	{
 
 		// the calibration file was non-existing or couldnt be loaded
@@ -142,16 +142,16 @@ int main(int argc, char* argv[])  {
 
 	// set the image source for the tracker
 	tracker->setImage(video.get());
-	
+
 	osgART::addEventCallback(root.get(), new osgART::TrackerCallback(tracker.get()));
-	
+
 	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
 
-	osg::ref_ptr<osgART::Marker> marker = tracker->addMarker("single;data/patt.hiro;80;0;0");
-	if (!marker.valid()) 
+	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("single;data/patt.hiro;80;0;0");
+	if (!marker.valid())
 	{
 		// Without marker an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not add marker!" << std::endl;
@@ -180,5 +180,5 @@ int main(int argc, char* argv[])  {
 
 	video->start();
 	return viewer.run();
-	
+
 }
