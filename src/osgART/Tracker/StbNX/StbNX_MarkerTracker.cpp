@@ -22,7 +22,7 @@
 
 #include <osg/Notify>
 
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Tracker"
 #include "osgART/Video"
 #include "osgART/Calibration"
@@ -30,7 +30,7 @@
 #include "osgART/PluginManager"
 
 #include <StbCore/System.h>
-#include <StbCore/Image.h>
+#include <StbBase/Image.h>
 #include <StbCore/Logger.h>
 
 #include <StbTracker/Base/System.h>

@@ -25,7 +25,7 @@
 #include <osgDB/FileNameUtils>
 
 
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Tracker"
 #include "osgART/Video"
 #include "osgART/Calibration"
@@ -114,7 +114,7 @@ public:
 };
 
 
-class StbNFT2Target : public osgART::Marker {
+class StbNFT2Target : public osgART::Target {
 protected:
 
 	StbCV::NFT2::Target& _target;
@@ -124,7 +124,7 @@ protected:
 public:
 
 	StbNFT2Target(StbCV::NFT2::Target& target) 
-	: osgART::Marker()
+    : osgART::Target()
 	, _target(target) { }
 
 	StbCV::NFT2::Target& 
@@ -179,7 +179,7 @@ public:
 	
 	osgART::Calibration* getOrCreateCalibration();
 
-	osgART::Marker* addMarker(const std::string& config);
+    osgART::Target* addTarget(const std::string& config);
 
 	void update(osg::NodeVisitor* nv);
 
@@ -226,8 +226,8 @@ StbNFT2::getOrCreateCalibration()
 	return osgART::Tracker::getOrCreateCalibration();
 }
 
-osgART::Marker* 
-StbNFT2::addMarker(const std::string& config) 
+osgART::Target*
+StbNFT2::addTarget(const std::string& config)
 {
 
 //	ScopedLog<> log;
@@ -320,7 +320,7 @@ StbNFT2::update(osg::NodeVisitor* nv)
 
 	// Process the found targets
 
-	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
+    for (TargetList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++)
 	{
 		(*iter)->update(*this);
 	}
