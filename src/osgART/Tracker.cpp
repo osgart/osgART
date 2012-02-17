@@ -71,8 +71,7 @@ namespace osgART {
 
 	Tracker::Tracker()
         : osg::Object()
-        //, _enable(true)
-        , m_lastModifiedCount(0xFFFFF)
+        , _modifiedCount(0xFFFFF)
         , _stats(new osg::Stats("tracker"))
 	{
         osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
@@ -142,7 +141,7 @@ namespace osgART {
 	Target*
 	Tracker::addTarget(const std::string& config)
 	{
-		osg::notify(osg::WARN) << "Method not implemented for this tracker!" << std::endl;
+		OSG_WARN << "Method not implemented for this tracker!" << std::endl;
 
 		return 0L;
 	}
@@ -151,28 +150,23 @@ namespace osgART {
 	void
     Tracker::removeTarget(Target *target)
 	{
-		// TODO: implement
+		TargetList pruned; pruned.reserve(_markerlist.size());
+
+		for (TargetList::iterator it = _markerlist.begin();
+			it != _markerlist.end();
+			++it)
+		{
+			if ((*it) != target) pruned.push_back(*it);
+		}
+
+		std::swap(_markerlist,pruned);
 	}
 
 
 
-	Target*
-	Tracker::getTarget(int id)
+	Target* Tracker::getTarget( size_t idx )
 	{
-		Target *_m = (Target*)0L;
-
-		try
-		{
-			_m = _markerlist[id].get();
-
-		} catch(...)
-		{
-
-			osg::notify(osg::WARN) << "No Marker with ID: " << id << std::endl;
-		}
-
-		// return the Marker
-		return _m;
+		return _markerlist.at(idx);
 	}
 
 	/*virtual*/
@@ -202,33 +196,5 @@ namespace osgART {
 	Tracker::update(osg::NodeVisitor* nv /*=0L*/)
 	{
 	}
-
-	///* virtual */
-	//const double*
-	//Tracker::getProjectionMatrix() const
-	//{
-	//	return _projectionMatrix(0,0);
-	//}
-
-	///* virtual */
-	//void	Tracker::setEnable(const bool &e)
-	//{
-	//	_enable = e;
-	//}
-
-	///* virtual */
-	//bool	Tracker::getEnable() const
-	//{
-	//	return _enable;
-	//}
-
-	//std::string Tracker::getLabel() const
-	//{
-	//	std::string Result = _name;
-	//	Result += "-";
-	//	Result += _version;
-	//	return Result;
-	//}
-
 
 };

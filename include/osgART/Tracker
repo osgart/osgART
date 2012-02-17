@@ -99,27 +99,10 @@ namespace osgART {
 		 *
 		 * XXX.
 		 */
-		virtual Target* getTarget(int markerId);
+		virtual Target* getTarget(size_t idx);
 
 		inline size_t
 		getTargetNum() const { return _markerlist.size(); }
-
-		/**
-		 * \brief get the openGL projection matrix.
-		 *
-		 * delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
-		 * @param proj the openGL projection matrix computed
-		 */
-		//virtual const double* getProjectionMatrix() const;
-
-		///**
-		// * \brief Return a string that contains the tracker name and version.
-		// */
-		//std::string		getLabel()const;
-
-		//virtual void	setEnable(const bool & e);
-		//virtual bool	getEnable()const;
-
 
 		/**
 		 * Add a marker to the tracker.
@@ -203,7 +186,7 @@ namespace osgART {
 		 */
 		osg::ref_ptr<osg::Image> _imagesource;
 
-		unsigned int m_lastModifiedCount;
+		unsigned int _modifiedCount;
 
 		/**
 		 * Calibration object that encapsulates the intrinsic camera parameters and distortion parameters.
