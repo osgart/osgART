@@ -41,11 +41,11 @@
 
 #include <StbTracker/Features/ThresholderAuto.h>
 #include <StbTracker/Features/FiducialDetectorRect.h>
-#include <StbTracker/Features/MarkerDetectorSimpleIdFixed.h>
-#include <StbTracker/Features/MarkerDetectorFrameSimpleIdFixed.h>
+#include <StbTracker/Features/MarkerDetectorSimpleId.h>
+#include <StbTracker/Features/MarkerDetectorFrameSimpleId.h>
 #include <StbTracker/Features/MarkerFollowerRect.h>
 #include <StbTracker/Features/PoseFilterDESP.h>
-#include <StbTracker/Features/PoseEstimatorGNX.h>
+#include <StbTracker/Features/PoseEstimatorGN.h>
 #include <StbTracker/Features/TargetManagerDefault.h>
 #include <StbTracker/Features/Camera.h>
 #include <StbTracker/Util/ImageTool.h>
@@ -122,7 +122,7 @@ public:
 };
 
 
-class MarkerStb : public osgART::Marker {
+class MarkerStb : public osgART::Target {
 
 protected:
 	StbTracker::Marker* mMarker;
@@ -130,7 +130,7 @@ protected:
 public:
 
 	MarkerStb(StbTracker::Marker* marker) 
-		: osgART::Marker()
+		: osgART::Target()
 		, mMarker(marker) 
 	{}
 
@@ -156,7 +156,7 @@ class TrackerStb : public osgART::Tracker {
 protected:
 
 	StbTracker::TrackerMain* tracker;
-	StbCore::Image* image;
+	StbBase::Image* image;
 	StbTracker::TargetManagerDefault* targetManager;
 
 	void registerDetectors();
@@ -168,7 +168,7 @@ public:
 
 	void setImage(osg::Image* image);
 
-	osgART::Marker* addMarker(const std::string& config);
+	osgART::Target* addTarget(const std::string& config);
 
 	void update(osg::NodeVisitor* nv);
 
@@ -193,13 +193,13 @@ TrackerStb::TrackerStb() : osgART::Tracker() {
 	tracker->registerFeature(StbTracker::MarkerFollowerRect::create());
 
 	// PoseEstimator (the 3d position relative to the camera)
-	tracker->registerFeature(StbTracker::PoseEstimatorGNX::create());
+	tracker->registerFeature(StbTracker::PoseEstimatorGN::create());
 	
 	// TargetManager
 	targetManager = StbTracker::TargetManagerDefault::create();
 	tracker->registerFeature(targetManager);
 
-	image = StbCore::Image::create();
+	image = StbBase::Image::create();
 
 }
 
@@ -215,18 +215,21 @@ inline void TrackerStb::setImage(osg::Image* image) {
 
 void TrackerStb::registerDetectors() {
 
-	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) {
+	for (TargetList::iterator iter = _markerlist.begin(); 
+			iter != _markerlist.end(); 
+			iter++) 
+	{
 
 		MarkerStb* m = dynamic_cast<MarkerStb*>((*iter).get());
 		if (!m) continue;
 
-		StbCore::Base::TYPE markerType = m->getMarker()->getType();
+		StbBase::Base::TYPE markerType = m->getMarker()->getType();
 
 		if (markerType == StbTracker::MarkerSimpleId::getClassType()) {
 			
-			if (tracker->getFeature(StbTracker::MarkerDetectorSimpleIdFixed::getClassType()) == NULL) {
+			if (tracker->getFeature(StbTracker::MarkerDetectorSimpleId::getClassType()) == NULL) {
 				osg::notify() << "TrackerStb: Adding a SimpleId Marker Detector" << std::endl;
-				StbTracker::MarkerDetectorSimpleIdFixed* markerDetector = StbTracker::MarkerDetectorSimpleIdFixed::create();
+				StbTracker::MarkerDetectorSimpleId* markerDetector = StbTracker::MarkerDetectorSimpleId::create();
 				markerDetector->setBorderWidth(0.125f);
 				markerDetector->setLearnNewMarkers(false);
 				tracker->registerFeature(markerDetector);	
@@ -234,9 +237,9 @@ void TrackerStb::registerDetectors() {
 
 		} else if (markerType == StbTracker::MarkerFrameSimpleId::getClassType()) {
 			
-			if (tracker->getFeature(StbTracker::MarkerDetectorFrameSimpleIdFixed::getClassType()) == NULL) {
+			if (tracker->getFeature(StbTracker::MarkerDetectorFrameSimpleId::getClassType()) == NULL) {
 				osg::notify() << "TrackerStb: Adding a FrameSimpleId Marker Detector" << std::endl;
-				StbTracker::MarkerDetector* markerDetector = StbTracker::MarkerDetectorFrameSimpleIdFixed::create(); // the frame marker detector has only fixed-point implementation
+				StbTracker::MarkerDetector* markerDetector = StbTracker::MarkerDetectorFrameSimpleId::create(); // the frame marker detector has only fixed-point implementation
 				//markerDetector->setThreshold(threshold);
 				markerDetector->setBorderWidth(0.04545f);
 				tracker->registerFeature(markerDetector);
@@ -256,8 +259,8 @@ void TrackerStb::registerDetectors() {
 }
 
 
-inline 
-osgART::Marker* TrackerStb::addMarker(const std::string& config) {
+osgART::Target* TrackerStb::addTarget( const std::string& config )
+{
 
 	// Format: type,...
 	
@@ -374,13 +377,13 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 	switch (osg::Image::computeNumComponents(_imagesource->getPixelFormat()))
 	{
 		case 1:
-			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_LUM);
+			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbBase::PIXEL_FORMAT_LUM);
 			break;
 		case 3:
-			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGR);
+			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbBase::PIXEL_FORMAT_BGR);
 			break;
 		case 4:
-			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbCore::PIXEL_FORMAT_BGRA);
+			image->setPixels(_imagesource->data(), _imagesource->s(), _imagesource->t(), StbBase::PIXEL_FORMAT_BGRA);
 			break;
 		default:
 		break;
@@ -395,7 +398,7 @@ inline void TrackerStb::update(osg::NodeVisitor* nv) {
 
 	// Process the found targets
 	StbTracker::TargetVector& targets = targetManager->getVisibleTargets();
-	for (MarkerList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
+	for (TargetList::iterator iter = _markerlist.begin(); iter != _markerlist.end(); iter++) 
 	{
 		// The current osgART marker is valid if its target is in the "found targets" vector
 		if (MarkerStb* ms = dynamic_cast<MarkerStb*>(iter->get())) 
