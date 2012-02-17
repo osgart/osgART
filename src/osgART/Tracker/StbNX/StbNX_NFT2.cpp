@@ -23,6 +23,8 @@
 #include <osg/Notify>
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
+#include <osg/UserDataContainer>
+#include <osg/ValueObject>
 
 
 #include "osgART/Target"
@@ -117,15 +119,24 @@ public:
 class StbNFT2Target : public osgART::Target {
 protected:
 
-	StbCV::NFT2::Target& _target;
-	
+	StbCV::NFT2::Target& _target;	
 	virtual ~StbNFT2Target() { }
+
+	osg::Matrix _modelview;
 
 public:
 
 	StbNFT2Target(StbCV::NFT2::Target& target) 
     : osgART::Target()
-	, _target(target) { }
+	, _target(target) 
+	, _modelview()
+	{
+		_modelview.makeIdentity();
+
+		osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
+
+		udc->addUserObject(new osg::TemplateValueObject<osg::Matrix>("ch.mat.mv",_modelview));
+	}
 
 	StbCV::NFT2::Target& 
 	getStbTarget() 
@@ -154,9 +165,9 @@ public:
 			//StbMath::transpose(mat44);
 			mat44.transposeInPlace();
 
-			osg::Matrix osgmat(mat44.data());
+			_modelview.set(mat44.data());
 
-			updateTransform(osgmat);
+			updateTransform(_modelview);
 			
 			//OSG_INFO << "Valid: " << _valid << "\n Pose:\n" << osgmat << std::endl;
 		}

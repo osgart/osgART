@@ -73,6 +73,9 @@ int main(int argc, char* argv[])
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.setSceneData(root.get());
 
+	// just for debugging we need a single window
+	viewer.setUpViewInWindow(50,50,640,480);
+
 	viewer.realize();
 
 	osgViewer::Viewer::Windows windows;

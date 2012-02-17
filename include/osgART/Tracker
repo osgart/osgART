@@ -110,15 +110,15 @@ namespace osgART {
 		 * delivers a usable matrix with openGL code (glLoadMatrixf(proj) with GL_MODELVIEW).
 		 * @param proj the openGL projection matrix computed
 		 */
-		virtual const double* getProjectionMatrix() const;
+		//virtual const double* getProjectionMatrix() const;
 
-		/**
-		 * \brief Return a string that contains the tracker name and version.
-		 */
-		std::string		getLabel()const;
+		///**
+		// * \brief Return a string that contains the tracker name and version.
+		// */
+		//std::string		getLabel()const;
 
-		virtual void	setEnable(const bool & e);
-		virtual bool	getEnable()const;
+		//virtual void	setEnable(const bool & e);
+		//virtual bool	getEnable()const;
 
 
 		/**
@@ -183,7 +183,6 @@ namespace osgART {
 		 * \brief destructor.
 		 */
 		virtual ~Tracker();
-
 		/**
 		 * type for a vector of reference counted markers.
 		 */
@@ -194,9 +193,9 @@ namespace osgART {
 		 */
         TargetList _markerlist;
 
-		double			_projectionMatrix[16];
-		std::string		_version;	//!< Store the version of the tracker.
-		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
+		//osg::Matrix		_projectionMatrix;
+		//std::string		_version;	//!< Store the version of the tracker.
+		//bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
 
 
 		/**
@@ -210,6 +209,10 @@ namespace osgART {
 		 * Calibration object that encapsulates the intrinsic camera parameters and distortion parameters.
 		 */
 		osg::ref_ptr<Calibration> _calibration;
+
+		/** output all data channels */
+		void Tracker::dump();
+
 
 	}; // class Tracker
 

@@ -71,7 +71,7 @@ namespace osgART {
 
 	Tracker::Tracker()
         : osg::Object()
-        , _enable(true)
+        //, _enable(true)
         , m_lastModifiedCount(0xFFFFF)
         , _stats(new osg::Stats("tracker"))
 	{
@@ -112,6 +112,18 @@ namespace osgART {
 		// Markers are associated with a specific tracker instance,
 		// so will be deleted when the tracker is deleted.
 		_markerlist.clear();
+	}
+
+	void 
+	Tracker::dump()
+	{
+		osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
+		for (osg::UserDataContainer::DescriptionList::iterator it = udc->getDescriptions().begin();
+			it != udc->getDescriptions().end();
+			++it)
+		{
+			OSG_INFO << (*it) << std::endl;
+		}
 	}
 
 	/*virtual*/
@@ -191,32 +203,32 @@ namespace osgART {
 	{
 	}
 
-	/* virtual */
-	const double*
-	Tracker::getProjectionMatrix() const
-	{
-		return _projectionMatrix;
-	}
+	///* virtual */
+	//const double*
+	//Tracker::getProjectionMatrix() const
+	//{
+	//	return _projectionMatrix(0,0);
+	//}
 
-	/* virtual */
-	void	Tracker::setEnable(const bool &e)
-	{
-		_enable = e;
-	}
+	///* virtual */
+	//void	Tracker::setEnable(const bool &e)
+	//{
+	//	_enable = e;
+	//}
 
-	/* virtual */
-	bool	Tracker::getEnable() const
-	{
-		return _enable;
-	}
+	///* virtual */
+	//bool	Tracker::getEnable() const
+	//{
+	//	return _enable;
+	//}
 
-	std::string Tracker::getLabel() const
-	{
-		std::string Result = _name;
-		Result += "-";
-		Result += _version;
-		return Result;
-	}
+	//std::string Tracker::getLabel() const
+	//{
+	//	std::string Result = _name;
+	//	Result += "-";
+	//	Result += _version;
+	//	return Result;
+	//}
 
 
 };
