@@ -58,8 +58,13 @@ int main(int argc, char* argv[])
 	while (args.read("--video",videoName)) {};
 	while (args.read("--config",videoConfig)) {};
 
+	osg::setNotifyLevel(osg::NotifySeverity::DEBUG_INFO);
 	// preload the video
-	osgART::PluginManager::instance()->load("osgart_video_" + videoName);
+	if (!osgART::PluginManager::instance()->load("osgart_video_" + videoName)) {
+
+		OSG_FATAL << "Can't find video plugin" << std::endl;
+		return -1;
+	}
 	
 	// Set up the osgART viewer (a wrapper around osgProducer or osgViewer).
 	osgViewer::Viewer viewer;
@@ -82,7 +87,7 @@ int main(int argc, char* argv[])
 	{   
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
-		exit(-1);
+		return -1;
 	}
 
 	// found video - configure now

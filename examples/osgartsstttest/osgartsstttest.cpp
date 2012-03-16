@@ -50,6 +50,7 @@ int main(int argc, char* argv[])  {
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
+
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
@@ -68,7 +69,6 @@ int main(int argc, char* argv[])  {
 	{
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
-		exit(-1);
 	}
 
 
@@ -77,7 +77,8 @@ int main(int argc, char* argv[])  {
 	// for the connected tracker
 	video->open();
 
-	osg::ref_ptr<osgART::Tracker> tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_sstt"));
+	osg::ref_ptr<osgART::Tracker> tracker 
+		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_sstt"));
 
 	if (!tracker.valid())
 	{
@@ -86,7 +87,7 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
-	osg::notify() << "Tracker initialised" << std::endl;
+	osg::notify() << "Tracker initialized" << std::endl;
 
 
 
@@ -105,7 +106,15 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
 
+#define SSTT_USE_IDTRACKER
+#if defined(SSTT_USE_IDTRACKER)
+
+	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("id;14681358;30");
+#else
+	// this is loading file simple bmp as template 135x135mm with a confidence threshold of 0.3
 	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("simple.bmp;135;135;0.3");
+#endif
+	
 	marker->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
