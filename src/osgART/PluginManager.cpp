@@ -31,19 +31,47 @@
 #include <sstream>
 #include <cstdlib>
 
+#if defined(_WIN32)
+	#define WIN32_LEAN_AND_MEAN
+	#include <Windows.h>
+
+	#define SLASH "\\"
+#else
+	#define SLASH "/"
+#endif
+
+
+std::string getCurrentExecutablePath()
+{
+	std::string result;
+	
+#if defined(_WIN32)
+
+	static TCHAR lpFname[MAX_PATH];
+	DWORD ret = GetModuleFileName( NULL, lpFname, MAX_PATH );
+	size_t offset = strrchr(lpFname,SLASH[0]) - &lpFname[0];
+	result.assign(&lpFname[0],offset);
+
+#endif
+	return result;
+}
+
+
+
 namespace osgART {
 
 	PluginManager::PluginManager() 
 	: osg::Referenced()
 	{
-			osgDB::FilePathList& fpl = osgDB::Registry::instance()->getDataFilePathList();
-			
-			// only do if environment variable exists
-			if (getenv("OSGART_PLUGIN_DIR"))
-			{
-				osgDB::getLibraryFilePathList().push_front(getenv("OSGART_PLUGIN_DIR"));
-				osg::notify() << "Added osgART specific paths" << std::endl;
-			}
+		// add local executable path
+		osgDB::Registry::instance()->getLibraryFilePathList().push_back(getCurrentExecutablePath()+SLASH+"osgPlugins-" + osgGetVersion());
+	
+		// only do if environment variable exists
+		if (getenv("OSGART_PLUGIN_DIR"))
+		{
+			osgDB::getLibraryFilePathList().push_front(getenv("OSGART_PLUGIN_DIR"));
+			osg::notify() << "Added osgART specific paths" << std::endl;
+		}
 	}
 
 	PluginManager::~PluginManager()
@@ -86,7 +114,7 @@ namespace osgART {
 	{
 		if (m_plugininterfaces.find(name) == m_plugininterfaces.end())
 		{
-			osg::notify(osg::WARN) << "Plugin '" << name << "' unknown!" << std::endl;
+			OSG_WARN << "Plugin '" << name << "' unknown!" << std::endl;
 			return 0L;
 		}
 
@@ -111,58 +139,22 @@ namespace osgART {
 	bool 
 	PluginManager::load(const std::string& pluginname, bool resolveName /*= true*/)
 	{
+		std::string fullName;
 
-		std::string localLibraryName = pluginname;
-
-		std::string pathSeparator = 
-#if defined(_WINDOWS)
-			std::string("\\");
-#else
-			std::string("/");
-#endif
-
-		if (resolveName)
-		{
-
-			// actually some platform are using other extensions like Apple (.dylib)
-			// however OpenSceneGraph uses the .so extension - we just follow this
-#if defined(__unix) || defined(__APPLE__)
-			localLibraryName = pluginname + ".so";
-#elif defined(_WINDOWS)
-
-		// If we are on Windows, then the file extension is .dll, but we also 
-		// distinguish between release and debug versions.
-		#if defined(NDEBUG)
-			localLibraryName = pluginname + ".dll";
-		#else
-			localLibraryName = pluginname + "_debug.dll";
+		#if defined(__unix) || defined(__APPLE__)
+					fullName = pluginname + ".so";
+		#elif defined(_WIN32)
+				// If we are on Windows, then the file extension is .dll, but we also 
+				// distinguish between release and debug versions.
+				#if defined(NDEBUG)
+					fullName = pluginname + ".dll";
+				#else
+					fullName = pluginname + "_debug.dll";
+				#endif
 		#endif
 
-	
-#endif
-		}
-		std::stringstream pluginDirName;
+		osgDB::DynamicLibrary* lib =  osgDB::DynamicLibrary::loadLibrary(fullName);
 
-		pluginDirName << "osgPlugins-" << osgGetVersion() << pathSeparator;
-
-		osgDB::FilePathList::const_iterator i = osgDB::Registry::instance()->getLibraryFilePathList().begin();
-
-		osgDB::DynamicLibrary* lib = 0L;
-
-		while (i != osgDB::Registry::instance()->getLibraryFilePathList().end())
-		{
-#if defined(_WINDOWS)
-			if ( lib = osgDB::DynamicLibrary::loadLibrary((*i) + pathSeparator + localLibraryName) )
-#else
-			if ( lib = osgDB::DynamicLibrary::loadLibrary((*i) + pathSeparator + pluginDirName.str() + localLibraryName) )
-#endif
-			{
-				return true;
-			}
-
-			i++;
-		}
-
-		return false;
+		return ( 0 != lib); 
 	}
 }

@@ -93,6 +93,7 @@ class SSTT_Tracker;
 class SSTT_Target : public osgART::Target
 {
 	sstt_target *_target;
+	sstt_tracker * _tracker;
 
 	osg::Vec4f _border;
 
@@ -143,6 +144,7 @@ public:
 
 SSTT_Target::SSTT_Target(sstt_tracker* tracker)
 	: osgART::Target()
+	, _tracker(tracker)
 	, _target(0L)
 {
 
@@ -165,48 +167,86 @@ SSTT_Target::init(const std::string& config)
 
 	std::vector<std::string> tokens = osgART::tokenize(config,";");
 
-	if (tokens.size() < 3) {
-		osg::notify() << "SSTT Tracker: Config string does not contain mandatory fields" << std::endl;
+	if (tokens.size() < 2) {
+		OSG_WARN << "SSTT Tracker invalid config string" << std::endl;
+		return;
 	}
 
-	std::string targetImage = tokens[0];
-	float width = atof(tokens[1].c_str());
-	float height = atof(tokens[2].c_str());
+	if (tokens[0] == "id") {
 
-	osg::notify() << "SSTT Tracker: Attempting to use target image " << targetImage << ", " << width << "x" << height << std::endl;
+		if (tokens.size() < 3) {
+			osg::notify() << "SSTT Tracker: Config string does not contain mandatory fields" << std::endl;
+		}
 
-	std::string filename = osgDB::findDataFile(targetImage);
-	if (filename.empty()) {
-		osg::notify() << "SSTT Tracker: Could not locate target image " << targetImage << std::endl;
-		return;
+		long binID = atoi(tokens[1].c_str());
+		float size = atof(tokens[2].c_str());
+
+		// because we are using the frame id tracker use the 
+		// target generator and paste in the id code
+		sstt_target_set_parameter_i(_target, SSTT_TARGET_ID, binID);
+
+		// set the physical size (we use millimeters here)
+		sstt_target_set_size(_target, size, size);
+
 	} else {
-		osg::notify() << "SSTT Tracker: Using target image " << targetImage << std::endl;
+
+		if (tokens.size() < 3) {
+			osg::notify() << "SSTT Tracker: Config string does not contain mandatory fields" << std::endl;
+		}
+
+		std::string targetImage = tokens[0];
+		float width = atof(tokens[1].c_str());
+		float height = atof(tokens[2].c_str());
+
+		osg::notify() << "SSTT Tracker: Attempting to use target image " << targetImage << ", " << width << "x" << height << std::endl;
+
+		std::string filename = osgDB::findDataFile(targetImage);
+		if (filename.empty()) {
+			osg::notify() << "SSTT Tracker: Could not locate target image " << targetImage << std::endl;
+			return;
+		} else {
+			osg::notify() << "SSTT Tracker: Using target image " << targetImage << std::endl;
+		}
+
+		osg::Image* inputImage = osgDB::readImageFile(filename);
+		if (!inputImage) {
+			osg::notify() << "SSTT Tracker: Error loading target image from " << targetImage << std::endl;
+			return;
+		} else {
+			osg::notify() << "SSTT Tracker: Loaded target image from " << targetImage << std::endl;
+			osg::notify() << "SSTT Tracker: Target image is " << inputImage->s() << "x" << inputImage->t() << ", " << osg::Image::computeNumComponents(inputImage->getPixelFormat()) << " components"  << std::endl;
+
+		}
+
+		if (sstt_target_init( _target) != 0) {
+			osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
+			return;
+		}
+
+		if (sstt_target_set_size(_target, width, height) != 0) {
+			osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
+			return;
+		}
+
+		sstt_image in_img;
+		in_img.data = inputImage->data();
+		in_img.width = inputImage->s();
+		in_img.height = inputImage->t();
+		in_img.channels = 3;
+		in_img.stride = inputImage->s() * in_img.channels;
+
+		if (sstt_target_set_image(_target, &in_img) != 0) {
+			osg::notify() << "SSTT Tracker: Error in sstt_target_set_image" << std::endl;
+			return;
+		}
+
 	}
 
-	osg::Image* inputImage = osgDB::readImageFile(filename);
-	if (!inputImage) {
-		osg::notify() << "SSTT Tracker: Error loading target image from " << targetImage << std::endl;
-		return;
-	} else {
-		osg::notify() << "SSTT Tracker: Loaded target image from " << targetImage << std::endl;
-		osg::notify() << "SSTT Tracker: Target image is " << inputImage->s() << "x" << inputImage->t() << ", " << osg::Image::computeNumComponents(inputImage->getPixelFormat()) << " components"  << std::endl;
-
-	}
-
-	if (sstt_target_init( _target) != 0) {
-		osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
-		return;
-	}
-
-	if (sstt_target_set_size(_target, width, height) != 0) {
-		osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
-		return;
-	}
 
 	/* set some sane default parameters */
-	sstt_target_set_parameter_i(_target, SSTT_TARGET_KALMANCORNER, 1.0);
+	sstt_target_set_parameter_i(_target, SSTT_TARGET_KALMANCORNER, 1);
 	//sstt_target_set_parameter(_target, SSTT_TARGET_KALMANPOSE, 0.0);
-	sstt_target_set_parameter_i(_target, SSTT_TARGET_SUBPIXREFINE, 1.0);
+	sstt_target_set_parameter_i(_target, SSTT_TARGET_SUBPIXREFINE, 1);
 	//sstt_target_set_parameter(_target, SSTT_TARGET_EQUALIZEHISTOGRAM, 0.0);
 	//sstt_target_set_parameter(_target, SSTT_TARGET_BOUNDARY, 1.0);
 
@@ -214,17 +254,6 @@ SSTT_Target::init(const std::string& config)
 		sstt_target_set_parameter_f(_target, SSTT_TARGET_CONFIDENCE_THRESHOLD, atof(tokens[3].c_str()));
 	}
 
-	sstt_image in_img;
-	in_img.data = inputImage->data();
-	in_img.width = inputImage->s();
-	in_img.height = inputImage->t();
-	in_img.channels = 3;
-	in_img.stride = inputImage->s() * in_img.channels;
-
-	if (sstt_target_set_image(_target, &in_img) != 0) {
-		osg::notify() << "SSTT Tracker: Error in sstt_target_set_image" << std::endl;
-		return;
-	}
 
 }
 
@@ -238,41 +267,32 @@ SSTT_Target::update(osgART::Tracker& tracker)
 	if ( target_info )
 	{
 
-		/* set the confidence of the marker: normalised 0-1 */
+		/* set the confidence of the marker: normalized 0-1 */
 		_confidence = target_info->confidence[0];
 
 		/* parameterize it with our own confidence threshold */
 		_valid = _confidence > target_info->confidence_threshold;
 
 		if (_valid) {
-			std::cout << "Visible" << std::endl;
+			OSG_NOTICE << "Visible" << std::endl;
 
 			/* use the model view to set the marker transformation matrix */
 			_transform.set( &target_info->modelview[0] );
-			std::cout << _transform << std::endl;
+
+			OSG_NOTICE<< _transform << std::endl;
 
 			/* set the magic four values */
 			_border.set( target_info->border[0], target_info->border[1], target_info->border[2], target_info->border[3] );
 
 		} else {
-			std::cout << "Not visible" << std::endl;
+			OSG_NOTICE << "Not visible" << std::endl;
 		}
 
 		//osg::notify()
-		std::cout << "SSTT Target confidence "
+		OSG_NOTICE << "SSTT Target confidence "
 			<< target_info->confidence << "/"
 			<< target_info->confidence_threshold
 			<< std::endl;
-
-		/*
-		// reset the statistical model of SSTT - in the newer SSTT API this might change
-		if ( target_info->confidence > 0.0 )
-		{
-			// the confidence has a linear degredation of 8% per frame
-			sstt_target_set_parameter(_target, SSTT_TARGET_CONFIDENCE, target_info->confidence - 0.08);
-		}
-		*/
-
 	}
 
 }
@@ -285,8 +305,6 @@ SSTT_Tracker::SSTT_Tracker() :
 	_capture(0L),
 	_modifiedCount(0)
 {
-	sstt_tracker_create( &_tracker, SSTT_TRACKER_TEMPLATE );
-
 	/* initialize the SSTT API - it is save to call this multiple times */
 	sstt_init(0,0);
 
@@ -337,6 +355,13 @@ SSTT_Tracker::setImage(osg::Image* image)
 inline osgART::Target*
 SSTT_Tracker::addTarget(const std::string& config)
 {
+
+	// late allocation
+	if (0 == _tracker) {
+		sstt_tracker_create( &_tracker, 
+			(strstr(config.c_str(),"id;")) ? SSTT_TRACKER_FRAME : SSTT_TRACKER_TEMPLATE 
+			);
+	}
 
 	SSTT_Target* target = new SSTT_Target(this->_tracker);
 
