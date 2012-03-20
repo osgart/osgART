@@ -111,6 +111,9 @@ private:
 };
 
 
+//////////////////////////////////////////////////////////////////////////
+
+
 SSTT_Video::SSTT_Video()
 	: osgART::Video()
 	, _capture(0L)
@@ -145,6 +148,12 @@ SSTT_Video::open()
 	capture_settings.name = 0;
 	capture_settings.uid = 0;
 
+#if _WIN32 
+	capture_settings.flip_control = -1;
+#else
+	capture_settings.flip_control = 0;
+#endif
+
 
 	// Try to get custom values from configuration string
 	// Format for device string:
@@ -156,8 +165,6 @@ SSTT_Video::open()
 	if (tokens.size() > 3) capture_settings.minFPS = atoi(tokens[3].c_str());
 	if (tokens.size() > 4) capture_settings.flip_control = atoi(tokens[4].c_str());
 
-
-	capture_settings.flip_control = 0;
 
 	// Open device
 	sstt_capture_open( _capture, &capture_settings);

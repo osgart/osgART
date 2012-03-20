@@ -84,16 +84,16 @@ int main(int argc, char* argv[])  {
 	{
 		// Without tracker an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
-		exit(-1);
+
+		return -1;
+
 	}
 
 	osg::notify() << "Tracker initialized" << std::endl;
 
-
-
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	calibration->load("");//"Data/QuickCamUltraVision.cal");
+	calibration->load("");
 
 	tracker->setImage(video.get());
 

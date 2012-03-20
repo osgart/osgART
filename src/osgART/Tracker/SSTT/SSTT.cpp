@@ -274,25 +274,25 @@ SSTT_Target::update(osgART::Tracker& tracker)
 		_valid = _confidence > target_info->confidence_threshold;
 
 		if (_valid) {
-			OSG_NOTICE << "Visible" << std::endl;
+			//OSG_NOTICE << "Visible" << std::endl;
 
 			/* use the model view to set the marker transformation matrix */
 			_transform.set( &target_info->modelview[0] );
 
-			OSG_NOTICE<< _transform << std::endl;
+			//OSG_NOTICE<< _transform << std::endl;
 
 			/* set the magic four values */
 			_border.set( target_info->border[0], target_info->border[1], target_info->border[2], target_info->border[3] );
 
 		} else {
-			OSG_NOTICE << "Not visible" << std::endl;
+			//OSG_NOTICE << "Not visible" << std::endl;
 		}
 
 		//osg::notify()
-		OSG_NOTICE << "SSTT Target confidence "
-			<< target_info->confidence << "/"
-			<< target_info->confidence_threshold
-			<< std::endl;
+		//OSG_NOTICE << "SSTT Target confidence "
+		//	<< target_info->confidence << "/"
+		//	<< target_info->confidence_threshold
+		//	<< std::endl;
 	}
 
 }
@@ -382,37 +382,41 @@ SSTT_Tracker::addTarget(const std::string& config)
 inline void
 SSTT_Tracker::update(osg::NodeVisitor* nv)
 {
-	if (!_imagesource.valid())
-		return;
+	//if (!_imagesource.valid())
+	//	return;
 
-	if (_imagesource->valid() && _imagesource->getModifiedCount() != _modifiedCount && _imagesource->data() != NULL) {
+	if (_imagesource->valid() && 
+		_imagesource->getModifiedCount() != _modifiedCount && 
+		_imagesource->data() != NULL) {
 
-		osg::notify() << "SSTT_Tracker::update()" << std::endl;
+		//osg::notify() << "SSTT_Tracker::update()" << std::endl;
 
-		std::cout << "Image: " << _imagesource->s() << "x" << _imagesource->t() << ", " << osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
+		//std::cout << "Image: " << _imagesource->s() << "x" << _imagesource->t() << ", " << osg::Image::computeNumComponents(_imagesource->getPixelFormat()) << std::endl;
 
 		/* we need to inject the osg::Image into the tracking pipeline
 		 * thus we need a temporary image */
+
 		sstt_image image;
 		image.width = _imagesource->s();
 		image.height = _imagesource->t();
 		image.stride = _imagesource->s() * 3;
 		image.channels = 3;
+		image.data = _imagesource->data();
 
-		image.data = new unsigned char[_imagesource->s() * _imagesource->t() * 3];
+		//image.data = new unsigned char[_imagesource->s() * _imagesource->t() * 3];
 
-		for (int y = 0; y < _imagesource->t(); y++) {
-			for (int x = 0; x < _imagesource->s(); x++) {
+		//for (int y = 0; y < _imagesource->t(); y++) {
+		//	for (int x = 0; x < _imagesource->s(); x++) {
 
-				unsigned char* src = _imagesource->data(x, y);
-				unsigned char* dst = &(image.data[(y * _imagesource->s() + x) * 3]);
+		//		unsigned char* src = _imagesource->data(x, y);
+		//		unsigned char* dst = &(image.data[(y * _imagesource->s() + x) * 3]);
 
-				dst[0] = src[0];
-				dst[1] = src[1];
-				dst[2] = src[2];
+		//		dst[0] = src[0];
+		//		dst[1] = src[1];
+		//		dst[2] = src[2];
 
-			}
-		}
+		//	}
+		//}
 
 		/* now we can update the tracker from the capture object */
 		if (sstt_tracker_update( _tracker, &image, 0 ) != 0) {
@@ -444,7 +448,7 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 
 		}
 
-		delete[] image.data;
+		//delete[] image.data;
 
 		_modifiedCount = _imagesource->getModifiedCount();
 	}
