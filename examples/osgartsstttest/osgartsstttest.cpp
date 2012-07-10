@@ -102,7 +102,8 @@ int main(int argc, char* argv[])  {
 
 	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("id;14681358;30");
 #else
-	// this is loading file simple bmp as template 135x135mm with a confidence threshold of 0.3
+	// this is loading file watch bmp as template 35.2x22.0 mm 
+	// with a confidence threshold of 30%
 	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("watch.bmp;35.2;22.0;0.3");
 #endif
 	
