@@ -9,6 +9,7 @@ if(OSGART_WITH_SSTT)
 		PROPERTIES
 		PREFIX ""
 		PROJECT_LABEL "Video Plugin ${module_name}"
+		COMPILE_DEFINITIONS "SSTT_LIBRARY_STATIC"
 		)
 
 	set(addon_libs)

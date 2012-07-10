@@ -220,25 +220,27 @@ SSTT_Target::init(const std::string& config)
 
 		}
 
+		/*	
 		if (sstt_target_init( _target) != 0) {
 			osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
 			return;
-		}
-
-		if (sstt_target_set_size(_target, width, height) != 0) {
-			osg::notify() << "SSTT Tracker: Error in sstt_target_init" << std::endl;
-			return;
-		}
+		}*/
 
 		sstt_image in_img;
+		in_img.roi = 0; //!< set to 0 - only used in Visualizer!
 		in_img.data = inputImage->data();
 		in_img.width = inputImage->s();
 		in_img.height = inputImage->t();
-		in_img.channels = 3;
+		in_img.channels = osg::Image::computeNumComponents(inputImage->getPixelFormat());
 		in_img.stride = inputImage->s() * in_img.channels;
 
 		if (sstt_target_set_image(_target, &in_img) != 0) {
 			osg::notify() << "SSTT Tracker: Error in sstt_target_set_image" << std::endl;
+			return;
+		}
+
+		if (sstt_target_set_size(_target, width, height) != 0) {
+			osg::notify() << "SSTT Tracker: Error in sstt_target_set_size" << std::endl;
 			return;
 		}
 
@@ -399,10 +401,12 @@ SSTT_Tracker::update(osg::NodeVisitor* nv)
 		 * thus we need a temporary image */
 
 		sstt_image image;
+		image.roi = 0;
+		image.frame = _imagesource->getModifiedCount();
 		image.width = _imagesource->s();
 		image.height = _imagesource->t();
-		image.stride = _imagesource->s() * 3;
-		image.channels = 3;
+		image.channels = osg::Image::computeNumComponents(_imagesource->getPixelFormat());
+		image.stride = _imagesource->s() * image.channels;
 		image.data = _imagesource->data();
 
 		//image.data = new unsigned char[_imagesource->s() * _imagesource->t() * 3];

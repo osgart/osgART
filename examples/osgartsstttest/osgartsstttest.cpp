@@ -48,6 +48,8 @@ osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = 
 
 int main(int argc, char* argv[])  {
 
+
+	osg::setNotifyLevel(osg::DEBUG_INFO);
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
 
@@ -68,7 +70,7 @@ int main(int argc, char* argv[])  {
 	if (!video.valid())
 	{
 		// Without video an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
+		osg::notify(osg::FATAL) << "Could not initialize video plug-in!" << std::endl;
 	}
 
 
@@ -83,7 +85,7 @@ int main(int argc, char* argv[])  {
 	if (!tracker.valid())
 	{
 		// Without tracker an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
+		osg::notify(osg::FATAL) << "Could not initialize tracker plug-in!" << std::endl;
 
 		return -1;
 
@@ -95,6 +97,17 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
 	calibration->load("");
 
+//#define SSTT_USE_IDTRACKER
+#if defined(SSTT_USE_IDTRACKER)
+
+	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("id;14681358;30");
+#else
+	// this is loading file simple bmp as template 135x135mm with a confidence threshold of 0.3
+	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("watch.bmp;35.2;22.0;0.3");
+#endif
+	
+	marker->setActive(true);
+
 	tracker->setImage(video.get());
 
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
@@ -105,17 +118,6 @@ int main(int argc, char* argv[])  {
 
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
 	root->addChild(cam.get());
-
-#define SSTT_USE_IDTRACKER
-#if defined(SSTT_USE_IDTRACKER)
-
-	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("id;14681358;30");
-#else
-	// this is loading file simple bmp as template 135x135mm with a confidence threshold of 0.3
-	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("simple.bmp;135;135;0.3");
-#endif
-	
-	marker->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 	osgART::attachDefaultEventCallbacks(arTransform.get(), marker.get());

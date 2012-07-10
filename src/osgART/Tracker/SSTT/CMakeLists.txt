@@ -17,8 +17,10 @@ if(OSGART_WITH_SSTT)
 		PROPERTIES
 		PREFIX ""
 		PROJECT_LABEL "Tracker Plugin ${module_name}"
+		COMPILE_DEFINITIONS "SSTT_LIBRARY_STATIC"
 		)
-	
+		
+
 	target_link_libraries(${module_name}
 		${SSTT_LIBRARIES}
 		osgART
