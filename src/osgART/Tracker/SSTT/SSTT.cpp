@@ -35,6 +35,8 @@
 #include <osgDB/ReadFile>
 #include <osg/io_utils>
 
+#include <cstring>
+
 class SSTT_Calibration : public osgART::Calibration
 {
 

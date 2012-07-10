@@ -111,6 +111,13 @@ option(OSGART_WITH_SSTT FALSE)
 add_subdirectory(Tracker)
 add_subdirectory(Video)
 
+if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+        message(STATUS "x86-64 detected")
+        set_property(TARGET ${lib_name}
+            PROPERTY
+            COMPILE_FLAGS "-fPIC"
+        )
+endif()
 
 set_source_files_properties(${lib_hdrs}
 	PROPERTIES

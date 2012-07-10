@@ -194,7 +194,7 @@ namespace osgART {
 		osg::ref_ptr<Calibration> _calibration;
 
 		/** output all data channels */
-		void Tracker::dump();
+        void dump();
 
 
 	}; // class Tracker
