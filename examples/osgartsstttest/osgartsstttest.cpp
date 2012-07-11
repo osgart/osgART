@@ -49,7 +49,6 @@ osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = 
 int main(int argc, char* argv[])  {
 
 
-	osg::setNotifyLevel(osg::DEBUG_INFO);
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
 
