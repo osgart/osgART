@@ -39,7 +39,6 @@
 
 class SSTT_Calibration : public osgART::Calibration
 {
-
 	sstt_calibration* _calibration;
 
 public:

@@ -59,6 +59,7 @@ int main(int argc, char* argv[])
 	while (args.read("--config",videoConfig)) {};
 
     osg::setNotifyLevel(osg::DEBUG_INFO);
+
 	// preload the video
 	if (!osgART::PluginManager::instance()->load("osgart_video_" + videoName)) {
 
