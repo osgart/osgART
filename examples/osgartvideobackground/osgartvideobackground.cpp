@@ -31,20 +31,11 @@
 #include <osgART/GeometryUtils>
 #include <osgART/ImageStreamCallback>
 #include <osgART/TargetCallback>
+#include <osgART/VideoUtils>
 
 #include <osgDB/ReadFile>
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
-
-osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = false) {
-	osgART::VideoLayer* _layer = new osgART::VideoLayer();
-	//_layer->setSize(*video);
-	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20, 
-		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-	//addTexturedQuad(*_geode,video->s(),video->t());
-	_layer->addChild(_geode);
-	return _layer;
-}
 
 
 int main(int argc, char* argv[]) 
@@ -121,7 +112,7 @@ int main(int argc, char* argv[])
 
 	
 	// Creating a video background
-	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createImageBackground(video.get());
 
 	root->addChild(videoBackground.get());
 	

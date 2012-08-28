@@ -20,6 +20,7 @@ set(lib_srcs
 	VideoGeode.cpp
 	VideoImageStream.cpp
 	VideoLayer.cpp
+	VideoUtils.cpp
 	TrainingSupport.cpp
 )
 
@@ -43,6 +44,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/TrainingSupport
 )
 

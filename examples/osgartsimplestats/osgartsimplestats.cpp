@@ -34,22 +34,12 @@
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
+#include <osgART/VideoUtils>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgDB/FileUtils>
-
-osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = false) {
-	osgART::VideoLayer* _layer = new osgART::VideoLayer();
-	//_layer->setSize(*video);
-	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-	//addTexturedQuad(*_geode,video->s(),video->t());
-	_layer->addChild(_geode);
-	return _layer;
-}
-
 
 class StatsCallback : public osg::NodeCallback
 {
@@ -57,7 +47,7 @@ class StatsCallback : public osg::NodeCallback
 
 public:
 
-	StatsCallback(osg::Stats* stats) : _stats(stats) {};
+	StatsCallback(osg::Stats* stats) : _stats(stats) {}
 
 	virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
 	{
@@ -168,7 +158,7 @@ int main(int argc, char* argv[])  {
 
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
-	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createImageBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
