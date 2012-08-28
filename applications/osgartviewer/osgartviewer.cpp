@@ -56,7 +56,7 @@ model hiro thunderbird.lwo
 #include <osgART/VideoGeode>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
-#include <osgART/MarkerCallback>
+#include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
 

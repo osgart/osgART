@@ -21,7 +21,7 @@
  */
 
 
-#include "osgART/MarkerCallback"
+#include "osgART/TargetCallback"
 
 #include <osg/Switch>
 #include <osg/Notify>

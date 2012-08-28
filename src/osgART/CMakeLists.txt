@@ -9,7 +9,7 @@ set(lib_srcs
 	Foundation.cpp
 	ImageStreamCallback.cpp
 	Target.cpp
-	MarkerCallback.cpp
+	TargetCallback.cpp
 	PluginManager.cpp
 	Scene.cpp
 	Tracker.cpp
@@ -31,7 +31,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/Target
-	${CMAKE_SOURCE_DIR}/include/osgART/MarkerCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/TargetCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
 	${CMAKE_SOURCE_DIR}/include/osgART/Scene
 	${CMAKE_SOURCE_DIR}/include/osgART/Tracker

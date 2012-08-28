@@ -30,7 +30,7 @@
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/ImageStreamCallback>
-#include <osgART/MarkerCallback>
+#include <osgART/TargetCallback>
 
 #include <osgDB/ReadFile>
 #include <osgViewer/Viewer>
