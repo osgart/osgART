@@ -6,6 +6,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(lib_srcs
 	Calibration.cpp
+        Event.cpp
 	Foundation.cpp
 	ImageStreamCallback.cpp
 	Target.cpp
@@ -26,6 +27,7 @@ set(lib_srcs
 
 set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
+        ${CMAKE_SOURCE_DIR}/include/osgART/Event
 	${CMAKE_SOURCE_DIR}/include/osgART/Export
 	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Foundation

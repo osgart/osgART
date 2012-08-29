@@ -1,0 +1,147 @@
+#ifndef OSGART_EVENT
+#define OSGART_EVENT 1
+
+#include <osgART/Export>
+
+#include <osg/Referenced>
+#include <osg/Timer>
+
+#include <vector>
+
+namespace osgART {
+/* -*-c++-*-
+ *
+ * osgART - ARToolKit for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ */
+
+	class EventHandler;
+
+
+	/**
+	* Base class for event handling
+	*
+	*/
+	class OSGART_EXPORT Event {
+	protected:
+
+		bool mHandled;
+		osg::Timer_t mTick;
+
+		unsigned long mId;
+
+	public:
+
+		/** Default c'tor */
+		Event();
+
+		/** Copy c'tor */
+		Event(const Event& e);
+
+		/** Assignment operator */
+		Event& operator = (const Event& e);
+
+		/** D'tor */
+		virtual ~Event();
+
+		void setId(unsigned long id) { mId = id; }
+		unsigned long getId() { return mId; }
+
+		inline void
+		setHandled(bool handled = true) { mHandled = handled; }
+
+		inline bool
+		getHandled() const { return mHandled; }
+
+	};
+
+	/**
+	 * Event proxy handles event forwarding and dispatch
+	 */
+	struct OSGART_EXPORT EventProxy {
+
+		virtual void call(EventHandler*, Event&) = 0;
+		virtual bool corresponds(Event& e) const = 0;
+
+		virtual ~EventProxy() {}
+	};
+
+	/**
+	 * Dispatches the event to a function
+	 */
+	template <typename EventType>
+	struct EventFunctionProxy : EventProxy {
+
+		void (*mHandler)(EventType& e);
+
+		EventFunctionProxy(void (*f)(EventType& e)) : mHandler(f) {}
+
+		virtual void call(EventHandler*, Event& e) {
+			mHandler(static_cast<EventType&>(e));
+		}
+
+		virtual bool corresponds(Event &e) const { return (0 != dynamic_cast<EventType*>(&e)); }
+
+	};
+
+	/**
+	 * Dispatches the event to a functor in a class
+	 */
+	template <typename EventType,typename EventClass>
+	struct EventFunctorProxy : EventProxy {
+
+		typedef void (EventClass::*EventCallback)(EventType&);
+
+		EventCallback mHandler;
+		EventClass* mObject;
+
+		inline
+		EventFunctorProxy(EventCallback method,EventClass* o)
+			: mHandler(method)
+			, mObject(o)
+		{}
+
+		virtual void call(EventHandler* h, Event& e) {
+			(mObject->*mHandler)(static_cast<EventType&>(e));
+		}
+
+		virtual bool corresponds(Event &e) const { return (0 != dynamic_cast<EventType*>(&e)); }
+
+	};
+
+
+	class OSGART_EXPORT EventHandler {
+	protected:
+
+		typedef std::vector<EventProxy*> EventProxyArray;
+		EventProxyArray mHandlers;
+
+	public:
+
+		template <typename EventType>
+		void attach(void (*f)(EventType& e))
+		{
+			mHandlers.push_back(new EventFunctionProxy<EventType>(f));
+		}
+
+		template <typename EventType,typename EventClass>
+		void attach(EventClass* o,void (EventClass::*f)(EventType& e))
+		{
+			mHandlers.push_back(new EventFunctorProxy<EventType,EventClass>(f,o));
+		}
+
+		bool process(Event &e);
+
+		void removeAll();
+
+		~EventHandler();
+
+	};
+
+
+}
+
+
+
+
+#endif
