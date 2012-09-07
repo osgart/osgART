@@ -20,7 +20,7 @@
 
 // local include
 #include "osgART/Export"
-#include "osgART/Marker"
+#include "osgART/Target"
 
 // ARToolKit multimarker include
 #include <AR/arMulti.h>
@@ -31,7 +31,7 @@ namespace osgART {
 	* \class MultiMarker
 	* \brief A marker consisting of many patterns which can be treated as one.
 	*/
-	class MultiMarker : public Marker
+	class MultiMarker : public Target
 	{
 	public:       
 

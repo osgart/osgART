@@ -176,9 +176,9 @@ namespace osgART {
 		 */
         TargetList _markerlist;
 
-		//osg::Matrix		_projectionMatrix;
-		//std::string		_version;	//!< Store the version of the tracker.
-		//bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
+		osg::Matrix		_projectionMatrix;
+		std::string		_version;	//!< Store the version of the tracker.
+		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
 
 
 		/**

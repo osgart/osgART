@@ -296,7 +296,7 @@ namespace osgART {
 				
 				double width, center[2];
 				markerFile >> width >> center[0] >> center[1];
-				if (addSingleMarker(patternName, width, center) == -1) {
+				if (addSingleTarget(patternName, width, center) == -1) {
 					osg::notify(osg::WARN) << "Error adding single pattern: " << patternName << std::endl;
 					ret = false;
 					break;
@@ -305,7 +305,7 @@ namespace osgART {
 			}
 			else if (patternType == "MULTI")
 			{
-				if (addMultiMarker(patternName) == -1) {
+				if (addMultiTarget(patternName) == -1) {
 					osg::notify(osg::WARN) << "Error adding multi-marker pattern: " << patternName << std::endl;
 					ret = false;
 					break;
@@ -326,7 +326,7 @@ namespace osgART {
 	}
 
 	int 
-	ARToolKitTracker::addSingleMarker(const std::string& pattFile, double width, double center[2]) {
+	ARToolKitTracker::addSingleTarget(const std::string& pattFile, double width, double center[2]) {
 
 		SingleMarker* singleMarker = new SingleMarker();
 
@@ -343,7 +343,7 @@ namespace osgART {
 	}
 
 	int 
-	ARToolKitTracker::addMultiMarker(const std::string& multiFile) 
+	ARToolKitTracker::addMultiTarget(const std::string& multiFile) 
 	{
 		MultiMarker* multiMarker = new MultiMarker();
 		
@@ -361,7 +361,7 @@ namespace osgART {
 	}
 
 	/*virtual*/
-	Marker* ARToolKitTracker::addMarker(const std::string& config)
+	Target* ARToolKitTracker::addTarget(const std::string& config)
 	{
 		/* format is 
 		
@@ -429,11 +429,11 @@ namespace osgART {
 
 
 	/*virtual*/
-	void ARToolKitTracker::removeMarker(Marker* marker)
+	void ARToolKitTracker::removeTarget(Target* marker)
 	{
 		if (!marker) return;
 
-		std::vector< osg::ref_ptr<osgART::Marker> >::iterator i = std::find(_markerlist.begin(), _markerlist.end(), marker);
+		std::vector< osg::ref_ptr<osgART::Target> >::iterator i = std::find(_markerlist.begin(), _markerlist.end(), marker);
 
 		if (i != _markerlist.end()){
 			std::string n = marker->getName();
@@ -490,13 +490,13 @@ namespace osgART {
 		}
 
 		// hse25: performance measurement: only update if the image was modified
-		if (_imagesource->getModifiedCount() == m_lastModifiedCount)
+		if (_imagesource->getModifiedCount() == _modifiedCount)
 		{
 			return; 
 		}
 		
 		// update internal modified count
-		m_lastModifiedCount = _imagesource->getModifiedCount();
+		_modifiedCount = _imagesource->getModifiedCount();
 
 		// \TODO: hse25: check here for the moment, the function needs to be extended
 		if (AR_DEFAULT_PIXEL_FORMAT != getARPixelFormatForImage(*_imagesource.get()))
@@ -554,12 +554,12 @@ namespace osgART {
 
 		}
 
-		MarkerList::iterator _end = _markerlist.end();
+		TargetList::iterator _end = _markerlist.end();
 	
 
 		// Check through the marker_info array for highest confidence
 		// visible marker matching our preferred pattern.
-		for (MarkerList::iterator iter = _markerlist.begin(); iter != _end; iter++)		
+		for (TargetList::iterator iter = _markerlist.begin(); iter != _end; iter++)		
 		{
 
 			std::string tag = std::string("Marker update ");
@@ -625,10 +625,10 @@ namespace osgART {
 
 	}
 
-	inline void ARToolKitTracker::setProjection(const double n, const double f) 
-	{
-		arglCameraFrustumRH(&(m_cparam->cparam), n, f, _projectionMatrix);
-	}
+	//inline void ARToolKitTracker::setProjection(const double n, const double f) 
+	//{
+	//	arglCameraFrustumRH(&(m_cparam->cparam), n, f, _calibration._projection);
+	//}
 
 	/*inline void ARToolKitTracker::createUndistortedMesh(
 		int width, int height,

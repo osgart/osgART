@@ -20,7 +20,7 @@
 
 // local include
 #include "osgART/Export"
-#include "osgART/Marker"
+#include "osgART/Target"
 
 // AR ToolKit include
 #include <AR/ar.h>
@@ -31,7 +31,7 @@ namespace osgART {
 	* \class SingleMarker.
 	* \brief A marker consisting of a single pattern.
 	*/
-	class SingleMarker : public Marker
+	class SingleMarker : public Target
 	{
 	public:	
 		

@@ -26,7 +26,7 @@
  */
 
 #include "osgART/Export"
-#include "osgART/Marker"
+#include "osgART/Target"
 #include "osgART/Video"
 #include "osgART/Tracker"
 
@@ -44,7 +44,7 @@ namespace osgART {
 	* This tracker supports single and multi-markers.
 	*
 	*/
-	class ARToolKitTracker : public Tracker
+	class ARToolKitTracker : public Tracker, public FieldContainer<Tracker>
 	{
 
 	public:        
@@ -109,7 +109,7 @@ namespace osgART {
 		* \param center the x-y coordinates of the center of the marker (usually 0,0)
 		* \return the internal ID of the new marker, or -1 on failure 
 		*/
-		int addSingleMarker(const std::string& pattFile, 
+		int addSingleTarget(const std::string& pattFile, 
 			double width, double center[2]);
 		
 		/** 
@@ -118,7 +118,7 @@ namespace osgART {
 		* \param multiFile the multi-marker configuration file name
 		* \return the internal ID of the new marker, or -1 on failure
 		*/
-		int addMultiMarker(const std::string& multiFile);
+		int addMultiTarget(const std::string& multiFile);
 				
 		/** 
 		* \brief update the tracking.
@@ -137,12 +137,12 @@ namespace osgART {
 		 * \param config Marker configuration string.
 		 * \return A new marker instance, or NULL if the marker could not be added
 		 */
-		virtual Marker* addMarker(const std::string& config);
+		virtual Target* addTarget(const std::string& config);
 		
 		/**
 		 * Removing a single or multimarker
 		 */		
-		virtual void removeMarker(Marker* marker);
+		virtual void removeTarget(Target* target);
 			
 			
 		/**

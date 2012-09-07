@@ -29,7 +29,7 @@
 
 namespace osgART {
 
-	SingleMarker::SingleMarker() : Marker(),
+	SingleMarker::SingleMarker() : Target(),
 		patt_id(-1),
 		mInitialData(false)
 	{			
@@ -40,9 +40,9 @@ namespace osgART {
 		if (patt_id >= 0) arFreePatt(patt_id);
 	}
 
-	Marker::MarkerType SingleMarker::getType() const
+	Target::MarkerType SingleMarker::getType() const
 	{
-		return Marker::ART_SINGLE;
+		return Target::ART_SINGLE;
 	}
 
 	bool SingleMarker::initialise(const std::string& pattFile, double width, double center[2])

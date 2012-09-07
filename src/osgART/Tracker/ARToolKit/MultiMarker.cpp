@@ -28,7 +28,7 @@
 
 namespace osgART {
 
-	MultiMarker::MultiMarker() : Marker(), m_multi(0L) 
+	MultiMarker::MultiMarker() : Target(), m_multi(0L) 
 	{
 	}
 
@@ -38,9 +38,9 @@ namespace osgART {
 	}
 
 	/* virtual */
-	Marker::MarkerType MultiMarker::getType() const 
+	Target::MarkerType MultiMarker::getType() const 
 	{
-		return Marker::ART_MULTI;
+		return Target::ART_MULTI;
 	}
 
 	bool 
