@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +20,6 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-#ifndef __OSGART_FOUNDATION__
-#define __OSGART_FOUNDATION__
-
-#include "osgART/Export"
 
 /*! \mainpage OSGART
  *
@@ -44,6 +40,10 @@
  * \namespace osgART
  * \brief A collection of classes to support the development of Augmented Reality applications in Open Scene Graph.
  */
+#ifndef OSGART_FOUNDATION
+#define OSGART_FOUNDATION__1
 
-#endif // !__OSGART_FOUNDATION__
+#include "osgART/Export"
+
+#endif // OSGART_FOUNDATION
 

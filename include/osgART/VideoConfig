@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,9 @@
  *
  */
 
-
 /**
  *  \file  VideoConfig
- *  \brief Types used in defining configuration of video data.
+ *  \brief Types used in defining configuration of video data
  *
  * Types used in defining configuration of video data.
  */
@@ -97,7 +97,7 @@ namespace osgART {
 		int	width, height;
 		FrameRateType framerate;
 		PixelFormatType type;
-		std::string deviceconfig;
+		std::string config;
 
 		int selectedWidth;
 		int selectedHeight;
@@ -148,4 +148,4 @@ namespace osgART {
 };
 
 
-#endif
+#endif // OSGART_VIDEOCONFIG

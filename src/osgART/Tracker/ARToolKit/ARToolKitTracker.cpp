@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
- * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +20,6 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #include "osgART/PluginManager"
 #include "osgART/Utils"
@@ -64,8 +64,8 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 #error ARToolKit v2.72 or later is required to build the osgART ARToolKit tracker.
 #endif
 
-#include "SingleMarker"
-#include "MultiMarker"
+#include "SingleTarget"
+#include "MultiTarget"
 
 #include <osgART/Video>
 #include <osgART/Calibration>
@@ -162,7 +162,7 @@ namespace osgART {
 	ARToolKitTracker::ARToolKitTracker() : Tracker(),
 		m_debugimage(new osg::Image),
 		m_threshold(ARTOOLKIT_DEFAULT_THRESHOLD),
-		m_marker_num(0),
+		m_target_num(0),
 		m_cparam(new CameraParameter)
 	{
 		
@@ -177,6 +177,7 @@ namespace osgART {
 			osg::notify() << "ARToolKitTracker: Could not get version number from ARToolKit" << std::endl;
 		}
 		
+		/*
 		// create a new field 
 		_fields["threshold"] = new CallbackField<ARToolKitTracker,int>(this,
 			&ARToolKitTracker::getThreshold,
@@ -192,10 +193,10 @@ namespace osgART {
 			&ARToolKitTracker::setDebugMode);
 
 		// for statistics
-		_fields["markercount"] = new TypedField<int>(&m_marker_num);
+		_fields["targetcount"] = new TypedField<int>(&m_target_num);
 
 		_fields["use_history"] = new TypedField<bool>(&m_useHistory);
-
+		*/
 		// Training support
 		mTrainer = new ARToolKitTrainingSupport(this);
 
@@ -246,7 +247,7 @@ namespace osgART {
 	}
 
 
-	bool ARToolKitTracker::setupMarkers(const std::string& patternListFile)
+	bool ARToolKitTracker::setupTargets(const std::string& patternListFile)
 	{
 
 		// Need to check whether the passed file even exists
@@ -256,11 +257,11 @@ namespace osgART {
 		}
 
 		// Open the specified file
-		std::ifstream markerFile;
-		markerFile.open(patternListFile.c_str());
+		std::ifstream targetFile;
+		targetFile.open(patternListFile.c_str());
 
 		// Need to check for error when opening file
-		if (!markerFile.is_open()) 
+		if (!targetFile.is_open()) 
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker: Can not load Pattern file '" << patternListFile << "'" << std::endl;
 			return true;
@@ -268,26 +269,26 @@ namespace osgART {
 
 		bool ret = true;
 		int patternNum = 0;
-		markerFile >> patternNum;
+		targetFile >> patternNum;
 		
-		osg::notify() << "ARToolKitTracker::setupMarkers() Loading '" << patternNum << "' patterns." << std::endl;
+		osg::notify() << "ARToolKitTracker::setupTargets() Loading '" << patternNum << "' patterns." << std::endl;
 
 		std::string patternName, patternType;
 
-		// Need EOF checking in here... atm it assumes there are really as many markers as the number says
+		// Need EOF checking in here... atm it assumes there are really as many targets as the number says
 
-		for (int i = 0; (i < patternNum) && (!markerFile.eof()); i++)
+		for (int i = 0; (i < patternNum) && (!targetFile.eof()); i++)
 		{
-			// jcl64: Get the whole line for the marker file (will handle spaces in filename)
+			// jcl64: Get the whole line for the target file (will handle spaces in filename)
 			patternName = "";
-			while (trim(patternName) == "" && !markerFile.eof()) {
-				getline(markerFile, patternName);
+			while (trim(patternName) == "" && !targetFile.eof()) {
+				getline(targetFile, patternName);
 			}
 			
 			
-			// Check whether markerFile exists?
+			// Check whether targetFile exists?
 
-			markerFile >> patternType;
+			targetFile >> patternType;
 
 			if (patternType == "SINGLE")
 			{
@@ -295,7 +296,7 @@ namespace osgART {
 				osg::notify(osg::WARN) << "Loading single pattern: '" << patternName << "'." << std::endl;
 				
 				double width, center[2];
-				markerFile >> width >> center[0] >> center[1];
+				targetFile >> width >> center[0] >> center[1];
 				if (addSingleTarget(patternName, width, center) == -1) {
 					osg::notify(osg::WARN) << "Error adding single pattern: " << patternName << std::endl;
 					ret = false;
@@ -306,7 +307,7 @@ namespace osgART {
 			else if (patternType == "MULTI")
 			{
 				if (addMultiTarget(patternName) == -1) {
-					osg::notify(osg::WARN) << "Error adding multi-marker pattern: " << patternName << std::endl;
+					osg::notify(osg::WARN) << "Error adding multi-target pattern: " << patternName << std::endl;
 					ret = false;
 					break;
 				}
@@ -320,7 +321,7 @@ namespace osgART {
 			}
 		}
 
-		markerFile.close();
+		targetFile.close();
 
 		return ret;
 	}
@@ -328,35 +329,35 @@ namespace osgART {
 	int 
 	ARToolKitTracker::addSingleTarget(const std::string& pattFile, double width, double center[2]) {
 
-		SingleMarker* singleMarker = new SingleMarker();
+		SingleTarget* singleTarget = new SingleTarget();
 
-		if (!singleMarker->initialise(pattFile, width, center))
+		if (!singleTarget->initialise(pattFile, width, center))
 		{
-			singleMarker->unref();
+			singleTarget->unref();
 			return -1;
 		}
 
-		_markerlist.push_back(singleMarker);
+		_targetlist.push_back(singleTarget);
 
-		// Return the index of the marker just added
-		return _markerlist.size() - 1;
+		// Return the index of the target just added
+		return _targetlist.size() - 1;
 	}
 
 	int 
 	ARToolKitTracker::addMultiTarget(const std::string& multiFile) 
 	{
-		MultiMarker* multiMarker = new MultiMarker();
+		MultiTarget* multiTarget = new MultiTarget();
 		
-		if (!multiMarker->initialise(multiFile))
+		if (!multiTarget->initialise(multiFile))
 		{
-			multiMarker->unref();
+			multiTarget->unref();
 			return -1;
 		}
 
-		_markerlist.push_back(multiMarker);
+		_targetlist.push_back(multiTarget);
 
-		// Return the index of the marker just added
-		return _markerlist.size() - 1;
+		// Return the index of the target just added
+		return _targetlist.size() - 1;
 
 	}
 
@@ -380,7 +381,7 @@ namespace osgART {
 		
 		if (_tokens[0] == "single")
 		{
-			osg::notify(osg::INFO) << "Loading type:'" << _tokens[0] << "' Marker" << std::endl;
+			osg::notify(osg::INFO) << "Loading type:'" << _tokens[0] << "' Target" << std::endl;
 
 			if (_tokens.size() < 5)
 			{
@@ -393,35 +394,35 @@ namespace osgART {
 			_center[0] = atof(_tokens[3].c_str());
 			_center[1] = atof(_tokens[4].c_str());
 
-			SingleMarker* singleMarker = new SingleMarker();
+			SingleTarget* singleTarget = new SingleTarget();
             
-			if (!singleMarker->initialise(_tokens[1], _size, _center))
+			if (!singleTarget->initialise(_tokens[1], _size, _center))
 			{
-				singleMarker->unref();
+				singleTarget->unref();
 				return 0L;
 			}
 
-			osg::notify(osg::INFO) << "Added Marker: '" << _tokens[1] << "'" << std::endl;
+			osg::notify(osg::INFO) << "Added Target: '" << _tokens[1] << "'" << std::endl;
 
-			_markerlist.push_back(singleMarker);
+			_targetlist.push_back(singleTarget);
 
-			return singleMarker;
+			return singleTarget;
 
 		}
 
 		if (_tokens[0] == "multi")
 		{
-			MultiMarker* multiMarker = new MultiMarker();
+			MultiTarget* multiTarget = new MultiTarget();
 	
-			if (!multiMarker->initialise(_tokens[1]))
+			if (!multiTarget->initialise(_tokens[1]))
 			{
-				multiMarker->unref();
+				multiTarget->unref();
 				return 0L;
 			}
 
-			_markerlist.push_back(multiMarker);
+			_targetlist.push_back(multiTarget);
 
-			return multiMarker;
+			return multiTarget;
 		}
 
 		return 0L;
@@ -429,17 +430,17 @@ namespace osgART {
 
 
 	/*virtual*/
-	void ARToolKitTracker::removeTarget(Target* marker)
+	void ARToolKitTracker::removeTarget(Target* target)
 	{
-		if (!marker) return;
+		if (!target) return;
 
-		std::vector< osg::ref_ptr<osgART::Target> >::iterator i = std::find(_markerlist.begin(), _markerlist.end(), marker);
+		std::vector< osg::ref_ptr<osgART::Target> >::iterator i = std::find(_targetlist.begin(), _targetlist.end(), target);
 
-		if (i != _markerlist.end()){
-			std::string n = marker->getName();
+		if (i != _targetlist.end()){
+			std::string n = target->getName();
 			*i = 0L;
-			_markerlist.erase(i);
-			osg::notify(osg::INFO) << "Removed marker: " << n << std::endl;
+			_targetlist.erase(i);
+			osg::notify(osg::INFO) << "Removed target: " << n << std::endl;
 		}
 	}
 
@@ -471,8 +472,8 @@ namespace osgART {
 
 		
 
-		// Pointer to array holding the details of detected markers.
-		ARMarkerInfo *marker_info;
+		// Pointer to array holding the details of detected targets.
+		ARMarkerInfo *target_info;
 
 	    register int j, k;
 
@@ -519,10 +520,10 @@ namespace osgART {
 
 		t.setStartTick();
 
-		// Detect the markers in the video frame.
-		if (arDetectMarker(_imagesource->data(), m_threshold, &marker_info, &m_marker_num) < 0) 
+		// Detect the targets in the video frame.
+		if (arDetectMarker(_imagesource->data(), m_threshold, &target_info, &m_target_num) < 0) 
 		{
-			osg::notify(osg::FATAL) << "ARToolKitTracker: Error detecting markers in image." << std::endl;
+			osg::notify(osg::FATAL) << "ARToolKitTracker: Error detecting targets in image." << std::endl;
 			// TODO: unlock the mutex for a graceful shutdown
 			return;
 		}
@@ -530,15 +531,15 @@ namespace osgART {
 		if (framestamp && _stats.valid())
 		{
 			_stats->setAttribute(framestamp->getFrameNumber(),
-				"arDetectMarker time taken", t.time_m());
+				"arDetectTarget time taken", t.time_m());
 
 			_stats->setAttribute(framestamp->getFrameNumber(),
-				"Possible candidates", m_marker_num);
+				"Possible candidates", m_target_num);
 		}
 
 		// Do training if enabled
 		if (mTrainer.valid() && mTrainer->isEnabled()) {
-			mTrainer->processMarkers(marker_info, m_marker_num);
+			mTrainer->processTargets(target_info, m_target_num);
 		}
 
 		// Debug Image
@@ -554,28 +555,28 @@ namespace osgART {
 
 		}
 
-		TargetList::iterator _end = _markerlist.end();
+		TargetList::iterator _end = _targetlist.end();
 	
 
-		// Check through the marker_info array for highest confidence
-		// visible marker matching our preferred pattern.
-		for (TargetList::iterator iter = _markerlist.begin(); iter != _end; iter++)		
+		// Check through the target_info array for highest confidence
+		// visible target matching our preferred pattern.
+		for (TargetList::iterator iter = _targetlist.begin(); iter != _end; iter++)		
 		{
 
-			std::string tag = std::string("Marker update ");
+			std::string tag = std::string("Target update ");
 
-			if (SingleMarker* singleMarker = dynamic_cast<SingleMarker*>((*iter).get()))
+			if (SingleTarget* singleTarget = dynamic_cast<SingleTarget*>((*iter).get()))
 			{			
 
 
 
 				k = -1;
-				for (j = 0; j < m_marker_num; j++)	
+				for (j = 0; j < m_target_num; j++)	
 				{
-					if (singleMarker->getPatternID() == marker_info[j].id) 
+					if (singleTarget->getPatternID() == target_info[j].id) 
 					{
-						if (k == -1) k = j; // First marker detected.
-						else if (marker_info[j].cf > marker_info[k].cf) k = j; // Higher confidence marker detected.
+						if (k == -1) k = j; // First target detected.
+						else if (target_info[j].cf > target_info[k].cf) k = j; // Higher confidence target detected.
 					}
 				}
 
@@ -584,35 +585,35 @@ namespace osgART {
 				if(k != -1) 
 				{
 
-					singleMarker->update(&marker_info[k], m_useHistory); 
+					singleTarget->update(&target_info[k], m_useHistory); 
 				} 
 				else 
 				{
-					singleMarker->update(NULL);
+					singleTarget->update(NULL);
 				}
 
 				if (framestamp && _stats.valid())
 				{
 					_stats->setAttribute(framestamp->getFrameNumber(),
-						tag + "'" + singleMarker->getName() + "'" + " pose time taken", t.time_m());
+						tag + "'" + singleTarget->getName() + "'" + " pose time taken", t.time_m());
 				}
 
 			}
-			else if (MultiMarker* multiMarker = dynamic_cast<MultiMarker*>((*iter).get()))
+			else if (MultiTarget* multiTarget = dynamic_cast<MultiTarget*>((*iter).get()))
 			{
 				t.setStartTick();
 
-				multiMarker->update(marker_info, m_marker_num);
+				multiTarget->update(target_info, m_target_num);
 
 				if (framestamp && _stats.valid())
 				{
 					_stats->setAttribute(framestamp->getFrameNumber(),
-						tag + "'" + multiMarker->getName() + "'" + " pose time taken", t.time_m());
+						tag + "'" + multiTarget->getName() + "'" + " pose time taken", t.time_m());
 				}
 				
 			} else {
 				
-				osg::notify(osg::WARN) << "ARToolKitTracker::update() : Unknown marker type id!" << std::endl;
+				osg::notify(osg::WARN) << "ARToolKitTracker::update() : Unknown target type id!" << std::endl;
 
 				continue;
 			}

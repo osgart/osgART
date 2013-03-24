@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,15 @@
  *
  */
 
-#ifndef OSGART_GEOMETRY_UTILS
-#define OSGART_GEOMETRY_UTILS 1
+/**
+ *  \file  GeometrytUtils
+ *  \brief Helpers to create OSG Geometry
+ *
+ * Helpers to create OSG Geometry.
+ */
+
+#ifndef OSGART_GEOMETRYUTILS
+#define OSGART_GEOMETRYUTILS 1
 
 #include <osg/Notify>
 #include <osg/Matrix>
@@ -98,7 +106,4 @@ osg::Geode* testCube(float size = 80.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f,
 
 }; // namespace osgART
 
-
-
-
-#endif
+#endif  // OSGART_GEOMETRYUTILS

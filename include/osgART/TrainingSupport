@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+
+/**
+ *  \file  TrainingSupport
+ *  \brief Helper class for training a specific Tracker
+ *
+ * Helper class for training a specific Tracker.
  */
 
 #ifndef OSGART_TRAININGSUPPORT
@@ -74,8 +82,8 @@ namespace osgART {
 	/**
 	 * \class TrainingSupport.
 	 * 
-	 * Base class for marker training support. A tracker can optionally provide an
-	 * implementation for supporting marker training.
+	 * Base class for target training support. A tracker can optionally provide an
+	 * implementation for supporting target training.
 	 */
 	class OSGART_EXPORT TrainingSupport : public osg::Referenced
 	{
@@ -108,4 +116,4 @@ namespace osgART {
 
 };
 
-#endif
+#endif // OSGART_TRAININGSUPPORT

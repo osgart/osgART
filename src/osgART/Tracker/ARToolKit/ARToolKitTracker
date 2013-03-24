@@ -1,8 +1,23 @@
-/*
- *	osgART/Tracker/ARToolKit/ARToolKitTracker
- *	osgART: ARToolKit for OpenSceneGraph
+/* -*-c++-*-
  *
- *	Copyright (c) 2005-2008 HIT Lab NZ
+ * osgART - AR for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 // @@OSGART_LICENSE_HEADER_BEGIN@@
@@ -15,9 +30,9 @@
  * \file  ARToolKitTracker
  * \brief A wrapper class for ARToolkit tracking system.
  *
- * Support Marker-Based tracking based on computer vision based on ARToolKit
- * Algorithm. This class provided video/graphic independent marker detection and
- * support multiple marker tracking.
+ * Support Target-Based tracking based on computer vision based on ARToolKit
+ * Algorithm. This class provided video/graphic independent target detection and
+ * support multiple target tracking.
  *	
  * \author Philip Lamb philip.lamb@artoolworks.com
  * \author Julian Looser julian.looser@hitlabnz.org
@@ -41,10 +56,10 @@ namespace osgART {
 	* \class ARToolKitTracker
 	* \brief A tracker based on ARToolKit 2x. 
 	* 
-	* This tracker supports single and multi-markers.
+	* This tracker supports single and multi-targets.
 	*
 	*/
-	class ARToolKitTracker : public Tracker, public FieldContainer<Tracker>
+	class ARToolKitTracker : public Tracker
 	{
 
 	public:        
@@ -102,21 +117,21 @@ namespace osgART {
 		virtual Calibration* getOrCreateCalibration();
 
 		/** 
-		* \brief Register a single marker with the tracker.
+		* \brief Register a single target with the tracker.
 		* 
 		* \param pattFile the pattern file name
-		* \param width the width of the physical marker
-		* \param center the x-y coordinates of the center of the marker (usually 0,0)
-		* \return the internal ID of the new marker, or -1 on failure 
+		* \param width the width of the physical target
+		* \param center the x-y coordinates of the center of the target (usually 0,0)
+		* \return the internal ID of the new target, or -1 on failure 
 		*/
 		int addSingleTarget(const std::string& pattFile, 
 			double width, double center[2]);
 		
 		/** 
-		* \brief Register a multi-marker with the tracker
+		* \brief Register a multi-target with the tracker
 		* 
-		* \param multiFile the multi-marker configuration file name
-		* \return the internal ID of the new marker, or -1 on failure
+		* \param multiFile the multi-target configuration file name
+		* \return the internal ID of the new target, or -1 on failure
 		*/
 		int addMultiTarget(const std::string& multiFile);
 				
@@ -129,18 +144,18 @@ namespace osgART {
 		
 		
 		/**
-		 * Adds an ARToolKit marker based on the config string. The format for the configuration string is either:
+		 * Adds an ARToolKit target based on the config string. The format for the configuration string is either:
 		 * single;filename;width;centre_x;centre_y
-		 * for a single marker where filename points to a pattern file, width is the size in mm, and centre_x and centre_y define the tracking offset from the centre of the pattern.		 
+		 * for a single target where filename points to a pattern file, width is the size in mm, and centre_x and centre_y define the tracking offset from the centre of the pattern.		 
 		 * multi;filename
-		 * where filename points to a multimarker configuration file (see the ARToolKit documentation for more information).
-		 * \param config Marker configuration string.
-		 * \return A new marker instance, or NULL if the marker could not be added
+		 * where filename points to a multitarget configuration file (see the ARToolKit documentation for more information).
+		 * \param config Target configuration string.
+		 * \return A new target instance, or NULL if the target could not be added
 		 */
 		virtual Target* addTarget(const std::string& config);
 		
 		/**
-		 * Removing a single or multimarker
+		 * Removing a single or multitarget
 		 */		
 		virtual void removeTarget(Target* target);
 			
@@ -169,12 +184,12 @@ namespace osgART {
 		struct				CameraParameter;
 		CameraParameter*	m_cparam;
 	
-		bool setupMarkers(const std::string& patternListFile);
-		void cleanupMarkers(void);
+		bool setupTargets(const std::string& patternListFile);
+		void cleanupTargets(void);
 
 		std::string 		cparamName;
 		int					m_threshold;
-		int					m_marker_num;
+		int					m_target_num;
 		
 		bool				m_useHistory;
 	

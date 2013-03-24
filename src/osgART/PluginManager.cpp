@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +32,7 @@
 #include <sstream>
 #include <cstdlib>
 
-#if defined(_WIN32)
+#if defined(_WIN32)||(_WINDOWS)
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
 
@@ -64,13 +65,19 @@ namespace osgART {
 	: osg::Referenced()
 	{
 		// add local executable path
-		osgDB::Registry::instance()->getLibraryFilePathList().push_back(getCurrentExecutablePath()+SLASH+"osgPlugins-" + osgGetVersion());
-	
+		osgDB::Registry::instance()->getLibraryFilePathList().push_back(getCurrentExecutablePath()+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
+
 		// only do if environment variable exists
-		if (getenv("OSGART_PLUGIN_DIR"))
+		if (getenv("OSGART_ROOT"))
 		{
-			osgDB::getLibraryFilePathList().push_front(getenv("OSGART_PLUGIN_DIR"));
-			osg::notify() << "Added osgART specific paths" << std::endl;
+			osgDB::getLibraryFilePathList().push_front(std::string(getenv("OSGART_ROOT"))+SLASH+"bin"+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
+			osg::notify() << "osgART::PluginManager::PluginManager() added osgART root path:" << osgDB::getLibraryFilePathList().front() << std::endl;
+		}
+
+		if (getenv("OSGART_PLUGIN_PATH"))
+		{
+			osgDB::getLibraryFilePathList().push_front(std::string(getenv("OSGART_PLUGIN_PATH"))+SLASH);
+			osg::notify() << "osgART::PluginManager::PluginManager() added osgART plugins path:" <<  osgDB::getLibraryFilePathList().front() << std::endl;
 		}
 	}
 
@@ -97,7 +104,7 @@ namespace osgART {
 			if (ref == i->second) 
 			{
 				// just need to remove the reference from PluginManager
-				osg::notify() << "osgART::PluginManager::remove() unregister " << i->first << std::endl;
+				osg::notify() << "osgART::PluginManager::remove() unregistered " << i->first << std::endl;
 				i->second = 0L; 
 			}		
 		}
@@ -137,7 +144,7 @@ namespace osgART {
 	}
 
 	bool 
-	PluginManager::load(const std::string& pluginname, bool resolveName /*= true*/)
+	PluginManager::load(const std::string& pluginname, bool resolveName)
 	{
 		std::string fullName;
 

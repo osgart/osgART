@@ -1,9 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,15 @@
  *
  */
 
-#ifndef OSGART_Tracker
-#define OSGART_Tracker 1
+/**
+ *  \file  Tracker
+ *  \brief Base class for tracker class
+ *
+ * A Tracker generate targets and get input sensors or video information.
+ */
+
+#ifndef OSGART_TRACKER
+#define OSGART_TRACKER 1
 
 
 // std include
@@ -38,6 +46,7 @@
 #include "osgART/Video"
 #include "osgART/Target"
 #include "osgART/Field"
+#include "osgART/TrackerConfig"
 #include "osgART/Calibration"
 #include "osgART/TrainingSupport"
 
@@ -50,7 +59,7 @@ namespace osgART {
 	 * \class Tracker.
 	 *
 	 * Base class for a tracker which in the context of AR is an entity
-	 * that connects video streams, markers and their representation in
+	 * that connects video streams, targets and their representation in
 	 * the virtual environment.
 	 */
     class OSGART_EXPORT Tracker : public osg::Object {
@@ -78,18 +87,48 @@ namespace osgART {
 
 
 		/**
+		 * Get the tracker configuration struct
+		 * \return struct TrackerConfiguration
+		 */
+		virtual TrackerConfiguration* getConfiguration();
+		
+
+		/**
 		 * Creates or gets the calibration object
 		 *
 		 * \return calibration object
 		 */
 		virtual Calibration* getOrCreateCalibration();
 
+		/**
+		 * \brief initialize the tracker
+		 *
+		 */
+		virtual void init() {};
+
+		/**
+		 * \brief close the tracker
+		 *
+		 */
+		virtual void close() {};
+
+		/**
+		 * \brief start the tracker
+		 *
+		 */
+		virtual void start() {};
+
+		/**
+		 * \brief stop the tracker
+		 *
+		 */
+		virtual void stop() {};
 
 		/**
 		 * \brief update the tracking.
 		 *
 		 * Request that the tracker update the position of tracked
-		 * markers, using the most recent image supplied by setImage.
+		 * targets, using the most recent image supplied by setImage.
 		 * \param nv NodeVisitor which should be used to get stats information
 		 */
 		virtual void update(osg::NodeVisitor* nv = 0L);
@@ -102,25 +141,25 @@ namespace osgART {
 		virtual Target* getTarget(size_t idx);
 
 		inline size_t
-		getTargetNum() const { return _markerlist.size(); }
+		getTargetNum() const { return _targetlist.size(); }
 
 		/**
-		 * Add a marker to the tracker.
+		 * Add a target to the tracker.
 		 * \param config can contain the filename an ID or other tracker specific parameters
-		 * \return Marker as been loaded from the tracker or 0 if it failed
+		 * \return Target as been loaded from the tracker or 0 if it failed
 		 */
 		virtual Target* addTarget(const std::string& config);
 
 		/**
-		 * Remove a marker.
-		 * \param marker pointer to the marker to be removed
+		 * Remove a target.
+		 * \param target pointer to the target to be removed
 		 */
         virtual void removeTarget(Target* target);
 
 
 		/**
 		 * Return a training support instance for this tracker.
-		 * \return TrainingSupport instance, or NULL if marker training is not supported.
+		 * \return TrainingSupport instance, or NULL if target training is not supported.
 		 */
 		virtual TrainingSupport* getTrainingSupport() { return NULL; }
 
@@ -167,14 +206,14 @@ namespace osgART {
 		 */
 		virtual ~Tracker();
 		/**
-		 * type for a vector of reference counted markers.
+		 * type for a vector of reference counted targets.
 		 */
         typedef std::vector< osg::ref_ptr<Target> > TargetList;
 
 		/**
-		 * A list of markers associated with this tracker.
+		 * A list of targets associated with this tracker.
 		 */
-        TargetList _markerlist;
+        TargetList _targetlist;
 
 		osg::Matrix		_projectionMatrix;
 		std::string		_version;	//!< Store the version of the tracker.
@@ -237,4 +276,4 @@ namespace osgART {
 
 }; // namespace osgART
 
-#endif
+#endif // OSGART_TRACKER

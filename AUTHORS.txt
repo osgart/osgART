@@ -1,7 +1,10 @@
 Contributors
 ------------
 
-Julian Looser, HITLabNZ (julian.looser@hitlabnz.org)
-Raphael Grasset, HITLabNZ (raphael.grasset@hitlabnz.org)
-Hartmut Seichter, HITLabNZ (hartmut.seichter@hitlabnz.org)
+Julian Looser, HIT Lab NZ (julian.looser@hitlabnz.org)
+
+Raphael Grasset (contact me at: raphael.grasset@icg.tugraz.at)
+2004-2010: HIT Lab NZ (raphael.grasset@hitlabnz.org)
+
+Hartmut Seichter, HITLab NZ (hartmut.seichter@hitlabnz.org)
 Philip Lamb, ARToolworks Inc. (philip.lamb@artoolworks.com)

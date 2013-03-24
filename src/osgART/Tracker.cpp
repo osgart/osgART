@@ -1,9 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,18 +100,18 @@ namespace osgART {
 	{
 
 		//
-		// Explicitly delete/unref all markers
+		// Explicitly delete/unref all targets
 		//
-        for( TargetList::iterator mi = _markerlist.begin();
-			 mi != _markerlist.end();
+        for( TargetList::iterator mi = _targetlist.begin();
+			 mi != _targetlist.end();
 			 mi++)
 		{
 			(*mi) = 0L;
 		}
 
-		// Markers are associated with a specific tracker instance,
+		// Targets are associated with a specific tracker instance,
 		// so will be deleted when the tracker is deleted.
-		_markerlist.clear();
+		_targetlist.clear();
 	}
 
 	void 
@@ -123,6 +124,13 @@ namespace osgART {
 		{
 			OSG_INFO << (*it) << std::endl;
 		}
+	}
+
+	/* virtual */
+	TrackerConfiguration* 
+	Tracker::getConfiguration()
+	{
+		return 0L;
 	}
 
 	/*virtual*/
@@ -150,23 +158,23 @@ namespace osgART {
 	void
     Tracker::removeTarget(Target *target)
 	{
-		TargetList pruned; pruned.reserve(_markerlist.size());
+		TargetList pruned; pruned.reserve(_targetlist.size());
 
-		for (TargetList::iterator it = _markerlist.begin();
-			it != _markerlist.end();
+		for (TargetList::iterator it = _targetlist.begin();
+			it != _targetlist.end();
 			++it)
 		{
 			if ((*it) != target) pruned.push_back(*it);
 		}
 
-		std::swap(_markerlist,pruned);
+		std::swap(_targetlist,pruned);
 	}
 
 
 
 	Target* Tracker::getTarget( size_t idx )
 	{
-		return _markerlist.at(idx);
+		return _targetlist.at(idx);
 	}
 
 	/*virtual*/

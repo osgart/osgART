@@ -1,9 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,11 +32,11 @@ namespace osgART {
 
 	public:
 
-		ARToolKitTrainingCandidate(ARMarkerInfo markerInfo, osg::Vec2Array* outline, osg::Image* image) : TrainingCandidate(),
+		ARToolKitTrainingCandidate(ARMarkerInfo targetInfo, osg::Vec2Array* outline, osg::Image* image) : TrainingCandidate(),
 			mOutline(new osg::Vec2Array(outline->begin(), outline->end())),
 			mImage(image) {
 
-			mMarkerInfo = markerInfo;
+			mTargetInfo = targetInfo;
 
 			//OutputDebugString("Candidate constructor\n");
 
@@ -59,7 +60,7 @@ namespace osgART {
 			if (!mImage.valid()) return false;
 			if (filename.empty()) return false;
 
-			if (arSavePatt(mImage->data(), &mMarkerInfo, (char*)filename.c_str()) < 0) {
+			if (arSavePatt(mImage->data(), &mTargetInfo, (char*)filename.c_str()) < 0) {
 				return true;
 			} else {
 				return false;
@@ -70,7 +71,7 @@ namespace osgART {
 
 	protected:
 
-		ARMarkerInfo mMarkerInfo;
+		ARMarkerInfo mTargetInfo;
 		osg::ref_ptr<osg::Vec2Array> mOutline;
 		osg::observer_ptr<osg::Image> mImage;
 
@@ -81,7 +82,7 @@ namespace osgART {
 	{
 		public:
 
-			ARToolKitTrainingSet(ARToolKitTracker* tracker, ARMarkerInfo* markers, int markerCount) : TrainingSet() {
+			ARToolKitTrainingSet(ARToolKitTracker* tracker, ARMarkerInfo* targets, int targetCount) : TrainingSet() {
 
 				//OutputDebugString("TrainingSet constructor\n");
 
@@ -100,9 +101,9 @@ namespace osgART {
 				ARMarkerInfo* target = NULL;
 
 
-				for (int i = 0; i < markerCount; i++) {
-					if (markers[i].area > maxArea) {
-						target = &markers[i];
+				for (int i = 0; i < targetCount; i++) {
+					if (targets[i].area > maxArea) {
+						target = &targets[i];
 						maxArea = target->area;
 					}
 				}
@@ -161,9 +162,9 @@ namespace osgART {
 
 	}
 
-	void ARToolKitTrainingSupport::processMarkers(ARMarkerInfo* markers, int markerCount) {
+	void ARToolKitTrainingSupport::processTargets(ARMarkerInfo* targets, int targetCount) {
 
-		mTrainingSet = new ARToolKitTrainingSet(mTracker, markers, markerCount);
+		mTrainingSet = new ARToolKitTrainingSet(mTracker, targets, targetCount);
 
 	}
 

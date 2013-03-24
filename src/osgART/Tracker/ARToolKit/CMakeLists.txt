@@ -10,15 +10,15 @@ if(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT)
 
 	set(SRCS 
 		ARToolKitTracker.cpp
-		MultiMarker.cpp
-		SingleMarker.cpp
+		MultiTarget.cpp
+		SingleTarget.cpp
 		ARToolKitTrainingSupport.cpp
 	)
 
 	set(HDRS
 		${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitTracker
-		${CMAKE_CURRENT_SOURCE_DIR}/MultiMarker
-		${CMAKE_CURRENT_SOURCE_DIR}/SingleMarker
+		${CMAKE_CURRENT_SOURCE_DIR}/MultiTarget
+		${CMAKE_CURRENT_SOURCE_DIR}/SingleTarget
 		${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitTrainingSupport
 		)
 		

@@ -1,10 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
- * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * Portions Copyright (C) 2005-2007 ARToolworks Inc
+ * osgART - AR for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -207,8 +207,8 @@ ARToolKitVideo::open()
 	}
 
 
-	if (m_config.deviceconfig != "") {
-		config = (char*)&m_config.deviceconfig.c_str()[0];
+	if (m_config.config != "") {
+		config = (char*)&m_config.config.c_str()[0];
 	}
 
 	// open the video capture device
@@ -294,10 +294,7 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 	{
 	    {
             
-
-
             osg::Timer t;
-
 
 			if (newImage = (unsigned char*)ar2VideoGetImage(video))
 			{

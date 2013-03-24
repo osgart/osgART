@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +20,7 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
 /**
  *  \file  Export
  *  \brief Preprocessor macros to help with correct linkage of exported symbols.
@@ -63,4 +64,4 @@
 #  endif
 #endif
 
-#endif
+#endif  // OSGART_EXPORT

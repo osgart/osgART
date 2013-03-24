@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,27 +23,22 @@
 
 /**
  *  \file  VideoLayer
- *  \brief Defined a Video Background Node usable for AR.
- *
- * 
- * Defined an OpenSceneGraph geode for creating a VideoLayer Object.
- * This object is combined with the VideoManager for displaying a video background
- * using in AR Application (video see-through approach).
- * 
- *   \remark the layer value 1 has no transparency.
- *	
- *   \remark 
- *
- *   History :
- *
+ *  \brief Defined a Video Background Node usable for AR
  *  \author Julian Looser Julian.Looser@hitlabnz.org
  *  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
  *  \version 3.1
  *  \date 01/12/07
+ *
+ * Defined an OpenSceneGraph geode for creating a VideoLayer Object.
+ * This object is combined with the VideoManager for displaying a video background
+ * using in AR Application (video see-through approach).
+ * 
+ * \remark the layer value 1 has no transparency.
+ *	
  **/
 
 #ifndef OSGART_VIDEOLAYER
-#define OSGART_VIDEOLAYER
+#define OSGART_VIDEOLAYER 1
 
 
 // OSG include
@@ -118,4 +114,4 @@ namespace osgART {
 
 }
 
-#endif 
+#endif // OSGART_VIDEOLAYER

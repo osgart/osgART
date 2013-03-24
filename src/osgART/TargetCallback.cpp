@@ -1,9 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,7 +91,7 @@ namespace osgART {
 		}
 
 		if (!target) {
-			osg::notify() << "attachDefaultEventCallbacks: Can't attach callbacks with NULL marker" << std::endl;
+			osg::notify() << "attachDefaultEventCallbacks: Can't attach callbacks with NULL target" << std::endl;
 			return;
 		}
 
@@ -99,22 +100,22 @@ namespace osgART {
 	}
 
 
-	SingleTargetCallback::SingleTargetCallback(Target* marker) :
+	SingleTargetCallback::SingleTargetCallback(Target* target) :
 		osg::NodeCallback(),
-		m_marker(marker)
+		m_target(target)
 	{
 	}
 
-	DoubleTargetCallback::DoubleTargetCallback(Target* markerA, Target* markerB) :
+	DoubleTargetCallback::DoubleTargetCallback(Target* targetA, Target* targetB) :
 		osg::NodeCallback(),
-		m_markerA(markerA),
-		m_markerB(markerB)
+		m_targetA(targetA),
+		m_targetB(targetB)
 	{
 	}
 
 
-	TargetTransformCallback::TargetTransformCallback(Target *marker) :
-		SingleTargetCallback(marker),
+	TargetTransformCallback::TargetTransformCallback(Target *target) :
+		SingleTargetCallback(target),
 		mEnabled(true)
 	{
 	}
@@ -134,14 +135,14 @@ namespace osgART {
 
 			// Handler for osg::MatrixTransforms
 			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {
-				mt->setMatrix(m_marker->getTransform());
+				mt->setMatrix(m_target->getTransform());
 			}
 
 			// Handler for osg::PositionAttitudeTransforms
 			// TODO: check correct translation/rotation order
 			else if (osg::PositionAttitudeTransform* pat = dynamic_cast<osg::PositionAttitudeTransform*>(node)) {
-				pat->setPosition(m_marker->getTransform().getTrans());
-				pat->setAttitude(m_marker->getTransform().getRotate());
+				pat->setPosition(m_target->getTransform().getTrans());
+				pat->setAttitude(m_target->getTransform().getRotate());
 				pat->setScale(osg::Vec3(1.0f, 1.0f, 1.0f));
 			}
 
@@ -155,8 +156,8 @@ namespace osgART {
 
 	}
 
-	TargetVisibilityCallback::TargetVisibilityCallback(Target *marker) :
-		SingleTargetCallback(marker),
+	TargetVisibilityCallback::TargetVisibilityCallback(Target *target) :
+		SingleTargetCallback(target),
 		m_visibilityMode(VISIBILITY_NORMAL),
 		m_millisecondsToKeepVisible(0.0f),
 		m_isVisible(false)
@@ -176,12 +177,12 @@ namespace osgART {
 		switch (m_visibilityMode) {
 
 			case VISIBILITY_NORMAL:
-				m_isVisible = m_marker->valid();
+				m_isVisible = m_target->valid();
 				break;
 
 			case VISIBILITY_TIMEOUT:
 
-				if (m_marker->valid()) {
+				if (m_target->valid()) {
 					m_timer.setStartTick();
 					m_isVisible = true;
 				} else {
@@ -203,7 +204,7 @@ namespace osgART {
 		{
 			// Handle visibilty for switch nodes
 
-			// _switch->setSingleChildOn(m_marker->valid() ? 0 : 1);
+			// _switch->setSingleChildOn(m_target->valid() ? 0 : 1);
 			if (m_isVisible) _switch->setAllChildrenOn();
 			else _switch->setAllChildrenOff();
 		}
@@ -221,7 +222,7 @@ namespace osgART {
 			// This method will work for any node.
 
 			// Make sure the visitor will return to invisible nodes
-			// If we make this node invisible (because the marker is hidden) then
+			// If we make this node invisible (because the target is hidden) then
 			// we need to be able to return and update it later, or it will remain
 			// hidden forever.
 			nv->setNodeMaskOverride(0xFFFFFFFF);
@@ -289,22 +290,22 @@ namespace osgART {
 	}
 
 
-	TargetDebugCallback::TargetDebugCallback(Target *marker) :
-		SingleTargetCallback(marker)
+	TargetDebugCallback::TargetDebugCallback(Target *target) :
+		SingleTargetCallback(target)
 	{
 	}
 
 	/*virtual*/
 	void TargetDebugCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) {
 
-		if (m_marker->valid()) {
+		if (m_target->valid()) {
 
-			// Debug information when marker is visible
+			// Debug information when target is visible
 			std::cout <<
-				"Target: " << m_marker->getName() << std::endl <<
-				"Type: " << typeid(*m_marker).name() << std::endl <<
-				"Confidence: " << m_marker->getConfidence() << std::endl <<
-				"Transform: " << std::endl << m_marker->getTransform() << std::endl;
+				"Target: " << m_target->getName() << std::endl <<
+				"Type: " << typeid(*m_target).name() << std::endl <<
+				"Confidence: " << m_target->getConfidence() << std::endl <<
+				"Transform: " << std::endl << m_target->getTransform() << std::endl;
 
 		}
 
@@ -326,13 +327,13 @@ namespace osgART {
 
 		osg::Matrix baseMatrix, paddleMatrix;
 
-		bool bothValid = m_markerA->valid() && m_markerB->valid();
+		bool bothValid = m_targetA->valid() && m_targetB->valid();
 		node->setNodeMask(bothValid ? 0xFFFFFFFF : 0x0);
 
 		if (bothValid) {
 
-			baseMatrix = m_markerA->getTransform();
-			paddleMatrix = m_markerB->getTransform();
+			baseMatrix = m_targetA->getTransform();
+			paddleMatrix = m_targetB->getTransform();
 			baseMatrix.invert(baseMatrix);
 
 			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {

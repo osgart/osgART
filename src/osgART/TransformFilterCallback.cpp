@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +53,7 @@ namespace osgART {
 			const osg::Matrix& _matrix = mt->getMatrix();
 			osg::Matrix _nm = _matrix;
 
-			// osg::Matrix* marker_transfrom = m_marker->getTransformMatrix();
+			// osg::Matrix* target_transfrom = m_target->getTransformMatrix();
 			
 			// outlier rejection
 			if (m_doTransOutlierRejection) 
@@ -79,7 +80,7 @@ namespace osgART {
 				// slerp stored and new rotation
 				m_storedRotation.slerp(m_rotationSmoothFactor, m_storedRotation, newRotation);
 
-				// update marker trans
+				// update target trans
 				_nm.makeRotate(m_storedRotation);				
 				
 			}
@@ -95,7 +96,7 @@ namespace osgART {
 				// bias translation
 				osg::Vec3 b = a * m_translationSmoothFactor;
 				m_storedTranslation += b;
-				// update marker trans
+				// update target trans
 				_nm.setTrans(m_storedTranslation);
 				//std::cout << "TransformFilterCallback::operator():/ Translational Smoothing" << std::endl;
 			}

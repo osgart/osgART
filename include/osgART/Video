@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +21,12 @@
  *
  */
 
+ /**
+ *  \file  Video
+ *  \brief video class
+ *
+ * A Video is a class generating image content.
+ */
 
 #ifndef OSGART_VIDEO
 #define OSGART_VIDEO 1
@@ -95,7 +102,7 @@ namespace osgART {
 		 * Get the video configuration struct
 		 * \return struct VideoConfiguration
 		 */
-		virtual VideoConfiguration* getVideoConfiguration();
+		virtual VideoConfiguration* getConfiguration();
 		
 		
 		/**
@@ -134,4 +141,4 @@ namespace osgART {
 	
 }; // namespace osgART
 
-#endif
+#endif //  OSGART_VIDEO

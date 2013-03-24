@@ -1,9 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,20 +181,21 @@ namespace osgART {
 		return _tracker.valid() ? _tracker->addTarget(cfg) : 0L;
 	}
 
-	osg::MatrixTransform* Scene::addTrackedTransform(Target* marker) {
+	osg::MatrixTransform* Scene::addTrackedTransform(Target* target) {
 
 		osg::MatrixTransform* arTransform = new osg::MatrixTransform();
 		_camera->addChild(arTransform);
 
-		if (!marker)
+		if (!target)
 		{
 
-			osg::notify(osg::FATAL) << "No marker specified for tracking!" << std::endl;
+			osg::notify(osg::FATAL) << "No target specified for tracking!" << std::endl;
 
 		} else {
 
-			marker->setActive(true);
-			osgART::attachDefaultEventCallbacks(arTransform, marker);
+			target->setActive(true);
+			osgART::attachDefaultEventCallbacks(arTransform, target
+				);
 
 		}
 
@@ -223,7 +225,7 @@ namespace osgART {
 	/************************************************************************/
 
 
-	SceneSetting& SceneSetting::setMarkerActive( bool active )
+	SceneSetting& SceneSetting::setTargetActive( bool active )
 	{
 		_default_active = active; return *this;
 	}

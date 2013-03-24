@@ -1,9 +1,10 @@
 /* -*-c++-*-
  *
- * osgART - ARToolKit for OpenSceneGraph
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This file is part of osgART 2.0
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+
+/**
+ *  \file  Scene
+ *  \brief High level control of your AR workflow
+ *
+ *  High level control of your AR workflow for rapid development of AR Applications.
  */
 
 #ifndef OSGART_SCENE
@@ -45,7 +53,7 @@ namespace osgART {
 
 		SceneSetting();
 
-		SceneSetting& setMarkerActive(bool active);
+		SceneSetting& setTargetActive(bool active);
 
 		SceneSetting& useTextureRectangle(bool use = true);
 
@@ -94,7 +102,7 @@ namespace osgART {
 		Target* addTarget(const std::string& cfg);
 		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
 
-		osg::MatrixTransform* addTrackedTransform(Target *marker);
+		osg::MatrixTransform* addTrackedTransform(Target *target);
 
 		inline const osg::Camera* getCamera() const {
 			return _camera.get();
@@ -129,4 +137,4 @@ namespace osgART {
 
 }
 
-#endif
+#endif  // OSGART_SCENE

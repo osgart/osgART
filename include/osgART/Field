@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +21,14 @@
  *
  */
 
-
 /**
  *  \file  Field
  *  \brief Types and templates for passing data to and from plugins.
  *  \author Hartmut Seichter <hartmut@technotecture.com>
  *  \version 1.0
  *
- *  A generic system for passing data to and from plugins into the 
- *  main application.
+ * A generic system for passing data to and from plugins into the 
+ * main application.
  */
 
 #ifndef OSGART_FIELD
@@ -191,13 +191,20 @@ namespace osgART {
 		}
 		
 	    /** 
+		* Return a data field within the plugin (templated version)
+		* \param name identifier of the field, template of Field type
+		* \return pointer to the Field. 
+		*
+		*/
+		template <typename FieldT> FieldT getField(const std::string& name);		
+
+	    /** 
 		* Return a data field within the plugin
 		* \param name identifier of the field
-		* \return pointer to the Field. Has to casted 
+		* \return pointer to the Field. Has to be casted 
 		* to the correct type.
 		*/
 		Field* get(const std::string& name);		
-
 
 		void dump();
 	
@@ -208,11 +215,18 @@ namespace osgART {
 	};
 	
 	
+	template <typename T> template <typename FieldT> FieldT FieldContainer<T>::getField(const std::string& name)
+	{
+		FieldMap::iterator _found = _fields.find(name);
+		return (_found != _fields.end()) ? dynamic_cast <FieldT> (_found->second.get()) : 0L;
+	}
+
 	template <typename T> Field* FieldContainer<T>::get(const std::string& name)
 	{
 		FieldMap::iterator _found = _fields.find(name);
 		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
+
 
 	template <typename T> void FieldContainer<T>::dump()
 	{
@@ -229,4 +243,4 @@ namespace osgART {
 
  };
  
- #endif
+ #endif  // OSGART_FIELD

@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+
+/**
+ *  \file  TransformFilterCallback
+ *  \brief filtering techniques for AR Transformation.
+ *
+ * Scene-graph based callback for transform.
  */
 
 #ifndef OSGART_TRANSFORMFILTERCALLBACK
@@ -42,8 +50,8 @@ namespace osgART {
 		TransformFilterCallback();
 
 		/**
-		 * \brief The operator is called in osgART::Marker::update(), filtering is done in here
-		 * \param marker the marker associated with this filter
+		 * \brief The operator is called in osgART::Target::update(), filtering is done in here
+		 * \param target the target associated with this filter
 		 * \param osg::Matrix& current transformation matrix received from tracker
 		 */
 		void operator()(osg::Node* node, osg::NodeVisitor* nv);
@@ -149,4 +157,4 @@ namespace osgART {
 	
 }
 
-#endif
+#endif // OSGART_TRANSFORMFILTERCALLBACK
