@@ -1,6 +1,7 @@
 set(module_name osgart_video_opencv)
 
-if(OSGART_WITH_OPENCV)
+if(OSGART_BUILD_PLUGIN_VIDEO_OPENCV)
+
 	find_package(OpenCV)
 	
 	add_library(${module_name} MODULE OpenCVVideo.cpp)	

@@ -3,7 +3,7 @@ set(lib_name osgwrapper_osgART)
 
 find_package(osgIntrospection)
 
-option(BUILD_OSGART_WRAPPERS "Build the osgART wrappers" OFF)
+option(OSGART_BUILD_WRAPPERS "Build the osgART wrappers" OFF)
 if(OSGINTROSPECTION_FOUND AND BUILD_OSGART_WRAPPERS)
 
 	include_directories(${CMAKE_SOURCE_DIR}/include ${OSGINTROSPECTION_INCLUDE_DIR})

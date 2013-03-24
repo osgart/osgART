@@ -1,6 +1,7 @@
 set(module_name osgart_video_sstt)
 
-if(OSGART_WITH_SSTT)
+if(OSGART_BUILD_PLUGIN_VIDEO_SSTT)
+
 	find_package(SSTT)
 	
 	add_library(${module_name} MODULE SSTT.cpp)	

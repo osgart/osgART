@@ -1,11 +1,14 @@
-find_package(ARToolKit2)
+# 
+# (c) Copyrights 2013 HITLabNZ/ICG
+# 
 
-if   (ARTOOLKIT2_FOUND)
-	add_subdirectory(ARToolKit)
-endif(ARTOOLKIT2_FOUND) 
+#standard video
+add_subdirectory(DummyVideo)
 
-add_subdirectory(DummyImage)
-add_subdirectory(VideoInput)
-add_subdirectory(SSTT)
+#common video
 add_subdirectory(OpenCV)
+add_subdirectory(ARToolKit)
 
+#specific video
+add_subdirectory(SSTT)
+add_subdirectory(VideoInput)

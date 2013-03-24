@@ -1,22 +1,28 @@
+# ==============================
+# CMAKE Configuration for OSGART
+# ==============================
+
+# CMake version
 cmake_minimum_required(VERSION 2.8.2)
 
+# ==== Global Configuration ====
+
+# Project definition
 project(osgART)
 
-#
-# Patch in the osgART CMake module directory
-# 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/etc/cmake)
-
-if(WIN32)
-	set(CMAKE_DEBUG_POSTFIX  "_debug")
-endif(WIN32)
-
+# OSGART Version
 set(OSGART_VERSION_MAJOR 2)
 set(OSGART_VERSION_MINOR 0)
 set(OSGART_VERSION_PATCH 2)
 
 set(OSGART_VERSION_FULL ${OSGART_VERSION_MAJOR}.${OSGART_VERSION_PATCH}.${OSGART_VERSION_PATCH})
 
+# Patch in the osgART CMake module directory
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/etc/cmake)
+
+if(WIN32)
+	set(CMAKE_DEBUG_POSTFIX  "_debug")
+endif(WIN32)
 
 # make executable style configurable
 set(OSGART_EXECUTABLE_TYPE)
@@ -24,8 +30,11 @@ set(OSGART_EXECUTABLE_TYPE)
 # some include
 include(OSGARTUtils)
 
+# ==== Find Packages/Libs Dependencies ====
+
 # Find OpenSceneGraph + NodeKits
-find_package(OpenSceneGraph 2.8.0 REQUIRED osgUtil osgDB osgGA osgText osgViewer)
+#note: minimum version: 3.0.1
+find_package(OpenSceneGraph 3.0.1 REQUIRED osgUtil osgDB osgGA osgText osgViewer)
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)
@@ -66,14 +75,29 @@ install(FILES
 )
 
 
-#
-# Options
-#
-option(OSGART_WITH_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
-option(OSGART_WITH_STBNX "Build with StbNX (StudierStube NX)" OFF)
-option(OSGART_WITH_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
+# ==== Find Optional Packages/Libs Dependencies ====
+
+# Video Plugins
+option(OSGART_BUILD_PLUGIN_VIDEO_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
+option(OSGART_BUILD_PLUGIN_VIDEO_ARTOOLKIT "ARToolKit Multiplatforms interface" OFF)
+option(OSGART_BUILD_PLUGIN_VIDEO_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
 
 
+if(WIN32)
+option(OSGART_BUILD_PLUGIN_VIDEO_VIDEOINPUT "videoInput" OFF)
+endif()
+
+# Tracker Plugins
+option(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT "Build with ARToolKit 2.8.1-prehartmut" OFF)
+option(OSGART_BUILD_PLUGIN_TRACKER_OPIRA "Build with Opira (HITLAB Proprietary)" OFF)
+
+# Video Tracker Plugins
+option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
+option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_STBNX "Build with StbNX (StudierStube NX)" OFF)
+
+# Sensor Plugins
+
+# ==== CMake  ====
 
 #
 # Dive into the subdirectories
@@ -110,6 +134,7 @@ if(DOXYGEN_FOUND)
 	endif()
 endif()
 
+# ==== Uninstall ====
 
 #
 # Uninstall
@@ -123,6 +148,8 @@ add_custom_target(uninstall
   "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
   
  
+ # ==== Packaging ====
+
 #
 # Optional packaging for osgART 2.0 SDK
 #

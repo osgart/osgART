@@ -3,7 +3,7 @@
 #
 
 
-if(OSGART_WITH_SSTT)
+if(OSGART_BUILD_PLUGIN_VIDEOTRACKER_SSTT)
 	
 	set(module_name osgart_tracker_sstt)
 

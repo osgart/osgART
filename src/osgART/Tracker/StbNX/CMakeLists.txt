@@ -1,6 +1,6 @@
 set(module_name osgart_tracker_stbnx)
 
-if(OSGART_WITH_STBNX)
+if(OSGART_BUILD_PLUGIN_VIDEOTRACKER_STBNX)
 
 	find_package(StbNX)
 	
