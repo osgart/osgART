@@ -5,9 +5,6 @@ include_directories(${OSG_INCLUDE_DIR} ${OPENTHREADS_INCLUDE_DIR} ${CMAKE_SOURCE
 add_subdirectory(osgartsimplescene) #default
 add_subdirectory(osgartsimplesceneartoolkit)
 
-##development
-add_subdirectory(osgartsimplestats)
-
 
 # -- middle level --
 
@@ -20,6 +17,9 @@ add_subdirectory(osgartintermregistrationartoolkit) ##registration
 
 #interaction
 add_subdirectory(osgartintermpick)
+
+##development
+add_subdirectory(osgartintermstats)
 
 
 # -- PLUGINS -- 

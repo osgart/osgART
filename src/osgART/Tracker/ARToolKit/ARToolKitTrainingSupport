@@ -24,7 +24,7 @@
 #ifndef OSGART_ARToolKitTrainingSupport
 #define OSGART_ARToolKitTrainingSupport 1
 
-#include "osgART/TrainingSupport"
+#include "osgART/TrackerTrainingSupport"
 #include <osg/Referenced>
 
 #include <AR/config.h>
@@ -45,7 +45,7 @@ namespace osgART {
 	 * 
 	 * Provides marker training support for the ARToolKit tracker.
 	 */
-	class OSGART_EXPORT ARToolKitTrainingSupport : public TrainingSupport
+	class OSGART_EXPORT ARToolKitTrainingSupport : public TrackerTrainingSupport
 	{
 	
 	public:        

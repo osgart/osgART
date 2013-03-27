@@ -29,6 +29,7 @@
 #include "osgART/VideoGeode"
 #include "osgART/Utils"
 #include "osgART/GeometryUtils"
+#include <osgART/TrackerUtils>
 #include "osgART/TargetCallback"
 #include "osgART/TransformFilterCallback"
 #include "osgART/ImageStreamCallback"
@@ -167,7 +168,7 @@ namespace osgART {
 
 		osgART::addEventCallback(this, new osgART::TrackerCallback(_tracker.get()));
 
-		_camera = _calibration->createCamera();
+		_camera = osgART::createBasicCamera(_calibration);
 		this->addChild(_camera.get());
 
 		return _tracker.get();

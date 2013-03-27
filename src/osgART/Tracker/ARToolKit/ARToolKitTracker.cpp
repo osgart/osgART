@@ -217,7 +217,7 @@ namespace osgART {
 	}
 
 
-	TrainingSupport* ARToolKitTracker::getTrainingSupport() { 
+	TrackerTrainingSupport* ARToolKitTracker::getTrainingSupport() { 
 		return mTrainer.get(); 
 	}
 
@@ -520,6 +520,7 @@ namespace osgART {
 
 		// hse25: above is unsafe! Use below. 
 		//OpenThreads::ScopedLock<OpenThreads::Mutex> lock
+
 
 		osg::Timer t;
 

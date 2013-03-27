@@ -49,7 +49,7 @@
 #include "osgART/Field"
 #include "osgART/TrackerConfiguration"
 #include "osgART/Calibration"
-#include "osgART/TrainingSupport"
+#include "osgART/TrackerTrainingSupport"
 
 namespace osgART {
 
@@ -167,9 +167,9 @@ namespace osgART {
 
 		/**
 		 * Return a training support instance for this tracker.
-		 * \return TrainingSupport instance, or NULL if target training is not supported.
+		 * \return TrackerTrainingSupport instance, or NULL if target training is not supported.
 		 */
-		virtual TrainingSupport* getTrainingSupport() { return NULL; }
+		virtual TrackerTrainingSupport* getTrainingSupport() { return NULL; }
 
 
 		/**

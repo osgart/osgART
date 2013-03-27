@@ -39,7 +39,7 @@
 namespace osgART {
 
 	OSGART_EXPORT osg::Group*
-	createImageBackground(osg::Image* video, bool useTextureRectangle = false);
+	createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false);
 
 }
 

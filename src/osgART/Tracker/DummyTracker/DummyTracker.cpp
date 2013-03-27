@@ -265,6 +265,8 @@ DummyTracker::update()
 inline void
 DummyTracker::updateCB(osg::NodeVisitor* nv)
 {
+	const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;
+
 	//check first if we get a new image to update
 	//the tracking value
 	if (_imagesource->valid() && 
@@ -288,6 +290,21 @@ DummyTracker::updateCB(osg::NodeVisitor* nv)
 
 		}
 
+		//detect, compute pose of your targets
+		//
+
+		//report stats
+		if (framestamp && _stats.valid())
+		{
+			_stats->setAttribute(framestamp->getFrameNumber(),
+				"Tracking time taken", t.time_m());
+
+			//_stats->setAttribute(framestamp->getFrameNumber(),
+			//	"Possible candidates", m_target_num);
+		}
+
+		//
+
 		//once it's done, you can update your specific targets with processed information
 
         for (osgART::Tracker::TargetList::iterator iter = _targetlist.begin();
@@ -309,6 +326,10 @@ DummyTracker::updateCB(osg::NodeVisitor* nv)
 				     -0.288095,0.86903,-0.40223,0,
 					  3.29111,4.70607,-74.1661,1);
 			    // dummy_mat_for_test.translate(0.,0.,1.);
+
+				 dummy_mat_for_test=osg::Matrix::rotate(osg::Quat(osg::DegreesToRadians(-90.0),osg::Vec3(1,0,0)))*dummy_mat_for_test;
+
+
                  target->update(dummy_mat_for_test);
 
               }

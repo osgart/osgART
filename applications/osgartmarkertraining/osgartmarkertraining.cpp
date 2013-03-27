@@ -269,7 +269,7 @@ int main(int argc, char* argv[])  {
 #endif
 
 	// Training support module for the selected tracker
-	osg::ref_ptr<osgART::TrainingSupport> trainer = tracker->getTrainingSupport();
+	osg::ref_ptr<osgART::TrackerTrainingSupport> trainer = tracker->getTrainingSupport();
 	if (!trainer.valid()) {
 		std::cout << "This tracker does not support training." << std::endl;
 		return -1;

@@ -21,22 +21,45 @@
  *
  */
 
-#include "osgART/VideoUtils"
-
-#include "osgART/VideoLayer"
-#include "osgART/VideoGeode"
+#include "osgART/TrackerTrainingSupport"
 
 namespace osgART {
 
-	osg::Group*
-	createBasicVideoBackground(osg::Image* video,
-						  bool useTextureRectangle /*= false*/)
-	{
-		osgART::VideoLayer* _layer = new osgART::VideoLayer();
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
-		return _layer;
+	TrainingCandidate::TrainingCandidate() : osg::Referenced() {
+
+
 	}
 
-}
+
+	TrainingCandidate::~TrainingCandidate() {
+
+
+
+	}
+
+	TrainingSet::TrainingSet() : osg::Referenced() {
+
+
+	}
+
+
+	TrainingSet::~TrainingSet() {
+
+	}
+
+	TrainingSet::TrainingCandidateList& TrainingSet::getTrainingCandidates() {
+		return mCandidates;
+	}
+
+
+
+	TrackerTrainingSupport::TrackerTrainingSupport() : osg::Referenced(), 
+		mEnabled(false) {
+
+	}
+
+	TrackerTrainingSupport::~TrackerTrainingSupport() {
+
+	}
+
+};

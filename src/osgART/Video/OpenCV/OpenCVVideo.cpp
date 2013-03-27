@@ -110,8 +110,14 @@ public:
 		* Update the video stream grabbing. Try to get an image of the video instance, usable
 		* by your application.
 		*/
-	void update(osg::NodeVisitor* nv);
+	//void update();
 
+	/**
+		* Update the video stream grabbing. Try to get an image of the video instance, usable
+		* by your application.
+		*/
+	void update(osg::NodeVisitor* nv);
+//	void updateCB(osg::NodeVisitor* nv);
 
 	/**
 	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
@@ -227,6 +233,13 @@ OpenCVVideo::pause()
 {
 	osg::ImageStream::pause();
 }
+/*
+void
+OpenCVVideo::update() 
+{
+
+
+}*/
 
 void
 OpenCVVideo::update(osg::NodeVisitor* nv)

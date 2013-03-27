@@ -28,10 +28,12 @@
 #include <osgART/VideoGeode>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
+#include <osgART/VideoUtils>
+#include <osgART/TrackerUtils>
+
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
-#include <osgART/VideoUtils>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
@@ -96,7 +98,7 @@ int main(int argc, char* argv[])  {
 
 	}
 
-	// found video - configure now
+	// found tracker - configure now
 	osgART::TrackerConfiguration* _configtracker = tracker->getConfiguration();
 
 	// if the configuration is existing
@@ -130,14 +132,17 @@ int main(int argc, char* argv[])  {
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 
 
-	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
-	root->addChild(cam.get());
+	root->addChild(osgART::createBasicCamera(calibration));
 
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createImageBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 	root->addChild(videoBackground.get());
 
 	//APPLICATION INIT
+
+	//for the demo we activate notification level to debug
+	//to see log of video call
+	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());

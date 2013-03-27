@@ -1,7 +1,7 @@
-set(exe_name osgartsimplestats)
+set(exe_name osgartintermstats)
 
 set(SRCS
-	osgartsimplestats.cpp
+	osgartintermstats.cpp
 	)
 
 

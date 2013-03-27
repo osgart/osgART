@@ -165,7 +165,7 @@ namespace osgART {
 		 * \brief Returns a training support instance for the ARToolKit tracker.
 		 * \return A training support instance for ARToolKit
 		 */	
-		virtual TrainingSupport* getTrainingSupport();
+		virtual TrackerTrainingSupport* getTrainingSupport();
 			
 			
 				

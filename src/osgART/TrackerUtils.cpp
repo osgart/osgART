@@ -21,22 +21,24 @@
  *
  */
 
-#include "osgART/VideoUtils"
+#include "osgART/TrackerUtils"
 
-#include "osgART/VideoLayer"
-#include "osgART/VideoGeode"
+
+
 
 namespace osgART {
 
-	osg::Group*
-	createBasicVideoBackground(osg::Image* video,
-						  bool useTextureRectangle /*= false*/)
+	osg::Camera*
+	createBasicCamera(osgART::Calibration* calib)
 	{
-		osgART::VideoLayer* _layer = new osgART::VideoLayer();
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
-		return _layer;
+		osg::Camera* cam = new osg::Camera();
+		cam->setRenderOrder(osg::Camera::NESTED_RENDER);
+		cam->setViewMatrix(osg::Matrix::identity());
+		cam->setProjectionMatrix(calib->getProjectionMatrix());
+		cam->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+		cam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+
+		return cam;		
 	}
 
 }

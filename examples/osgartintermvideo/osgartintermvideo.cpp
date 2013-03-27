@@ -61,7 +61,7 @@ int main(int argc, char* argv[])  {
 	// preload the video plugin
 	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
 
-	// Load a video plugin.
+	// Load the video plugin
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
 
 	// check if an instance of the video stream could be started
@@ -100,6 +100,10 @@ int main(int argc, char* argv[])  {
 	}
 
 	//APPLICATION INIT
+
+	//for the demo we activate notification level to debug
+	//to see log of video call
+	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
 

@@ -27,6 +27,7 @@
 #include <osgART/PluginManager>
 #include <osgART/VideoGeode>
 #include <osgART/Utils>
+#include <osgART/TrackerUtils>
 #include <osgART/GeometryUtils>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
@@ -45,7 +46,7 @@ osg::ref_ptr<osgART::VideoFlipper> flipper;
 
 osg::ref_ptr<osgART::MatrixOffsetCallback> offsetCallback;
 
-osg::Group* createImageBackground(osg::Image* video, osgART::Calibration* calibration = NULL, bool useTextureRectangle = false) {
+osg::Group* createBasicVideoBackground(osg::Image* video, osgART::Calibration* calibration = NULL, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
 	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, calibration, 1, 1, 20, 20,
@@ -199,23 +200,23 @@ int main(int argc, char* argv[])  {
 #endif
 
 
-	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("single;data/artoolkit2/patt.hiro;80;0;0");
-	if (!marker.valid())
+	osg::ref_ptr<osgART::Target> target = tracker->addTarget("single;data/artoolkit2/patt.hiro;80;0;0");
+	if (!target.valid())
 	{
-		// Without marker an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not add marker!" << std::endl;
+		// Without target an AR application can not work. Quit if none found.
+		osg::notify(osg::FATAL) << "Could not add target!" << std::endl;
 		exit(-1);
 	}
 
-	marker->setActive(true);
+	target->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 
 
 	offsetCallback = new osgART::MatrixOffsetCallback();
 
-	osgART::addEventCallback(arTransform.get(), new osgART::TargetTransformCallback(marker.get()));
-	osgART::addEventCallback(arTransform.get(), new osgART::TargetVisibilityCallback(marker.get()));
+	osgART::addEventCallback(arTransform.get(), new osgART::TargetTransformCallback(target.get()));
+	osgART::addEventCallback(arTransform.get(), new osgART::TargetVisibilityCallback(target.get()));
 	osgART::addEventCallback(arTransform.get(), offsetCallback.get());
 	osgART::addEventCallback(arTransform.get(), new osgART::TransformFilterCallback());
 
@@ -229,11 +230,11 @@ int main(int argc, char* argv[])  {
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
 
-	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
-
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
+	
 	cam->addChild(arTransform.get());
 	cam->addChild(videoBackground.get());
 	root->addChild(cam.get());

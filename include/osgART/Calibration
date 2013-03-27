@@ -78,15 +78,6 @@ namespace osgART
 		virtual bool load(const std::string& filename);
 
 		/**
-		 * Creates a camera with a projection matrix representing the
-		 * loaded intrinsic parameters
-		 *
-		 * \return camera object
-		 */
-		osg::Camera* createCamera() const;
-
-
-		/**
 		 * Use the distortion parameters to compute undistorted positions for the
 		 * specified x and y coordinates.
 		 *
@@ -101,7 +92,6 @@ namespace osgART
 			*u_y = y;
 		}
 
-
 		static int observedToIdeal(
 			const double dist_factor[4],
 			const double ox,
@@ -109,8 +99,7 @@ namespace osgART
 			double *ix, double *iy,
 			int loop = 3);
 
-		void setProjectionMatrix(osg::Matrix projection) {_projection=projection;};
-
+		osg::Matrix getProjectionMatrix() {return _projection;};
 
 	protected:
 

@@ -32,7 +32,7 @@ video artoolkit2
 tracker artoolkit2
 
 # hiro is an ID
-marker hiro single;data/patt.hiro;80;0;0
+target hiro single;data/patt.hiro;80;0;0
 
 # the rest is for working on
 translate hiro 0 0 0
@@ -56,6 +56,7 @@ model hiro thunderbird.lwo
 #include <osgART/VideoGeode>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
+#include <osgART/TrackerUtils>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
@@ -66,7 +67,7 @@ model hiro thunderbird.lwo
 #include <osgDB/FileUtils>
 #include <osgDB/WriteFile>
 
-osg::Group* createImageBackground(osg::Image* video, bool useTextureRectangle = false) {
+osg::Group* createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
 	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
@@ -149,7 +150,7 @@ int main(int argc, char* argv[])  {
 	typedef std::map< std::string, osg::Vec3 > Vec3Map;
 	typedef std::map< std::string, osg::Vec4 > Vec4Map;
 
-	StringMap _marker_map;
+	StringMap _target_map;
 	StringMap _model_map;
 	Vec3Map _translate_map;
 	Vec3Map _scale_map;
@@ -182,9 +183,9 @@ int main(int argc, char* argv[])  {
 			_calibration_file = tokens[1];
 		}
 
-		if (tokens[0] == "marker" && tokens.size() == 3)
+		if (tokens[0] == "target" && tokens.size() == 3)
 		{
-			_marker_map[tokens[1]] = tokens[2];
+			_target_map[tokens[1]] = tokens[2];
 		}
 
 		if (tokens[0] == "translate" && tokens.size() == 5)
@@ -283,34 +284,34 @@ int main(int argc, char* argv[])  {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
-	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
 
 
 	cam->addChild(videoBackground.get());
 
-	typedef std::map< std::string, osg::Group* > MarkerSubGraph;
-	MarkerSubGraph _marker_graph;
+	typedef std::map< std::string, osg::Group* > targetSubGraph;
+	targetSubGraph _target_graph;
 
-	StringMap::iterator iter = _marker_map.begin();
-	while (iter != _marker_map.end())
+	StringMap::iterator iter = _target_map.begin();
+	while (iter != _target_map.end())
 	{
-		osg::ref_ptr<osgART::Target> marker = tracker->addTarget(iter->second);
-		if (!marker.valid())
+		osg::ref_ptr<osgART::Target> target = tracker->addTarget(iter->second);
+		if (!target.valid())
 		{
-			// Without marker an AR application can not work. Quit if none found.
-			osg::notify(osg::FATAL) << "Could not add marker!" << std::endl;
+			// Without target an AR application can not work. Quit if none found.
+			osg::notify(osg::FATAL) << "Could not add target!" << std::endl;
 			exit(-1);
 
 		} else {
 
-			marker->setActive(true);
+			target->setActive(true);
 
 			osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 
-			osgART::attachDefaultEventCallbacks(arTransform.get(),marker.get());
+			osgART::attachDefaultEventCallbacks(arTransform.get(),target.get());
 
 			arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 			arTransform->getOrCreateStateSet()->setMode(GL_RESCALE_NORMAL, osg::StateAttribute::ON);

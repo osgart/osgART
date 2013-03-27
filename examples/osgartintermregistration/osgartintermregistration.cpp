@@ -28,6 +28,8 @@
 #include <osgART/VideoGeode>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
+#include <osgART/TrackerUtils>
+
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
@@ -129,25 +131,25 @@ int main(int argc, char* argv[])  {
 
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createImageBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 	root->addChild(videoBackground.get());
 
-	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
 	root->addChild(cam.get());
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 	osgART::attachDefaultEventCallbacks(arTransform.get(), target.get());
 
-	osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
-	pat->setAttitude(osg::Quat(osg::DegreesToRadians(-90.0),osg::Vec3(1,0,0)));
-
-	pat->addChild(osgART::testCube(8));
-	arTransform->addChild(pat);//osgART::testCube(8));
+	arTransform->addChild(osgART::testCube(8));
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 	cam->addChild(arTransform.get());
 
 	//APPLICATION INIT
+
+	//for the demo we activate notification level to debug
+	//to see log of video call
+	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());

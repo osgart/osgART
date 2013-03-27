@@ -41,19 +41,21 @@
 
 int main(int argc, char* argv[])  {
 
+	//VIEWER INIT
+	//create a default viewer
 
-	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osgViewer::Viewer viewer;
 
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.setSceneData(root.get());
 
+	//AR INIT
 
-	// preload the video and tracker
+	// preload the video plugin
 	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
-	// Load a video plugin.
+
+	// Load a video plugin
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
 
 	// check if an instance of the video stream could be started
@@ -87,14 +89,34 @@ int main(int argc, char* argv[])  {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
+	// AR SCENE GRAPH INIT
+	osg::ref_ptr<osg::Group> root = new osg::Group;
 
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createImageBackground(video.get());
+	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
+		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
+	}
+
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	root->addChild(videoBackground.get());
 
+	//APPLICATION INIT
+
+	//for the demo we activate notification level to debug
+	//to see log of video call
+	osg::setNotifyLevel(osg::DEBUG_INFO);
+
+	//BOOTSTRAP INIT
+
+	viewer.setSceneData(root.get());
+
+	viewer.realize();
+
+	//start the video capture.
 	video->start();
 
+	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
 	}
