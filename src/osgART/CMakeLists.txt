@@ -10,6 +10,7 @@ set(lib_srcs
     Event.cpp	
 	PluginManager.cpp
 	Video.cpp
+	VideoCallback.cpp
 	VideoConfiguration.cpp
 	VideoImageStream.cpp
 #	VideoImageStreamCallback.cpp
@@ -18,13 +19,14 @@ set(lib_srcs
 	VideoLayer.cpp
 	VideoUtils.cpp
 	Tracker.cpp
+	TrackerCallback.cpp
 	TrackerConfiguration.cpp
-	TrackerTrainingSupport.cpp
 	Calibration.cpp
+	TrackerTrainingSupport.cpp
+	TrackerUtils.cpp
 	Target.cpp
 	TargetCallback.cpp
 	TransformFilterCallback.cpp
-	TrackerUtils.cpp
 	Scene.cpp
 	Utils.cpp
 )
@@ -39,7 +41,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
 	${CMAKE_SOURCE_DIR}/include/osgART/Video
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfiguration
-#	${CMAKE_SOURCE_DIR}/include/osgART/VideoCallback	
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoCallback	
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
 	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
 #	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStreamCallback
@@ -49,7 +51,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Tracker
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
-#	${CMAKE_SOURCE_DIR}/include/osgART/TrackerCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/TrackerCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerTrainingSupport
 	${CMAKE_SOURCE_DIR}/include/osgART/Target
 	${CMAKE_SOURCE_DIR}/include/osgART/TargetCallback

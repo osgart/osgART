@@ -85,10 +85,6 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->open();
 
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
-
 	// AR SCENE GRAPH INIT
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 

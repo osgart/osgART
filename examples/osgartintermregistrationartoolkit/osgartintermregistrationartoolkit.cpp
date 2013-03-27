@@ -29,10 +29,12 @@
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
+#include <osgART/VideoUtils>
+
+#include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
-#include <osgART/VideoUtils>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>

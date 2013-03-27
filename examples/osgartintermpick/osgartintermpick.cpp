@@ -29,6 +29,9 @@
 #include <osgART/Utils>
 #include <osgART/TrackerUtils>
 #include <osgART/GeometryUtils>
+#include <osgART/VideoUtils>
+
+#include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
@@ -229,14 +232,14 @@ int main(int argc, char* argv[])  {
 
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
-
-	osg::ref_ptr<osg::Group> videoBackground = createBasicVideoBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
+
+	root->addChild(videoBackground.get());
 
 	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
 	
 	cam->addChild(arTransform.get());
-	cam->addChild(videoBackground.get());
 	root->addChild(cam.get());
 
 	offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());

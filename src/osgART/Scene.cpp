@@ -24,15 +24,17 @@
 #include "osgART/Scene"
 
 
-#include "osgART/VideoLayer"
-#include "osgART/PluginManager"
-#include "osgART/VideoGeode"
-#include "osgART/Utils"
-#include "osgART/GeometryUtils"
+#include <osgART/VideoLayer>
+#include <osgART/PluginManager>
+#include <osgART/VideoGeode>
+#include <osgART/Utils>
+#include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
-#include "osgART/TargetCallback"
-#include "osgART/TransformFilterCallback"
-#include "osgART/ImageStreamCallback"
+
+#include <osgART/TrackerCallback>
+#include <osgART/TargetCallback>
+#include <osgART/TransformFilterCallback>
+#include <osgART/ImageStreamCallback>
 
 
 namespace osgART {

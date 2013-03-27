@@ -57,6 +57,9 @@ model hiro thunderbird.lwo
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
+#include <osgART/VideoUtils>
+
+#include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
@@ -284,7 +287,7 @@ int main(int argc, char* argv[])  {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
-	osg::ref_ptr<osg::Group> videoBackground = createBasicVideoBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);

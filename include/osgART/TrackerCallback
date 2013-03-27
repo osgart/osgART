@@ -1,0 +1,86 @@
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
+ *
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ *  \file TrackerCallback
+ *  \brief TrackerCallback map data from a Tracker into the scenegraph
+ *
+ * TrackerCallback map data from a Tracker into the scenegraph
+ */
+
+#ifndef OSGART_TRACKERCALLBACK
+#define OSGART_TRACKERCALLBACK 1
+
+// OSG include
+#include <osg/ref_ptr>
+#include <osg/Image>
+#include <osg/ImageStream>
+#include <osg/Object>
+
+// Local include
+#include "osgART/Export"
+#include "osgART/VideoImageStream"
+#include "osgART/VideoGeode"
+#include "osgART/Field"
+#include <osgART/Tracker>
+
+// OpenThreads
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
+namespace osgART {
+	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {
+	public:
+
+		/**
+		 * Add or sets a TrackerCallback to any node
+		 * \param node Node which will trigger an update on the attached tracker
+		 * \param tracker an instance of osgART::Tracker which is been updated
+		 */
+		static TrackerCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
+
+
+
+		/**
+		 * Creates a tracker callback
+		 */
+		TrackerCallback(Tracker* tracker);
+
+	protected:
+
+		/**
+		 * Updates the tracker within here. The tracker will
+		 * not update the image it is attached to.
+		 */
+		void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+
+	private:
+
+		osg::ref_ptr<Tracker> _tracker;
+		int _framenumber;
+	};
+	
+}; // namespace osgART
+
+#endif // OSGART_TRACKERCALLBACK

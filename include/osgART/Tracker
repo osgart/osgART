@@ -247,42 +247,6 @@ namespace osgART {
 
 	}; // class Tracker
 
-
-
-
-	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {
-	public:
-
-		/**
-		 * Add or sets a TrackerCallback to any node
-		 * \param node Node which will trigger an update on the attached tracker
-		 * \param tracker an instance of osgART::Tracker which is been updated
-		 */
-		static TrackerCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
-
-
-
-		/**
-		 * Creates a tracker callback
-		 */
-		TrackerCallback(Tracker* tracker);
-
-	protected:
-
-		/**
-		 * Updates the tracker within here. The tracker will
-		 * not update the image it is attached to.
-		 */
-		void operator()(osg::Node* node, osg::NodeVisitor* nv);
-
-
-	private:
-
-		osg::ref_ptr<Tracker> _tracker;
-		int _framenumber;
-	};
-
-
 }; // namespace osgART
 
 #endif // OSGART_TRACKER

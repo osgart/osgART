@@ -31,6 +31,7 @@
 #include <osgART/VideoUtils>
 #include <osgART/TrackerUtils>
 
+#include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
