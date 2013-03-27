@@ -5,49 +5,55 @@ set(lib_name "osgART")
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(lib_srcs
-	Calibration.cpp
-        Event.cpp
 	Foundation.cpp
-	ImageStreamCallback.cpp
-	Target.cpp
-	TargetCallback.cpp
+#   Object.cpp
+    Event.cpp	
 	PluginManager.cpp
-	Scene.cpp
-	Tracker.cpp
-	TransformFilterCallback.cpp
-	Utils.cpp
 	Video.cpp
-	VideoConfig.cpp
-	VideoGeode.cpp
+	VideoConfiguration.cpp
 	VideoImageStream.cpp
+	ImageStreamCallback.cpp
+	VideoGeode.cpp
 	VideoLayer.cpp
 	VideoUtils.cpp
+	Tracker.cpp
+#	TrackerConfiguration.cpp
 	TrainingSupport.cpp
+	Calibration.cpp
+	Target.cpp
+	TargetCallback.cpp
+	TransformFilterCallback.cpp
+#	TrackerUtils.cpp
+	Scene.cpp
+	Utils.cpp
 )
 
 set(lib_hdrs
-	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
-        ${CMAKE_SOURCE_DIR}/include/osgART/Event
-	${CMAKE_SOURCE_DIR}/include/osgART/Export
-	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Foundation
-	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
+	${CMAKE_SOURCE_DIR}/include/osgART/Object
+    ${CMAKE_SOURCE_DIR}/include/osgART/Event
+	${CMAKE_SOURCE_DIR}/include/osgART/Field
+	${CMAKE_SOURCE_DIR}/include/osgART/Export
+	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
+	${CMAKE_SOURCE_DIR}/include/osgART/Video
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfiguration	
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
 	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoGeode
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils
+	${CMAKE_SOURCE_DIR}/include/osgART/Tracker
+	${CMAKE_SOURCE_DIR}/include/osgART/TrackerConfiguration
+	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
+	${CMAKE_SOURCE_DIR}/include/osgART/TrainingSupport
 	${CMAKE_SOURCE_DIR}/include/osgART/Target
 	${CMAKE_SOURCE_DIR}/include/osgART/TargetCallback
-	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
-	${CMAKE_SOURCE_DIR}/include/osgART/Scene
-	${CMAKE_SOURCE_DIR}/include/osgART/Tracker
 	${CMAKE_SOURCE_DIR}/include/osgART/TransformFilterCallback
+#	${CMAKE_SOURCE_DIR}/include/osgART/TrackerUtil	
+	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
+	${CMAKE_SOURCE_DIR}/include/osgART/Scene
 	${CMAKE_SOURCE_DIR}/include/osgART/Utils
-	${CMAKE_SOURCE_DIR}/include/osgART/Video
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfig
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoGeode
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils
-	${CMAKE_SOURCE_DIR}/include/osgART/TrainingSupport
 )
 
 # we are going to build a lib - tell the preprocessor
@@ -111,7 +117,7 @@ set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "O
 
 add_subdirectory(Tracker)
 add_subdirectory(Video)
-add_subdirectory(Sensor)
+#add_subdirectory(Sensor)
 
 if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
         message(STATUS "x86-64 detected")

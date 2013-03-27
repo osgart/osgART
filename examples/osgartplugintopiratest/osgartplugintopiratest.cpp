@@ -20,7 +20,7 @@
  *
  */
 
-// A simple example to demonstrate picking with osgART
+// A simple example to demonstrate OPIRA with osgART
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
@@ -41,115 +41,47 @@
 #include <osgDB/ReadFile>
 #include <osg/PositionAttitudeTransform>
 
-osg::ref_ptr<osgART::VideoFlipper> flipper;
-
-osg::ref_ptr<osgART::MatrixOffsetCallback> offsetCallback;
-
 osg::Group* createImageBackground(osg::Image* video, osgART::Calibration* calibration = NULL, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
-	//_layer->setSize(*video);
 	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, calibration, 1, 1, 20, 20,
 		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-	//addTexturedQuad(*_geode,video->s(),video->t());
-
-
-	flipper = new osgART::VideoFlipper(false, false);
-
-	flipper->addChild(_geode);
-
-	_layer->addChild(flipper.get());
-
-
-	//_layer->addChild(_geode);
-
+	_layer->addChild(_geode);
 	return _layer;
 }
 
-class PickEventHandler : public osgGA::GUIEventHandler {
-
-public:
-	PickEventHandler() : osgGA::GUIEventHandler() { }
-
-	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* obj, osg::NodeVisitor* nv) {
-
-		switch (ea.getEventType()) {
-
-			case osgGA::GUIEventAdapter::KEYDOWN:
-				switch (ea.getKey()) {
-					case 'h':
-						flipper->setFlipH(!flipper->getFlipH());
-						offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());
-						break;
-					case 'v':
-						flipper->setFlipV(!flipper->getFlipV());
-						offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());
-						break;
-				}
-				break;
-
-
-			case osgGA::GUIEventAdapter::PUSH:
-
-				osgViewer::View* view = dynamic_cast<osgViewer::View*>(&aa);
-				osgUtil::LineSegmentIntersector::Intersections intersections;
-
-				if (view && view->computeIntersections(ea.getX(), ea.getY(), intersections)) {
-					for (osgUtil::LineSegmentIntersector::Intersections::iterator iter = intersections.begin(); iter != intersections.end(); iter++) {
-						if (iter->nodePath.back()->getName() == "target") {
-							std::cout << "HIT!" << std::endl;
-							return true;
-						}
-					}
-				}
-
-				break;
-		}
-		return false;
-	}
-};
 
 int main(int argc, char* argv[])  {
 
-	// create a root node
-	osg::ref_ptr<osg::Group> root = new osg::Group;
-
 	osgViewer::Viewer viewer;
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
-
-	viewer.addEventHandler(new PickEventHandler());
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 
+	std::string policy = "opira";
+	std::string image = "MagicLand.bmp";
+	std::string featureDetector = "OCVSURF";
+
+	osg::ArgumentParser parser(&argc, argv);
+	parser.read("-policy", policy);
+	parser.read("-image", image);
+	parser.read("-fd", featureDetector);
+
+	osg::ref_ptr<osg::Group> root = new osg::Group;
 	viewer.setSceneData(root.get());
 
-	// preload the video and tracker
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-
+	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");//videoinput");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video =
-		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
 
 	// check if an instance of the video stream could be started
-	if (!video.valid())
-	{
+	if (!video.valid())  {
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
 		exit(-1);
 	}
 
-	// found video - configure now
-	osgART::VideoConfiguration* _config = video->getVideoConfiguration();
-
-	// if the configuration is existing
-	if (_config)
-	{
-		// it is possible to configure the plugin before opening it
-
-		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
-		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
-	}
+	//video->getVideoConfiguration()->deviceconfig = "0;320;240;30";
 
 
 	// Open the video. This will not yet start the video stream but will
@@ -157,25 +89,40 @@ int main(int argc, char* argv[])  {
 	// for the connected tracker
 	video->open();
 
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
 
-	osg::ref_ptr<osgART::Tracker> tracker =
-		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit2"));
+	osgART::PluginManager::instance()->load("osgart_tracker_opira");
 
-	if (!tracker.valid())
-	{
+	osg::ref_ptr<osgART::Tracker> tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_opira"));
+
+	if (!tracker.valid())  {
 		// Without tracker an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
 		exit(-1);
 	}
 
+#if OSGART_DEPRECATED_FIELDS
+
+	osg::ref_ptr< osgART::TypedField<std::string> > registrationPolicyField = reinterpret_cast< osgART::TypedField<std::string>* >(tracker->get("registration_policy"));
+	if (!registrationPolicyField.valid()) {
+		std::cout << "Registration policy field not available from tracker" << std::endl;
+		return -1;
+	}
+	registrationPolicyField->set(policy);
+
+	osg::ref_ptr< osgART::TypedField<std::string> > featureDetectorField = reinterpret_cast< osgART::TypedField<std::string>* >(tracker->get("feature_detector"));
+	if (!featureDetectorField.valid()) {
+		std::cout << "Feature detector field not available from tracker" << std::endl;
+		return -1;
+	}
+	featureDetectorField->set(featureDetector);
+
+#endif
+
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
 
 	// load a calibration file
-	if (!calibration->load("data/camera_para.dat"))
-	{
-
+	if (!calibration->load("camera.yml")) {
 		// the calibration file was non-existing or couldnt be loaded
 		osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
 		exit(-1);
@@ -183,25 +130,16 @@ int main(int argc, char* argv[])  {
 
 	tracker->setImage(video.get());
 
-	//osgART::addEventCallback(root.get(), new osgART::TrackerCallback(tracker.get()));
-
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 
 	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
-#if OSGART_DEPRECATED_FIELDS
 
-	osg::ref_ptr< osgART::TypedField<bool> > historyField = reinterpret_cast< osgART::TypedField<bool>* >(tracker->get("use_history"));
-	historyField->set(true);
+	osg::ref_ptr<osgART::Target> marker = tracker->addTarget(image);
 
-#endif
-
-
-	osg::ref_ptr<osgART::Target> marker = tracker->addTarget("single;data/patt.hiro;80;0;0");
-	if (!marker.valid())
-	{
+	if (!marker.valid()) {
 		// Without marker an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not add marker!" << std::endl;
 		exit(-1);
@@ -210,21 +148,22 @@ int main(int argc, char* argv[])  {
 	marker->setActive(true);
 
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	arTransform->setUpdateCallback(new osgART::TargetTransformCallback(marker.get()));
+	arTransform->getUpdateCallback()->setNestedCallback(new osgART::TargetVisibilityCallback(marker.get()));
+	//arTransform->getUpdateCallback()->getNestedCallback()->setNestedCallback(new osgART::TransformFilterCallback());
 
 
-	offsetCallback = new osgART::MatrixOffsetCallback();
+	osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform();
+	pat->setScale(osg::Vec3(30, 30, 30));
+	pat->setPosition(osg::Vec3(116, -165, 100));
+	pat->getOrCreateStateSet()->setMode(GL_NORMALIZE, GL_TRUE);
+	pat->addChild(osgDB::readNodeFile("D:\\Content\\Models\\Vehicles\\Military\\Military Ambulance\\ambulance.ive"));
 
-	osgART::addEventCallback(arTransform.get(), new osgART::TargetTransformCallback(marker.get()));
-	osgART::addEventCallback(arTransform.get(), new osgART::TargetVisibilityCallback(marker.get()));
-	osgART::addEventCallback(arTransform.get(), offsetCallback.get());
-	osgART::addEventCallback(arTransform.get(), new osgART::TransformFilterCallback());
+	//osg::Geode* g = new osg::Geode();
+	//g->addDrawable(osg::createTexturedQuadGeometry(osg::Vec3(), osg::X_AXIS * 232, osg::Y_AXIS * -330));
+	//arTransform->addChild(g);
 
-
-
-	osg::Geode* cube = osgART::testCube(20);
-	cube->setName("target");
-	arTransform->addChild(cube);
-
+	arTransform->addChild(pat);
 
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
@@ -237,8 +176,6 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransform.get());
 	cam->addChild(videoBackground.get());
 	root->addChild(cam.get());
-
-	offsetCallback->setupReflection(flipper->getFlipH(), flipper->getFlipV());
 
 	video->start();
 	return viewer.run();

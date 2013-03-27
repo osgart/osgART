@@ -135,12 +135,13 @@ namespace osgART {
 		*/
 		int addMultiTarget(const std::string& multiFile);
 				
+		void update();
 		/** 
 		* \brief update the tracking.
 		* 
 		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
 		*/
-		void update(osg::NodeVisitor*);
+		void updateCB(osg::NodeVisitor*);
 		
 		
 		/**

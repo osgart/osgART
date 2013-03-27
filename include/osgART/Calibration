@@ -109,6 +109,7 @@ namespace osgART
 			double *ix, double *iy,
 			int loop = 3);
 
+		void setProjectionMatrix(osg::Matrix projection) {_projection=projection;};
 
 
 	protected:

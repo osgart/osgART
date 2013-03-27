@@ -55,6 +55,7 @@ Calibration::createCamera() const
 {
 	osg::Camera* cam = new osg::Camera();
 	cam->setRenderOrder(osg::Camera::NESTED_RENDER);
+	cam->setViewMatrix(osg::Matrix::identity());
 	cam->setProjectionMatrix(_projection);
 	cam->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
 	cam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);

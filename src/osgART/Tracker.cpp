@@ -57,7 +57,7 @@ namespace osgART {
 		{
 			if (nv->getFrameStamp()->getFrameNumber() != _framenumber)
 			{
-				_tracker->update(nv);
+				_tracker->updateCB(nv);
 
 				_framenumber = nv->getFrameStamp()->getFrameNumber();
 			}
@@ -71,7 +71,7 @@ namespace osgART {
     ///
 
 	Tracker::Tracker()
-        : osg::Object()
+        : osgART::Object()
         , _modifiedCount(0xFFFFF)
         , _stats(new osg::Stats("tracker"))
 	{
@@ -201,8 +201,16 @@ namespace osgART {
 
 	/*virtual*/
 	void
-	Tracker::update(osg::NodeVisitor* nv /*=0L*/)
+	Tracker::update()
 	{
+
+	}
+
+	/*virtual*/
+	void
+	Tracker::updateCB(osg::NodeVisitor* nv /*=0L*/)
+	{
+		update();
 	}
 
 };

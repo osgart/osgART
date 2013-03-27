@@ -1,9 +1,12 @@
-set(exe_name osgartsstttest)
+set(exe_name osgartsimplesceneartoolkit)
 
 set(SRCS
-	osgartsstttest.cpp
+	osgartsimplesceneartoolkit.cpp
 	)
 
+
+
+osgart_get_data()
 
 add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
 

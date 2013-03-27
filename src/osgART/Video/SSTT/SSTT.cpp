@@ -35,7 +35,7 @@
 #include "osgART/PluginManager"
 #include "osgART/Video"
 #include "osgART/Utils"
-#include "osgART/VideoConfig"
+#include "osgART/VideoConfiguration"
 
 #include <sstt/sstt.h>
 

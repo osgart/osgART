@@ -465,7 +465,12 @@ namespace osgART {
 		return (arDebug == 1);
 	}
 	
-	inline void ARToolKitTracker::update(osg::NodeVisitor* nv)
+	inline void ARToolKitTracker::update()
+	{
+
+	}
+
+	inline void ARToolKitTracker::updateCB(osg::NodeVisitor* nv)
 	{
 
 		const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;

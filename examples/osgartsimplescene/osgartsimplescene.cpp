@@ -35,8 +35,8 @@
 int main(int argc, char* argv[])  {
 
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
+	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
 	osgViewer::Viewer viewer;
 	
@@ -54,12 +54,17 @@ int main(int argc, char* argv[])  {
 
 
 	osgART::Scene* scene = new osgART::Scene();
-	scene->addVideoBackground("osgart_video_artoolkit2");
-	scene->addTracker("osgart_tracker_artoolkit2");
-	scene->addTrackedTransform("single;data/patt.hiro;80;0;0")->addChild(osgART::testCube());
+	scene->addVideoBackground("osgart_video_dummyvideo");
+	scene->addTracker("osgart_tracker_dummytracker");
+	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::testCube());
+	
+	//or:
+	//osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/patt.hiro;80;0;0");
+	//mt->addChild(osgART::testCube());
 
 	viewer.setSceneData(scene);
 
+	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();
 	
 }

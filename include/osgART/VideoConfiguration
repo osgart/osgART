@@ -22,7 +22,7 @@
  */
 
 /**
- *  \file  VideoConfig
+ *  \file  VideoConfiguration
  *  \brief Types used in defining configuration of video data
  *
  * Types used in defining configuration of video data.

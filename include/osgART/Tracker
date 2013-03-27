@@ -43,10 +43,11 @@
 
 // local include
 #include "osgART/Export"
+#include "osgART/Object"
 #include "osgART/Video"
 #include "osgART/Target"
 #include "osgART/Field"
-#include "osgART/TrackerConfig"
+#include "osgART/TrackerConfiguration"
 #include "osgART/Calibration"
 #include "osgART/TrainingSupport"
 
@@ -62,8 +63,11 @@ namespace osgART {
 	 * that connects video streams, targets and their representation in
 	 * the virtual environment.
 	 */
-    class OSGART_EXPORT Tracker : public osg::Object {
+    class OSGART_EXPORT Tracker : public osgART::Object, public osg::Object {
 	public:
+
+	    META_Object(osgART,Tracker);
+
 		/**
 		 * \brief Constructor.
 		 *
@@ -72,9 +76,6 @@ namespace osgART {
 
 
         Tracker(const Tracker& rhs, const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
-
-
-        META_Object(osgART,Tracker)
 
 		/**
 		 * \brief Set the image to analyzed.
@@ -124,14 +125,21 @@ namespace osgART {
 		 */
 		virtual void stop() {};
 
+
 		/**
-		 * \brief update the tracking.
+		 * \brief update the tracker
+		 *
+		 */
+		virtual void update();
+
+		/**
+		 * \brief update the tracking from node callback.
 		 *
 		 * Request that the tracker update the position of tracked
 		 * targets, using the most recent image supplied by setImage.
 		 * \param nv NodeVisitor which should be used to get stats information
 		 */
-		virtual void update(osg::NodeVisitor* nv = 0L);
+		virtual void updateCB(osg::NodeVisitor* nv = 0L);
 
 		/**
 		 * \brief XXX.
@@ -205,6 +213,7 @@ namespace osgART {
 		 * \brief destructor.
 		 */
 		virtual ~Tracker();
+
 		/**
 		 * type for a vector of reference counted targets.
 		 */

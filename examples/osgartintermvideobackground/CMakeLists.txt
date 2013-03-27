@@ -1,8 +1,12 @@
-set(exe_name osgartstbtest)
+set(exe_name osgartintermvideobackground)
 
 set(SRCS
-	osgartstbtest.cpp
+	osgartintermvideobackground.cpp
 	)
+
+
+
+osgart_get_data()
 
 add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
 
@@ -16,6 +20,6 @@ target_link_libraries(${exe_name}
 	${OSGDB_LIBRARY}
 	${OSGGA_LIBRARY}	
 	${OSGVIEWER_LIBRARY}
-	)
-	
+)
+
 install_osgart_example(${exe_name})

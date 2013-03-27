@@ -22,7 +22,7 @@
  */
 
 
-#include "osgART/VideoConfig"
+#include "osgART/VideoConfiguration"
 
 
 namespace osgART {

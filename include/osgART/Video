@@ -39,8 +39,9 @@
 
 // Local include
 #include "osgART/Export"
+#include "osgART/Object"
 #include "osgART/VideoImageStream"
-#include "osgART/VideoConfig"
+#include "osgART/VideoConfiguration"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
 
@@ -53,7 +54,7 @@ namespace osgART {
 	 * Video encapsulates different capturing devices and sources. 
 	 * 
 	 */	
-	class OSGART_EXPORT Video : public VideoImageStream, 
+	class OSGART_EXPORT Video : public osgART::Object, public VideoImageStream,
 		public FieldContainer<Video>
 	{
 	public:
@@ -133,8 +134,16 @@ namespace osgART {
 		 */
 		virtual ~Video();   
 
+		/**
+		 * type for a vector of reference counted targets.
+		 */
+        typedef std::vector< osg::ref_ptr<VideoImageStream> > VideoImageList;
+
+		VideoImageList _videoImageList;
+
    		// used for locking
 		OpenThreads::Mutex _mutex;
+
 	
 	}; // class Video
 

@@ -28,7 +28,8 @@
 namespace osgART {
 
 	Video::Video() 
-		: VideoImageStream(), 
+		: osgART::Object(),
+		VideoImageStream(), 
 		FieldContainer<Video>()
 	{
 
@@ -38,6 +39,7 @@ namespace osgART {
 
 	Video::Video(const Video& container,
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
+		osgART::Object(),
 		VideoImageStream(container),
 		FieldContainer<Video>()
 	{

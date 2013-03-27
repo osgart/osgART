@@ -1,8 +1,12 @@
-set(exe_name osgartopiratest)
+set(exe_name osgartintermregistrationartoolkit)
 
 set(SRCS
-	osgartopiratest.cpp
+	osgartintermregistrationartoolkit.cpp
 	)
+
+
+
+osgart_get_data()
 
 add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
 
@@ -17,4 +21,5 @@ target_link_libraries(${exe_name}
 	${OSGGA_LIBRARY}	
 	${OSGVIEWER_LIBRARY}
 )
+
 install_osgart_example(${exe_name})

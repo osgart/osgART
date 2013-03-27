@@ -1,0 +1,163 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  DummyVideo
+*  \brief A Video class for image input
+*
+* 
+* A video class that just displaying always the same image, ideal for
+* debugging or taking snapshot. The image format is mainly the one
+* implicitly supported in OpenSceneGraph.
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 07/05/31
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_DummyVideo
+#define OSGART_DummyVideo
+
+#include <iostream>
+#include <string>
+
+// graphics include
+#include <osgART/Export>
+#include <OpenThreads/Mutex>
+#include <osg/Image>
+#include <osg/Timer>
+
+// local include
+
+#include "osgART/PluginManager"
+#include "osgART/Video"
+#include "osgART/VideoConfiguration"
+
+/**
+ * class DummyVideo.
+ *
+ */
+  class DummyVideo : public osgART::Video
+{
+public:        
+// Standard Services
+    
+    /** 
+    * \brief default constructor.
+    * The default constructor.
+    * @param config a string definition of the Video. See documentation
+    * of DummyImage for further details.
+    */
+    DummyVideo();
+    
+    /** 
+    * \brief copy constructor.
+    */
+     DummyVideo(const DummyVideo &, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+
+
+	META_Object(osgART,DummyVideo);
+
+    
+    /** 
+    * \brief affectation operator.
+    *
+    */
+    DummyVideo& operator=(const DummyVideo &);
+    
+    /**
+    * \brief open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	bool open();
+	
+	
+    /**
+	 * Get the video configuration struct for Dummy Video.
+	 * in this example, we will use the config string 
+	 * to setup the name of an image file.
+	 * \return struct VideoConfiguration
+	*/
+    virtual osgART::VideoConfiguration* getConfiguration();
+
+
+	/**
+    * \brief Select a new image and open the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	void setImageFile(const std::string &_NewFile);
+	
+	/**
+    * \brief Get the image filename.
+    */	
+	std::string getImageFile()const;
+ //==================
+	
+	/**
+    * \brief close the Video stream.
+    * Terminate the connection with the Video stream and clean handle.
+    */
+	void close();
+	
+	/**
+    * \brief start the Video stream grabbing.
+    * Start to get image from the Video stream. In function of the implementation on different
+    * platform, this function can run a thread, signal or real-time function. 
+    */
+	void start();
+	
+	/**
+    * \brief stop the Video stream grabbing.
+    * Stop to get image from the Video stream. In function of the implementation on different
+    * platform, this function can stop a thread, signal or real-time function. 
+    */
+	void stop();
+	
+	/**
+    * \brief update the Video stream grabbing.
+    * Try to get an image of the Video instance, usable by your application.
+    */
+	void update(osg::NodeVisitor* nv);
+	
+    
+    inline virtual void releaseImage() {};
+protected:
+
+	/** 
+    * \brief destructor.
+    *
+    */
+    virtual ~DummyVideo();       
+    
+
+private:
+
+	//video configuration
+	osgART::VideoConfiguration* vconf;
+
+	//set/get variables
+	std::string videoName;
+
+	bool m_flip_horizontal;
+	bool m_flip_vertical;
+
+	unsigned int m_max_width;
+
+	osg::Timer updateTimer;
+
+};
+
+
+#endif
