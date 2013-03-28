@@ -1,0 +1,4759 @@
+MatrixTransform {
+  DataVariance STATIC
+  name "Scene Root"
+  nodeMask 0xff
+  cullingActive TRUE
+  StateSet {
+    UniqueID StateSet_0
+    rendering_hint DEFAULT_BIN
+    renderBinMode INHERIT
+    GL_LIGHTING ON
+  }
+  referenceFrame RELATIVE
+  Matrix {
+    1 0 0 0
+    0 1 0 0
+    0 0 1 0
+    0 0 0 1
+  }
+  num_children 1
+  Group {
+    DataVariance STATIC
+    name "Text01"
+    nodeMask 0xff
+    cullingActive TRUE
+    num_children 1
+    Group {
+      DataVariance STATIC
+      name "Text01-OFFSET"
+      nodeMask 0xff
+      cullingActive TRUE
+      num_children 1
+      Geode {
+        UniqueID Geode_1
+        DataVariance STATIC
+        name "Text01-GEODE"
+        nodeMask 0xff
+        cullingActive TRUE
+        num_drawables 1
+        Geometry {
+          StateSet {
+            rendering_hint DEFAULT_BIN
+            renderBinMode INHERIT
+          }
+          useDisplayList TRUE
+          useVertexBufferObjects FALSE
+          PrimitiveSets 334
+          {
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1 2 0 3 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              7 4 6 5 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              31 28 30 29 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              127 124 126 125 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 10
+            {
+              1164 1162 1163 1165 1166 1167 1168 1169 1170 1171
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1171 1169 1172 1173 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1169 1174 1173 1175 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1175 1174 1176 1177 1178 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1178 1179 1176 1180 1181 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1181 1182 1176 1183 1184 1185 1186 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1186 1187 1184 1188 1189 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1189 1190 1184 1191 1192 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1192 1193 1184 1194 1195 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1195 1196 1184 1197 1198 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1198 1199 1184 1200 1201 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1201 1202 1184 1203 1204 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1184 1204 1205 1206 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1206 1204 1207 1208 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1208 1204 1209 1210 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1210 1204 1211 1212 1213 1214 1215 1216 1217 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              129 130 128 131 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              210 211 208 209 206 207 204 205 202 203
+              200 201 197 198 196 199 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              213 214 212 215 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              133 134 132 135 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              217 218 216 219 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              654 655 652 653 650 651 648 649 646 647
+              644 645 642 643 640 641 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              640 641 638 639 636 637 634 635 632 633
+              630 631 628 629 626 627 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              626 627 624 625 622 623 620 621 618 619
+              616 617 614 615 612 613 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              612 613 610 611 608 609 606 607 604 605
+              602 603 600 601 598 599 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              598 599 596 597 594 595 592 593 590 591
+              588 589 585 586 584 587 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              33 34 32 35 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              67 64 66 65 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              221 222 220 223 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              661 660 551 548 550 549 553 552 555 554
+              557 556 559 558 561 560 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              561 560 563 562 565 564 567 566 569 568
+              571 570 573 572 575 574 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              69 70 68 71 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              139 136 138 137 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1271 1272 1270 1273 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1273 1272 1274 1275 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1272 1276 1275 1279 1277 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1281 1282 1280 1283 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1282 1284 1283 1285 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1284 1288 1285 1286 1287 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1288 1284 1289 1290 1291 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1269 1267 1268 1266 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1267 1264 1266 1265 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 10
+            {
+              1265 1264 1263 1262 1261 1260 1259 1257 1258 1255
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1257 1256 1255 1254 1250 1253 1252 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1252 1251 1250 1249 1247 1248 1246 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 11
+            {
+              1247 1246 1245 1244 1243 1242 1241 1240 1238 1239
+              1237 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1238 1237 1236 1235 1233 1234 1232 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 14
+            {
+              1233 1232 1231 1230 1229 1228 1227 1226 1225 1224
+              1223 1219 1222 1221 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1221 1219 1218 1220 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              17 18 16 19 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              143 140 142 141 145 144 147 146 149 148
+              151 150 153 152 155 154 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              155 154 157 156 159 158 161 160 163 162
+              165 164 167 166 169 168 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              169 168 171 170 173 172 175 174 177 176
+              179 178 181 180 183 182 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1315 1316 1314 1323 1324 1325 1326 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1326 1327 1324 1328 1329 1330 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1330 1328 1331 1332 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1332 1328 1333 1348 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1348 1328 1361 1362 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1328 1363 1362 1364 1365 1366 1367 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1365 1367 1368 1369 1370 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1370 1371 1368 1372 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1371 1373 1372 1374 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1373 1375 1374 1376 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              1375 1377 1376 1378 1379 1380 1381 1382 1383 1384
+              1385 1386 1387 1388 1389 1435 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1435 1388 1434 1433 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1433 1388 1432 1334 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1388 1304 1334 1322 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1322 1304 1321 1319 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1319 1304 1317 1313 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1313 1304 1311 1309 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1309 1304 1303 1305 1306 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1306 1307 1303 1308 1310 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1310 1312 1303 1318 1320 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1303 1320 1335 1338 1339 1340 1341 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1341 1342 1339 1343 1344 1345 1346 1347 1349 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1346 1349 1350 1351 1352 1353 1354 1355 1356 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1354 1356 1357 1358 1359 1360 1390 1391 1392 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 13
+            {
+              1390 1392 1393 1394 1395 1396 1397 1398 1399 1400
+              1401 1402 1403 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              1401 1403 1404 1405 1406 1407 1408 1409 1410 1411
+              1412 1413 1414 1415 1416 1417 
+            }
+            DrawArrays TRIANGLE_STRIP 1416 4
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1417 1420 1419 1421 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1420 1422 1421 1423 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1422 1424 1423 1425 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1424 1426 1425 1427 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1426 1428 1427 1429 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1428 1430 1429 1388 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1430 1431 1388 1304 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              73 74 72 75 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1336 1337 1335 1303 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              37 38 36 39 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              77 78 76 79 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1297 1298 1296 1299 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 8
+            {
+              1299 1298 1295 1292 1294 1293 1301 1302 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1294 1301 1300 1299 1295 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              420 421 418 419 416 417 414 415 412 413
+              410 411 408 409 406 407 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              406 407 404 405 402 403 400 401 398 399
+              396 397 394 395 392 393 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              392 393 390 391 388 389 386 387 384 385
+              382 383 380 381 378 379 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              378 379 376 377 374 375 372 373 370 371
+              368 369 366 367 364 365 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              364 365 362 363 360 361 358 359 356 357
+              354 355 352 353 350 351 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              350 351 348 349 346 347 344 345 342 343
+              339 340 338 341 434 435 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              423 424 422 425 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1437 1438 1436 1439 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1438 1440 1439 1441 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1440 1442 1441 1443 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1442 1444 1443 1445 1446 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1446 1447 1443 1448 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1447 1449 1448 1450 1451 1452 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1452 1450 1453 1454 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1454 1450 1455 1456 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1456 1450 1457 1458 1459 1460 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1460 1458 1461 1462 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1462 1458 1463 1464 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1464 1458 1465 1466 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1466 1458 1467 1468 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1468 1458 1469 1470 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1470 1458 1471 1472 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1472 1458 1473 1474 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1474 1458 1475 1476 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1476 1458 1477 1478 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1458 1479 1478 1480 1481 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1481 1482 1478 1483 1484 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1484 1485 1478 1486 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1485 1487 1486 1488 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1487 1489 1488 1490 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              427 428 426 429 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              81 82 80 83 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              431 432 430 433 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              41 42 40 43 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1493 1494 1492 1495 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1495 1494 1496 1497 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1494 1498 1497 1499 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1498 1500 1499 1501 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1500 1502 1501 1503 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1502 1504 1503 1505 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1504 1506 1505 1507 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1506 1508 1507 1509 1510 1511 1512 1513 1514 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 11
+            {
+              1512 1514 1515 1516 1517 1518 1519 1520 1521 1522
+              1523 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1521 1523 1524 1525 1526 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1526 1527 1524 1528 1529 1530 1531 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1529 1531 1532 1533 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1531 1534 1533 1535 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1534 1536 1535 1537 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1536 1538 1537 1539 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1539 1538 1540 1541 1542 1543 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              800 801 798 799 796 797 794 795 792 793
+              790 791 788 789 786 787 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              786 787 784 785 782 783 780 781 778 779
+              775 776 774 777 886 887 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              85 86 84 87 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              805 802 804 803 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              809 806 808 807 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1545 1546 1544 1547 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1546 1548 1547 1549 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1548 1550 1549 1551 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1550 1552 1551 1553 1554 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1554 1555 1551 1556 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1555 1557 1556 1558 1559 1560 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1560 1558 1561 1562 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1562 1558 1563 1564 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1564 1558 1565 1566 1567 1568 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1568 1566 1569 1570 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1570 1566 1571 1572 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1572 1566 1573 1574 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1574 1566 1575 1576 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1576 1566 1577 1578 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1578 1566 1579 1580 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1580 1566 1581 1582 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1582 1566 1583 1584 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1584 1566 1585 1586 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1566 1587 1586 1588 1589 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1589 1590 1586 1591 1592 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1592 1593 1586 1594 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1593 1595 1594 1596 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1595 1597 1596 1598 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              813 810 812 811 815 814 817 816 819 818
+              821 820 823 822 825 824 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              825 824 827 826 829 828 831 830 833 832
+              835 834 837 836 839 838 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              839 838 841 840 843 842 845 844 847 846
+              849 848 851 850 853 852 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              853 852 855 854 857 856 859 858 861 860
+              863 862 865 864 867 866 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              867 866 869 868 871 870 873 872 875 874
+              877 876 879 878 881 880 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              21 22 20 23 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1601 1602 1600 1603 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1603 1602 1604 1605 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1602 1606 1605 1607 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1606 1608 1607 1609 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1608 1610 1609 1611 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1610 1612 1611 1613 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1612 1614 1613 1615 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1614 1616 1615 1617 1618 1619 1620 1621 1622 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 11
+            {
+              1620 1622 1623 1624 1625 1626 1627 1628 1629 1630
+              1631 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1629 1631 1632 1633 1634 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1634 1635 1632 1636 1637 1638 1639 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1637 1639 1640 1641 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1639 1642 1641 1643 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1642 1644 1643 1645 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1644 1646 1645 1647 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1647 1646 1648 1649 1650 1651 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              271 268 270 269 273 272 275 274 277 276
+              279 278 281 280 283 282 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              283 282 285 284 287 286 289 288 291 290
+              293 292 295 294 297 296 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              297 296 299 298 301 300 303 302 305 304
+              307 306 309 308 311 310 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              311 310 313 312 315 314 317 316 319 318
+              321 320 323 322 325 324 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              266 267 264 265 262 263 260 261 258 259
+              256 257 254 255 252 253 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              252 253 250 251 248 249 246 247 244 245
+              242 243 240 241 238 239 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              238 239 236 237 234 235 232 233 230 231
+              228 229 225 226 224 227 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              93 94 92 95 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              883 884 882 885 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              890 888 889 891 892 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              892 893 889 894 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              894 893 897 895 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              45 46 44 47 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              9 10 8 11 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              659 656 658 657 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 8
+            {
+              900 898 899 901 902 903 906 904 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              906 907 902 908 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              916 914 915 917 913 918 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              915 913 910 911 912 919 920 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              911 918 919 917 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              49 50 48 51 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              101 102 100 103 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              955 953 954 921 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              953 938 921 936 930 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              938 953 956 957 958 959 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              959 957 960 961 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              957 962 961 963 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              962 964 963 965 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 10
+            {
+              965 964 967 968 969 970 971 972 973 974
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              972 975 974 976 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              975 977 976 978 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              977 1008 978 1009 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 14
+            {
+              1009 1008 1010 1011 1012 1013 1014 1015 1016 1017
+              1018 1019 1020 1021 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1019 1022 1021 1023 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1022 1024 1023 1025 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1024 1026 1025 1027 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1026 1028 1027 1029 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1028 1030 1029 1031 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1030 1032 1031 1033 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1032 1034 1033 1035 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              1034 1036 1035 1037 1038 1039 1040 1041 1042 1043
+              1044 1045 1046 1047 1048 1006 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1048 1006 1049 923 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1006 952 923 940 939 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              939 937 923 935 931 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              931 929 923 927 921 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              923 921 922 924 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              924 921 925 926 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              926 921 928 930 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              934 932 933 941 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              932 942 941 943 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              943 942 944 945 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              945 942 946 947 948 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              948 949 946 950 951 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              951 966 946 979 980 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              946 980 981 982 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              980 983 982 984 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              984 983 985 986 987 988 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 10
+            {
+              988 986 989 990 991 992 993 994 995 996
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              994 997 996 998 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              997 999 998 1000 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              999 1001 1000 1002 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1001 1003 1002 1004 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1003 1005 1004 1006 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1005 1007 1006 1053 1052 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1052 1051 1006 1050 952 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1112 1110 1111 1113 1114 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1114 1115 1111 1116 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1115 1117 1116 1118 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1117 1119 1118 1120 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1119 1121 1120 1122 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1121 1123 1122 1124 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1123 1125 1124 1126 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 8
+            {
+              1126 1125 1127 1128 1129 1130 1131 1132 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1130 1133 1132 1134 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1133 1135 1134 1136 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1135 1137 1136 1138 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1137 1139 1138 1140 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 6
+            {
+              1140 1139 1141 1142 1143 1144 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1144 1142 1145 1146 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1142 1147 1146 1148 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1148 1147 1149 1150 1151 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1149 1151 1152 1153 1154 1155 1156 1157 1158 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1156 1158 1159 1160 1161 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              581 582 580 583 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              25 26 24 27 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              53 54 52 55 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              577 578 576 579 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              109 110 108 111 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              107 104 106 105 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              113 114 112 115 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              187 184 186 185 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 10
+            {
+              1056 1054 1055 1057 1058 1059 1060 1061 1062 1063
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1063 1061 1064 1065 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1061 1066 1065 1067 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1067 1066 1068 1069 1070 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1070 1071 1068 1072 1073 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 7
+            {
+              1073 1074 1068 1075 1076 1077 1078 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1078 1079 1076 1080 1081 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1081 1082 1076 1083 1084 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1084 1085 1076 1086 1087 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1087 1088 1076 1089 1090 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1090 1091 1076 1092 1093 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 5
+            {
+              1093 1094 1076 1095 1096 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1076 1096 1097 1098 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1098 1096 1099 1100 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              1100 1096 1101 1102 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 9
+            {
+              1102 1096 1103 1104 1105 1106 1107 1108 1109 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              91 88 90 89 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              191 188 190 189 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              193 194 192 195 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              57 58 56 59 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              327 328 326 329 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              121 122 120 123 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              335 336 334 337 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              333 330 332 331 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              99 96 98 97 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              119 116 118 117 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              63 60 62 61 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 4
+            {
+              15 12 14 13 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              443 442 445 444 447 446 449 448 451 450
+              453 452 455 454 457 456 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              457 456 459 458 461 460 463 462 465 464
+              467 466 469 468 471 470 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              471 470 473 472 475 474 477 476 479 478
+              481 480 483 482 485 484 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              485 484 487 486 489 488 491 490 493 492
+              495 494 497 496 499 498 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              499 498 501 500 503 502 505 504 507 506
+              509 508 511 510 513 512 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              513 512 515 514 517 516 519 518 521 520
+              523 522 525 524 527 526 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              527 526 529 528 531 530 533 532 535 534
+              537 536 539 538 541 540 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              541 540 543 542 545 544 547 546 439 436
+              438 437 441 440 443 442 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              688 689 686 687 684 685 682 683 680 681
+              678 679 676 677 674 675 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              674 675 672 673 670 671 668 669 666 667
+              663 664 662 665 772 773 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              772 773 770 771 768 769 766 767 764 765
+              762 763 760 761 758 759 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              758 759 756 757 754 755 752 753 750 751
+              748 749 746 747 744 745 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              744 745 742 743 740 741 738 739 736 737
+              734 735 732 733 730 731 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              730 731 728 729 726 727 724 725 722 723
+              720 721 718 719 716 717 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              716 717 714 715 712 713 710 711 708 709
+              706 707 704 705 702 703 
+            }
+            DrawElementsUShort TRIANGLE_STRIP 16
+            {
+              702 703 700 701 698 699 696 697 694 695
+              692 693 690 691 688 689 
+            }
+            DrawElementsUShort TRIANGLES 18
+            {
+              895 893 896 904 903 905 909 908 907 1277
+              1278 1275 1490 1489 1491 1598 1597 1599 
+            }
+          }
+          VertexArray Vec3Array 1652
+          {
+            -40.15 4 7.00937
+            -59.9969 4 29.85
+            -59.9969 -1 29.85
+            -40.15 -1 7.00937
+            -59.9969 4 29.85
+            -63.4 4 29.85
+            -63.4 -1 29.85
+            -59.9969 -1 29.85
+            -63.4 4 29.85
+            -63.4 4 0.449999
+            -63.4 -1 0.449999
+            -63.4 -1 29.85
+            -63.4 4 0.449999
+            -59.45 4 0.449999
+            -59.45 -1 0.449999
+            -63.4 -1 0.449999
+            -59.45 4 0.449999
+            -59.45 4 23.0969
+            -59.45 -1 23.0969
+            -59.45 -1 0.449999
+            -59.45 4 23.0969
+            -39.7711 4 0.449999
+            -39.7711 -1 0.449999
+            -59.45 -1 23.0969
+            -39.7711 4 0.449999
+            -36.15 4 0.449999
+            -36.15 -1 0.449999
+            -39.7711 -1 0.449999
+            -36.15 4 0.449999
+            -36.15 4 29.85
+            -36.15 -1 29.85
+            -36.15 -1 0.449999
+            -36.15 4 29.85
+            -40.15 4 29.85
+            -40.15 -1 29.85
+            -36.15 -1 29.85
+            -40.15 4 29.85
+            -40.15 4 7.00937
+            -40.15 -1 7.00937
+            -40.15 -1 29.85
+            -29.85 4 0.449999
+            -12.8 4 0.449999
+            -12.8 -1 0.449999
+            -29.85 -1 0.449999
+            -12.8 4 0.449999
+            -12.8 4 4.2
+            -12.8 -1 4.2
+            -12.8 -1 0.449999
+            -12.8 4 4.2
+            -25.65 4 4.2
+            -25.65 -1 4.2
+            -12.8 -1 4.2
+            -25.65 4 4.2
+            -25.65 4 13.35
+            -25.65 -1 13.35
+            -25.65 -1 4.2
+            -25.65 4 13.35
+            -13.6 4 13.35
+            -13.6 -1 13.35
+            -25.65 -1 13.35
+            -13.6 4 13.35
+            -13.6 4 17.1
+            -13.6 -1 17.1
+            -13.6 -1 13.35
+            -13.6 4 17.1
+            -25.65 4 17.1
+            -25.65 -1 17.1
+            -13.6 -1 17.1
+            -25.65 4 17.1
+            -25.65 4 26.1
+            -25.65 -1 26.1
+            -25.65 -1 17.1
+            -25.65 4 26.1
+            -13.2 4 26.1
+            -13.2 -1 26.1
+            -25.65 -1 26.1
+            -13.2 4 26.1
+            -13.2 4 29.85
+            -13.2 -1 29.85
+            -13.2 -1 26.1
+            -13.2 4 29.85
+            -29.85 4 29.85
+            -29.85 -1 29.85
+            -13.2 -1 29.85
+            -29.85 4 29.85
+            -29.85 4 0.449999
+            -29.85 -1 0.449999
+            -29.85 -1 29.85
+            -11.55 4 0.449999
+            -7.22344 4 0.449999
+            -7.22344 -1 0.449999
+            -11.55 -1 0.449999
+            -7.22344 4 0.449999
+            -3.55 4 9.15
+            -3.55 -1 9.15
+            -7.22344 -1 0.449999
+            -3.55 4 9.15
+            8.98125 4 9.15
+            8.98125 -1 9.15
+            -3.55 -1 9.15
+            8.98125 4 9.15
+            12.893 4 0.449999
+            12.893 -1 0.449999
+            8.98125 -1 9.15
+            12.893 4 0.449999
+            17.2 4 0.449999
+            17.2 -1 0.449999
+            12.893 -1 0.449999
+            17.2 4 0.449999
+            4.03984 4 30
+            4.03984 -1 30
+            17.2 -1 0.449999
+            4.03984 4 30
+            1.03516 4 30
+            1.03516 -1 30
+            4.03984 -1 30
+            1.03516 4 30
+            -11.55 4 0.449999
+            -11.55 -1 0.449999
+            1.03516 -1 30
+            -1.91251 4 12.9
+            2.52499 4 23.5391
+            2.52499 -1 23.5391
+            -1.91251 -1 12.9
+            2.52499 4 23.5391
+            7.29844 4 12.9
+            7.29844 -1 12.9
+            2.52499 -1 23.5391
+            7.29844 4 12.9
+            -1.91251 4 12.9
+            -1.91251 -1 12.9
+            7.29844 -1 12.9
+            24.75 4 0.449999
+            24.75 4 13.25
+            24.75 -1 13.25
+            24.75 -1 0.449999
+            24.75 4 13.25
+            25.8445 4 13.25
+            25.8445 -1 13.25
+            24.75 -1 13.25
+            25.8445 4 13.25
+            26.4098 4 13.2404
+            26.4098 -1 13.2404
+            25.8445 -1 13.25
+            26.9264 4 13.2114
+            26.9264 -1 13.2114
+            27.3945 4 13.1632
+            27.3945 -1 13.1632
+            27.814 4 13.0957
+            27.814 -1 13.0957
+            28.185 4 13.0089
+            28.185 -1 13.0089
+            28.5074 4 12.9027
+            28.5074 -1 12.9027
+            28.7813 4 12.7773
+            28.7813 -1 12.7773
+            29.0351 4 12.6301
+            29.0351 -1 12.6301
+            29.2975 4 12.4583
+            29.2975 -1 12.4583
+            29.5686 4 12.2621
+            29.5686 -1 12.2621
+            29.8482 4 12.0415
+            29.8482 -1 12.0415
+            30.1364 4 11.7964
+            30.1364 -1 11.7964
+            30.4333 4 11.5268
+            30.4333 -1 11.5268
+            30.7387 4 11.2328
+            30.7387 -1 11.2328
+            31.0529 4 10.9115
+            31.0529 -1 10.9115
+            31.376 4 10.5599
+            31.376 -1 10.5599
+            31.708 4 10.1782
+            31.708 -1 10.1782
+            32.0491 4 9.76623
+            32.0491 -1 9.76623
+            32.399 4 9.32409
+            32.399 -1 9.32409
+            32.7579 4 8.85175
+            32.7579 -1 8.85175
+            33.1258 4 8.34922
+            33.1258 -1 8.34922
+            33.1258 4 8.34922
+            34.5344 4 6.05312
+            34.5344 -1 6.05312
+            33.1258 -1 8.34922
+            34.5344 4 6.05312
+            35.8375 4 3.90469
+            35.8375 -1 3.90469
+            34.5344 -1 6.05312
+            35.8375 4 3.90469
+            36.657 4 2.74609
+            36.657 -1 2.74609
+            35.8375 -1 3.90469
+            36.657 4 2.74609
+            36.7085 4 2.6768
+            36.7085 -1 2.6768
+            36.657 -1 2.74609
+            36.7548 4 2.61357
+            36.7548 -1 2.61357
+            36.796 4 2.55639
+            36.796 -1 2.55639
+            36.832 4 2.50528
+            36.832 -1 2.50528
+            36.8629 4 2.46022
+            36.8629 -1 2.46022
+            36.8887 4 2.42122
+            36.8887 -1 2.42122
+            36.9094 4 2.38828
+            36.9094 -1 2.38828
+            36.9094 4 2.38828
+            38.1914 4 0.449999
+            38.1914 -1 0.449999
+            36.9094 -1 2.38828
+            38.1914 4 0.449999
+            43.2 4 0.449999
+            43.2 -1 0.449999
+            38.1914 -1 0.449999
+            43.2 4 0.449999
+            41.643 4 2.55547
+            41.643 -1 2.55547
+            43.2 -1 0.449999
+            41.643 4 2.55547
+            41.3658 4 2.94155
+            41.3658 -1 2.94155
+            41.643 -1 2.55547
+            41.0638 4 3.37836
+            41.0638 -1 3.37836
+            40.7369 4 3.86591
+            40.7369 -1 3.86591
+            40.3851 4 4.40419
+            40.3851 -1 4.40419
+            40.0084 4 4.99321
+            40.0084 -1 4.99321
+            39.6069 4 5.63296
+            39.6069 -1 5.63296
+            39.1805 4 6.32344
+            39.1805 -1 6.32344
+            38.5053 4 7.41173
+            38.5053 -1 7.41173
+            37.8749 4 8.40293
+            37.8749 -1 8.40293
+            37.2892 4 9.29706
+            37.2892 -1 9.29706
+            36.7482 4 10.0941
+            36.7482 -1 10.0941
+            36.252 4 10.7941
+            36.252 -1 10.7941
+            35.8005 4 11.3969
+            35.8005 -1 11.3969
+            35.3937 4 11.9027
+            35.3937 -1 11.9027
+            35.0081 4 12.3462
+            35.0081 -1 12.3462
+            34.6198 4 12.7622
+            34.6198 -1 12.7622
+            34.229 4 13.1507
+            34.229 -1 13.1507
+            33.8356 4 13.5117
+            33.8356 -1 13.5117
+            33.4396 4 13.8452
+            33.4396 -1 13.8452
+            33.041 4 14.1512
+            33.041 -1 14.1512
+            32.6398 4 14.4297
+            32.6398 -1 14.4297
+            32.6398 4 14.4297
+            33.3017 4 14.7135
+            33.3017 -1 14.7135
+            32.6398 -1 14.4297
+            33.9181 4 15.036
+            33.9181 -1 15.036
+            34.489 4 15.3971
+            34.489 -1 15.3971
+            35.0145 4 15.7968
+            35.0145 -1 15.7968
+            35.4944 4 16.2351
+            35.4944 -1 16.2351
+            35.9289 4 16.7121
+            35.9289 -1 16.7121
+            36.318 4 17.2277
+            36.318 -1 17.2277
+            36.6581 4 17.7768
+            36.6581 -1 17.7768
+            36.9459 4 18.3543
+            36.9459 -1 18.3543
+            37.1814 4 18.96
+            37.1814 -1 18.96
+            37.3645 4 19.5941
+            37.3645 -1 19.5941
+            37.4953 4 20.2566
+            37.4953 -1 20.2566
+            37.5738 4 20.9473
+            37.5738 -1 20.9473
+            37.6 4 21.6664
+            37.6 -1 21.6664
+            37.5466 4 22.7105
+            37.5466 -1 22.7105
+            37.3863 4 23.6911
+            37.3863 -1 23.6911
+            37.1192 4 24.6082
+            37.1192 -1 24.6082
+            36.7453 4 25.4617
+            36.7453 -1 25.4617
+            36.2645 4 26.2517
+            36.2645 -1 26.2517
+            35.6769 4 26.9781
+            35.6769 -1 26.9781
+            34.9824 4 27.641
+            34.9824 -1 27.641
+            34.197 4 28.2271
+            34.197 -1 28.2271
+            33.3365 4 28.723
+            33.3365 -1 28.723
+            32.4009 4 29.1287
+            32.4009 -1 29.1287
+            31.3903 4 29.4443
+            31.3903 -1 29.4443
+            30.3045 4 29.6697
+            30.3045 -1 29.6697
+            29.1437 4 29.8049
+            29.1437 -1 29.8049
+            27.9078 4 29.85
+            27.9078 -1 29.85
+            27.9078 4 29.85
+            20.55 4 29.85
+            20.55 -1 29.85
+            27.9078 -1 29.85
+            20.55 4 29.85
+            20.55 4 0.449999
+            20.55 -1 0.449999
+            20.55 -1 29.85
+            20.55 4 0.449999
+            24.75 4 0.449999
+            24.75 -1 0.449999
+            20.55 -1 0.449999
+            26.8603 4 26.2406
+            27.6365 4 26.2123
+            27.6365 -1 26.2123
+            26.8603 -1 26.2406
+            28.3409 4 26.1653
+            28.3409 -1 26.1653
+            28.9736 4 26.0994
+            28.9736 -1 26.0994
+            29.5346 4 26.0146
+            29.5346 -1 26.0146
+            30.0239 4 25.9111
+            30.0239 -1 25.9111
+            30.4414 4 25.7887
+            30.4414 -1 25.7887
+            30.8109 4 25.6434
+            30.8109 -1 25.6434
+            31.1558 4 25.4711
+            31.1558 -1 25.4711
+            31.4764 4 25.2719
+            31.4764 -1 25.2719
+            31.7724 4 25.0456
+            31.7724 -1 25.0456
+            32.044 4 24.7924
+            32.044 -1 24.7924
+            32.2911 4 24.5122
+            32.2911 -1 24.5122
+            32.5137 4 24.2051
+            32.5137 -1 24.2051
+            32.709 4 23.8791
+            32.709 -1 23.8791
+            32.8743 4 23.5424
+            32.8743 -1 23.5424
+            33.0096 4 23.195
+            33.0096 -1 23.195
+            33.1148 4 22.8369
+            33.1148 -1 22.8369
+            33.1899 4 22.4681
+            33.1899 -1 22.4681
+            33.235 4 22.0886
+            33.235 -1 22.0886
+            33.25 4 21.6984
+            33.25 -1 21.6984
+            33.2365 4 21.3031
+            33.2365 -1 21.3031
+            33.1959 4 20.9202
+            33.1959 -1 20.9202
+            33.1282 4 20.5496
+            33.1282 -1 20.5496
+            33.0335 4 20.1915
+            33.0335 -1 20.1915
+            32.9118 4 19.8459
+            32.9118 -1 19.8459
+            32.763 4 19.5126
+            32.763 -1 19.5126
+            32.5871 4 19.1918
+            32.5871 -1 19.1918
+            32.387 4 18.8885
+            32.387 -1 18.8885
+            32.1654 4 18.6079
+            32.1654 -1 18.6079
+            31.9223 4 18.35
+            31.9223 -1 18.35
+            31.6578 4 18.1148
+            31.6578 -1 18.1148
+            31.3719 4 17.9023
+            31.3719 -1 17.9023
+            31.0644 4 17.7125
+            31.0644 -1 17.7125
+            30.7355 4 17.5453
+            30.7355 -1 17.5453
+            30.3549 4 17.4006
+            30.3549 -1 17.4006
+            29.8923 4 17.2782
+            29.8923 -1 17.2782
+            29.3477 4 17.1781
+            29.3477 -1 17.1781
+            28.7211 4 17.1002
+            28.7211 -1 17.1002
+            28.0125 4 17.0445
+            28.0125 -1 17.0445
+            27.2218 4 17.0111
+            27.2218 -1 17.0111
+            26.3492 4 17
+            26.3492 -1 17
+            26.3492 4 17
+            24.75 4 17
+            24.75 -1 17
+            26.3492 -1 17
+            24.75 4 17
+            24.75 4 26.25
+            24.75 -1 26.25
+            24.75 -1 17
+            24.75 4 26.25
+            26.0125 4 26.25
+            26.0125 -1 26.25
+            24.75 -1 26.25
+            26.0125 4 26.25
+            26.0125 -1 26.25
+            51.6847 4 2.94382
+            51.6389 4 3.24604
+            51.6389 -1 3.24604
+            51.6847 -1 2.94382
+            51.5625 4 3.53323
+            51.5625 -1 3.53323
+            51.4556 4 3.80539
+            51.4556 -1 3.80539
+            51.3182 4 4.06251
+            51.3182 -1 4.06251
+            51.1501 4 4.30459
+            51.1501 -1 4.30459
+            50.9516 4 4.53164
+            50.9516 -1 4.53164
+            50.7298 4 4.73549
+            50.7298 -1 4.73549
+            50.4921 4 4.90798
+            50.4921 -1 4.90798
+            50.2384 4 5.04911
+            50.2384 -1 5.04911
+            49.9689 4 5.15887
+            49.9689 -1 5.15887
+            49.6835 4 5.23728
+            49.6835 -1 5.23728
+            49.3821 4 5.28432
+            49.3821 -1 5.28432
+            49.0648 4 5.3
+            49.0648 -1 5.3
+            48.7583 4 5.28432
+            48.7583 -1 5.28432
+            48.4656 4 5.23727
+            48.4656 -1 5.23727
+            48.1867 4 5.15887
+            48.1867 -1 5.15887
+            47.9216 4 5.04911
+            47.9216 -1 5.04911
+            47.6703 4 4.90798
+            47.6703 -1 4.90798
+            47.4327 4 4.73549
+            47.4327 -1 4.73549
+            47.209 4 4.53164
+            47.209 -1 4.53164
+            47.0076 4 4.30459
+            47.0076 -1 4.30459
+            46.8372 4 4.06251
+            46.8372 -1 4.06251
+            46.6978 4 3.80539
+            46.6978 -1 3.80539
+            46.5894 4 3.53323
+            46.5894 -1 3.53323
+            46.512 4 3.24605
+            46.512 -1 3.24605
+            46.4655 4 2.94382
+            46.4655 -1 2.94382
+            46.45 4 2.62656
+            46.45 -1 2.62656
+            46.4657 4 2.32674
+            46.4657 -1 2.32674
+            46.5128 4 2.04113
+            46.5128 -1 2.04113
+            46.5913 4 1.76973
+            46.5913 -1 1.76973
+            46.7013 4 1.51253
+            46.7013 -1 1.51253
+            46.8426 4 1.26954
+            46.8426 -1 1.26954
+            47.0154 4 1.04075
+            47.0154 -1 1.04075
+            47.2195 4 0.82617
+            47.2195 -1 0.82617
+            47.4469 4 0.633512
+            47.4469 -1 0.633513
+            47.6894 4 0.470495
+            47.6894 -1 0.470495
+            47.9469 4 0.337116
+            47.9469 -1 0.337116
+            48.2194 4 0.233377
+            48.2194 -1 0.233378
+            48.507 4 0.159279
+            48.507 -1 0.159279
+            48.8096 4 0.114818
+            48.8096 -1 0.114819
+            49.1273 4 0.0999982
+            49.1273 -1 0.0999985
+            49.428 4 0.115034
+            49.428 -1 0.115034
+            49.7153 4 0.160139
+            49.7153 -1 0.160139
+            49.9893 4 0.235315
+            49.9893 -1 0.235315
+            50.2499 4 0.340561
+            50.2499 -1 0.340561
+            50.4972 4 0.475876
+            50.4972 -1 0.475876
+            50.731 4 0.641262
+            50.731 -1 0.641262
+            50.9516 4 0.836717
+            50.9516 -1 0.836718
+            51.1501 4 1.05366
+            51.1501 -1 1.05367
+            51.3181 4 1.28353
+            51.3181 -1 1.28353
+            51.4556 4 1.52631
+            51.4556 -1 1.52631
+            51.5625 4 1.782
+            51.5625 -1 1.782
+            51.6389 4 2.05061
+            51.6389 -1 2.05061
+            51.6847 4 2.33213
+            51.6847 -1 2.33213
+            51.7 4 2.62656
+            51.7 -1 2.62656
+            48.7006 4 9.41142
+            48.7576 4 9.25515
+            48.7576 -1 9.25515
+            48.7006 -1 9.41142
+            48.8163 4 9.12729
+            48.8163 -1 9.12729
+            48.8767 4 9.02785
+            48.8767 -1 9.02785
+            48.9388 4 8.95682
+            48.9388 -1 8.95682
+            49.0025 4 8.9142
+            49.0025 -1 8.9142
+            49.068 4 8.9
+            49.068 -1 8.9
+            49.173 4 8.91335
+            49.173 -1 8.91335
+            49.2702 4 8.95338
+            49.2702 -1 8.95338
+            49.3596 4 9.0201
+            49.3596 -1 9.0201
+            49.4412 4 9.11352
+            49.4412 -1 9.11352
+            49.515 4 9.23363
+            49.515 -1 9.23363
+            49.5809 4 9.38042
+            49.5809 -1 9.38042
+            49.6391 4 9.55391
+            49.6391 -1 9.55391
+            49.6391 4 9.55391
+            49.9773 4 10.7773
+            49.9773 -1 10.7773
+            49.6391 -1 9.55391
+            49.9773 4 10.7773
+            50.5484 4 14.0055
+            50.5484 -1 14.0055
+            49.9773 -1 10.7773
+            50.5484 4 14.0055
+            50.8009 4 15.4956
+            50.8009 -1 15.4956
+            50.5484 -1 14.0055
+            51.0145 4 16.9763
+            51.0145 -1 16.9763
+            51.1893 4 18.4474
+            51.1893 -1 18.4474
+            51.3252 4 19.9092
+            51.3252 -1 19.9092
+            51.4223 4 21.3614
+            51.4223 -1 21.3614
+            51.4806 4 22.8042
+            51.4806 -1 22.8042
+            51.5 4 24.2375
+            51.5 -1 24.2375
+            51.4517 4 25.8327
+            51.4517 -1 25.8327
+            51.3067 4 27.1824
+            51.3067 -1 27.1824
+            51.0651 4 28.2867
+            51.0651 -1 28.2867
+            50.7268 4 29.1457
+            50.7268 -1 29.1457
+            50.2919 4 29.7592
+            50.2919 -1 29.7592
+            49.7603 4 30.1273
+            49.7603 -1 30.1273
+            49.132 4 30.25
+            49.132 -1 30.25
+            48.4868 4 30.1239
+            48.4868 -1 30.1239
+            47.9408 4 29.7454
+            47.9408 -1 29.7454
+            47.4941 4 29.1147
+            47.4941 -1 29.1147
+            47.1467 4 28.2316
+            47.1467 -1 28.2316
+            46.8985 4 27.0963
+            46.8985 -1 27.0963
+            46.7496 4 25.7087
+            46.7496 -1 25.7087
+            46.7 4 24.0687
+            46.7 -1 24.0687
+            46.7119 4 23.143
+            46.7119 -1 23.143
+            46.7475 4 22.1621
+            46.7475 -1 22.1621
+            46.8068 4 21.1262
+            46.8068 -1 21.1262
+            46.8899 4 20.0352
+            46.8899 -1 20.0352
+            46.9968 4 18.8891
+            46.9968 -1 18.8891
+            47.1273 4 17.6879
+            47.1273 -1 17.6879
+            47.2816 4 16.4316
+            47.2816 -1 16.4316
+            47.445 4 15.2137
+            47.445 -1 15.2137
+            47.6027 4 14.1274
+            47.6027 -1 14.1274
+            47.7549 4 13.1729
+            47.7549 -1 13.1729
+            47.9013 4 12.3501
+            47.9013 -1 12.3501
+            48.0422 4 11.659
+            48.0422 -1 11.659
+            48.1774 4 11.0996
+            48.1774 -1 11.0996
+            48.307 4 10.6719
+            48.307 -1 10.6719
+            48.307 4 10.6719
+            48.6453 4 9.59609
+            48.6453 -1 9.59609
+            48.307 -1 10.6719
+            48.6453 4 9.59609
+            48.6453 -1 9.59609
+            63.3847 4 2.94382
+            63.3389 4 3.24604
+            63.3389 -1 3.24604
+            63.3847 -1 2.94382
+            63.2625 4 3.53323
+            63.2625 -1 3.53323
+            63.1556 4 3.80539
+            63.1556 -1 3.80539
+            63.0182 4 4.06251
+            63.0182 -1 4.06251
+            62.8501 4 4.30459
+            62.8501 -1 4.30459
+            62.6516 4 4.53164
+            62.6516 -1 4.53164
+            62.4298 4 4.73549
+            62.4298 -1 4.73549
+            62.192 4 4.90798
+            62.192 -1 4.90798
+            61.9384 4 5.04911
+            61.9384 -1 5.04911
+            61.6689 4 5.15887
+            61.6689 -1 5.15887
+            61.3835 4 5.23728
+            61.3835 -1 5.23728
+            61.0821 4 5.28432
+            61.0821 -1 5.28432
+            60.7648 4 5.3
+            60.7648 -1 5.3
+            60.4583 4 5.28432
+            60.4583 -1 5.28432
+            60.1656 4 5.23727
+            60.1656 -1 5.23727
+            59.8867 4 5.15887
+            59.8867 -1 5.15887
+            59.6216 4 5.04911
+            59.6216 -1 5.04911
+            59.3703 4 4.90798
+            59.3703 -1 4.90798
+            59.1327 4 4.73549
+            59.1327 -1 4.73549
+            58.909 4 4.53164
+            58.909 -1 4.53164
+            58.7076 4 4.30459
+            58.7076 -1 4.30459
+            58.5372 4 4.06251
+            58.5372 -1 4.06251
+            58.3978 4 3.80539
+            58.3978 -1 3.80539
+            58.2894 4 3.53323
+            58.2894 -1 3.53323
+            58.212 4 3.24605
+            58.212 -1 3.24605
+            58.1655 4 2.94382
+            58.1655 -1 2.94382
+            58.15 4 2.62656
+            58.15 -1 2.62656
+            58.1657 4 2.32674
+            58.1657 -1 2.32674
+            58.2128 4 2.04113
+            58.2128 -1 2.04113
+            58.2913 4 1.76973
+            58.2913 -1 1.76973
+            58.4013 4 1.51253
+            58.4013 -1 1.51253
+            58.5426 4 1.26954
+            58.5426 -1 1.26954
+            58.7154 4 1.04075
+            58.7154 -1 1.04075
+            58.9195 4 0.82617
+            58.9195 -1 0.82617
+            59.1469 4 0.633512
+            59.1469 -1 0.633513
+            59.3894 4 0.470495
+            59.3894 -1 0.470495
+            59.6469 4 0.337116
+            59.6469 -1 0.337116
+            59.9194 4 0.233377
+            59.9194 -1 0.233378
+            60.207 4 0.159279
+            60.207 -1 0.159279
+            60.5096 4 0.114818
+            60.5096 -1 0.114819
+            60.8273 4 0.0999982
+            60.8273 -1 0.0999985
+            61.128 4 0.115034
+            61.128 -1 0.115034
+            61.4153 4 0.160139
+            61.4153 -1 0.160139
+            61.6893 4 0.235315
+            61.6893 -1 0.235315
+            61.9499 4 0.340561
+            61.9499 -1 0.340561
+            62.1972 4 0.475876
+            62.1972 -1 0.475876
+            62.431 4 0.641262
+            62.431 -1 0.641262
+            62.6516 4 0.836717
+            62.6516 -1 0.836718
+            62.8501 4 1.05366
+            62.8501 -1 1.05367
+            63.0181 4 1.28353
+            63.0181 -1 1.28353
+            63.1556 4 1.52631
+            63.1556 -1 1.52631
+            63.2625 4 1.782
+            63.2625 -1 1.782
+            63.3389 4 2.05061
+            63.3389 -1 2.05061
+            63.3847 4 2.33213
+            63.3847 -1 2.33213
+            63.4 4 2.62656
+            63.4 -1 2.62656
+            60.4006 4 9.41142
+            60.4576 4 9.25515
+            60.4576 -1 9.25515
+            60.4006 -1 9.41142
+            60.5163 4 9.12729
+            60.5163 -1 9.12729
+            60.5767 4 9.02785
+            60.5767 -1 9.02785
+            60.6388 4 8.95682
+            60.6388 -1 8.95682
+            60.7025 4 8.9142
+            60.7025 -1 8.9142
+            60.768 4 8.9
+            60.768 -1 8.9
+            60.873 4 8.91335
+            60.873 -1 8.91335
+            60.9702 4 8.95338
+            60.9702 -1 8.95338
+            61.0596 4 9.0201
+            61.0596 -1 9.0201
+            61.1412 4 9.11352
+            61.1412 -1 9.11352
+            61.215 4 9.23363
+            61.215 -1 9.23363
+            61.2809 4 9.38042
+            61.2809 -1 9.38042
+            61.3391 4 9.55391
+            61.3391 -1 9.55391
+            61.3391 4 9.55391
+            61.6773 4 10.7773
+            61.6773 -1 10.7773
+            61.3391 -1 9.55391
+            61.6773 4 10.7773
+            62.2484 4 14.0055
+            62.2484 -1 14.0055
+            61.6773 -1 10.7773
+            62.2484 4 14.0055
+            62.5009 4 15.4956
+            62.5009 -1 15.4956
+            62.2484 -1 14.0055
+            62.7145 4 16.9763
+            62.7145 -1 16.9763
+            62.8893 4 18.4474
+            62.8893 -1 18.4474
+            63.0252 4 19.9092
+            63.0252 -1 19.9092
+            63.1223 4 21.3614
+            63.1223 -1 21.3614
+            63.1806 4 22.8042
+            63.1806 -1 22.8042
+            63.2 4 24.2375
+            63.2 -1 24.2375
+            63.1517 4 25.8327
+            63.1517 -1 25.8327
+            63.0067 4 27.1824
+            63.0067 -1 27.1824
+            62.7651 4 28.2867
+            62.7651 -1 28.2867
+            62.4268 4 29.1457
+            62.4268 -1 29.1457
+            61.9919 4 29.7592
+            61.9919 -1 29.7592
+            61.4603 4 30.1273
+            61.4603 -1 30.1273
+            60.832 4 30.25
+            60.832 -1 30.25
+            60.1868 4 30.1239
+            60.1868 -1 30.1239
+            59.6408 4 29.7454
+            59.6408 -1 29.7454
+            59.1941 4 29.1147
+            59.1941 -1 29.1147
+            58.8467 4 28.2316
+            58.8467 -1 28.2316
+            58.5985 4 27.0963
+            58.5985 -1 27.0963
+            58.4496 4 25.7087
+            58.4496 -1 25.7087
+            58.4 4 24.0687
+            58.4 -1 24.0687
+            58.4119 4 23.143
+            58.4119 -1 23.143
+            58.4475 4 22.1621
+            58.4475 -1 22.1621
+            58.5068 4 21.1262
+            58.5068 -1 21.1262
+            58.5899 4 20.0352
+            58.5899 -1 20.0352
+            58.6968 4 18.8891
+            58.6968 -1 18.8891
+            58.8273 4 17.6879
+            58.8273 -1 17.6879
+            58.9816 4 16.4316
+            58.9816 -1 16.4316
+            59.145 4 15.2137
+            59.145 -1 15.2137
+            59.3027 4 14.1274
+            59.3027 -1 14.1274
+            59.4549 4 13.1729
+            59.4549 -1 13.1729
+            59.6013 4 12.3501
+            59.6013 -1 12.3501
+            59.7422 4 11.659
+            59.7422 -1 11.659
+            59.8774 4 11.0996
+            59.8774 -1 11.0996
+            60.007 4 10.6719
+            60.007 -1 10.6719
+            60.007 4 10.6719
+            60.3453 4 9.59609
+            60.3453 -1 9.59609
+            60.007 -1 10.6719
+            60.3453 4 9.59609
+            60.3453 -1 9.59609
+            -36.15 4 29.85
+            -40.15 4 7.00937
+            -40.15 4 29.85
+            -36.15 4 0.449999
+            -39.7711 4 0.449999
+            -59.45 4 23.0969
+            -59.9969 4 29.85
+            -63.4 4 0.449999
+            -59.45 4 0.449999
+            -63.4 4 29.85
+            -13.2 4 26.1
+            -29.85 4 29.85
+            -13.2 4 29.85
+            -25.65 4 26.1
+            -29.85 4 0.449999
+            -25.65 4 17.1
+            -13.6 4 13.35
+            -13.6 4 17.1
+            -25.65 4 13.35
+            -25.65 4 4.2
+            -12.8 4 0.449999
+            -12.8 4 4.2
+            1.03516 4 30
+            -1.91251 4 12.9
+            -11.55 4 0.449999
+            2.52499 4 23.5391
+            12.893 4 0.449999
+            4.03984 4 30
+            17.2 4 0.449999
+            8.98125 4 9.15
+            7.29844 4 12.9
+            -3.55 4 9.15
+            -7.22344 4 0.449999
+            24.75 4 13.25
+            30.3549 4 17.4006
+            30.7355 4 17.5453
+            29.8923 4 17.2782
+            29.3477 4 17.1781
+            28.7211 4 17.1002
+            25.8445 4 13.25
+            28.0125 4 17.0445
+            26.4098 4 13.2404
+            27.2218 4 17.0111
+            26.9264 4 13.2114
+            38.1914 4 0.449999
+            41.643 4 2.55547
+            43.2 4 0.449999
+            27.3945 4 13.1632
+            26.3492 4 17
+            27.814 4 13.0957
+            24.75 4 17
+            28.185 4 13.0089
+            28.5074 4 12.9027
+            41.3658 4 2.94155
+            36.9094 4 2.38828
+            41.0638 4 3.37836
+            40.7369 4 3.86591
+            40.3851 4 4.40419
+            40.0084 4 4.99321
+            36.8887 4 2.42122
+            36.8629 4 2.46022
+            36.832 4 2.50528
+            36.796 4 2.55639
+            36.7548 4 2.61357
+            28.7813 4 12.7773
+            20.55 4 29.85
+            24.75 4 0.449999
+            20.55 4 0.449999
+            24.75 4 26.25
+            27.9078 4 29.85
+            26.0125 4 26.25
+            26.8603 4 26.2406
+            27.6365 4 26.2123
+            28.3409 4 26.1653
+            29.1437 4 29.8049
+            28.9736 4 26.0994
+            30.3045 4 29.6697
+            29.5346 4 26.0146
+            36.7085 4 2.6768
+            30.0239 4 25.9111
+            31.3903 4 29.4443
+            30.4414 4 25.7887
+            32.4009 4 29.1287
+            30.8109 4 25.6434
+            33.3365 4 28.723
+            31.1558 4 25.4711
+            31.4764 4 25.2719
+            34.197 4 28.2271
+            31.7724 4 25.0456
+            34.9824 4 27.641
+            32.044 4 24.7924
+            36.657 4 2.74609
+            35.8375 4 3.90469
+            39.6069 4 5.63296
+            39.1805 4 6.32344
+            34.5344 4 6.05312
+            38.5053 4 7.41173
+            37.8749 4 8.40293
+            33.1258 4 8.34922
+            37.2892 4 9.29706
+            36.7482 4 10.0941
+            36.252 4 10.7941
+            32.7579 4 8.85175
+            35.8005 4 11.3969
+            32.399 4 9.32409
+            35.3937 4 11.9027
+            32.0491 4 9.76623
+            35.0081 4 12.3462
+            34.6198 4 12.7622
+            31.708 4 10.1782
+            34.229 4 13.1507
+            31.376 4 10.5599
+            33.8356 4 13.5117
+            31.0529 4 10.9115
+            33.4396 4 13.8452
+            30.7387 4 11.2328
+            33.041 4 14.1512
+            30.4333 4 11.5268
+            32.6398 4 14.4297
+            30.1364 4 11.7964
+            35.6769 4 26.9781
+            32.2911 4 24.5122
+            32.5137 4 24.2051
+            36.2645 4 26.2517
+            32.709 4 23.8791
+            36.7453 4 25.4617
+            32.8743 4 23.5424
+            37.1192 4 24.6082
+            33.0096 4 23.195
+            37.3863 4 23.6911
+            33.1148 4 22.8369
+            37.5466 4 22.7105
+            33.1899 4 22.4681
+            33.235 4 22.0886
+            37.6 4 21.6664
+            33.25 4 21.6984
+            37.5738 4 20.9473
+            33.2365 4 21.3031
+            37.4953 4 20.2566
+            33.1959 4 20.9202
+            37.3645 4 19.5941
+            33.1282 4 20.5496
+            37.1814 4 18.96
+            33.0335 4 20.1915
+            36.9459 4 18.3543
+            32.9118 4 19.8459
+            36.6581 4 17.7768
+            32.763 4 19.5126
+            36.318 4 17.2277
+            35.9289 4 16.7121
+            32.5871 4 19.1918
+            35.4944 4 16.2351
+            32.387 4 18.8885
+            35.0145 4 15.7968
+            32.1654 4 18.6079
+            34.489 4 15.3971
+            31.9223 4 18.35
+            33.9181 4 15.036
+            31.6578 4 18.1148
+            33.3017 4 14.7135
+            31.3719 4 17.9023
+            31.0644 4 17.7125
+            29.0351 4 12.6301
+            29.2975 4 12.4583
+            29.5686 4 12.2621
+            29.8482 4 12.0415
+            46.5913 4 1.76973
+            46.8426 4 1.26954
+            46.7013 4 1.51253
+            46.5128 4 2.04113
+            47.0154 4 1.04075
+            46.4657 4 2.32674
+            47.2195 4 0.82617
+            46.45 4 2.62656
+            47.4469 4 0.633512
+            47.6894 4 0.470495
+            47.9469 4 0.337116
+            48.2194 4 0.233377
+            46.4655 4 2.94382
+            48.507 4 0.159279
+            48.8096 4 0.114818
+            46.512 4 3.24605
+            46.5894 4 3.53323
+            46.6978 4 3.80539
+            46.8372 4 4.06251
+            47.0076 4 4.30459
+            47.209 4 4.53164
+            47.4327 4 4.73549
+            49.1273 4 0.0999982
+            47.6703 4 4.90798
+            47.9216 4 5.04911
+            48.1867 4 5.15887
+            48.4656 4 5.23727
+            48.7583 4 5.28432
+            49.0648 4 5.3
+            49.3821 4 5.28432
+            49.6835 4 5.23728
+            49.9689 4 5.15887
+            50.2384 4 5.04911
+            50.4921 4 4.90798
+            50.7298 4 4.73549
+            50.9516 4 4.53164
+            51.1501 4 4.30459
+            51.3182 4 4.06251
+            51.4556 4 3.80539
+            51.5625 4 3.53323
+            51.6389 4 3.24604
+            51.6847 4 2.94382
+            51.7 4 2.62656
+            49.428 4 0.115034
+            49.7153 4 0.160139
+            49.9893 4 0.235315
+            50.2499 4 0.340561
+            50.4972 4 0.475876
+            50.731 4 0.641262
+            50.9516 4 0.836717
+            51.6847 4 2.33213
+            51.1501 4 1.05366
+            51.6389 4 2.05061
+            51.3181 4 1.28353
+            51.5625 4 1.782
+            51.4556 4 1.52631
+            49.132 4 30.25
+            47.9408 4 29.7454
+            48.4868 4 30.1239
+            49.7603 4 30.1273
+            50.2919 4 29.7592
+            50.7268 4 29.1457
+            47.4941 4 29.1147
+            51.0651 4 28.2867
+            47.1467 4 28.2316
+            51.3067 4 27.1824
+            46.8985 4 27.0963
+            51.4517 4 25.8327
+            46.7496 4 25.7087
+            51.5 4 24.2375
+            46.7 4 24.0687
+            51.4806 4 22.8042
+            46.7119 4 23.143
+            46.7475 4 22.1621
+            51.4223 4 21.3614
+            46.8068 4 21.1262
+            51.3252 4 19.9092
+            46.8899 4 20.0352
+            46.9968 4 18.8891
+            51.1893 4 18.4474
+            47.1273 4 17.6879
+            51.0145 4 16.9763
+            47.2816 4 16.4316
+            50.8009 4 15.4956
+            47.445 4 15.2137
+            50.5484 4 14.0055
+            47.6027 4 14.1274
+            47.7549 4 13.1729
+            49.9773 4 10.7773
+            47.9013 4 12.3501
+            48.0422 4 11.659
+            48.1774 4 11.0996
+            48.307 4 10.6719
+            49.6391 4 9.55391
+            48.6453 4 9.59609
+            48.7006 4 9.41142
+            49.5809 4 9.38042
+            49.515 4 9.23363
+            48.7576 4 9.25515
+            49.4412 4 9.11352
+            48.8163 4 9.12729
+            49.3596 4 9.0201
+            48.8767 4 9.02785
+            49.2702 4 8.95338
+            49.173 4 8.91335
+            48.9388 4 8.95682
+            49.068 4 8.9
+            49.0025 4 8.9142
+            58.2913 4 1.76973
+            58.5426 4 1.26954
+            58.4013 4 1.51253
+            58.2128 4 2.04113
+            58.7154 4 1.04075
+            58.1657 4 2.32674
+            58.9195 4 0.82617
+            58.15 4 2.62656
+            59.1469 4 0.633512
+            59.3894 4 0.470495
+            59.6469 4 0.337116
+            59.9194 4 0.233377
+            58.1655 4 2.94382
+            60.207 4 0.159279
+            60.5096 4 0.114818
+            58.212 4 3.24605
+            58.2894 4 3.53323
+            58.3978 4 3.80539
+            58.5372 4 4.06251
+            58.7076 4 4.30459
+            58.909 4 4.53164
+            59.1327 4 4.73549
+            60.8273 4 0.0999982
+            59.3703 4 4.90798
+            59.6216 4 5.04911
+            59.8867 4 5.15887
+            60.1656 4 5.23727
+            60.4583 4 5.28432
+            60.7648 4 5.3
+            61.0821 4 5.28432
+            61.3835 4 5.23728
+            61.6689 4 5.15887
+            61.9384 4 5.04911
+            62.192 4 4.90798
+            62.4298 4 4.73549
+            62.6516 4 4.53164
+            62.8501 4 4.30459
+            63.0182 4 4.06251
+            63.1556 4 3.80539
+            63.2625 4 3.53323
+            63.3389 4 3.24604
+            63.3847 4 2.94382
+            63.4 4 2.62656
+            61.128 4 0.115034
+            61.4153 4 0.160139
+            61.6893 4 0.235315
+            61.9499 4 0.340561
+            62.1972 4 0.475876
+            62.431 4 0.641262
+            62.6516 4 0.836717
+            63.3847 4 2.33213
+            62.8501 4 1.05366
+            63.3389 4 2.05061
+            63.0181 4 1.28353
+            63.2625 4 1.782
+            63.1556 4 1.52631
+            60.832 4 30.25
+            59.6408 4 29.7454
+            60.1868 4 30.1239
+            61.4603 4 30.1273
+            61.9919 4 29.7592
+            62.4268 4 29.1457
+            59.1941 4 29.1147
+            62.7651 4 28.2867
+            58.8467 4 28.2316
+            63.0067 4 27.1824
+            58.5985 4 27.0963
+            63.1517 4 25.8327
+            58.4496 4 25.7087
+            63.2 4 24.2375
+            58.4 4 24.0687
+            63.1806 4 22.8042
+            58.4119 4 23.143
+            58.4475 4 22.1621
+            63.1223 4 21.3614
+            58.5068 4 21.1262
+            63.0252 4 19.9092
+            58.5899 4 20.0352
+            58.6968 4 18.8891
+            62.8893 4 18.4474
+            58.8273 4 17.6879
+            62.7145 4 16.9763
+            58.9816 4 16.4316
+            62.5009 4 15.4956
+            59.145 4 15.2137
+            62.2484 4 14.0055
+            59.3027 4 14.1274
+            59.4549 4 13.1729
+            61.6773 4 10.7773
+            59.6013 4 12.3501
+            59.7422 4 11.659
+            59.8774 4 11.0996
+            60.007 4 10.6719
+            61.3391 4 9.55391
+            60.3453 4 9.59609
+            60.4006 4 9.41142
+            61.2809 4 9.38042
+            61.215 4 9.23363
+            60.4576 4 9.25515
+            61.1412 4 9.11352
+            60.5163 4 9.12729
+            61.0596 4 9.0201
+            60.5767 4 9.02785
+            60.9702 4 8.95338
+            60.873 4 8.91335
+            60.6388 4 8.95682
+            60.768 4 8.9
+            60.7025 4 8.9142
+            -36.15 -1 29.85
+            -40.15 -1 29.85
+            -40.15 -1 7.00937
+            -36.15 -1 0.449999
+            -39.7711 -1 0.449999
+            -59.45 -1 23.0969
+            -59.9969 -1 29.85
+            -63.4 -1 0.449999
+            -59.45 -1 0.449999
+            -63.4 -1 29.85
+            -13.2 -1 26.1
+            -13.2 -1 29.85
+            -29.85 -1 29.85
+            -25.65 -1 26.1
+            -29.85 -1 0.449999
+            -25.65 -1 17.1
+            -13.6 -1 13.35
+            -13.6 -1 17.1
+            -25.65 -1 13.35
+            -25.65 -1 4.2
+            -12.8 -1 0.449999
+            -12.8 -1 4.2
+            1.03516 -1 30
+            -11.55 -1 0.449999
+            -1.91251 -1 12.9
+            2.52499 -1 23.5391
+            12.893 -1 0.449999
+            17.2 -1 0.449999
+            4.03984 -1 30
+            8.98125 -1 9.15
+            7.29844 -1 12.9
+            -3.55 -1 9.15
+            -7.22344 -1 0.449999
+            24.75 -1 13.25
+            30.7355 -1 17.5453
+            30.3549 -1 17.4006
+            29.8923 -1 17.2782
+            29.3477 -1 17.1781
+            28.7211 -1 17.1002
+            25.8445 -1 13.25
+            28.0125 -1 17.0445
+            26.4098 -1 13.2404
+            27.2218 -1 17.0111
+            26.9264 -1 13.2114
+            38.1914 -1 0.449999
+            43.2 -1 0.449999
+            41.643 -1 2.55547
+            27.3945 -1 13.1632
+            26.3492 -1 17
+            27.814 -1 13.0957
+            24.75 -1 17
+            28.185 -1 13.0089
+            28.5074 -1 12.9027
+            41.3658 -1 2.94155
+            36.9094 -1 2.38828
+            41.0638 -1 3.37836
+            40.7369 -1 3.86591
+            40.3851 -1 4.40419
+            40.0084 -1 4.99321
+            36.8887 -1 2.42122
+            36.8629 -1 2.46022
+            36.832 -1 2.50528
+            36.796 -1 2.55639
+            36.7548 -1 2.61357
+            28.7813 -1 12.7773
+            20.55 -1 29.85
+            20.55 -1 0.449999
+            24.75 -1 0.449999
+            24.75 -1 26.25
+            27.9078 -1 29.85
+            26.0125 -1 26.25
+            26.8603 -1 26.2406
+            27.6365 -1 26.2123
+            28.3409 -1 26.1653
+            29.1437 -1 29.8049
+            28.9736 -1 26.0994
+            30.3045 -1 29.6697
+            29.5346 -1 26.0146
+            36.7085 -1 2.6768
+            30.0239 -1 25.9111
+            31.3903 -1 29.4443
+            30.4414 -1 25.7887
+            32.4009 -1 29.1287
+            30.8109 -1 25.6434
+            33.3365 -1 28.723
+            31.1558 -1 25.4711
+            31.4764 -1 25.2719
+            34.197 -1 28.2271
+            31.7724 -1 25.0456
+            34.9824 -1 27.641
+            32.044 -1 24.7924
+            36.657 -1 2.74609
+            35.8375 -1 3.90469
+            39.6069 -1 5.63296
+            39.1805 -1 6.32344
+            34.5344 -1 6.05312
+            38.5053 -1 7.41173
+            37.8749 -1 8.40293
+            33.1258 -1 8.34922
+            37.2892 -1 9.29706
+            36.7482 -1 10.0941
+            36.252 -1 10.7941
+            32.7579 -1 8.85175
+            35.8005 -1 11.3969
+            32.399 -1 9.32409
+            35.3937 -1 11.9027
+            32.0491 -1 9.76623
+            35.0081 -1 12.3462
+            34.6198 -1 12.7622
+            31.708 -1 10.1782
+            34.229 -1 13.1507
+            31.376 -1 10.5599
+            33.8356 -1 13.5117
+            31.0529 -1 10.9115
+            33.4396 -1 13.8452
+            30.7387 -1 11.2328
+            33.041 -1 14.1512
+            30.4333 -1 11.5268
+            32.6398 -1 14.4297
+            30.1364 -1 11.7964
+            35.6769 -1 26.9781
+            32.2911 -1 24.5122
+            32.5137 -1 24.2051
+            36.2645 -1 26.2517
+            32.709 -1 23.8791
+            36.7453 -1 25.4617
+            32.8743 -1 23.5424
+            37.1192 -1 24.6082
+            33.0096 -1 23.195
+            37.3863 -1 23.6911
+            33.1148 -1 22.8369
+            37.5466 -1 22.7105
+            33.1899 -1 22.4681
+            33.235 -1 22.0886
+            37.6 -1 21.6664
+            33.25 -1 21.6984
+            37.5738 -1 20.9473
+            33.2365 -1 21.3031
+            37.4953 -1 20.2566
+            33.1959 -1 20.9202
+            37.3645 -1 19.5941
+            33.1282 -1 20.5496
+            37.1814 -1 18.96
+            33.0335 -1 20.1915
+            36.9459 -1 18.3543
+            32.9118 -1 19.8459
+            36.6581 -1 17.7768
+            32.763 -1 19.5126
+            36.318 -1 17.2277
+            35.9289 -1 16.7121
+            32.5871 -1 19.1918
+            35.4944 -1 16.2351
+            32.387 -1 18.8885
+            35.0145 -1 15.7968
+            32.1654 -1 18.6079
+            34.489 -1 15.3971
+            31.9223 -1 18.35
+            33.9181 -1 15.036
+            31.6578 -1 18.1148
+            33.3017 -1 14.7135
+            31.3719 -1 17.9023
+            31.0644 -1 17.7125
+            29.0351 -1 12.6301
+            29.2975 -1 12.4583
+            29.5686 -1 12.2621
+            29.8482 -1 12.0415
+            46.5913 -1 1.76973
+            46.7013 -1 1.51253
+            46.8426 -1 1.26954
+            46.5128 -1 2.04113
+            47.0154 -1 1.04075
+            46.4657 -1 2.32674
+            47.2195 -1 0.82617
+            46.45 -1 2.62656
+            47.4469 -1 0.633513
+            47.6894 -1 0.470495
+            47.9469 -1 0.337116
+            48.2194 -1 0.233378
+            46.4655 -1 2.94382
+            48.507 -1 0.159279
+            48.8096 -1 0.114819
+            46.512 -1 3.24605
+            46.5894 -1 3.53323
+            46.6978 -1 3.80539
+            46.8372 -1 4.06251
+            47.0076 -1 4.30459
+            47.209 -1 4.53164
+            47.4327 -1 4.73549
+            49.1273 -1 0.0999985
+            47.6703 -1 4.90798
+            47.9216 -1 5.04911
+            48.1867 -1 5.15887
+            48.4656 -1 5.23727
+            48.7583 -1 5.28432
+            49.0648 -1 5.3
+            49.3821 -1 5.28432
+            49.6835 -1 5.23728
+            49.9689 -1 5.15887
+            50.2384 -1 5.04911
+            50.4921 -1 4.90798
+            50.7298 -1 4.73549
+            50.9516 -1 4.53164
+            51.1501 -1 4.30459
+            51.3182 -1 4.06251
+            51.4556 -1 3.80539
+            51.5625 -1 3.53323
+            51.6389 -1 3.24604
+            51.6847 -1 2.94382
+            51.7 -1 2.62656
+            49.428 -1 0.115034
+            49.7153 -1 0.160139
+            49.9893 -1 0.235315
+            50.2499 -1 0.340561
+            50.4972 -1 0.475876
+            50.731 -1 0.641262
+            50.9516 -1 0.836718
+            51.6847 -1 2.33213
+            51.1501 -1 1.05367
+            51.6389 -1 2.05061
+            51.3181 -1 1.28353
+            51.5625 -1 1.782
+            51.4556 -1 1.52631
+            49.132 -1 30.25
+            48.4868 -1 30.1239
+            47.9408 -1 29.7454
+            49.7603 -1 30.1273
+            50.2919 -1 29.7592
+            50.7268 -1 29.1457
+            47.4941 -1 29.1147
+            51.0651 -1 28.2867
+            47.1467 -1 28.2316
+            51.3067 -1 27.1824
+            46.8985 -1 27.0963
+            51.4517 -1 25.8327
+            46.7496 -1 25.7087
+            51.5 -1 24.2375
+            46.7 -1 24.0687
+            51.4806 -1 22.8042
+            46.7119 -1 23.143
+            46.7475 -1 22.1621
+            51.4223 -1 21.3614
+            46.8068 -1 21.1262
+            51.3252 -1 19.9092
+            46.8899 -1 20.0352
+            46.9968 -1 18.8891
+            51.1893 -1 18.4474
+            47.1273 -1 17.6879
+            51.0145 -1 16.9763
+            47.2816 -1 16.4316
+            50.8009 -1 15.4956
+            47.445 -1 15.2137
+            50.5484 -1 14.0055
+            47.6027 -1 14.1274
+            47.7549 -1 13.1729
+            49.9773 -1 10.7773
+            47.9013 -1 12.3501
+            48.0422 -1 11.659
+            48.1774 -1 11.0996
+            48.307 -1 10.6719
+            49.6391 -1 9.55391
+            48.6453 -1 9.59609
+            48.7006 -1 9.41142
+            49.5809 -1 9.38042
+            49.515 -1 9.23363
+            48.7576 -1 9.25515
+            49.4412 -1 9.11352
+            48.8163 -1 9.12729
+            49.3596 -1 9.0201
+            48.8767 -1 9.02785
+            49.2702 -1 8.95338
+            49.173 -1 8.91335
+            48.9388 -1 8.95682
+            49.068 -1 8.9
+            49.0025 -1 8.9142
+            58.2913 -1 1.76973
+            58.4013 -1 1.51253
+            58.5426 -1 1.26954
+            58.2128 -1 2.04113
+            58.7154 -1 1.04075
+            58.1657 -1 2.32674
+            58.9195 -1 0.82617
+            58.15 -1 2.62656
+            59.1469 -1 0.633513
+            59.3894 -1 0.470495
+            59.6469 -1 0.337116
+            59.9194 -1 0.233378
+            58.1655 -1 2.94382
+            60.207 -1 0.159279
+            60.5096 -1 0.114819
+            58.212 -1 3.24605
+            58.2894 -1 3.53323
+            58.3978 -1 3.80539
+            58.5372 -1 4.06251
+            58.7076 -1 4.30459
+            58.909 -1 4.53164
+            59.1327 -1 4.73549
+            60.8273 -1 0.0999985
+            59.3703 -1 4.90798
+            59.6216 -1 5.04911
+            59.8867 -1 5.15887
+            60.1656 -1 5.23727
+            60.4583 -1 5.28432
+            60.7648 -1 5.3
+            61.0821 -1 5.28432
+            61.3835 -1 5.23728
+            61.6689 -1 5.15887
+            61.9384 -1 5.04911
+            62.192 -1 4.90798
+            62.4298 -1 4.73549
+            62.6516 -1 4.53164
+            62.8501 -1 4.30459
+            63.0182 -1 4.06251
+            63.1556 -1 3.80539
+            63.2625 -1 3.53323
+            63.3389 -1 3.24604
+            63.3847 -1 2.94382
+            63.4 -1 2.62656
+            61.128 -1 0.115034
+            61.4153 -1 0.160139
+            61.6893 -1 0.235315
+            61.9499 -1 0.340561
+            62.1972 -1 0.475876
+            62.431 -1 0.641262
+            62.6516 -1 0.836718
+            63.3847 -1 2.33213
+            62.8501 -1 1.05367
+            63.3389 -1 2.05061
+            63.0181 -1 1.28353
+            63.2625 -1 1.782
+            63.1556 -1 1.52631
+            60.832 -1 30.25
+            60.1868 -1 30.1239
+            59.6408 -1 29.7454
+            61.4603 -1 30.1273
+            61.9919 -1 29.7592
+            62.4268 -1 29.1457
+            59.1941 -1 29.1147
+            62.7651 -1 28.2867
+            58.8467 -1 28.2316
+            63.0067 -1 27.1824
+            58.5985 -1 27.0963
+            63.1517 -1 25.8327
+            58.4496 -1 25.7087
+            63.2 -1 24.2375
+            58.4 -1 24.0687
+            63.1806 -1 22.8042
+            58.4119 -1 23.143
+            58.4475 -1 22.1621
+            63.1223 -1 21.3614
+            58.5068 -1 21.1262
+            63.0252 -1 19.9092
+            58.5899 -1 20.0352
+            58.6968 -1 18.8891
+            62.8893 -1 18.4474
+            58.8273 -1 17.6879
+            62.7145 -1 16.9763
+            58.9816 -1 16.4316
+            62.5009 -1 15.4956
+            59.145 -1 15.2137
+            62.2484 -1 14.0055
+            59.3027 -1 14.1274
+            59.4549 -1 13.1729
+            61.6773 -1 10.7773
+            59.6013 -1 12.3501
+            59.7422 -1 11.659
+            59.8774 -1 11.0996
+            60.007 -1 10.6719
+            61.3391 -1 9.55391
+            60.3453 -1 9.59609
+            60.4006 -1 9.41142
+            61.2809 -1 9.38042
+            61.215 -1 9.23363
+            60.4576 -1 9.25515
+            61.1412 -1 9.11352
+            60.5163 -1 9.12729
+            61.0596 -1 9.0201
+            60.5767 -1 9.02785
+            60.9702 -1 8.95338
+            60.873 -1 8.91335
+            60.6388 -1 8.95682
+            60.768 -1 8.9
+            60.7025 -1 8.9142
+          }
+          NormalBinding PER_VERTEX
+          NormalArray Vec3Array 1652
+          {
+            0.754843 4.95195e-008 0.655905
+            0.754843 4.95195e-008 0.655905
+            0.754843 4.95195e-008 0.655905
+            0.754843 4.95195e-008 0.655905
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            -0.754837 -4.952e-008 -0.655912
+            -0.754837 -4.952e-008 -0.655912
+            -0.754837 -4.952e-008 -0.655912
+            -0.754837 -4.952e-008 -0.655912
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0.921246 -2.93673e-008 -0.388982
+            0.921246 -2.93673e-008 -0.388982
+            0.921246 -2.93673e-008 -0.388982
+            0.921246 -2.93673e-008 -0.388982
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            -0.91205 -3.09601e-008 -0.410079
+            -0.91205 -3.09601e-008 -0.410079
+            -0.91205 -3.09601e-008 -0.410079
+            -0.91205 -3.09601e-008 -0.410079
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0.913504 3.07149e-008 0.406831
+            0.913504 3.07149e-008 0.406831
+            0.913504 3.07149e-008 0.406831
+            0.913504 3.07149e-008 0.406831
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            -0.920035 2.95829e-008 0.391837
+            -0.920035 2.95829e-008 0.391837
+            -0.920035 2.95829e-008 0.391837
+            -0.920035 2.95829e-008 0.391837
+            0.922937 -2.90631e-008 -0.384952
+            0.922937 -2.90631e-008 -0.384952
+            0.922937 -2.90631e-008 -0.384952
+            0.922937 -2.90631e-008 -0.384952
+            -0.912375 -3.09056e-008 -0.409356
+            -0.912375 -3.09056e-008 -0.409357
+            -0.912375 -3.09056e-008 -0.409356
+            -0.912375 -3.09056e-008 -0.409357
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            -0.0170623 -7.54869e-008 -0.999854
+            -0.0365005 -7.54476e-008 -0.999334
+            -0.0365005 -7.54476e-008 -0.999334
+            -0.0170623 -7.54869e-008 -0.999854
+            -0.0792287 -7.52606e-008 -0.996856
+            -0.0792287 -7.52606e-008 -0.996856
+            -0.13075 -7.48498e-008 -0.991415
+            -0.13075 -7.48498e-008 -0.991415
+            -0.193501 -7.4071e-008 -0.9811
+            -0.193501 -7.4071e-008 -0.9811
+            -0.270502 -7.26833e-008 -0.96272
+            -0.270502 -7.26833e-008 -0.96272
+            -0.365055 -7.02875e-008 -0.930986
+            -0.365055 -7.02875e-008 -0.930986
+            -0.459619 -6.70509e-008 -0.888116
+            -0.459619 -6.70509e-008 -0.888116
+            -0.524873 -6.42623e-008 -0.85118
+            -0.524873 -6.42623e-008 -0.85118
+            -0.567111 -6.21832e-008 -0.823642
+            -0.567111 -6.21832e-008 -0.823642
+            -0.603031 -6.0226e-008 -0.797718
+            -0.603031 -6.0226e-008 -0.797718
+            -0.633737 -5.84013e-008 -0.773549
+            -0.633737 -5.84013e-008 -0.773549
+            -0.660149 -5.67091e-008 -0.751135
+            -0.660149 -5.67091e-008 -0.751135
+            -0.682997 -5.51452e-008 -0.730421
+            -0.682997 -5.51452e-008 -0.730421
+            -0.70437 -5.35909e-008 -0.709833
+            -0.70437 -5.35909e-008 -0.709833
+            -0.725726 -5.19414e-008 -0.687984
+            -0.725726 -5.19414e-008 -0.687984
+            -0.745435 -5.03253e-008 -0.666578
+            -0.745435 -5.03253e-008 -0.666578
+            -0.762452 -4.88505e-008 -0.647045
+            -0.762452 -4.88505e-008 -0.647045
+            -0.77725 -4.75026e-008 -0.629191
+            -0.77725 -4.75026e-008 -0.629191
+            -0.790198 -4.6269e-008 -0.612851
+            -0.790198 -4.6269e-008 -0.612851
+            -0.801604 -4.51368e-008 -0.597855
+            -0.801604 -4.51368e-008 -0.597855
+            -0.806928 -4.45929e-008 -0.59065
+            -0.806928 -4.45929e-008 -0.59065
+            -0.852385 -3.9479e-008 -0.522915
+            -0.852385 -3.9479e-008 -0.522915
+            -0.852385 -3.9479e-008 -0.522915
+            -0.852385 -3.9479e-008 -0.522915
+            -0.855013 -3.91537e-008 -0.518607
+            -0.855013 -3.91537e-008 -0.518607
+            -0.855013 -3.91537e-008 -0.518607
+            -0.855013 -3.91537e-008 -0.518607
+            -0.816405 -4.35986e-008 -0.57748
+            -0.816405 -4.35986e-008 -0.57748
+            -0.816405 -4.35986e-008 -0.57748
+            -0.816405 -4.35986e-008 -0.57748
+            -0.802862 -4.50092e-008 -0.596165
+            -0.804812 -4.48103e-008 -0.59353
+            -0.804812 -4.48103e-008 -0.59353
+            -0.802862 -4.50092e-008 -0.596165
+            -0.809077 -4.43703e-008 -0.587703
+            -0.809077 -4.43703e-008 -0.587703
+            -0.814313 -4.3821e-008 -0.580427
+            -0.814313 -4.3821e-008 -0.580427
+            -0.820896 -4.31152e-008 -0.571078
+            -0.820896 -4.31152e-008 -0.571078
+            -0.829409 -4.21763e-008 -0.558642
+            -0.829409 -4.21763e-008 -0.558642
+            -0.840857 -4.08638e-008 -0.541258
+            -0.840857 -4.08638e-008 -0.541258
+            -0.847376 -4.00889e-008 -0.530994
+            -0.847376 -4.00889e-008 -0.530994
+            -0.834061 -4.16501e-008 -0.551672
+            -0.834061 -4.16501e-008 -0.551672
+            -0.834061 -4.16501e-008 -0.551672
+            -0.834061 -4.16501e-008 -0.551672
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0.804028 4.48904e-008 0.594592
+            0.804028 4.48904e-008 0.594592
+            0.804028 4.48904e-008 0.594592
+            0.804028 4.48904e-008 0.594592
+            0.812342 4.4029e-008 0.583182
+            0.817462 4.34855e-008 0.575983
+            0.817462 4.34855e-008 0.575983
+            0.812342 4.4029e-008 0.583182
+            0.826566 4.24932e-008 0.562839
+            0.826566 4.24932e-008 0.562839
+            0.833843 4.1675e-008 0.552002
+            0.833843 4.1675e-008 0.552002
+            0.839792 4.09885e-008 0.542909
+            0.839792 4.09885e-008 0.542909
+            0.844741 4.04046e-008 0.535175
+            0.844741 4.04046e-008 0.535175
+            0.848918 3.99025e-008 0.528525
+            0.848918 3.99025e-008 0.528525
+            0.850294 3.97352e-008 0.526308
+            0.850294 3.97352e-008 0.526308
+            0.846783 4.01602e-008 0.531938
+            0.846783 4.01602e-008 0.531938
+            0.840167 4.09446e-008 0.542328
+            0.840167 4.09446e-008 0.542328
+            0.831994 4.18851e-008 0.554785
+            0.831994 4.18851e-008 0.554785
+            0.821654 4.30328e-008 0.569987
+            0.821654 4.30328e-008 0.569987
+            0.808182 4.44632e-008 0.588933
+            0.808182 4.44632e-008 0.588933
+            0.78997 4.62912e-008 0.613146
+            0.78997 4.62912e-008 0.613145
+            0.767079 4.84359e-008 0.641553
+            0.767079 4.84359e-008 0.641553
+            0.742946 5.05346e-008 0.669351
+            0.742946 5.05346e-008 0.669351
+            0.718154 5.25378e-008 0.695884
+            0.718154 5.25378e-008 0.695884
+            0.690678 5.45972e-008 0.723162
+            0.690678 5.45972e-008 0.723162
+            0.660277 5.67006e-008 0.751023
+            0.660277 5.67006e-008 0.751023
+            0.62671 5.88319e-008 0.779252
+            0.62671 5.88319e-008 0.779252
+            0.589764 6.09703e-008 0.807576
+            0.589764 6.09703e-008 0.807576
+            0.570253 6.20192e-008 0.821469
+            0.570253 6.20192e-008 0.821469
+            0.394117 -6.93871e-008 -0.91906
+            0.429146 -6.81924e-008 -0.903235
+            0.429146 -6.81924e-008 -0.903235
+            0.394117 -6.93871e-008 -0.91906
+            0.499455 -6.54068e-008 -0.86634
+            0.499455 -6.54068e-008 -0.86634
+            0.570522 -6.20051e-008 -0.821282
+            0.570523 -6.20051e-008 -0.821282
+            0.64055 -5.79761e-008 -0.767916
+            0.64055 -5.79761e-008 -0.767916
+            0.707559 -5.33509e-008 -0.706654
+            0.707559 -5.33509e-008 -0.706654
+            0.769591 -4.82082e-008 -0.638537
+            0.769591 -4.82082e-008 -0.638537
+            0.825065 -4.26591e-008 -0.565038
+            0.825065 -4.26591e-008 -0.565038
+            0.873485 -3.67563e-008 -0.486852
+            0.873485 -3.67563e-008 -0.486852
+            0.914484 -3.05481e-008 -0.404622
+            0.914484 -3.05481e-008 -0.404622
+            0.947343 -2.4176e-008 -0.320221
+            0.947343 -2.4176e-008 -0.320221
+            0.971793 -1.78051e-008 -0.235836
+            0.971793 -1.78051e-008 -0.235836
+            0.988155 -1.15858e-008 -0.153458
+            0.988155 -1.15858e-008 -0.153458
+            0.997207 -5.63858e-009 -0.0746853
+            0.997207 -5.63858e-009 -0.0746853
+            0.999973 5.56999e-010 0.00737768
+            0.999973 5.56999e-010 0.00737767
+            0.994328 8.0298e-009 0.106358
+            0.994328 8.0298e-009 0.106358
+            0.975302 1.66756e-008 0.220875
+            0.975302 1.66756e-008 0.220875
+            0.939997 2.57585e-008 0.341182
+            0.939997 2.57585e-008 0.341181
+            0.887078 3.48513e-008 0.461619
+            0.887078 3.48513e-008 0.461619
+            0.817679 4.34622e-008 0.575674
+            0.817679 4.34622e-008 0.575674
+            0.735499 5.11518e-008 0.677526
+            0.735499 5.11518e-008 0.677526
+            0.645441 5.7666e-008 0.76381
+            0.645441 5.7666e-008 0.76381
+            0.549631 6.30715e-008 0.835408
+            0.549631 6.30715e-008 0.835408
+            0.44931 6.7448e-008 0.893376
+            0.449311 6.7448e-008 0.893376
+            0.348454 7.07661e-008 0.937326
+            0.348454 7.07661e-008 0.937326
+            0.250964 7.30817e-008 0.967996
+            0.250964 7.30817e-008 0.967996
+            0.159655 7.45295e-008 0.987173
+            0.159655 7.45295e-008 0.987173
+            0.0761474 7.52787e-008 0.997097
+            0.0761474 7.52787e-008 0.997097
+            0.0364529 7.54477e-008 0.999335
+            0.0364529 7.54477e-008 0.999335
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            -1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            -0.0237384 -7.54766e-008 -0.999718
+            -0.0515302 -7.53976e-008 -0.998672
+            -0.0515302 -7.53976e-008 -0.998672
+            -0.0237384 -7.54766e-008 -0.999718
+            -0.0851533 -7.52237e-008 -0.996368
+            -0.0851533 -7.52237e-008 -0.996368
+            -0.126508 -7.48913e-008 -0.991966
+            -0.126508 -7.48913e-008 -0.991966
+            -0.178293 -7.42882e-008 -0.983978
+            -0.178292 -7.42882e-008 -0.983978
+            -0.244365 -7.32091e-008 -0.969683
+            -0.244365 -7.32091e-008 -0.969683
+            -0.323959 -7.14264e-008 -0.946071
+            -0.323959 -7.14264e-008 -0.946071
+            -0.406775 -6.89695e-008 -0.913529
+            -0.406775 -6.89695e-008 -0.913529
+            -0.48789 -6.59025e-008 -0.872905
+            -0.48789 -6.59025e-008 -0.872905
+            -0.568228 -6.21251e-008 -0.822871
+            -0.568228 -6.21251e-008 -0.822871
+            -0.645338 -5.76726e-008 -0.763897
+            -0.645338 -5.76726e-008 -0.763897
+            -0.716834 -5.26404e-008 -0.697244
+            -0.716834 -5.26404e-008 -0.697244
+            -0.780749 -4.71745e-008 -0.624845
+            -0.780749 -4.71745e-008 -0.624845
+            -0.834535 -4.15959e-008 -0.550955
+            -0.834535 -4.15959e-008 -0.550955
+            -0.878484 -3.60708e-008 -0.477772
+            -0.878484 -3.60708e-008 -0.477772
+            -0.915593 -3.03581e-008 -0.402105
+            -0.915593 -3.03581e-008 -0.402106
+            -0.94653 -2.43569e-008 -0.322616
+            -0.94653 -2.43569e-008 -0.322616
+            -0.970535 -1.81919e-008 -0.240959
+            -0.970535 -1.81919e-008 -0.240959
+            -0.987289 -1.19993e-008 -0.158935
+            -0.987289 -1.19993e-008 -0.158935
+            -0.996931 -5.9105e-009 -0.0782869
+            -0.996931 -5.9105e-009 -0.0782869
+            -0.999998 -1.61908e-010 -0.00214454
+            -0.999998 -1.61908e-010 -0.00214453
+            -0.997558 5.27304e-009 0.0698435
+            -0.997558 5.27304e-009 0.0698435
+            -0.98978 1.0766e-008 0.1426
+            -0.98978 1.0766e-008 0.1426
+            -0.975995 1.64429e-008 0.217792
+            -0.975995 1.64429e-008 0.217792
+            -0.955752 2.22096e-008 0.294175
+            -0.955752 2.22096e-008 0.294175
+            -0.928917 2.7956e-008 0.370289
+            -0.928917 2.7956e-008 0.370289
+            -0.895736 3.35654e-008 0.444587
+            -0.895736 3.35654e-008 0.444587
+            -0.856488 3.89695e-008 0.516166
+            -0.856488 3.89695e-008 0.516166
+            -0.810455 4.42268e-008 0.585801
+            -0.810455 4.42268e-008 0.585801
+            -0.756991 4.93322e-008 0.653425
+            -0.756991 4.93322e-008 0.653425
+            -0.696809 5.41514e-008 0.717257
+            -0.696809 5.41514e-008 0.717257
+            -0.631107 5.85634e-008 0.775696
+            -0.631107 5.85634e-008 0.775696
+            -0.561459 6.24748e-008 0.827504
+            -0.561459 6.24748e-008 0.827504
+            -0.489651 6.5828e-008 0.871918
+            -0.489651 6.5828e-008 0.871918
+            -0.404763 6.90369e-008 0.914422
+            -0.404763 6.90369e-008 0.914422
+            -0.305975 7.1877e-008 0.95204
+            -0.305975 7.1877e-008 0.95204
+            -0.218504 7.36736e-008 0.975836
+            -0.218504 7.36736e-008 0.975836
+            -0.152185 7.46185e-008 0.988352
+            -0.152185 7.46185e-008 0.988352
+            -0.100853 7.5113e-008 0.994901
+            -0.100853 7.5113e-008 0.994901
+            -0.0602464 7.53608e-008 0.998184
+            -0.0602464 7.53608e-008 0.998184
+            -0.0274745 7.54694e-008 0.999623
+            -0.0274745 7.54694e-008 0.999623
+            -0.0127552 7.54918e-008 0.999919
+            -0.0127552 7.54918e-008 0.999919
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            0 7.54979e-008 1
+            1 0 0
+            1 0 0
+            1 0 0
+            1 0 0
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            0 -7.54979e-008 -1
+            -0.0111013 -7.54932e-008 -0.999938
+            -0.0111013 -7.54932e-008 -0.999938
+            0.995075 7.48378e-009 0.0991257
+            0.97902 1.53838e-008 0.203764
+            0.97902 1.53838e-008 0.203764
+            0.995075 7.48378e-009 0.0991257
+            0.950137 2.35428e-008 0.311833
+            0.950137 2.35428e-008 0.311833
+            0.907863 3.16537e-008 0.419267
+            0.907863 3.16537e-008 0.419267
+            0.853126 3.93876e-008 0.521704
+            0.853126 3.93876e-008 0.521704
+            0.788358 4.64476e-008 0.615217
+            0.788358 4.64476e-008 0.615217
+            0.715785 5.27218e-008 0.698321
+            0.715785 5.27218e-008 0.698321
+            0.633056 5.84434e-008 0.774106
+            0.633056 5.84434e-008 0.774106
+            0.537738 6.36532e-008 0.843112
+            0.537738 6.36532e-008 0.843112
+            0.432499 6.80715e-008 0.901634
+            0.432499 6.80715e-008 0.901634
+            0.321585 7.14875e-008 0.946881
+            0.321585 7.14875e-008 0.946881
+            0.209888 7.38162e-008 0.977725
+            0.209888 7.38162e-008 0.977725
+            0.10194 7.51046e-008 0.994791
+            0.10194 7.51046e-008 0.994791
+            -0.00086622 7.54979e-008 1
+            -0.000866199 7.54979e-008 1
+            -0.105041 7.50803e-008 0.994468
+            -0.105041 7.50802e-008 0.994468
+            -0.215002 7.37323e-008 0.976614
+            -0.215002 7.37323e-008 0.976614
+            -0.327144 7.13436e-008 0.944974
+            -0.327144 7.13436e-008 0.944974
+            -0.436847 6.79131e-008 0.899536
+            -0.436847 6.79131e-008 0.899536
+            -0.539511 6.35676e-008 0.841978
+            -0.539511 6.35676e-008 0.841978
+            -0.631492 5.85398e-008 0.775383
+            -0.631492 5.85398e-008 0.775383
+            -0.711821 5.30268e-008 0.702361
+            -0.711821 5.30268e-008 0.702361
+            -0.784191 4.68479e-008 0.620519
+            -0.784191 4.68479e-008 0.620519
+            -0.849871 3.97867e-008 0.526991
+            -0.849871 3.97867e-008 0.526991
+            -0.905614 3.20189e-008 0.424103
+            -0.905614 3.20189e-008 0.424103
+            -0.948839 2.38392e-008 0.31576
+            -0.948839 2.38392e-008 0.31576
+            -0.978449 1.55895e-008 0.206489
+            -0.978449 1.55895e-008 0.206489
+            -0.994936 7.58866e-009 0.100515
+            -0.994936 7.58866e-009 0.100515
+            -0.999998 -1.33793e-010 -0.00177214
+            -0.999998 -1.33791e-010 -0.00177212
+            -0.994184 -8.1309e-009 -0.107697
+            -0.994184 -8.13089e-009 -0.107697
+            -0.975335 -1.66648e-008 -0.220732
+            -0.975335 -1.66648e-008 -0.220732
+            -0.941824 -2.53753e-008 -0.336106
+            -0.941824 -2.53753e-008 -0.336106
+            -0.89365 -3.38808e-008 -0.448764
+            -0.89365 -3.38808e-008 -0.448764
+            -0.832719 -4.18029e-008 -0.553696
+            -0.832719 -4.18029e-008 -0.553696
+            -0.762502 -4.8846e-008 -0.646985
+            -0.762502 -4.8846e-008 -0.646985
+            -0.686443 -5.49008e-008 -0.727184
+            -0.686443 -5.49008e-008 -0.727184
+            -0.603138 -6.02199e-008 -0.797637
+            -0.603138 -6.02199e-008 -0.797637
+            -0.509797 -6.49504e-008 -0.860295
+            -0.509797 -6.49504e-008 -0.860295
+            -0.408499 -6.89114e-008 -0.912759
+            -0.408499 -6.89114e-008 -0.912759
+            -0.303086 -7.19467e-008 -0.952963
+            -0.303086 -7.19467e-008 -0.952963
+            -0.197704 -7.40077e-008 -0.980262
+            -0.197704 -7.40077e-008 -0.980262
+            -0.0960881 -7.51486e-008 -0.995373
+            -0.096088 -7.51486e-008 -0.995373
+            0.00167305 -7.54978e-008 -0.999999
+            0.00167306 -7.54978e-008 -0.999999
+            0.102658 -7.5099e-008 -0.994717
+            0.102658 -7.5099e-008 -0.994717
+            0.210182 -7.38115e-008 -0.977662
+            0.210182 -7.38115e-008 -0.977662
+            0.320079 -7.1526e-008 -0.947391
+            0.320079 -7.1526e-008 -0.947391
+            0.428012 -6.8233e-008 -0.903773
+            0.428012 -6.8233e-008 -0.903773
+            0.529603 -6.40408e-008 -0.848246
+            0.529603 -6.40408e-008 -0.848246
+            0.621272 -5.91598e-008 -0.783595
+            0.621272 -5.91598e-008 -0.783595
+            0.701437 -5.38097e-008 -0.712731
+            0.701437 -5.38097e-008 -0.712731
+            0.773664 -4.78352e-008 -0.633596
+            0.773664 -4.78352e-008 -0.633596
+            0.84017 -4.09443e-008 -0.542324
+            0.84017 -4.09443e-008 -0.542324
+            0.897982 -3.32216e-008 -0.440033
+            0.897982 -3.32216e-008 -0.440033
+            0.943901 -2.49316e-008 -0.330229
+            0.943901 -2.49316e-008 -0.330229
+            0.976075 -1.6416e-008 -0.217436
+            0.976075 -1.6416e-008 -0.217436
+            0.994326 -8.03114e-009 -0.106376
+            0.994326 -8.03114e-009 -0.106376
+            0.999998 -1.4049e-010 -0.00186084
+            0.999998 -1.4049e-010 -0.00186085
+            -0.949121 -2.37751e-008 -0.314911
+            -0.924894 -2.87062e-008 -0.380226
+            -0.924894 -2.87063e-008 -0.380226
+            -0.949121 -2.37751e-008 -0.314911
+            -0.883255 -3.54005e-008 -0.468893
+            -0.883255 -3.54005e-008 -0.468893
+            -0.806854 -4.46004e-008 -0.590751
+            -0.806854 -4.46004e-008 -0.590751
+            -0.660055 -5.67153e-008 -0.751217
+            -0.660055 -5.67153e-008 -0.751217
+            -0.390802 -6.94939e-008 -0.920475
+            -0.390802 -6.94939e-008 -0.920475
+            -0.0436651 -7.54259e-008 -0.999046
+            -0.0436651 -7.54259e-008 -0.999046
+            0.255666 -7.29887e-008 -0.966765
+            0.255666 -7.29887e-008 -0.966765
+            0.493357 -6.56701e-008 -0.869827
+            0.493357 -6.56701e-008 -0.869827
+            0.679478 -5.53925e-008 -0.733696
+            0.679478 -5.53925e-008 -0.733696
+            0.805445 -4.47454e-008 -0.59267
+            0.805445 -4.47454e-008 -0.59267
+            0.883948 -3.53018e-008 -0.467586
+            0.883948 -3.53018e-008 -0.467586
+            0.931296 -2.75011e-008 -0.364263
+            0.931296 -2.75011e-008 -0.364263
+            0.948159 -2.39929e-008 -0.317796
+            0.948159 -2.39929e-008 -0.317796
+            0.963835 -2.01202e-008 -0.2665
+            0.963835 -2.01202e-008 -0.2665
+            0.963835 -2.01202e-008 -0.2665
+            0.963835 -2.01202e-008 -0.2665
+            0.984709 -1.31523e-008 -0.174208
+            0.984709 -1.31523e-008 -0.174208
+            0.984709 -1.31523e-008 -0.174208
+            0.984709 -1.31523e-008 -0.174208
+            0.98595 -1.26111e-008 -0.167039
+            0.987926 -1.16966e-008 -0.154926
+            0.987926 -1.16966e-008 -0.154926
+            0.98595 -1.26111e-008 -0.167039
+            0.991463 -9.84421e-009 -0.13039
+            0.991463 -9.84421e-009 -0.13039
+            0.994441 -7.94971e-009 -0.105297
+            0.994441 -7.94971e-009 -0.105297
+            0.996822 -6.01442e-009 -0.0796634
+            0.996822 -6.01442e-009 -0.0796634
+            0.998566 -4.0415e-009 -0.0535313
+            0.998566 -4.0415e-009 -0.0535313
+            0.999637 -2.03454e-009 -0.0269483
+            0.999637 -2.03454e-009 -0.0269483
+            0.999965 6.31884e-010 0.00836955
+            0.999965 6.31884e-010 0.00836955
+            0.997645 5.17845e-009 0.0685906
+            0.997645 5.17845e-009 0.0685906
+            0.987035 1.2118e-008 0.160508
+            0.987035 1.2118e-008 0.160508
+            0.956716 2.19716e-008 0.291023
+            0.956716 2.19716e-008 0.291023
+            0.879528 3.59255e-008 0.475848
+            0.879528 3.59255e-008 0.475848
+            0.703203 5.36782e-008 0.710989
+            0.703203 5.36782e-008 0.710989
+            0.388747 6.95596e-008 0.921345
+            0.388746 6.95596e-008 0.921345
+            -9.36814e-005 7.54979e-008 1
+            -9.36229e-005 7.54979e-008 1
+            -0.389044 6.95501e-008 0.921219
+            -0.389044 6.95501e-008 0.921219
+            -0.703529 5.36538e-008 0.710667
+            -0.703529 5.36538e-008 0.710667
+            -0.879717 3.58991e-008 0.475498
+            -0.879717 3.58991e-008 0.475498
+            -0.956795 2.19521e-008 0.290764
+            -0.956795 2.19521e-008 0.290764
+            -0.98706 1.21064e-008 0.160354
+            -0.98706 1.21064e-008 0.160354
+            -0.99765 5.17336e-009 0.0685233
+            -0.99765 5.17336e-009 0.0685233
+            -0.999962 6.58176e-010 0.0087178
+            -0.999962 6.58176e-010 0.0087178
+            -0.999699 -1.85361e-009 -0.0245518
+            -0.999699 -1.85361e-009 -0.0245518
+            -0.998907 -3.52905e-009 -0.0467437
+            -0.998907 -3.52905e-009 -0.0467437
+            -0.997782 -5.02628e-009 -0.0665751
+            -0.997782 -5.02628e-009 -0.0665751
+            -0.996433 -6.37074e-009 -0.084383
+            -0.996433 -6.37074e-009 -0.084383
+            -0.994943 -7.58313e-009 -0.100442
+            -0.994943 -7.58313e-009 -0.100442
+            -0.993367 -8.68149e-009 -0.11499
+            -0.993367 -8.68149e-009 -0.11499
+            -0.991847 -9.62103e-009 -0.127434
+            -0.991847 -9.62103e-009 -0.127434
+            -0.990387 -1.04433e-008 -0.138326
+            -0.990387 -1.04433e-008 -0.138326
+            -0.988603 -1.13658e-008 -0.150544
+            -0.988603 -1.13658e-008 -0.150544
+            -0.98607 -1.25575e-008 -0.166329
+            -0.98607 -1.25575e-008 -0.166329
+            -0.982264 -1.41562e-008 -0.187505
+            -0.982264 -1.41562e-008 -0.187505
+            -0.976088 -1.64114e-008 -0.217376
+            -0.976088 -1.64114e-008 -0.217376
+            -0.964909 -1.98247e-008 -0.262586
+            -0.964909 -1.98247e-008 -0.262586
+            -0.957028 -2.18941e-008 -0.289996
+            -0.957028 -2.18941e-008 -0.289996
+            -0.953949 -2.26471e-008 -0.29997
+            -0.953949 -2.26471e-008 -0.29997
+            -0.953949 -2.26471e-008 -0.29997
+            -0.953949 -2.26471e-008 -0.29997
+            -0.957955 -2.16617e-008 -0.286918
+            -0.957955 -2.16617e-008 -0.286918
+            0.995074 7.48423e-009 0.0991317
+            0.979021 1.53833e-008 0.203758
+            0.979021 1.53833e-008 0.203758
+            0.995074 7.48423e-009 0.0991317
+            0.950137 2.35427e-008 0.311833
+            0.950137 2.35427e-008 0.311833
+            0.907858 3.16546e-008 0.419277
+            0.907858 3.16546e-008 0.419277
+            0.853123 3.93879e-008 0.521709
+            0.853123 3.9388e-008 0.521709
+            0.788358 4.64476e-008 0.615217
+            0.788358 4.64476e-008 0.615217
+            0.715782 5.2722e-008 0.698324
+            0.715782 5.2722e-008 0.698324
+            0.63305 5.84438e-008 0.774111
+            0.63305 5.84438e-008 0.774111
+            0.537735 6.36534e-008 0.843114
+            0.537735 6.36534e-008 0.843114
+            0.432499 6.80715e-008 0.901634
+            0.432499 6.80715e-008 0.901634
+            0.321589 7.14874e-008 0.946879
+            0.321589 7.14874e-008 0.946879
+            0.209891 7.38162e-008 0.977725
+            0.209891 7.38162e-008 0.977725
+            0.101938 7.51046e-008 0.994791
+            0.101938 7.51046e-008 0.994791
+            -0.000865628 7.54979e-008 1
+            -0.000865605 7.54979e-008 1
+            -0.105041 7.50803e-008 0.994468
+            -0.105041 7.50802e-008 0.994468
+            -0.215002 7.37323e-008 0.976614
+            -0.215002 7.37323e-008 0.976614
+            -0.327149 7.13435e-008 0.944973
+            -0.327149 7.13435e-008 0.944973
+            -0.436846 6.79131e-008 0.899536
+            -0.436846 6.79131e-008 0.899536
+            -0.539506 6.35679e-008 0.841982
+            -0.539506 6.35679e-008 0.841982
+            -0.631492 5.85398e-008 0.775383
+            -0.631492 5.85398e-008 0.775383
+            -0.711825 5.30265e-008 0.702357
+            -0.711825 5.30265e-008 0.702357
+            -0.784191 4.68479e-008 0.620519
+            -0.784191 4.68479e-008 0.62052
+            -0.849868 3.97871e-008 0.526996
+            -0.849868 3.97871e-008 0.526996
+            -0.905612 3.20193e-008 0.424108
+            -0.905612 3.20193e-008 0.424108
+            -0.948837 2.38396e-008 0.315765
+            -0.948837 2.38396e-008 0.315765
+            -0.97845 1.5589e-008 0.206483
+            -0.97845 1.5589e-008 0.206483
+            -0.994936 7.5882e-009 0.100509
+            -0.994936 7.5882e-009 0.100509
+            -0.999999 -1.34272e-010 -0.00177848
+            -0.999999 -1.3427e-010 -0.00177846
+            -0.994183 -8.13137e-009 -0.107703
+            -0.994183 -8.13137e-009 -0.107703
+            -0.975336 -1.66643e-008 -0.220726
+            -0.975336 -1.66643e-008 -0.220726
+            -0.941822 -2.53757e-008 -0.336112
+            -0.941822 -2.53757e-008 -0.336112
+            -0.893647 -3.38812e-008 -0.44877
+            -0.893647 -3.38812e-008 -0.44877
+            -0.832722 -4.18025e-008 -0.553691
+            -0.832722 -4.18025e-008 -0.553691
+            -0.762505 -4.88458e-008 -0.646982
+            -0.762506 -4.88458e-008 -0.646982
+            -0.686446 -5.49006e-008 -0.72718
+            -0.686446 -5.49006e-008 -0.72718
+            -0.603138 -6.02199e-008 -0.797637
+            -0.603138 -6.02199e-008 -0.797637
+            -0.509794 -6.49506e-008 -0.860296
+            -0.509794 -6.49506e-008 -0.860296
+            -0.408501 -6.89113e-008 -0.912758
+            -0.408501 -6.89113e-008 -0.912758
+            -0.303086 -7.19467e-008 -0.952963
+            -0.303086 -7.19467e-008 -0.952963
+            -0.197701 -7.40078e-008 -0.980262
+            -0.197701 -7.40078e-008 -0.980262
+            -0.0960899 -7.51485e-008 -0.995373
+            -0.0960898 -7.51485e-008 -0.995373
+            0.00167305 -7.54978e-008 -0.999999
+            0.00167306 -7.54978e-008 -0.999999
+            0.102658 -7.5099e-008 -0.994717
+            0.102658 -7.5099e-008 -0.994717
+            0.210182 -7.38115e-008 -0.977662
+            0.210182 -7.38115e-008 -0.977662
+            0.320079 -7.1526e-008 -0.947391
+            0.320079 -7.1526e-008 -0.947391
+            0.428012 -6.8233e-008 -0.903773
+            0.428012 -6.8233e-008 -0.903773
+            0.529606 -6.40406e-008 -0.848243
+            0.529607 -6.40406e-008 -0.848243
+            0.621271 -5.91598e-008 -0.783595
+            0.621272 -5.91598e-008 -0.783595
+            0.701434 -5.38099e-008 -0.712734
+            0.701434 -5.38099e-008 -0.712734
+            0.773671 -4.78345e-008 -0.633587
+            0.773671 -4.78345e-008 -0.633587
+            0.840169 -4.09444e-008 -0.542325
+            0.840169 -4.09444e-008 -0.542325
+            0.897976 -3.32224e-008 -0.440044
+            0.897976 -3.32224e-008 -0.440044
+            0.943896 -2.49326e-008 -0.330242
+            0.943897 -2.49326e-008 -0.330242
+            0.976072 -1.6417e-008 -0.217449
+            0.976072 -1.6417e-008 -0.217449
+            0.994326 -8.03114e-009 -0.106376
+            0.994326 -8.03114e-009 -0.106376
+            0.999998 -1.40037e-010 -0.00185485
+            0.999998 -1.40037e-010 -0.00185485
+            -0.949118 -2.37759e-008 -0.314921
+            -0.924894 -2.87061e-008 -0.380224
+            -0.924894 -2.87061e-008 -0.380224
+            -0.949118 -2.37759e-008 -0.314921
+            -0.883267 -3.53987e-008 -0.46887
+            -0.883267 -3.53987e-008 -0.46887
+            -0.806862 -4.45996e-008 -0.590739
+            -0.806862 -4.45996e-008 -0.590739
+            -0.660055 -5.67153e-008 -0.751217
+            -0.660055 -5.67153e-008 -0.751217
+            -0.390796 -6.94941e-008 -0.920477
+            -0.390797 -6.94941e-008 -0.920477
+            -0.043659 -7.54259e-008 -0.999047
+            -0.0436591 -7.54259e-008 -0.999047
+            0.255666 -7.29887e-008 -0.966765
+            0.255666 -7.29887e-008 -0.966765
+            0.493357 -6.56701e-008 -0.869827
+            0.493357 -6.56701e-008 -0.869827
+            0.679487 -5.53919e-008 -0.733688
+            0.679487 -5.53919e-008 -0.733688
+            0.805438 -4.47461e-008 -0.592679
+            0.805439 -4.47461e-008 -0.59268
+            0.883937 -3.53033e-008 -0.467606
+            0.883937 -3.53033e-008 -0.467606
+            0.9313 -2.75004e-008 -0.364254
+            0.9313 -2.75004e-008 -0.364254
+            0.948166 -2.39915e-008 -0.317777
+            0.948166 -2.39915e-008 -0.317777
+            0.963834 -2.01206e-008 -0.266505
+            0.963833 -2.01206e-008 -0.266505
+            0.963833 -2.01206e-008 -0.266505
+            0.963833 -2.01206e-008 -0.266505
+            0.984709 -1.31522e-008 -0.174206
+            0.984709 -1.31522e-008 -0.174206
+            0.984709 -1.31522e-008 -0.174206
+            0.984709 -1.31522e-008 -0.174206
+            0.98595 -1.26111e-008 -0.167039
+            0.987926 -1.16966e-008 -0.154926
+            0.987926 -1.16966e-008 -0.154926
+            0.98595 -1.26111e-008 -0.167039
+            0.991463 -9.84421e-009 -0.13039
+            0.991463 -9.84421e-009 -0.13039
+            0.994441 -7.94951e-009 -0.105294
+            0.994441 -7.94951e-009 -0.105294
+            0.996822 -6.01471e-009 -0.0796673
+            0.996822 -6.01471e-009 -0.0796673
+            0.998566 -4.0419e-009 -0.0535365
+            0.998566 -4.0419e-009 -0.0535365
+            0.999637 -2.03444e-009 -0.026947
+            0.999637 -2.03444e-009 -0.026947
+            0.999965 6.31884e-010 0.00836955
+            0.999965 6.31884e-010 0.00836955
+            0.997645 5.17845e-009 0.0685906
+            0.997645 5.17845e-009 0.0685906
+            0.987035 1.2118e-008 0.160508
+            0.987035 1.2118e-008 0.160508
+            0.956716 2.19716e-008 0.291023
+            0.956716 2.19716e-008 0.291023
+            0.879526 3.59258e-008 0.475852
+            0.879526 3.59258e-008 0.475852
+            0.703199 5.36785e-008 0.710994
+            0.703199 5.36785e-008 0.710993
+            0.388746 6.95596e-008 0.921345
+            0.388745 6.95596e-008 0.921345
+            -9.31015e-005 7.54979e-008 1
+            -9.30429e-005 7.54979e-008 1
+            -0.389045 6.95501e-008 0.921219
+            -0.389045 6.95501e-008 0.921219
+            -0.703529 5.36539e-008 0.710667
+            -0.703529 5.36539e-008 0.710667
+            -0.879714 3.58995e-008 0.475503
+            -0.879714 3.58995e-008 0.475503
+            -0.956795 2.1952e-008 0.290763
+            -0.956795 2.1952e-008 0.290763
+            -0.98706 1.21061e-008 0.16035
+            -0.98706 1.21061e-008 0.16035
+            -0.997649 5.17347e-009 0.0685246
+            -0.997649 5.17347e-009 0.0685246
+            -0.999962 6.58176e-010 0.0087178
+            -0.999962 6.58176e-010 0.0087178
+            -0.999699 -1.85361e-009 -0.0245518
+            -0.999699 -1.85361e-009 -0.0245518
+            -0.998907 -3.52905e-009 -0.0467437
+            -0.998907 -3.52905e-009 -0.0467437
+            -0.997782 -5.02602e-009 -0.0665716
+            -0.997782 -5.02602e-009 -0.0665716
+            -0.996433 -6.37072e-009 -0.0843828
+            -0.996433 -6.37072e-009 -0.0843828
+            -0.994943 -7.58326e-009 -0.100443
+            -0.994943 -7.58326e-009 -0.100443
+            -0.993367 -8.68149e-009 -0.11499
+            -0.993367 -8.68149e-009 -0.11499
+            -0.991847 -9.62114e-009 -0.127436
+            -0.991847 -9.62114e-009 -0.127436
+            -0.990387 -1.04434e-008 -0.138327
+            -0.990387 -1.04434e-008 -0.138327
+            -0.988604 -1.13656e-008 -0.150542
+            -0.988604 -1.13656e-008 -0.150542
+            -0.98607 -1.25577e-008 -0.166331
+            -0.98607 -1.25577e-008 -0.166331
+            -0.982264 -1.41563e-008 -0.187506
+            -0.982264 -1.41563e-008 -0.187506
+            -0.976088 -1.64113e-008 -0.217374
+            -0.976088 -1.64113e-008 -0.217374
+            -0.964909 -1.98246e-008 -0.262585
+            -0.964909 -1.98246e-008 -0.262585
+            -0.95703 -2.18935e-008 -0.289988
+            -0.95703 -2.18935e-008 -0.289988
+            -0.953949 -2.26471e-008 -0.29997
+            -0.953949 -2.26471e-008 -0.29997
+            -0.953949 -2.26471e-008 -0.29997
+            -0.953949 -2.26471e-008 -0.29997
+            -0.957955 -2.16617e-008 -0.286918
+            -0.957955 -2.16617e-008 -0.286918
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 1 -7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+            0 -1 7.54979e-008
+          }
+          ColorBinding OVERALL
+          ColorArray Vec4Array 1
+          {
+            0.690196 0.101961 0.101961 1
+          }
+        }
+      }
+    }
+  }
+}
