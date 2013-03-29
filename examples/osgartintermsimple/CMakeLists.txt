@@ -1,7 +1,7 @@
-set(exe_name osgartintermregistrationartoolkit)
+set(exe_name osgartintermsimple)
 
 set(SRCS
-	osgartintermregistrationartoolkit.cpp
+	osgartintermsimple.cpp
 	)
 
 

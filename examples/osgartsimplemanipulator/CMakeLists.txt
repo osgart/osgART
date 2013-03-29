@@ -1,7 +1,7 @@
-set(exe_name osgartsimplescene)
+set(exe_name osgartsimplemanipulator)
 
 set(SRCS
-	osgartsimplescene.cpp
+	osgartsimplemanipulator.cpp
 	)
 
 
@@ -17,6 +17,7 @@ set_target_properties(${exe_name}
 target_link_libraries(${exe_name} 
 	osgART 
 	${OSG_LIBRARY}
+	${OSGMANIPULATOR_LIBRARY}
 	${OSGDB_LIBRARY}
 	${OSGGA_LIBRARY}	
 	${OSGVIEWER_LIBRARY}

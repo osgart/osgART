@@ -42,6 +42,8 @@
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
 
+#include <osgDB/ReadFile>
+
 #include <osgART/Utils>
 #include <osgART/VideoGeode>
 
@@ -101,9 +103,38 @@ osg::Geode* testCube(float size = 80.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f,
 	return geode;
 }
 
+osg::Node* loadModel(std::string filename) {
 
+	osg::Node* model=osgDB::readNodeFile(filename);
 
+	if (model!=NULL)
+	{
+		return model;
+	}
+	else
+	{
+		osg::notify(osg::FATAL) << "Could not load model:" <<filename<<std::endl;
+		exit(-1);
+	}
+}
 
+osg::MatrixTransform* scaleModel(osg::Node* model, float scalefactor) {
+	osg::MatrixTransform* scaleTransfo;
+
+	scaleTransfo=new osg::MatrixTransform(osg::Matrix::scale(scalefactor,scalefactor,scalefactor));
+	scaleTransfo->addChild(model);
+
+	return scaleTransfo;
+}
+
+osg::MatrixTransform* translateUpModel(osg::Node* model, float z) {
+	osg::MatrixTransform* translateUpTransfo;
+
+	translateUpTransfo=new osg::MatrixTransform(osg::Matrix::translate(0.,0.,z));
+	translateUpTransfo->addChild(model);
+
+	return translateUpTransfo;
+}
 }; // namespace osgART
 
 #endif  // OSGART_GEOMETRYUTILS

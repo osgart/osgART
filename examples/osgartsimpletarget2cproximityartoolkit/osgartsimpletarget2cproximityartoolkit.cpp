@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
- * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,37 +35,33 @@
 
 int main(int argc, char* argv[])  {
 
-
-	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
-	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
-
 	osgViewer::Viewer viewer;
-	
+
 	// add relevant handlers to the viewer
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::ThreadingHandler);
 	viewer.addEventHandler(new osgViewer::HelpHandler);
 
-	//osgART::Display* display=new osgART::Display(osgART::STANDARD_DISPLAY);
-	//osgART::StereoDisplay* display=new osgART::Display
-	//display->getView()->
-	//display->setPosSize(0,0,640,480);
-	//display->setPosSize(video.size());
+
+	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
+	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
 
 
 	osgART::Scene* scene = new osgART::Scene();
-	scene->addVideoBackground("osgart_video_dummyvideo");
-	scene->addTracker("osgart_tracker_dummytracker");
-	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::testCube());
-	
-	//or:
-	//osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/patt.hiro;80;0;0");
-	//mt->addChild(osgART::testCube());
 
+	scene->addVideoBackground("osgart_video_artoolkit2");
+	scene->addTracker("osgart_tracker_artoolkit2","data/artoolkit2/camera_para.dat");
+	
+	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
+	
+	osg::ref_ptr<osg::LOD> lod = new osg::LOD();  
+	lod->addChild(osgDB::readNodeFile("media/models/far.osg"), 700.0f, 10000.0f);
+	lod->addChild(osgDB::readNodeFile("media/models/closer.osg"), 500.0f, 700.0f);
+	lod->addChild(osgDB::readNodeFile("media/models/near.osg"), 0.0f, 500.0f);
+	mt->addChild(lod.get());
 	viewer.setSceneData(scene);
 
-	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();
 	
 }

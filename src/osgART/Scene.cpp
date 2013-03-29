@@ -30,6 +30,7 @@
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
+#include <osgART/VideoUtils>
 
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
@@ -77,14 +78,7 @@ namespace osgART {
 		_videoBackground->removeChildren(0, _videoBackground->getNumChildren());
 
 		// Add a new background video geode using the current set of parameters
-		_videoBackground->addChild(
-			new osgART::VideoGeode(
-				_video.get(),
-				_calibration.get(),
-				1.0, 1.0, 20, 20,
-				(_settings._use_texturerect) ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D
-			)
-		);
+		_videoBackground->addChild(osgART::createBasicVideoBackground(_video.get()));
 
 		_videoBackground->getOrCreateStateSet()->setRenderBinDetails(_settings._background_renderbin, "RenderBin");
 
@@ -93,7 +87,7 @@ namespace osgART {
 
 
 	//"osgart_video_artoolkit2"
-	osgART::Video* Scene::addVideoBackground(  const std::string& v )
+	osgART::Video* Scene::addVideoBackground(  const std::string& v, std::string videoconf)
 	{
 
 		osgART::PluginManager::instance()->load(v);
@@ -108,6 +102,17 @@ namespace osgART {
 			return NULL;
 		}
 
+		// found video - configure now
+		osgART::VideoConfiguration* _configvideo = _video->getConfiguration();
+
+		// if the configuration is existing
+		if (_configvideo)
+		{
+			if (videoconf!="")
+				_configvideo->config=videoconf.c_str();
+		}
+
+
 		if (!_video->open()) {
 			osg::notify(osg::FATAL) << "Could not open video!" << std::endl;
 			return NULL;
@@ -116,6 +121,8 @@ namespace osgART {
 		osgART::addEventCallback(this, new VideoStartCallback(_video.get()));
 
 		configureVideoBackground();
+
+
 
 		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video.get()))
 		{
@@ -133,7 +140,7 @@ namespace osgART {
 
 	//"osgart_tracker_artoolkit2"
 
-	osgART::Tracker* Scene::addTracker( const std::string& t )
+	osgART::Tracker* Scene::addTracker( const std::string& t, std::string calibrationconfigfile,  std::string trackerconfigfile)
 	{
 
 		osgART::PluginManager::instance()->load(t);
@@ -146,17 +153,32 @@ namespace osgART {
 			return NULL;
 		}
 
+		// found tracker - configure now
+		osgART::TrackerConfiguration* _configtracker = _tracker->getConfiguration();
+
+		// if the configuration is existing
+		if (_configtracker)
+		{
+			// it is possible to configure the plugin before opening it
+			if (trackerconfigfile!="")
+			_configtracker->config=trackerconfigfile.c_str();
+			
+
+		}
+
 		// get the tracker calibration object
 		_calibration = _tracker->getOrCreateCalibration();
 
 		// load a calibration file
-		if (!_calibration->load(std::string("data/camera_para.dat")))
-		{
-
-			// the calibration file was non-existing or couldnt be loaded
-			osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
-			return NULL;
-		}
+		//if (calibrationconfigfile!="")
+		//{
+			if (!_calibration->load(calibrationconfigfile))
+			{
+				// the calibration file was non-existing or couldn't be loaded
+				osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+				return NULL;
+			}
+		//}
 
 		// If video was added already, associate video with tracker
 		if (_video.valid()) {
@@ -164,7 +186,7 @@ namespace osgART {
 			_tracker->setImage(_video.get());
 
 			// Update the video background with new tracker calibration etc...
-			configureVideoBackground();
+			//configureVideoBackground();
 
 		}
 
@@ -187,11 +209,12 @@ namespace osgART {
 	osg::MatrixTransform* Scene::addTrackedTransform(Target* target) {
 
 		osg::MatrixTransform* arTransform = new osg::MatrixTransform();
+		arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+
 		_camera->addChild(arTransform);
 
 		if (!target)
 		{
-
 			osg::notify(osg::FATAL) << "No target specified for tracking!" << std::endl;
 
 		} else {

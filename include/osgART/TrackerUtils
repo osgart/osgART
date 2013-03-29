@@ -62,7 +62,9 @@ namespace osgART {
 		* \return camera object
 		*/
 	OSGART_EXPORT osg::Camera* createBasicCamera(osgART::Calibration* calib);
+//	OSGART_EXPORT osg::Camera* createBasicCamera(osgART::Calibration* calib);
 
+//	OSGART_EXPORT osg::MatrixTransform createBasicTransform(osgART::Target* target);
 };
 
 #endif // OSGART_UTILS

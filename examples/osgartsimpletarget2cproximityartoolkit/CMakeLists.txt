@@ -1,7 +1,7 @@
-set(exe_name osgartsimplesceneartoolkit)
+set(exe_name osgartsimpletarget2cproximityartoolkit)
 
 set(SRCS
-	osgartsimplesceneartoolkit.cpp
+	osgartsimpletarget2cproximityartoolkit.cpp
 	)
 
 

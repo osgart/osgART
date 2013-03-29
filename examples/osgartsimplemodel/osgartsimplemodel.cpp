@@ -1,9 +1,10 @@
-/* -*-c++-*- 
- * 
- * osgART - ARToolKit for OpenSceneGraph
- * Copyright (C) 2005-2008 Human Interface Technology Laboratory New Zealand
- * 
- * This file is part of osgART 2.0
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2009-2013 osgART Development Team
+ *
+ * This file is part of osgART
  *
  * osgART 2.0 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +21,14 @@
  *
  */
 
+#include <osgDB/ReadFile>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgDB/FileUtils>
+
+#include <osg/MatrixTransform>
 
 #include <osgART/Scene>
 #include <osgART/GeometryUtils>
@@ -34,9 +38,17 @@
 
 int main(int argc, char* argv[])  {
 
+	//ARGUMENTS INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
+	// Read the filename from the command line or use a default model
+	std::string filename = "media/models/osgart.ive";
+
+	if (argc > 1) filename = std::string(argv[1]);
+	std::cout << "Using model: " << filename << std::endl;
+
+
+	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
 	osgViewer::Viewer viewer;
 	
@@ -46,20 +58,18 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new osgViewer::ThreadingHandler);
 	viewer.addEventHandler(new osgViewer::HelpHandler);
 
-	//osgART::Display* display=new osgART::Display(osgART::STANDARD_DISPLAY);
-	//osgART::StereoDisplay* display=new osgART::Display
-	//display->getView()->
-	//display->setPosSize(0,0,640,480);
-	//display->setPosSize(video.size());
-
 
 	osgART::Scene* scene = new osgART::Scene();
-	scene->addVideoBackground("osgart_video_artoolkit2");
-	scene->addTracker("osgart_tracker_artoolkit2");
-	scene->addTrackedTransform("single;data/patt.hiro;80;0;0")->addChild(osgART::testCube());
+
+
+	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
+	scene->addTracker("osgart_tracker_dummytracker","","mode=0;");
+
+	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::scaleModel(osgART::loadModel(filename),0.1));
 
 	viewer.setSceneData(scene);
 
+	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();
 	
 }

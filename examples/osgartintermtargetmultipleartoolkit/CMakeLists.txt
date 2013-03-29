@@ -1,9 +1,12 @@
-set(exe_name osgartintermpick)
+set(exe_name osgartintermtargetmultipleartoolkit)
 
 set(SRCS
-	osgartintermpick.cpp
+	osgartintermtargetmultipleartoolkit.cpp
 	)
 
+
+
+osgart_get_data()
 
 add_executable(${exe_name} ${OSGART_EXECUTABLE_TYPE} ${SRCS})
 
@@ -18,4 +21,5 @@ target_link_libraries(${exe_name}
 	${OSGGA_LIBRARY}	
 	${OSGVIEWER_LIBRARY}
 )
+
 install_osgart_example(${exe_name})
