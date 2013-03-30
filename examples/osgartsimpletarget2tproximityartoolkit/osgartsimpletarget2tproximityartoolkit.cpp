@@ -40,8 +40,6 @@ class TargetProximityUpdateCallback : public osg::NodeCallback {
  
 		osg::Switch* mSwitchA;
 		osg::Switch* mSwitchB;
-
-		osgART::Scene* mScene;
  
 		float mThreshold;
  
@@ -50,11 +48,11 @@ class TargetProximityUpdateCallback : public osg::NodeCallback {
 		TargetProximityUpdateCallback(
 		osg::MatrixTransform* mA, osg::MatrixTransform* mB, 
 			osg::Switch* switchA, osg::Switch* switchB,
-			float threshold,osgART::Scene* scene) : 
+			float threshold) : 
 			                     osg::NodeCallback(), 
 					    mtA(mA), mtB(mB),
 					    mSwitchA(switchA), mSwitchB(switchB),
-					    mThreshold(threshold),mScene(scene) { }
+					    mThreshold(threshold) { }
  
  
 		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv) {
@@ -68,8 +66,6 @@ class TargetProximityUpdateCallback : public osg::NodeCallback {
 			osg::Vec3 posB = mtB->getMatrix().getTrans();
 			osg::Vec3 offset = posA - posB;
 			float distance = offset.length();
-			mScene->setUpdateCallback(new TargetProximityUpdateCallback(mtA, mtB, mSwitchA,
-																	    mSwitchB, 200.0f,mScene)); 
  
 			/** LOAD APPROPRIATE MODELS:
 				Here we use each target's OSG Switch node to swap between
@@ -83,7 +79,6 @@ class TargetProximityUpdateCallback : public osg::NodeCallback {
 				if (mSwitchB->getNumChildren() > 0) mSwitchB->setSingleChildOn(0);
 			}
  
- 
 			traverse(node,nv);
  
 		}
@@ -94,18 +89,25 @@ class TargetProximityUpdateCallback : public osg::NodeCallback {
 
 int main(int argc, char* argv[])  {
 
+	//ARGUMENTS INIT
+
+	//VIEWER INIT
+
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
+	//AR INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
-
+	//AR SCENEGRAPH INIT
 
 	osgART::Scene* scene = new osgART::Scene();
 
@@ -126,10 +128,16 @@ int main(int argc, char* argv[])  {
 	mtB->addChild(switchB.get());
 
 	scene->setUpdateCallback(new TargetProximityUpdateCallback(mtA, mtB, 
-		switchA.get(), switchB.get(), 200.0f,scene));
+		switchA.get(), switchB.get(), 200.0f));
+
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
 
 	viewer.setSceneData(scene);
 
+	//MAIN LOOP & EXIT CLEANUP
+
+	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();
-	
 }

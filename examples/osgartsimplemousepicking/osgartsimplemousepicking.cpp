@@ -37,11 +37,11 @@
 
 
 /**
-MOUSE EVENT HANDLER:
+MOUSE PICKING EVENT HANDLER:
 To handle keyboard and mouse events in OSG, we need to define a subclass
 of osgGA::GUIEventHandler, and override the handle() method with custom code.
 **/
-class MouseEventHandler : public osgGA::GUIEventHandler {
+class MousePickingEventHandler : public osgGA::GUIEventHandler {
  
     protected:
  
@@ -51,18 +51,18 @@ class MouseEventHandler : public osgGA::GUIEventHandler {
  
     public:
  
-    MouseEventHandler(osgART::Scene* scene) : osgGA::GUIEventHandler() {_scene=scene;}
+    MousePickingEventHandler(osgART::Scene* scene) : osgGA::GUIEventHandler(),_scene(scene) {}
  
  
     /** OVERRIDE THE HANDLE METHOD:
         The handle() method should return true if the event has been dealt with
-        and we do not wish it to be handled by any other handler we may also have
+        and no if it's passed to other handlers.
+		We do not wish it to be handled by any other handler we may also have
         defined. Whether you return true or false depends on the behaviour you
         want - here we have no other handlers defined so return true. **/
     virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa) {
  
-       //osgViewer::View* view = dynamic_cast<osgViewer::View*>(&aa);
- 
+
         switch (ea.getEventType()) {
  
  
@@ -71,7 +71,13 @@ class MouseEventHandler : public osgGA::GUIEventHandler {
                 position co-ordinates. **/
             case osgGA::GUIEventAdapter::RELEASE: {
  
- 
+				//SOLUTION: you do the picking in another method of your event handler
+				//osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
+				//pick(ea,viewer);
+
+				//SOLUTION 2:
+				//you do the picking directly here in the release event
+
                 /** PERFORM SOME ACTION:
                     Once we have received the mouse event, we can
                     perform some action. Here we perform mouse picking.
@@ -79,7 +85,7 @@ class MouseEventHandler : public osgGA::GUIEventHandler {
                     Mouse picking can be thought of as shooting a "ray"
                     from the mouse position into our scene, and determining
                     which parts of the scene intersect with the ray.
-                    Typically we will only be interested in the firstfalse
+                    Typically we will only be interested in the first false
                     (if any) object that the ray hits. We can then perform
                     some action.
  
@@ -92,8 +98,9 @@ class MouseEventHandler : public osgGA::GUIEventHandler {
                 /** PERFORM MOUSE PICKING:
                     In OSG, mouse picking can be done in a few slightly
                     different ways, however, the OSG documentation recommends
-                    using the following steps: **/
- 
+                    using the following steps: 
+					(see for example osgintersection example)
+				**/
  
                 /** 1. Create either a PolytopeIntersector, or a LineIntersector
                     using the normalized mouse co-ordinates.**/
@@ -115,62 +122,121 @@ class MouseEventHandler : public osgGA::GUIEventHandler {
                     Node of interest. **/
  
                 if (lI->containsIntersections()) {
-                    osg::NodePath nP = lI->getFirstIntersection().nodePath;
- 
- 
+                    osg::NodePath nodePath = lI->getFirstIntersection().nodePath;
+  
                     /** Here we search the NodePath for the node of interest.
                         This is where we can make use of our node naming.
  
                         If we find the Transform node named "CAR", we obtain its
                         AnimationPathCallback - if it is currently paused
                         we "un-pause" it, and vice-versa. **/
-                    for (int i = 0; i <= nP.size(); i++) {
-                        if (nP[i]->getName() == "CAR") {
+                    for (unsigned int i = 0; i <= (nodePath.size()-1); i++) {
+						std::cout<<i<<std::endl;
+						std::cout<<nodePath[i]->getName()<<std::endl;
+                        if (nodePath[i]->getName() == "CAR") {
+							std::cout<<"Hit the car !!"<<std::endl;
                             osg::AnimationPathCallback* cb = 
-                                dynamic_cast<osg::AnimationPathCallback*>(nP[i]->getUpdateCallback());
+                                dynamic_cast<osg::AnimationPathCallback*>(nodePath[i]->getUpdateCallback());
  
                             if (cb->getPause()==true)
                                 cb->setPause(false);
                             else cb->setPause(true);
- 
-                            return true;
-                        }
+
+							return true;
+                         }
                     }
                 }
             } 
-            default: return false;
+            default: 
+				return false;
         } 
     } 
+
+	/*
+	void pick(const osgGA::GUIEventAdapter& ea, osgViewer::Viewer* viewer) {
+
+		// 1. Create either a PolytopeIntersector, or a LineIntersector
+        //    using the normalized mouse co-ordinates.
+        osg::ref_ptr<osgUtil::LineSegmentIntersector> lI = new
+            osgUtil::LineSegmentIntersector(osgUtil::Intersector::PROJECTION,
+                ea.getXnormalized(), ea.getYnormalized());
+ 
+        // 2. Create an IntersectionVisitor, passing the
+        //    Intersector as parameter to the constructor.
+        osgUtil::IntersectionVisitor iV(lI);
+ 
+        // 3. Launch the IntersectionVisitor on the root node of
+        //    the scene graph. In an OSGART application, we can
+        //    launch it on the osgART::Scene node. 
+        _scene->accept(iV);
+ 
+        // 4. If the Intersector contains any intersections
+        //    obtain the NodePath and search it to find the
+        //    Node of interest. 
+ 
+        if (lI->containsIntersections()) {
+            osg::NodePath nodePath = lI->getFirstIntersection().nodePath;
+  
+            // Here we search the NodePath for the node of interest.
+            //  This is where we can make use of our node naming.
+ 
+           //    If we find the Transform node named "CAR", we obtain its
+           //    AnimationPathCallback - if it is currently paused
+           //    we "un-pause" it, and vice-versa. 
+            for (unsigned int i = 0; i <= (nodePath.size()-1); i++) {
+				std::cout<<i<<std::endl;
+				std::cout<<nodePath[i]->getName()<<std::endl;
+                if (nodePath[i]->getName() == "CAR") {
+					std::cout<<"Hit the car !!"<<std::endl;
+                    osg::AnimationPathCallback* cb = 
+                        dynamic_cast<osg::AnimationPathCallback*>(nodePath[i]->getUpdateCallback());
+ 
+                    if (cb->getPause()==true)
+                        cb->setPause(false);
+                    else cb->setPause(true);
+
+					return true;
+                    }
+            } //for node path
+      
+		} //if intersection
+	}*/
 };
 
 int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
-	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
+	//VIEWER INIT
 
+	//create a default viewer
 	osgViewer::Viewer viewer;
-	
+
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
+	//AR INIT
 
+	//AR SCENEGRAPH INIT
+
+	//create an osgART::Scene
 	osgART::Scene* scene = new osgART::Scene();
 
-	viewer.addEventHandler(new MouseEventHandler(scene)); // Our handler
-
-	scene->addVideoBackground("osgart_video_dummyvideo","data/dummyvideo/dummyvideo.png");
+	//add a video background (video plugin name, video configuration)
+	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
+	//add a tracker (tracker plugin name,calibration configuration, tracker configuration)
 	scene->addTracker("osgart_tracker_dummytracker","","mode=0;");
 
-
-	osg::MatrixTransform* mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
+	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
 
 	osg::ref_ptr<osg::MatrixTransform> carMT = new osg::MatrixTransform();
-	carMT->addChild(osgDB::readNodeFile("media/models/car.ive"));
+	carMT->addChild(osgART::scaleModel(osgDB::readNodeFile("media/models/car.ive"),0.5));
 	carMT->addUpdateCallback(new osg::AnimationPathCallback(osg::Vec3(0.0,0.0,0.0),
 		osg::Z_AXIS,
 		osg::inDegrees(45.0f)));
@@ -181,11 +247,22 @@ int main(int argc, char* argv[])  {
 		dynamic_cast<osg::AnimationPathCallback*>(carMT->getUpdateCallback());
 
 	cb->setPause(true);
-	carMT->addDescription("CAR");
+
+	carMT->setName("CAR");
+	//you can also use the description for this purpose
+	//carMT->addDescription("CAR");
+	
+	//add our handler
+	viewer.addEventHandler(new MousePickingEventHandler(scene)); // Our handler
+
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
 
 	viewer.setSceneData(scene);
 
+	//MAIN LOOP & EXIT CLEANUP
+
 	//run call is equivalent to a while loop with a viewer.frame call
-	return viewer.run();
-	
+	return viewer.run();	
 }

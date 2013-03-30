@@ -24,48 +24,62 @@
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+
 int main(int argc, char* argv[])  {
+
+	//ARGUMENTS INIT
+
 
 	//VIEWER INIT
 
 	//create a default viewer
 	osgViewer::Viewer viewer;
 	
-	// Add relevant event handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-
-	// You can setup threading mode directly 
+	//setup default threading mode
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
-	// or consider a event handler ('t' key)
-	//viewer.addEventHandler(new osgViewer::ThreadingHandler);
 
-	//you can also optionally add a help handler ('h' key)
-	//viewer.addEventHandler(new osgViewer::HelpHandler);
+	// add relevant handlers to the viewer
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
+
 
 	//AR INIT
 
-	// AR SCENE GRAPH INIT
+
+	//AR SCENEGRAPH INIT
 
 	// Create a root node
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
+
 	//APPLICATION INIT
 
+
 	//BOOTSTRAP INIT
+
 	// Attach root node to the viewer
 	viewer.setSceneData(root.get());
 
+
+	//-- SOLUTION 1 (simple) :run call --
 	//you can leave to OSG the control
 	//to realize the viewer, initialize opengl, viewport, etc
 	//by calling
-	// return viewer.run();
 
+	//MAIN LOOP & EXIT CLEANUP
+	// return viewer.run();
+	 
+
+
+	//-- SOLUTION 2 (interm): frame loop --
 	// OR doing it step by step, which give you control
 	// into the main loop
 
-	//create,display the 
+	//create,display the view
 	viewer.realize();
+
 
 	//MAIN LOOP
 
@@ -78,4 +92,6 @@ int main(int argc, char* argv[])  {
 		viewer.frame();
 	}
 	
+	//EXIT CLEANUP
+
 }

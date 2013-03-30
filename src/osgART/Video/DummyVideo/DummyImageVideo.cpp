@@ -108,8 +108,8 @@ bool DummyVideo::open() {
 		return false;
 	}
 
-	int w = img->s();
-	int h = img->t();
+	unsigned int w = img->s();
+	unsigned int h = img->t();
 
 	if (w > m_max_width) {
 		osg::notify() << "DummyVideo: Image width exceeds maximum (" << m_max_width << "). Image will be resized";

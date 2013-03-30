@@ -54,8 +54,11 @@ int main(int argc, char* argv[])  {
 	osgViewer::Viewer viewer;
 
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
+
 	viewer.addEventHandler(new osgViewer::StatsHandler);
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);
+	viewer.addEventHandler(new osgViewer::HelpHandler);
 
 	//AR INIT
 
@@ -91,7 +94,11 @@ int main(int argc, char* argv[])  {
 	// get information about the format of the video which is essential
 	// for connecting a tracker
 	// Note: configuration should be defined before opening the video
-	video->open();
+	if (!video->open()) {
+		// If the video doesn't start,  video an AR application can not work. Quit if none found.
+		osg::notify(osg::FATAL) << "Could not start the video !" << std::endl;
+	}
+
 
 	// AR SCENE GRAPH INIT
 	osg::ref_ptr<osg::Group> root = new osg::Group;
@@ -100,11 +107,13 @@ int main(int argc, char* argv[])  {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
+
 	//APPLICATION INIT
 
 	//for the demo we activate notification level to debug
 	//to see log of video call
 	osg::setNotifyLevel(osg::DEBUG_INFO);
+
 
 	//BOOTSTRAP INIT
 
@@ -115,13 +124,19 @@ int main(int argc, char* argv[])  {
 	//start the video capture.
 	video->start();
 
+
 	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
 	}
 
+
+	//EXIT CLEANUP
+
+	//video stop
 	video->stop();
-	
+
+	//video open
 	video->close();
 
 	return 0;

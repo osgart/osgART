@@ -21,28 +21,26 @@
  *
  */
 
-#include <osgDB/ReadFile>
+#include <osg/MatrixTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+#include <osgDB/ReadFile>
 #include <osgDB/FileUtils>
 
-#include <osg/MatrixTransform>
-
 #include <osgART/Scene>
+#include <osgART/PluginManager>
 #include <osgART/GeometryUtils>
 
-#include <osgART/PluginManager>
 
-
-class MyKeyboardEventHandler : public osgGA::GUIEventHandler {
+class KeyboardEventHandler : public osgGA::GUIEventHandler {
  
 protected:
 	osg::MatrixTransform* _driveCar;
 
 public:
-    MyKeyboardEventHandler(osg::MatrixTransform* drivecar) : osgGA::GUIEventHandler() {_driveCar=drivecar; }      
+    KeyboardEventHandler(osg::MatrixTransform* drivecar) : osgGA::GUIEventHandler() {_driveCar=drivecar; }      
  
  
     /**
@@ -102,32 +100,43 @@ int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
+	//VIEWER INIT
 
+	//create a default viewer
 	osgViewer::Viewer viewer;
-	
-	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
 
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
+	// add relevant handlers to the viewer
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
+
+	//AR SCENEGRAPH INIT
 
 	osgART::Scene* scene = new osgART::Scene();
 
 	scene->addVideoBackground("osgart_video_artoolkit2");
 	scene->addTracker("osgart_tracker_artoolkit2","data/artoolkit2/camera_para.dat");
 
-	osg::MatrixTransform* mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
+	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
 	
 	osg::ref_ptr<osg::MatrixTransform> driveCar = new osg::MatrixTransform();
 	driveCar->addChild(osgDB::readNodeFile("media/models/car.ive"));
 	mt->addChild(driveCar.get());
 
-	viewer.addEventHandler(new MyKeyboardEventHandler(driveCar)); // Our handler
+	//add our keyboard event handler
+	viewer.addEventHandler(new KeyboardEventHandler(driveCar));
+
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
 
 	viewer.setSceneData(scene);
+
+	//MAIN LOOP & EXIT CLEANUP
 
 	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();

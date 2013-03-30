@@ -21,45 +21,60 @@
  *
  */
 
+#include <osg/MatrixTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+#include <osgDB/ReadFile>
 #include <osgDB/FileUtils>
 
 #include <osgART/Scene>
-#include <osgART/GeometryUtils>
-
 #include <osgART/PluginManager>
+#include <osgART/GeometryUtils>
 
 
 int main(int argc, char* argv[])  {
 
+	//ARGUMENTS INIT
+
+	//VIEWER INIT
+
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
-
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
-
+	//AR SCENEGRAPH INIT
 
 	osgART::Scene* scene = new osgART::Scene();
 
 	scene->addVideoBackground("osgart_video_artoolkit2");
 	scene->addTracker("osgart_tracker_artoolkit2","data/artoolkit2/camera_para.dat");
-	scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0")->addChild(osgART::testCube());
+	scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0")->addChild(osgART::testCube(80));
 
 	//or for being able to further add/modify the target transformation:
 	//osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
-	//mt->addChild(osgART::testCube());
+	//mt->addChild(osgART::testCube(80));
+
+
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
 
 	viewer.setSceneData(scene);
 
+
+	//MAIN LOOP & EXIT CLEANUP
+
+	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();
 	
 }

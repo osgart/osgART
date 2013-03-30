@@ -20,16 +20,16 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <osg/PositionAttitudeTransform>
 
-#include <osg/Version>
-#include <osg/Node>
-#include <osg/NodeVisitor>
-
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
 #include <osgART/VideoGeode>
+
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
@@ -40,10 +40,8 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
 
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
-
-#include <osgDB/FileUtils>
+#include <iostream>
+#include <sstream>
 
 class StatsCallback : public osg::NodeCallback
 {
@@ -64,36 +62,41 @@ public:
 
 int main(int argc, char* argv[])  {
 
-	// create a root node
-	osg::ref_ptr<osg::Group> root = new osg::Group;
+	//ARGUMENTS INIT
 
+	//VIEWER INIT
+
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
-	// attach root node to the viewer
-	viewer.setSceneData(root.get());
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
 
-	// preload the video and tracker
+	//AR INIT
+
+	//preload plugins
+	//video plugin
 	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	//tracker plugin
 	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video =
-		dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
 	{
 		// Without video an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not initialize video plugin!" << std::endl;
-		exit(-1);
+		osg::notify(osg::FATAL) << "Could not initialize video plug-in!" << std::endl;
 	}
+
 
 	// found video - configure now
 	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
@@ -115,14 +118,16 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->open();
 
-	osg::ref_ptr<osgART::Tracker> tracker =
-		dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
+	osg::ref_ptr<osgART::Tracker> tracker 
+		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
 
 	if (!tracker.valid())
 	{
 		// Without tracker an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not initialize tracker plugin!" << std::endl;
-		exit(-1);
+		osg::notify(osg::FATAL) << "Could not initialize tracker plug-in!" << std::endl;
+
+		return -1;
+
 	}
 
 	// found tracker - configure now
@@ -139,6 +144,51 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
 	calibration->load("");
 
+
+	// setup one target
+	osg::ref_ptr<osgART::Target> target = tracker->addTarget("test.pattern;35.2;22.0;0.3");
+
+	target->setActive(true);
+
+	tracker->setImage(video.get());
+
+	tracker->init();
+
+
+	//AR SCENEGRAPH INIT
+
+	//create root 
+	osg::ref_ptr<osg::Group> root = new osg::Group;
+
+	//add video update callback (update video stream)
+	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
+		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
+	}
+
+	//add tracker update callback (update tracker from video stream)
+	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
+
+	//add a video background
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
+	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
+
+	root->addChild(videoBackground.get());
+
+	//add a virtual camera
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
+	root->addChild(cam.get());
+
+	//add a target transform callback (update transform from target information)
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+
+	osgART::attachDefaultEventCallbacks(arTransform.get(), target.get());
+
+	cam->addChild(arTransform.get());
+
+	//add a cube to the transform node
+	arTransform->addChild(osgART::testCube(8));
+
 	// create a stats collector
 	osg::ref_ptr<osg::Stats> myStats = new osg::Stats("osgART timings");
 
@@ -151,59 +201,40 @@ int main(int argc, char* argv[])  {
 	// create reporting callback
 	root->setUpdateCallback(new StatsCallback(myStats.get()));
 
-	// set the image source for the tracker
-	tracker->setImage(video.get());
 
-	osgART::addEventCallback(root.get(), new osgART::TrackerCallback(tracker.get()));
+	//APPLICATION INIT
 
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
-
-
-	osg::ref_ptr<osgART::Target> target = tracker->addTarget("single;data/patt.hiro;80;0;0");
-	if (!target.valid())
-	{
-		// Without target an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not add target!" << std::endl;
-		exit(-1);
-	}
-
-	target->setActive(true);
-
-	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
-
-	osgART::attachDefaultEventCallbacks(arTransform.get(),target.get());
-
-	arTransform->addChild(osgART::testCube(8));
-
-	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
-	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
-
-	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
-
-	cam->addChild(arTransform.get());
-	cam->addChild(videoBackground.get());
-
-	root->addChild(cam.get());
-
-	//for the demo we activate notification level to debug
-	//to see log of video call
-	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());
 
 	viewer.realize();
 
+	//video start
 	video->start();
 
+	//tracker start
 	tracker->start();
 
+
+	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
 	}
 
+	//EXIT CLEANUP
+
+	//tracker stop
+	tracker->stop();
+
+	//video stop
+	video->stop();
+
+	//tracker open
+	tracker->close();
+
+	//video open
+	video->close();
+
+	return 0;
 }

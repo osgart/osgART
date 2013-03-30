@@ -20,10 +20,14 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
+
+#include <osgDB/ReadFile>
+#include <osgDB/FileUtils>
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
@@ -43,6 +47,68 @@
 #include <iostream>
 #include <sstream>
 
+class KeyboardEventHandler : public osgGA::GUIEventHandler {
+ 
+protected:
+	osg::MatrixTransform* _driveCar;
+
+public:
+    KeyboardEventHandler(osg::MatrixTransform* drivecar) : osgGA::GUIEventHandler() {_driveCar=drivecar; }      
+ 
+ 
+    /**
+        OVERRIDE THE HANDLE METHOD:
+        The handle() method should return true if the event has been dealt with
+        and we do not wish it to be handled by any other handler we may also have
+        defined. Whether you return true or false depends on the behaviour you 
+        want - here we have no other handlers defined so return true.
+    **/
+    virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, 
+                        osg::Object* obj, osg::NodeVisitor* nv) { 
+ 
+        switch (ea.getEventType()) {
+ 
+ 
+            /** KEY EVENTS:
+                Key events have an associated key and event names.
+                In this example, we are interested in keys up/down/right/left arrow
+                and space bar.
+                If we detect a press then we modify the transformation matrix 
+                of the local transform node. **/
+            case osgGA::GUIEventAdapter::KEYDOWN: {
+ 
+                switch (ea.getKey()) {
+ 
+                    case osgGA::GUIEventAdapter::KEY_Up: // Move forward 5mm
+                        _driveCar->preMult(osg::Matrix::translate(0, -5, 0));
+                        return true;
+ 
+                    case osgGA::GUIEventAdapter::KEY_Down: // Move back 5mm
+                        _driveCar->preMult(osg::Matrix::translate(0, 5, 0));
+                        return true; 
+ 
+                    case osgGA::GUIEventAdapter::KEY_Left: // Rotate 10 degrees left
+                        _driveCar->preMult(osg::Matrix::rotate(osg::DegreesToRadians(10.0f),  
+                                                       osg::Z_AXIS));
+                        return true;
+ 
+                    case osgGA::GUIEventAdapter::KEY_Right: // Rotate 10 degrees right
+                        _driveCar->preMult(osg::Matrix::rotate(osg::DegreesToRadians(-10.0f),  
+                                                       osg::Z_AXIS));
+                        return true;
+ 
+                    case ' ': // Reset the transformation
+                       _driveCar->setMatrix(osg::Matrix::identity());
+                        return true;
+                }
+ 
+                   default: return false;
+            }
+ 
+ 
+        }
+    }
+};
 int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
@@ -130,7 +196,7 @@ int main(int argc, char* argv[])  {
 
 	// setup one target
 	osg::ref_ptr<osgART::Target> target = tracker->addTarget("test.pattern;35.2;22.0;0.3");
-	
+
 	target->setActive(true);
 
 	tracker->setImage(video.get());
@@ -139,7 +205,7 @@ int main(int argc, char* argv[])  {
 
 
 	//AR SCENEGRAPH INIT
-	
+
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
@@ -166,22 +232,16 @@ int main(int argc, char* argv[])  {
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
 	osgART::attachDefaultEventCallbacks(arTransform.get(), target.get());
-	
-	//add a target debug callback (trace target pose on the console)
-	osgART::addEventCallback(arTransform.get(), new osgART::TargetDebugCallback(target.get()));
 
 	cam->addChild(arTransform.get());
 
-	//add a cube to the transform node
-	arTransform->addChild(osgART::testCube(8));
+	osg::ref_ptr<osg::MatrixTransform> driveCar = new osg::MatrixTransform();
+	driveCar->addChild(osgART::scaleModel(osgDB::readNodeFile("media/models/car.ive"),0.5));
+	arTransform->addChild(driveCar.get());
 
+	viewer.addEventHandler(new KeyboardEventHandler(driveCar)); // Our handler
 
 	//APPLICATION INIT
-
-	//for this example we activate notification level to debug
-	//to see log of video call
-	osg::setNotifyLevel(osg::DEBUG_INFO);
-
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());
@@ -193,7 +253,6 @@ int main(int argc, char* argv[])  {
 
 	//tracker start
 	tracker->start();
-
 
 	//MAIN LOOP
 	while (!viewer.done()) {
@@ -213,6 +272,5 @@ int main(int argc, char* argv[])  {
 
 	//video open
 	video->close();
-
 	return 0;
 }

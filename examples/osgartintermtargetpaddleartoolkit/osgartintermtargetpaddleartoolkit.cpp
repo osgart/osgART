@@ -1,4 +1,3 @@
-
 /* -*-c++-*-
  *
  * osgART - AR for OpenSceneGraph
@@ -21,6 +20,8 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
@@ -43,6 +44,88 @@
 
 #include <iostream>
 #include <sstream>
+
+#include <osg/PolygonMode>
+#include <osg/PositionAttitudeTransform>
+#include <osg/LineWidth>
+
+class TargetProximityUpdateCallback : public osg::NodeCallback {
+
+private:
+
+	osg::Vec3 hotSpotAPos;
+	osg::Vec3 hotSpotBPos;
+
+	osg::ShapeDrawable* hotSpotA;
+	osg::ShapeDrawable* hotSpotB;
+
+	osgART::Target* targetA;
+	osgART::Target* targetB;
+
+	osg::MatrixTransform* arTransformA;
+	osg::MatrixTransform* arTransformB;
+
+	osg::PositionAttitudeTransform* contentA;
+	osg::PositionAttitudeTransform* contentB;
+
+public:
+
+	TargetProximityUpdateCallback(
+		osgART::Target* ltargetA,osgART::Target* ltargetB,
+		osg::MatrixTransform* larTransformA,osg::MatrixTransform* larTransformB,
+		osg::ShapeDrawable* lhotSpotA, osg::ShapeDrawable* lhotSpotB,
+		osg::Vec3 lhotSpotAPos,osg::Vec3 lhotSpotBPos,
+		osg::PositionAttitudeTransform* lcontentA,osg::PositionAttitudeTransform* lcontentB
+		) : osg::NodeCallback(), 
+		targetA(ltargetA),targetB(ltargetB),arTransformA(larTransformA),arTransformB(larTransformB),
+		hotSpotA(lhotSpotA),hotSpotB(lhotSpotB),hotSpotAPos(lhotSpotAPos),hotSpotBPos(lhotSpotBPos),
+		contentA(lcontentA),contentB(lcontentB)
+	{ }                                                       
+
+
+			virtual void operator()(osg::Node* node, osg::NodeVisitor* nv) 
+			{
+
+				// Matrix that rotates from the marker grid to paddle coordinate system
+				osg::Matrix rotationMatrix = osg::Matrix(arTransformB->getMatrix().getRotate());
+
+				osg::Vec3 globalUp = osg::Z_AXIS;							// z-axis on the marker grid
+				osg::Vec3 localUp = globalUp * rotationMatrix;				// z-axis on the paddle
+				osg::Vec3 projection = globalUp ^ (localUp ^ globalUp);		// projection of paddle up vector onto reference plane
+				float magnitude = projection.length();						// length of projection
+
+				std::cout << projection << ", " << magnitude << std::endl;
+
+				osg::Vec3 paddlePos = arTransformB->getMatrix().getTrans();
+
+
+				osg::Vec3 offsetA = paddlePos - hotSpotAPos;
+				osg::Vec3 offsetB = paddlePos - hotSpotBPos;
+
+				float scale = 1 + projection.x();
+
+				if (offsetA.length() < 80) {
+					hotSpotA->setColor(osg::Vec4(0, 0, 1, 1));
+					contentA->setScale(osg::Vec3(scale, scale, scale));
+				} else {
+					hotSpotA->setColor(osg::Vec4(0.4, 0.4, 0.4, 1));
+				}
+
+
+				if (offsetB.length() < 80) {
+					hotSpotB->setColor(osg::Vec4(0, 0, 1, 1));
+					contentB->setScale(osg::Vec3(scale, scale, scale));
+				} else {
+					hotSpotB->setColor(osg::Vec4(0.4, 0.4, 0.4, 1));
+				}
+
+				traverse(node,nv);
+
+			}
+
+
+};
+
 
 int main(int argc, char* argv[])  {
 
@@ -132,7 +215,7 @@ int main(int argc, char* argv[])  {
 
 	// get the tracker calibration object
 	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	
+
 	// load a calibration file
 	if (!calibration->load("data/artoolkit2/camera_para.dat")) 
 	{
@@ -143,8 +226,8 @@ int main(int argc, char* argv[])  {
 
 	// setup two targets
 
-	//first target
-	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("single;data/artoolkit2/patt.hiro;80;0;0");
+	//first target: multi-target
+	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("multi;data/artoolkit2/multi/marker.dat");
 	if (!targetA.valid()) 
 	{
 		// Without target an AR application can not work. Quit if none found.
@@ -155,7 +238,7 @@ int main(int argc, char* argv[])  {
 	targetA->setActive(true);
 
 	//second target
-	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit2/patt.kanji;80;0;0");
+	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit2/patt.paddle;40;0;0");
 	if (!targetB.valid()) 
 	{
 		// Without target an AR application can not work. Quit if none found.
@@ -200,18 +283,65 @@ int main(int argc, char* argv[])  {
 
 	cam->addChild(arTransformA.get());
 
-	//add a cube to the targetA transform
-	arTransformA->addChild(osgART::testCube(80));
+	//add a geode to transform A
+	osg::ref_ptr<osg::Geode> geode = new osg::Geode();
+
+
+	osg::Vec3 hotSpotAPos = osg::Vec3(-100, -50, 30);
+	osg::Vec3 hotSpotBPos = osg::Vec3(100, -50, 30);
+
+	osg::ref_ptr<osg::ShapeDrawable> hotSpotA= new osg::ShapeDrawable(new osg::Sphere(hotSpotAPos, 10));
+	hotSpotA->setColor(osg::Vec4(0.4, 0.4, 0.4, 1));
+	geode->addDrawable(hotSpotA.get());
+
+	osg::ref_ptr<osg::ShapeDrawable> hotSpotB = new osg::ShapeDrawable(new osg::Sphere(hotSpotBPos, 10));
+	hotSpotB->setColor(osg::Vec4(0.4, 0.4, 0.4, 1));
+	geode->addDrawable(hotSpotB.get());
+
+	arTransformA->addChild(geode.get());
+
+	//and two objects
+
+	osg::ref_ptr<osg::PositionAttitudeTransform> contentA = new osg::PositionAttitudeTransform();
+
+	contentA->setPosition(osg::Vec3(-100, 50, 0));
+	contentA->setScale(osg::Vec3(1, 1, 1));
+	contentA->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
+
+	arTransformA->addChild(contentA.get());
+
+	//first model
+	contentA->addChild(osgDB::readNodeFile("media/models/gist_logo.osg"));
+
+	osg::ref_ptr<osg::PositionAttitudeTransform> contentB = new osg::PositionAttitudeTransform();
+	contentB->setPosition(osg::Vec3(100, 50, 0));
+	contentB->setScale(osg::Vec3(1, 1, 1));
+	contentB->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
+
+	arTransformA->addChild(contentB.get());
+
+	//second model
+	contentB->addChild(osgDB::readNodeFile("media/models/hitl_logo.osg"));
+
 
 	osg::ref_ptr<osg::MatrixTransform> arTransformB = new osg::MatrixTransform();
 
 	arTransformB->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-	osgART::attachDefaultEventCallbacks(arTransformB.get(), targetB.get());
 
-	cam->addChild(arTransformB.get());
+	//here we will use a local transformation from targetA
+	osgART::addEventCallback(arTransformB.get(), new osgART::LocalTransformationCallback(targetA.get(), targetB.get()));
+
+	//and add it to transform A
+	arTransformA->addChild(arTransformB.get());
 
 	//add a cube to the targetB transform
-	arTransformB->addChild(osgART::testCube(80));
+	arTransformB->addChild(osgART::testCube(40.0f));
+	arTransformB->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE));
+	arTransformB->getOrCreateStateSet()->setAttributeAndModes(new osg::LineWidth(2));
+	arTransformB->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+
+	osgART::addEventCallback(cam.get(), new TargetProximityUpdateCallback(targetA,targetB,arTransformA.get(),arTransformB.get(),
+			hotSpotA.get(),hotSpotB.get(),hotSpotAPos,hotSpotBPos,contentA.get(),contentB.get()));
 
 	//APPLICATION INIT
 

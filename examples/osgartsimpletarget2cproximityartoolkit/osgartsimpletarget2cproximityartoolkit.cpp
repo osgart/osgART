@@ -35,18 +35,25 @@
 
 int main(int argc, char* argv[])  {
 
+	//ARGUMENTS INIT
+
+	//VIEWER INIT
+
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
+	//AR INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
-
+	//AR SCENEGRAPH INIT
 
 	osgART::Scene* scene = new osgART::Scene();
 
@@ -55,13 +62,32 @@ int main(int argc, char* argv[])  {
 	
 	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
 	
-	osg::ref_ptr<osg::LOD> lod = new osg::LOD();  
-	lod->addChild(osgDB::readNodeFile("media/models/far.osg"), 700.0f, 10000.0f);
-	lod->addChild(osgDB::readNodeFile("media/models/closer.osg"), 500.0f, 700.0f);
-	lod->addChild(osgDB::readNodeFile("media/models/near.osg"), 0.0f, 500.0f);
+	// Load some models
+	osg::ref_ptr<osg::Node> farNode = osgDB::readNodeFile("media/models/far.osg");
+	osg::ref_ptr<osg::Node> closerNode = osgDB::readNodeFile("media/models/closer.osg");
+	osg::ref_ptr<osg::Node> nearNode = osgDB::readNodeFile("media/models/near.osg");
+
+	// Use a Level-Of-Detail node to show each model at different distance ranges.
+	osg::ref_ptr<osg::LOD> lod = new osg::LOD();		
+	lod->addChild(farNode.get(), 500.0f, 10000.0f);			// Show the "far" node from 50cm to 10m away
+	lod->addChild(closerNode.get(), 200.0f, 500.0f);		// Show the "closer" node from 20cm to 50cm away
+	lod->addChild(nearNode.get(), 0.0f, 200.0f);			// Show the "near" node from 0cm to 2cm away
+
+	//you can also do both of these steps in one (if you don't consider to modify your far/closer/nearNode)
+	//lod->addChild(osgDB::readNodeFile("media/far.osg"), 500.0f, 10000.0f);		// Show the "far" node from 50cm to 10m away
+	//lod->addChild(osgDB::readNodeFile("media/closer.osg"), 200.0f, 500.0f);		// Show the "closer" node from 20cm to 50cm away
+	//lod->addChild(osgDB::readNodeFile("media/near.osg"), 0.0f, 200.0f);			// Show the "near" node from 0cm to 2cm away
+
 	mt->addChild(lod.get());
+
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
+
 	viewer.setSceneData(scene);
 
-	return viewer.run();
-	
+	//MAIN LOOP & EXIT CLEANUP
+
+	//run call is equivalent to a while loop with a viewer.frame call
+	return viewer.run();	
 }

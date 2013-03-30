@@ -39,4 +39,13 @@ namespace osgART {
 		return _layer;
 	}
 
+	/*
+	osg::Group* createImageBackground(osg::Image* video) {
+	osgART::VideoLayer* _layer = new osgART::VideoLayer();
+	_layer->setSize(*video);
+	osgART::VideoGeode* _geode = new osgART::VideoGeode(osgART::VideoGeode::USE_TEXTURE_2D, video);
+	addTexturedQuad(*_geode,video->s(),video->t());
+	_layer->addChild(_geode);
+	return _layer;
+	}*/
 }

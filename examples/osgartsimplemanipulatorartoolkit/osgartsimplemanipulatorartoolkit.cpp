@@ -21,21 +21,17 @@
  *
  */
 
-#include <osgDB/ReadFile>
+#include <osg/MatrixTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+#include <osgDB/ReadFile>
 #include <osgDB/FileUtils>
-
-#include <osg/MatrixTransform>
 
 #include <osgART/Scene>
 #include <osgART/GeometryUtils>
-
 #include <osgART/PluginManager>
-
-
 
 #include <osgManipulator/Selection>
 #include <osgManipulator/CommandManager>
@@ -49,11 +45,11 @@ osgManipulator::Dragger* activeDragger = NULL;
 typedef osgUtil::LineSegmentIntersector::Intersections::iterator intersectIter;
 typedef osg::NodePath::iterator npIter;
 
-class MouseManipulationEventHandler : public osgGA::GUIEventHandler {
+class MouseManipulatorEventHandler : public osgGA::GUIEventHandler {
 
 	osg::Camera* mCamera;
 public:
-	MouseManipulationEventHandler(osg::Camera* camera) : osgGA::GUIEventHandler() { mCamera=camera;}                                                       
+	MouseManipulatorEventHandler(osg::Camera* camera) : osgGA::GUIEventHandler() { mCamera=camera;}                                                       
 
 	virtual bool handle(const osgGA::GUIEventAdapter& ea,
 		osgGA::GUIActionAdapter& aa, 
@@ -116,37 +112,46 @@ public:
 	}
 };
 
+
 int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
 
-	
+	//VIEWER INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
-
+	//create a default viewer
 	osgViewer::Viewer viewer;
-	
-	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
 
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
+	// add relevant handlers to the viewer
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
+
+	//AR INIT
+
+	//AR SCENEGRAPH INIT
 
 	osgART::Scene* scene = new osgART::Scene();
-
-	viewer.setUpViewInWindow(0,0,1400,1400);
 
 	scene->addVideoBackground("osgart_video_artoolkit2");
 	scene->addTracker("osgart_tracker_artoolkit2","data/artoolkit2/camera_para.dat");
 
-	osg::MatrixTransform* mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
-	
-	osg::ref_ptr<osg::Camera> camera=scene->getCamera(); //call after addTracker
+	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
 
-	camera->setViewport(0,0,1400,1400); //RESOLUTION same as VIEWER
-	viewer.addEventHandler(new MouseManipulationEventHandler(camera.get()));
+	osg::ref_ptr<osg::Camera> cam=scene->getCamera(); //call after addTracker
+
+	//adjust window size
+	viewer.setUpViewInWindow(0,0,800,800);
+
+	//adjust camera viewport
+	cam->setViewport(0,0,800,800); //RESOLUTION same as VIEWER
+
+	//add our manipulator handle
+	viewer.addEventHandler(new MouseManipulatorEventHandler(cam.get()));
 
 	osg::ref_ptr<osg::MatrixTransform> geom1 = 
 		new osg::MatrixTransform(osg::Matrixd::scale(osg::Vec3f(8.0,4.0,8.0)));
@@ -203,9 +208,14 @@ int main(int argc, char* argv[])  {
 	/** Command Manager - connects Dragger objects with Selection objects **/
 	commandManager->connect(*(dragger.get()), *(selection.get()));
 
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
+
 	viewer.setSceneData(scene);
 
+	//MAIN LOOP & EXIT CLEANUP
+
 	//run call is equivalent to a while loop with a viewer.frame call
-	return viewer.run();
-	
+	return viewer.run();	
 }

@@ -20,43 +20,57 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <osg/PositionAttitudeTransform>
 
-// A simple example to demonstrate the SSTT plugin with osgART
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
 #include <osgART/VideoGeode>
+
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
+#include <osgART/TrackerUtils>
+#include <osgART/VideoUtils>
+
+#include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
-#include <osgART/VideoUtils>
-
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
 
 #include <iostream>
 #include <sstream>
 
 int main(int argc, char* argv[])  {
 
-	//VIEWER INIT
-	//create a default viewer
+	//ARGUMENTS INIT
 
+	//VIEWER INIT
+
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
+	//setup default threading mode
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::StatsHandler);
+
+	// add relevant handlers to the viewer
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
+
 
 	//AR INIT
 
-	// preload the video plugin
+	//preload plugins
+	//video plugin
 	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	//tracker plugin
+	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
-	// Load a video plugin
+	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
 
 	// check if an instance of the video stream could be started
@@ -65,6 +79,7 @@ int main(int argc, char* argv[])  {
 		// Without video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not initialize video plug-in!" << std::endl;
 	}
+
 
 	// found video - configure now
 	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
@@ -86,13 +101,18 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->open();
 
-	// AR SCENE GRAPH INIT
+
+	//AR SCENEGRAPH INIT
+	
+	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
+	//add video update callback (update video stream)
 	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
+	//add a video background
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
@@ -100,29 +120,33 @@ int main(int argc, char* argv[])  {
 
 	//APPLICATION INIT
 
-	//for the demo we activate notification level to debug
+	//for this example we activate notification level to debug
 	//to see log of video call
 	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
-
 	viewer.setSceneData(root.get());
 
 	viewer.realize();
 
-	//start the video capture.
+	//video start
 	video->start();
+
 
 	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
 	}
 
+
+	//EXIT CLEANUP
+
+	//video stop
 	video->stop();
 
+	//video open
 	video->close();
 
 	return 0;
-
 }
 

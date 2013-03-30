@@ -20,8 +20,10 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <osg/PositionAttitudeTransform>
 
-#include <osgDB/ReadFile>
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
@@ -38,33 +40,39 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
 
-#include <osg/PositionAttitudeTransform>
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
-
 #include <iostream>
 #include <sstream>
 
 int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
-
 	// Read the filename from the command line or use a default model
 	std::string filename = "media/models/osgart.ive";
 
 	if (argc > 1) filename = std::string(argv[1]);
 	std::cout << "Using model: " << filename << std::endl;
 
+	//VIEWER INIT
 
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
+	//setup default threading mode
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::StatsHandler);
+
+	// add relevant handlers to the viewer
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
 
-	// preload the video and tracker
+	//AR INIT
+
+	//preload plugins
+	//video plugin
 	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	//tracker plugin
 	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
 	// Load a video plugin.
@@ -127,31 +135,44 @@ int main(int argc, char* argv[])  {
 
 	// setup one target
 	osg::ref_ptr<osgART::Target> target = tracker->addTarget("test.pattern;35.2;22.0;0.3");
-
+	
 	target->setActive(true);
 
 	tracker->setImage(video.get());
 
 	tracker->init();
 
-	// AR SCENE GRAPH INIT
+
+	//AR SCENEGRAPH INIT
+	
+	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
+	//add video update callback (update video stream)
 	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
+	//add tracker update callback (update tracker from video stream)
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 
+	//add a video background
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
+
 	root->addChild(videoBackground.get());
 
+	//add a virtual camera
 	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
 	root->addChild(cam.get());
 
+	//add a target transform callback (update transform from target information)
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+
 	osgART::attachDefaultEventCallbacks(arTransform.get(), target.get());
+
+	cam->addChild(arTransform.get());
 
 	//load the model here
 	osg::ref_ptr<osg::Node> model=osgDB::readNodeFile(filename);
@@ -167,29 +188,39 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not load model:" <<filename<<std::endl;
 		return -1;
 	}
-
-	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-	cam->addChild(arTransform.get());
-
 	//APPLICATION INIT
 
-	//for the demo we activate notification level to debug
-	//to see log of video call
-	osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());
 
 	viewer.realize();
 
+	//video start
 	video->start();
 
+	//tracker start
 	tracker->start();
 
+
+	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
 	}
 
-	return 0;
+	//EXIT CLEANUP
 
+	//tracker stop
+	tracker->stop();
+
+	//video stop
+	video->stop();
+
+	//tracker open
+	tracker->close();
+
+	//video open
+	video->close();
+
+	return 0;
 }

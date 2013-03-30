@@ -356,7 +356,7 @@ int main(int argc, char* argv[])  {
 			if (_model_map.find(iter->first) != _model_map.end())
 			{
 				if (_model_map.find(iter->first)->second == "cube") {
-					proxynode->addChild(osgART::testCube());
+					proxynode->addChild(osgART::testCube(80));
 				} else {
 					proxynode->setFileName(0,_model_map.find(iter->first)->second);
 					osg::notify() << "ProxyNode::getFileName() " << proxynode->getFileName(0) << std::endl;

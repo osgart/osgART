@@ -1,7 +1,7 @@
-set(exe_name osgartsimplemousepicking)
+set(exe_name osgartintermmanipulator)
 
 set(SRCS
-	osgartsimplemousepicking.cpp
+	osgartintermmanipulator.cpp
 	)
 
 
@@ -17,7 +17,7 @@ set_target_properties(${exe_name}
 target_link_libraries(${exe_name} 
 	osgART 
 	${OSG_LIBRARY}
-	${OSGUTIL_LIBRARY}
+	${OSGMANIPULATOR_LIBRARY}
 	${OSGDB_LIBRARY}
 	${OSGGA_LIBRARY}	
 	${OSGVIEWER_LIBRARY}

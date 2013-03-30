@@ -20,8 +20,10 @@
  * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <osg/PositionAttitudeTransform>
 
-// A simple example to demonstrate picking with osgART
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
 
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
@@ -38,54 +40,97 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/ImageStreamCallback>
 
-#include <osg/PositionAttitudeTransform>
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
-
 #include <iostream>
 #include <sstream>
 
-class PickEventHandler : public osgGA::GUIEventHandler {
+
+class HitTargetGeode : public osg::Geode {
+
+private:
+
+	osg::ref_ptr<osg::ShapeDrawable> mShapeDrawable;
 
 public:
-	PickEventHandler() : osgGA::GUIEventHandler() { }
 
-	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* obj, osg::NodeVisitor* nv) {
+	HitTargetGeode(osg::Vec3 position, float size) : osg::Geode() {
+		osg::Box* box = new osg::Box(position, size);
+		mShapeDrawable = new osg::ShapeDrawable(box);
+		this->addDrawable(mShapeDrawable.get());
+		setSelected(false);
+	}
+
+	void setSelected(bool selected) {
+		if (selected) mShapeDrawable->setColor(osg::Vec4(1, 0, 0, 1));
+		else mShapeDrawable->setColor(osg::Vec4(1, 1, 1, 1));
+	}
+
+};
+
+
+std::vector< osg::ref_ptr<HitTargetGeode> > hittargetlist;
+
+
+class MousePickingEventHandler : public osgGA::GUIEventHandler {
+
+public:
+	MousePickingEventHandler() : osgGA::GUIEventHandler() { }                                                       
+
+	virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* obj, osg::NodeVisitor* nv) { 
 
 		switch (ea.getEventType()) {
 
-			case osgGA::GUIEventAdapter::PUSH:
+		case osgGA::GUIEventAdapter::PUSH:
 
-				osgViewer::View* view = dynamic_cast<osgViewer::View*>(&aa);
-				osgUtil::LineSegmentIntersector::Intersections intersections;
+			osgViewer::View* view = dynamic_cast<osgViewer::View*>(&aa);
+			osgUtil::LineSegmentIntersector::Intersections intersections;
 
-				if (view && view->computeIntersections(ea.getX(), ea.getY(), intersections)) {
-					for (osgUtil::LineSegmentIntersector::Intersections::iterator iter = intersections.begin(); iter != intersections.end(); iter++) {
-						if (iter->nodePath.back()->getName() == "target") {
-							std::cout << "HIT!" << std::endl;
-							return true;
-						}
+			// Clear previous selections
+			for (unsigned int i = 0; i < hittargetlist.size(); i++) {
+				hittargetlist[i]->setSelected(false);
+			}
+
+			// Find new selection based on click position
+			if (view && view->computeIntersections(ea.getX(), ea.getY(), intersections)) {				
+				for (osgUtil::LineSegmentIntersector::Intersections::iterator iter = intersections.begin(); iter != intersections.end(); iter++) {							
+					if (HitTargetGeode* hittarget = dynamic_cast<HitTargetGeode*>(iter->nodePath.back())) {
+						std::cout << "HIT!" << std::endl;	
+						hittarget->setSelected(true);
+						return true;
 					}
 				}
+			}
 
-				break;
+			break;
 		}
 		return false;
 	}
 };
 
-
 int main(int argc, char* argv[])  {
 
+	//ARGUMENTS INIT
+
+	//VIEWER INIT
+
+	//create a default viewer
 	osgViewer::Viewer viewer;
 
+	//setup default threading mode
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::StatsHandler);
+
+	// add relevant handlers to the viewer
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
 
-	// preload the video and tracker
+	//AR INIT
+
+	//preload plugins
+	//video plugin
 	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	//tracker plugin
 	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
 	// Load a video plugin.
@@ -148,34 +193,104 @@ int main(int argc, char* argv[])  {
 
 	// setup one target
 	osg::ref_ptr<osgART::Target> target = tracker->addTarget("test.pattern;35.2;22.0;0.3");
-
+	
 	target->setActive(true);
 
 	tracker->setImage(video.get());
 
 	tracker->init();
 
-	// AR SCENE GRAPH INIT
+
+	//AR SCENEGRAPH INIT
+	
+	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
+	//add video update callback (update video stream)
 	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
+	//add tracker update callback (update tracker from video stream)
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 
+	//add a video background
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
+
 	root->addChild(videoBackground.get());
 
+	//add a virtual camera
 	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
 	root->addChild(cam.get());
 
+	//add a target transform callback (update transform from target information)
 	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
-	//we don't use the default callback
 	osgART::attachDefaultEventCallbacks(arTransform.get(), target.get());
 
+	cam->addChild(arTransform.get());
+
+	//adding our mouse picking event handler
+	viewer.addEventHandler(new MousePickingEventHandler());
+
+	// Settings for a grid of targets
+	float size = 4.0f;
+	float space = 5.0f;
+	unsigned int width = 5;
+	unsigned int height = 5;
+
+	// Create a grid of hit targets
+	for (unsigned int x = 0; x < width; x++) {
+		for (unsigned int y = 0; y < height; y++) {
+			float px = -(width * space * 0.5f) + x * space;
+			float py = -(height * space * 0.5f) + y * space;
+			float pz = size * 0.5f;
+			osg::ref_ptr<HitTargetGeode> hittarget = new HitTargetGeode(osg::Vec3(px, py, pz), size);
+			hittargetlist.push_back(hittarget);
+			arTransform->addChild(hittarget.get());
+		}
+	}
+
+	//APPLICATION INIT
+
+
+	//BOOTSTRAP INIT
+	viewer.setSceneData(root.get());
+
+	viewer.realize();
+
+	//video start
+	video->start();
+
+	//tracker start
+	tracker->start();
+
+
+	//MAIN LOOP
+	while (!viewer.done()) {
+		viewer.frame();
+	}
+
+	//EXIT CLEANUP
+
+	//tracker stop
+	tracker->stop();
+
+	//video stop
+	video->stop();
+
+	//tracker open
+	tracker->close();
+
+	//video open
+	video->close();
+
+	return 0;
+}
+
+/*
 	//but specify it by hand
 	//osgART::addEventCallback(arTransform.get(), new osgART::TargetTransformCallback(target.get()));
 	//osgART::addEventCallback(arTransform.get(), new osgART::TargetVisibilityCallback(target.get()));
@@ -183,7 +298,7 @@ int main(int argc, char* argv[])  {
 
 
 	//and we add a pick handler
-	viewer.addEventHandler(new PickEventHandler());
+	viewer.addEventHandler(new MousePickingEventHandler());
 
 	//create cube
 	osg::Geode* cube = osgART::testCube(20);
@@ -194,30 +309,7 @@ int main(int argc, char* argv[])  {
 
 	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 	cam->addChild(arTransform.get());
-
-	//APPLICATION INIT
-
-	//for the demo we activate notification level to debug
-	//to see log of video call
-	//osg::setNotifyLevel(osg::DEBUG_INFO);
-
-	//BOOTSTRAP INIT
-	viewer.setSceneData(root.get());
-
-	viewer.realize();
-
-	video->start();
-
-	tracker->start();
-
-	while (!viewer.done()) {
-		viewer.frame();
-	}
-
-	return 0;
-
-}
-
+	*/
 /*#if OSGART_DEPRECATED_FIELDS
 
 	osg::ref_ptr< osgART::TypedField<bool> > historyField = reinterpret_cast< osgART::TypedField<bool>* >(tracker->get("use_history"));

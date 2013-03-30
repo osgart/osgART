@@ -21,28 +21,26 @@
  *
  */
 
-#include <osgDB/ReadFile>
+#include <osg/MatrixTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+#include <osgDB/ReadFile>
 #include <osgDB/FileUtils>
 
-#include <osg/MatrixTransform>
-
 #include <osgART/Scene>
+#include <osgART/PluginManager>
 #include <osgART/GeometryUtils>
 
-#include <osgART/PluginManager>
 
-
-class MyKeyboardEventHandler : public osgGA::GUIEventHandler {
+class KeyboardEventHandler : public osgGA::GUIEventHandler {
  
 protected:
 	osg::MatrixTransform* _driveCar;
 
 public:
-    MyKeyboardEventHandler(osg::MatrixTransform* drivecar) : osgGA::GUIEventHandler() {_driveCar=drivecar; }      
+    KeyboardEventHandler(osg::MatrixTransform* drivecar) : osgGA::GUIEventHandler() {_driveCar=drivecar; }      
  
  
     /**
@@ -102,33 +100,49 @@ int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
-	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
+	//VIEWER INIT
 
+	//create a default viewer
 	osgViewer::Viewer viewer;
-	
+
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
+	//AR INIT
 
+	//AR SCENEGRAPH INIT
+
+	//create an osgART::Scene
 	osgART::Scene* scene = new osgART::Scene();
 
-	scene->addVideoBackground("osgart_video_dummyvideo","data/dummyvideo/dummyvideo.png");
+	//add a video background (video plugin name, video configuration)
+	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
+	//add a tracker (tracker plugin name,calibration configuration, tracker configuration)
 	scene->addTracker("osgart_tracker_dummytracker","","mode=0;");
 
 	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
+	
 	osg::ref_ptr<osg::MatrixTransform> driveCar = new osg::MatrixTransform();
-	driveCar->addChild(osgDB::readNodeFile("media/models/car.ive"));
+	driveCar->addChild(osgART::scaleModel(osgDB::readNodeFile("media/models/car.ive"),0.5));
 	mt->addChild(driveCar.get());
 
-	viewer.addEventHandler(new MyKeyboardEventHandler(driveCar)); // Our handler
+	//add our keyboard event handler
+	viewer.addEventHandler(new KeyboardEventHandler(driveCar)); 
+
+	//APPLICATION INIT
+
+	//BOOTSTRAP INIT
 
 	viewer.setSceneData(scene);
 
+	//MAIN LOOP & EXIT CLEANUP
+
 	//run call is equivalent to a while loop with a viewer.frame call
 	return viewer.run();
-	
 }

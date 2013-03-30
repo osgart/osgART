@@ -74,19 +74,25 @@ int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
 
-	//with dummy video+tracker
-	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
-	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
+	//VIEWER INIT
 
+	//create a default viewer
 	osgViewer::Viewer viewer;
-	
+
+	//setup default threading mode
+	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+
 	// add relevant handlers to the viewer
-	viewer.addEventHandler(new osgViewer::StatsHandler);
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-	viewer.addEventHandler(new osgViewer::ThreadingHandler);
-	viewer.addEventHandler(new osgViewer::HelpHandler);
+	viewer.addEventHandler(new osgViewer::StatsHandler);//stats, press 's'
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
+	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
+	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
 
+	//AR INIT
 
+	//AR SCENEGRAPH INIT
+
+	//create an osgART::Scene
 	osgART::Scene* scene = new osgART::Scene();
 
 
@@ -96,14 +102,14 @@ int main(int argc, char* argv[])  {
 	osg::MatrixTransform* mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
 	
 	osg::ref_ptr<osg::MatrixTransform> hitlabMT = new osg::MatrixTransform();
-	hitlabMT->addChild(osgDB::readNodeFile("media/models/hitl_logo.osg"));
+	hitlabMT->addChild(osgART::scaleModel(osgDB::readNodeFile("media/models/hitl_logo.osg"),0.5));
 	hitlabMT->addUpdateCallback(new osg::AnimationPathCallback(osg::Vec3(0.0,0.0,0.0), 
 		osg::Z_AXIS, 
 		osg::inDegrees(45.0f)));
 	mt->addChild(hitlabMT.get());
 
 	osg::ref_ptr<osg::MatrixTransform> carMT = new osg::MatrixTransform();
-	carMT->addChild(osgDB::readNodeFile("media/models/car.ive"));
+	carMT->addChild(osgART::scaleModel(osgDB::readNodeFile("media/models/car.ive"),0.5));
 	carMT->addUpdateCallback(new osg::AnimationPathCallback(carAnimationPath()));
 	mt->addChild(carMT.get());
 

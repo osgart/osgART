@@ -34,10 +34,11 @@ add_subdirectory(osgartsimplemanipulator)
 
 add_subdirectory(osgartsimplekeyboardinputartoolkit)
 add_subdirectory(osgartsimplemousepickingartoolkit)
-add_subdirectory(osgartsimpletarget2cproximityartoolkit)
 add_subdirectory(osgartsimplemanipulatorartoolkit)
+add_subdirectory(osgartsimpletarget2cproximityartoolkit)
 add_subdirectory(osgartsimpletarget2tproximityartoolkit)
-#add_subdirectory(osgartsimplepaddleinteractionartoolkit)
+#add_subdirectory(osgartsimpletargetmotionartoolkit)
+#add_subdirectory(osgartsimpletargetpaddleartoolkit)
 #add_subdirectory(osgartsimplemagiclensartoolkit)
 #add_subdirectory(osgartsimpletransitionaluserinterface)
 
@@ -46,6 +47,8 @@ add_subdirectory(osgartsimpletarget2tproximityartoolkit)
 #add_subdirectory(osgartsimpleocclusion)
 #add_subdirectory(osgartsimpleclippingplanes) 
 
+##development
+#add_subdirectory(osgartsimplestats)
 
 # -- middle level --
 
@@ -70,10 +73,19 @@ add_subdirectory(osgartintermmodel)
 
 #interaction
 add_subdirectory(osgartintermmousepicking)
+add_subdirectory(osgartintermkeyboardinput)
+add_subdirectory(osgartintermmanipulator)
 
+add_subdirectory(osgartintermkeyboardinputartoolkit)
 add_subdirectory(osgartintermmousepickingartoolkit)
-add_subdirectory(osgartintermtarget2tproximityartoolkit)
+add_subdirectory(osgartintermmanipulatorartoolkit)
 add_subdirectory(osgartintermtarget2cproximityartoolkit)
+add_subdirectory(osgartintermtarget2tproximityartoolkit)
+#add_subdirectory(osgartintermtargetmotionartoolkit)
+add_subdirectory(osgartintermtargetpaddleartoolkit)
+
+##rendering
+#add_subdirectory(osgartintermmagiclensartoolkit)
 
 ##development
 add_subdirectory(osgartintermstats)
