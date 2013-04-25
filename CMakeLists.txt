@@ -95,6 +95,11 @@ option(OSGART_BUILD_PLUGIN_TRACKER_OPIRA "Build with Opira (HITLAB Proprietary)"
 option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
 option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_STBNX "Build with StbNX (StudierStube NX)" OFF)
 
+
+# Examples
+option(OSGART_BUILD_EXAMPLES "Build all examples" OFF)
+option(OSGART_BUILD_APPLICATIONS "Build all applications (viewer)" ON)
+
 # Sensor Plugins
 
 # ==== CMake  ====
@@ -103,8 +108,14 @@ option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_STBNX "Build with StbNX (StudierStube NX
 # Dive into the subdirectories
 #
 add_subdirectory(src)
-add_subdirectory(applications)
-add_subdirectory(examples)
+
+if(OSGART_BUILD_APPLICATIONS)
+	add_subdirectory(applications)
+endif()
+
+if(OSGART_BUILD_EXAMPLES)
+	add_subdirectory(examples)
+endif()
 
 #
 # Build API docs / but only if Doxygen is available

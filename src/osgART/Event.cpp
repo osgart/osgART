@@ -27,12 +27,12 @@
 namespace osgART {
 
 Event::Event()
-    : mHandled(false)
-    , mTick(0)
-    , mId(0)
+    : _handled(false)
+    , _tick(0)
+    , _id(0)
 {
     // reset
-    mTick = osg::Timer::instance()->tick();
+    _tick = osg::Timer::instance()->tick();
 }
 
 Event::Event(const Event& e)
@@ -43,9 +43,9 @@ Event::Event(const Event& e)
 Event&
 Event::operator = (const Event& e) {
     if (this != &e) {
-        mHandled = e.mHandled;
-        mTick = e.mTick;
-        mId = e.mId;
+        _handled = e._handled;
+        _tick = e._tick;
+        _id = e._id;
     }
 
     return *this;

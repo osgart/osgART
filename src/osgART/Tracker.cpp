@@ -37,7 +37,7 @@ namespace osgART {
     ///
 
 	Tracker::Tracker()
-        : osgART::Object()
+        : osgART::EventHandler()
         , _modifiedCount(0xFFFFF)
         , _stats(new osg::Stats("tracker"))
 	{
@@ -46,9 +46,9 @@ namespace osgART {
         // *cough*
         udc->addUserObject(this);
 
-//        osg::Object* o = new osg::TemplateValueObject<std::string>("name",std::string("what?"));
+        osg::Object* o = new osg::TemplateValueObject<std::string>("name",std::string("what?"));
 //        udc->addUserObject(o);
-        //udc->addUserObject(new osg::TemplateValueObject(name,std::string("gah")));
+//        udc->addUserObject(new osg::TemplateValueObject(name,std::string("gah")));
 
 //		_fields["name"]	= new TypedField<std::string>(&_name);
 //		_fields["version"]	= new TypedField<std::string>(&_version);

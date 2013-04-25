@@ -39,11 +39,6 @@
 #include <vector>
 
 namespace osgART {
-/* -*-c++-*-
- *
- * osgART - ARToolKit for OpenSceneGraph
- * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- */
 
 	class EventHandler;
 
@@ -55,10 +50,10 @@ namespace osgART {
 	class OSGART_EXPORT Event {
 	protected:
 
-		bool mHandled;
-		osg::Timer_t mTick;
+        bool _handled;
+        osg::Timer_t _tick;
 
-		unsigned long mId;
+        unsigned long _id;
 
 	public:
 
@@ -74,14 +69,14 @@ namespace osgART {
 		/** D'tor */
 		virtual ~Event();
 
-		void setId(unsigned long id) { mId = id; }
-		unsigned long getId() { return mId; }
+        void setId(unsigned long id) { _id = id; }
+        unsigned long getId() { return _id; }
 
 		inline void
-		setHandled(bool handled = true) { mHandled = handled; }
+        setHandled(bool handled = true) { _handled = handled; }
 
 		inline bool
-		getHandled() const { return mHandled; }
+        getHandled() const { return _handled; }
 
 	};
 
@@ -102,12 +97,12 @@ namespace osgART {
 	template <typename EventType>
 	struct EventFunctionProxy : EventProxy {
 
-		void (*mHandler)(EventType& e);
+        void (*_handler)(EventType& e);
 
-		EventFunctionProxy(void (*f)(EventType& e)) : mHandler(f) {}
+        EventFunctionProxy(void (*f)(EventType& e)) : _handler(f) {}
 
 		virtual void call(EventHandler*, Event& e) {
-			mHandler(static_cast<EventType&>(e));
+            _handler(static_cast<EventType&>(e));
 		}
 
 		virtual bool corresponds(Event &e) const { return (0 != dynamic_cast<EventType*>(&e)); }
@@ -122,17 +117,17 @@ namespace osgART {
 
 		typedef void (EventClass::*EventCallback)(EventType&);
 
-		EventCallback mHandler;
-		EventClass* mObject;
+        EventCallback _handler;
+        EventClass* _object;
 
 		inline
 		EventFunctorProxy(EventCallback method,EventClass* o)
-			: mHandler(method)
-			, mObject(o)
+            : _handler(method)
+            , _object(o)
 		{}
 
 		virtual void call(EventHandler* h, Event& e) {
-			(mObject->*mHandler)(static_cast<EventType&>(e));
+            (_object->*_handler)(static_cast<EventType&>(e));
 		}
 
 		virtual bool corresponds(Event &e) const { return (0 != dynamic_cast<EventType*>(&e)); }

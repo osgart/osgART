@@ -54,8 +54,8 @@ namespace osgART {
 			void load(const osg::Texture2D& texture, osg::State&) const;
 			void subload(const osg::Texture2D& texture, osg::State&) const;
 
-			inline float getTexCoordX() const { return (_texCoordX);};
-			inline float getTexCoordY() const { return (_texCoordY);};
+            inline float getTexCoordX() const { return (_texCoordX);}
+            inline float getTexCoordY() const { return (_texCoordY);}
 			
 			// needed for OSG 3.0
 			inline bool textureObjectValid(const osg::Texture2D& texture, osg::State& state) const

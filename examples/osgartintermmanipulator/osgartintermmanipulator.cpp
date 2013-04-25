@@ -315,7 +315,8 @@ int main(int argc, char* argv[])  {
 
 	//BOOTSTRAP INIT
 
-	viewer.setSceneData(scene);
+    /// \todo: fixme
+    viewer.setSceneData(group);
 
 	//MAIN LOOP & EXIT CLEANUP
 

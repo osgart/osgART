@@ -34,12 +34,12 @@
 
 namespace osgART {
 
-class Object {
-public:
-	Object() {};
-	virtual ~Object() {};
+    class Object {
+    public:
+        Object() {}
+        virtual ~Object() {}
 
-};
+    };
 
 }
 

@@ -50,6 +50,7 @@
 #include "osgART/TrackerConfiguration"
 #include "osgART/Calibration"
 #include "osgART/TrackerTrainingSupport"
+#include "osgART/Event"
 
 namespace osgART {
 
@@ -63,10 +64,10 @@ namespace osgART {
 	 * that connects video streams, targets and their representation in
 	 * the virtual environment.
 	 */
-    class OSGART_EXPORT Tracker : public osgART::Object, public osg::Object {
+    class OSGART_EXPORT Tracker : public osg::Object, public osgART::EventHandler {
 	public:
 
-	    META_Object(osgART,Tracker);
+        META_Object(osgART,Tracker)
 
 		/**
 		 * \brief Constructor.
