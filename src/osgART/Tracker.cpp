@@ -37,7 +37,8 @@ namespace osgART {
     ///
 
 	Tracker::Tracker()
-        : osgART::EventHandler()
+        : osg::Object()
+        , osgART::EventHandler()
         , _modifiedCount(0xFFFFF)
         , _stats(new osg::Stats("tracker"))
 	{
@@ -47,7 +48,12 @@ namespace osgART {
         udc->addUserObject(this);
 
         osg::Object* o = new osg::TemplateValueObject<std::string>("name",std::string("what?"));
-//        udc->addUserObject(o);
+        udc->addUserObject(o);
+
+
+        this->dump();
+
+
 //        udc->addUserObject(new osg::TemplateValueObject(name,std::string("gah")));
 
 //		_fields["name"]	= new TypedField<std::string>(&_name);
@@ -57,9 +63,8 @@ namespace osgART {
         //			&Tracker::setEnable);
     }
 
-    Tracker::Tracker(const Tracker &rhs, const osg::CopyOp &)
+    Tracker::Tracker(const Tracker &rhs, const osg::CopyOp & co)
     {
-        //\todo implement!
     }
 
 	Tracker::~Tracker()
@@ -96,8 +101,14 @@ namespace osgART {
 	TrackerConfiguration* 
 	Tracker::getConfiguration()
 	{
-		return 0L;
-	}
+        return 0L;
+    }
+
+    /* virtual */
+    Tracker::Traits Tracker::getTraits()
+    {
+        return NoTraits;
+    }
 
 	/*virtual*/
 	Calibration* Tracker::getOrCreateCalibration()
@@ -174,7 +185,7 @@ namespace osgART {
 
 	/*virtual*/
 	void
-	Tracker::updateCB(osg::NodeVisitor* nv /*=0L*/)
+	Tracker::updateCallback(osg::NodeVisitor* nv /*=0L*/)
 	{
 		update();
 	}

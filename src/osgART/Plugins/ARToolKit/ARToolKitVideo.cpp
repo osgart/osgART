@@ -22,119 +22,12 @@
  */
 
 
-//ARToolKit header include
-#include <AR/video.h>
 
-#include <osg/Object>
-#include <osg/Notify>
-#include <osg/Timer>
-
-#include <osgDB/FileUtils>
-
-#include <iostream>
-#include <iomanip>
-#include <cstring>
+#include "ARToolKitVideo"
 
 
-#include "osgART/PluginManager"
-#include "osgART/Video"
-#include "osgART/VideoConfiguration"
+using namespace osgART;
 
-
-
-class ARToolKitVideo : public osgART::Video
-{
-public:
-
-
-
-
-// Standard Services
-
-	/**
-		* Default constructor. It creates a video source from a configuration string
-		* as it is been used in the original AR Toolkit 2.71
-		* \param videoName a string definition of the video background. See documentation
-		* of ARToolKit for further details.
-		*/
-	ARToolKitVideo();
-
-	/**
-		* Copy constructor.
-		*
-		*/
-	ARToolKitVideo(const ARToolKitVideo &,
-		const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
-
-	/**
-		* Destructor.
-		*
-		*/
-	virtual ~ARToolKitVideo();
-
-
-	META_Object(osgART,ARToolKitVideo);
-
-	/**
-	* Affectation operator.
-	*
-	*/
-	ARToolKitVideo& operator = (const ARToolKitVideo &);
-
-	/**
-		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
-		*/
-	bool open();
-
-	/**
-		* Close the video stream. Terminates the connection with the video stream and clean handle.
-		*/
-	void close(bool = true);
-
-	/**
-		* Start the video stream grabbing. Start to get image from the video stream. In function of the
-		* implementation on different platform, this function can run a thread, signal or
-		* real-time function.
-		*/
-	void play();
-
-	/**
-		* Stop the video stream grabbing. Stop to get image from the video stream. In function
-		* of the implementation on different platform, this function can stop a thread, signal or
-		* real-time function.
-		*/
-	void pause();
-
-	/**
-		* Update the video stream grabbing. Try to get an image of the video instance, usable
-		* by your application.
-		*/
-	void update(osg::NodeVisitor* nv);
-
-
-	/**
-	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
-	* class.
-	*/
-	void releaseImage();
-
-	virtual osgART::VideoConfiguration* getVideoConfiguration();
-
-
-private:
-
-	AR2VideoParamT *video;
-
-	osgART::VideoConfiguration m_config;
-
-	GLint _internalformat_GL;
-	GLenum _format_GL;
-	GLenum _datatype_GL;
-
-
-	int getGLPixelFormatForARPixelFormat(const int arPixelFormat, GLint *internalformat_GL, GLenum *format_GL, GLenum *type_GL);
-
-};
 
 
 // Make sure that required OpenGL constant definitions are available at compile-time.

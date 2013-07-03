@@ -121,8 +121,10 @@ target_link_libraries(${lib_name}
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
 
 
-add_subdirectory(Tracker)
-add_subdirectory(Video)
+add_subdirectory(Plugins)
+
+#add_subdirectory(Tracker)
+#add_subdirectory(Video)
 #add_subdirectory(Sensor)
 
 if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")

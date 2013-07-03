@@ -1,6 +1,6 @@
-set(module_name osgart_tracker_artoolkit2)
+set(module_name osgart_artoolkit2)
 
-if(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT)
+if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 
 	find_package(ARToolKit2)
 	
@@ -8,12 +8,20 @@ if(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT)
 #	add_subdirectory(ARToolKit)
 #endif()
 
+
+
+
 	set(SRCS 
 		ARToolKitTracker.cpp
 		MultiTarget.cpp
 		SingleTarget.cpp
 		ARToolKitTrainingSupport.cpp
 	)
+
+	if(ARTOOLKIT2_LIBARVIDEO)
+		list(APPEND SRCS ARToolKitVideo.cpp ARToolKitVideo)
+	endif()
+
 
 	set(HDRS
 		${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitTracker
@@ -35,12 +43,12 @@ if(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT)
 
 	include_directories("." ${ARTOOLKIT2_INCLUDE_DIR})
 		
-	add_library(${module_name} MODULE ${SRCS})
+	add_library(${module_name} MODULE ${SRCS} ${HDRS})
 
 	set_target_properties(${module_name}
 		PROPERTIES
 		PREFIX ""
-		PROJECT_LABEL "Tracker Plugin ${module_name}")
+		PROJECT_LABEL "Plugin ${module_name}")
 
 	target_link_libraries(${module_name} 
 		${OSG_LIBRARY}
@@ -51,6 +59,13 @@ if(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT)
 		${ARTOOLKIT2_LIBAR}	
 		osgART
 		)
+
+
+	if(ARTOOLKIT2_LIBARVIDEO)
+		target_link_libraries(${module_name}
+			${ARTOOLKIT2_LIBARVIDEO}
+		)
+	endif()
 
 	install_osgart_plugin(${module_name})
 
@@ -64,28 +79,28 @@ if(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT)
 	#	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.gif
 	#	)
 
-	if(WIN32)
-		file(GLOB GLUT_DLL 
-			${ARTOOLKIT2_INCLUDE_DIR}/../bin/freeglut*.dll
-			${ARTOOLKIT2_INCLUDE_DIR}/../bin/*glut32.dll
-		)
+#	if(WIN32)
+#		file(GLOB GLUT_DLL
+#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/freeglut*.dll
+#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/*glut32.dll
+#		)
 		
-		file(GLOB WDM_XML 
-			${ARTOOLKIT2_INCLUDE_DIR}/../bin/data/*.xml
-		)
+#		file(GLOB WDM_XML
+#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/data/*.xml
+#		)
 		
-		message(STATUS "${GLUT_DLL}")
+#		message(STATUS "${GLUT_DLL}")
 		
-		install(FILES ${WDM_XML}
-			DESTINATION bin/data
-			)
+#		install(FILES ${WDM_XML}
+#			DESTINATION bin/data
+#			)
 		
-		install(PROGRAMS
-			${ARTOOLKIT2_INCLUDE_DIR}/../bin/mk_patt.exe
-			${GLUT_DLL}
-			DESTINATION bin
-			)	
-	endif(WIN32)	
+#		install(PROGRAMS
+#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/mk_patt.exe
+#			${GLUT_DLL}
+#			DESTINATION bin
+#			)
+#	endif(WIN32)
 		
 
 	#install(FILES

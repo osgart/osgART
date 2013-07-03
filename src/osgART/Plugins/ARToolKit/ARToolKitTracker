@@ -141,8 +141,7 @@ namespace osgART {
 		* 
 		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
 		*/
-		void updateCB(osg::NodeVisitor*);
-		
+        void updateCallback(osg::NodeVisitor *nv);
 		
 		/**
 		 * Adds an ARToolKit target based on the config string. The format for the configuration string is either:
@@ -166,10 +165,24 @@ namespace osgART {
 		 * \return A training support instance for ARToolKit
 		 */	
 		virtual TrackerTrainingSupport* getTrainingSupport();
-			
-			
-				
-	protected:
+
+
+        /**
+         * @brief get indication what the tracker supports
+         * @return
+         */
+        Tracker::Traits getTraits();
+
+
+        /**
+         * @brief creates a video
+         * @return instance of a video interface
+         */
+        Video *createVideo();
+
+
+
+    protected:
 	
 		/** 
 		 * \brief destructor.

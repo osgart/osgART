@@ -69,6 +69,19 @@ namespace osgART {
 
         META_Object(osgART,Tracker)
 
+        /**
+         * @brief some traits to know how the tracker behaves
+         */
+        enum Traits {
+            NoTraits        = 0,                ///< nothing
+            SensorTracker   = (1 << 1),         ///< a sensor tracker
+            VisionTracker   = (1 << 2),         ///< this is a general vision tracker
+            FusionTracker   = (1 << 3),         ///< fusion tracker (does internal fusion of sensors and vision)
+            ProvidesVideo   = (1 << 4),         ///< tracker provides its own video support
+            ProvidesSensors = (1 << 5)          ///< tracker provides its own sensor support
+        };
+
+
 		/**
 		 * \brief Constructor.
 		 *
@@ -76,7 +89,7 @@ namespace osgART {
 		Tracker();
 
 
-        Tracker(const Tracker& rhs, const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
+        Tracker(const Tracker& rhs, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
 
 		/**
 		 * \brief Set the image to analyzed.
@@ -93,6 +106,9 @@ namespace osgART {
 		 * \return struct TrackerConfiguration
 		 */
 		virtual TrackerConfiguration* getConfiguration();
+
+
+        virtual Traits getTraits();
 		
 
 		/**
@@ -106,25 +122,25 @@ namespace osgART {
 		 * \brief initialize the tracker
 		 *
 		 */
-		virtual void init() {};
+        virtual void init() {}
 
 		/**
 		 * \brief close the tracker
 		 *
 		 */
-		virtual void close() {};
+        virtual void close() {}
 
 		/**
 		 * \brief start the tracker
 		 *
 		 */
-		virtual void start() {};
+        virtual void start() {}
 
 		/**
 		 * \brief stop the tracker
 		 *
 		 */
-		virtual void stop() {};
+        virtual void stop() {}
 
 
 		/**
@@ -140,7 +156,7 @@ namespace osgART {
 		 * targets, using the most recent image supplied by setImage.
 		 * \param nv NodeVisitor which should be used to get stats information
 		 */
-		virtual void updateCB(osg::NodeVisitor* nv = 0L);
+        virtual void updateCallback(osg::NodeVisitor* nv = 0L);
 
 		/**
 		 * \brief XXX.
@@ -185,6 +201,7 @@ namespace osgART {
 		inline osg::Stats* getStats() { return _stats.get(); }
 
 		inline void setStats(osg::Stats* stats) { _stats = stats; }
+
 
 
 	protected:
@@ -248,6 +265,6 @@ namespace osgART {
 
 	}; // class Tracker
 
-}; // namespace osgART
+} // namespace osgART
 
 #endif // OSGART_TRACKER

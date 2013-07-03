@@ -69,6 +69,7 @@ model hiro thunderbird.lwo
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgDB/FileUtils>
+#include <osgDB/FileNameUtils>
 #include <osgDB/WriteFile>
 
 osg::Group* createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false) {
@@ -122,6 +123,10 @@ int main(int argc, char* argv[])  {
 		osg::notify() << argv[0] << " dumping to file '" << dump2file << "'" << std::endl;
 	}
 
+    // add directory of the file path to support relative paths in the config file
+    osgDB::getDataFilePathList().push_back(osgDB::getFilePath(osgDB::findDataFile(config)));
+
+
 	// create a root node
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
@@ -172,13 +177,13 @@ int main(int argc, char* argv[])  {
 
 		if (tokens[0] == "tracker" && tokens.size() == 2)
 		{
-			osgART::PluginManager::instance()->load("osgart_tracker_" + tokens[1]);
+            osgART::PluginManager::instance()->load("osgart_" + tokens[1]);
 			tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
 		}
 
 		if (tokens[0] == "video" && tokens.size() == 2)
 		{
-			osgART::PluginManager::instance()->load("osgart_video_" + tokens[1]);
+            osgART::PluginManager::instance()->load("osgart_" + tokens[1]);
 			video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + tokens[1]));
 		}
 

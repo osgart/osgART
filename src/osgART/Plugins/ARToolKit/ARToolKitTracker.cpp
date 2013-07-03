@@ -28,6 +28,9 @@
 #include "ARToolKitTracker"
 
 
+#include "ARToolKitVideo"
+
+
 
 #include <osg/Image>
 #include <osg/Timer>
@@ -56,7 +59,7 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 
 
 #include <AR/config.h>
-#include <AR/video.h>
+//#include <AR/video.h>
 #include <AR/ar.h>
 #include <AR/gsub_lite.h>
 
@@ -467,10 +470,20 @@ namespace osgART {
 	
 	inline void ARToolKitTracker::update()
 	{
-
 	}
 
-	inline void ARToolKitTracker::updateCB(osg::NodeVisitor* nv)
+
+    Tracker::Traits ARToolKitTracker::getTraits()
+    {
+        return NoTraits;
+    }
+
+    Video* ARToolKitTracker::createVideo() {
+        return new ARToolKitVideo();
+    }
+
+
+    inline void ARToolKitTracker::updateCallback(osg::NodeVisitor* nv)
 	{
 
 		const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;

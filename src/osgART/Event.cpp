@@ -55,7 +55,6 @@ Event::~Event()
 {
 }
 
-
 //
 
 bool

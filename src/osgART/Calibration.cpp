@@ -54,8 +54,8 @@ Calibration::~Calibration() {
 }
 
 
-
-int Calibration::observedToIdeal(	
+int
+Calibration::observedToIdeal(
 	const double dist_factor[4], 
 	const double ox, 
 	const double oy,

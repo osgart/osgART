@@ -135,6 +135,6 @@ osg::MatrixTransform* translateUpModel(osg::Node* model, float z) {
 
 	return translateUpTransfo;
 }
-}; // namespace osgART
+} // namespace osgART
 
 #endif  // OSGART_GEOMETRYUTILS

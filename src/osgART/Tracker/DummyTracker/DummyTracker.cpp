@@ -132,7 +132,7 @@ public:
 
 	void update();
 
-	void updateCB(osg::NodeVisitor* nv);
+	void updateCallback(osg::NodeVisitor* nv);
 
 };
 
@@ -264,7 +264,7 @@ DummyTracker::update()
 }
 
 inline void
-DummyTracker::updateCB(osg::NodeVisitor* nv)
+DummyTracker::updateCallback(osg::NodeVisitor* nv)
 {
 	const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;
 

@@ -77,28 +77,28 @@ install(FILES
 
 # ==== Find Optional Packages/Libs Dependencies ====
 
-# Video Plugins
-option(OSGART_BUILD_PLUGIN_VIDEO_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
-option(OSGART_BUILD_PLUGIN_VIDEO_ARTOOLKIT "ARToolKit Multiplatforms interface" OFF)
-option(OSGART_BUILD_PLUGIN_VIDEO_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
+## Video Plugins
+#option(OSGART_BUILD_PLUGIN_VIDEO_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
+#option(OSGART_BUILD_PLUGIN_VIDEO_ARTOOLKIT "ARToolKit Multiplatforms interface" OFF)
+#option(OSGART_BUILD_PLUGIN_VIDEO_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
 
 
-if(WIN32)
-option(OSGART_BUILD_PLUGIN_VIDEO_VIDEOINPUT "videoInput" OFF)
-endif()
+#if(WIN32)
+#option(OSGART_BUILD_PLUGIN_VIDEO_VIDEOINPUT "videoInput" OFF)
+#endif()
 
-# Tracker Plugins
-option(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT "Build with ARToolKit 2.8.1-prehartmut" OFF)
-option(OSGART_BUILD_PLUGIN_TRACKER_OPIRA "Build with Opira (HITLAB Proprietary)" OFF)
+## Tracker Plugins
+#option(OSGART_BUILD_PLUGIN_TRACKER_ARTOOLKIT "Build with ARToolKit 2.8.1-prehartmut" OFF)
+#option(OSGART_BUILD_PLUGIN_TRACKER_OPIRA "Build with Opira (HITLAB Proprietary)" OFF)
 
-# Video Tracker Plugins
-option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
-option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_STBNX "Build with StbNX (StudierStube NX)" OFF)
+## Video Tracker Plugins
+#option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_SSTT "Find and build with SSTT (Simplified Spatial Target Tracker)" OFF)
+#option(OSGART_BUILD_PLUGIN_VIDEOTRACKER_STBNX "Build with StbNX (StudierStube NX)" OFF)
 
 
-# Examples
-option(OSGART_BUILD_EXAMPLES "Build all examples" OFF)
-option(OSGART_BUILD_APPLICATIONS "Build all applications (viewer)" ON)
+## Examples
+#option(OSGART_BUILD_EXAMPLES "Build all examples" OFF)
+#option(OSGART_BUILD_APPLICATIONS "Build all applications (viewer)" ON)
 
 # Sensor Plugins
 
