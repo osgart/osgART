@@ -27,8 +27,6 @@
 
 #include <osg/Notify>
 
-#include <iostream>
-
 #include <osg/ValueObject>
 #include <osg/UserDataContainer>
 
@@ -69,20 +67,26 @@ namespace osgART {
 
 	Tracker::~Tracker()
 	{
-
+		removeAllTargets();
+	}
+	
+	void
+	Tracker::removeAllTargets()
+	{
 		//
 		// Explicitly delete/unref all targets
 		//
         for( TargetList::iterator mi = _targetlist.begin();
-			 mi != _targetlist.end();
-			 mi++)
+			mi != _targetlist.end();
+			mi++)
 		{
 			(*mi) = 0L;
 		}
-
+		
 		// Targets are associated with a specific tracker instance,
 		// so will be deleted when the tracker is deleted.
 		_targetlist.clear();
+
 	}
 
 	void 
@@ -165,7 +169,7 @@ namespace osgART {
 
 	/*virtual*/
 	void
-	Tracker::setImage(osg::Image* image)
+	Tracker::setImage(osg::Image* image,bool useInternalImage)
 	{
 		_imagesource = image;
 	}

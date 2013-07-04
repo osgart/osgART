@@ -2,6 +2,15 @@ osgART ChangeLog.
 =================
 
 
+Changes in version 3.x
+----------------------
+
+- support for mobile devices
+- support for sensor trackers
+
+
+
+
 Changes in version 2.0 
 ------------------------------------
 

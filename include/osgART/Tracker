@@ -95,9 +95,16 @@ namespace osgART {
 		 * \brief Set the image to analyzed.
 		 *
 		 * \param video the video object to use
+		 * \param useInternalVideo internal video capture being used (image should be NULL)
 		 */
-		virtual void setImage(osg::Image* image);
+		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
 
+
+		/**
+		 * \brief retrieve the image used by the tracker
+		 * 
+		 * \return NULL if there is no image (sensor tracker)
+		 */
 		virtual osg::Image* getImage();
 
 
@@ -108,6 +115,11 @@ namespace osgART {
 		virtual TrackerConfiguration* getConfiguration();
 
 
+		/**
+		 * \brief get the traits of the tracker
+		 * 
+		 * \return flags comprising of Traits
+		 */
         virtual Traits getTraits();
 		
 
@@ -180,7 +192,11 @@ namespace osgART {
 		 * \param target pointer to the target to be removed
 		 */
         virtual void removeTarget(Target* target);
-
+		
+		/**
+		 * \brief removes all targets from the tracker (all callbacks will be removed as well)
+		 */
+		 virtual void removeAllTargets();
 
 		/**
 		 * Return a training support instance for this tracker.
