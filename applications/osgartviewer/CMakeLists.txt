@@ -2,7 +2,7 @@ set(exe_name osgartviewer)
 
 
 set(MISC
-	${CMAKE_SOURCE_DIR}/share/osgART/data/artoolkit2/osgartviewer.cfg
+#	${CMAKE_SOURCE_DIR}/share/osgART/data/artoolkit2/osgartviewer.cfg
 	)
 
 set(SRCS

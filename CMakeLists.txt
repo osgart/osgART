@@ -56,10 +56,10 @@ endif(APPLE)
 #
 # If we are on 64bit machines we use lib64 for installing
 #
-set(OSGART_LIB_PREFIX "lib")
-if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
-	set(OSGART_LIB_PREFIX "lib64")
-endif()
+# set(OSGART_LIB_PREFIX "lib")
+# if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+# 	set(OSGART_LIB_PREFIX "lib64")
+# endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE PATH "Executables go here")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE PATH "Libraries go here")
@@ -140,7 +140,7 @@ if(DOXYGEN_FOUND)
 		
 		install(DIRECTORY ${CMAKE_BINARY_DIR}/doc
 			DESTINATION "share/osgART"
-			# COMPONENT "API Documentation" reenable when moving up to 2.6
+			COMPONENT "API Documentation" reenable when moving up to 2.6
 			)	
 	endif()
 endif()
