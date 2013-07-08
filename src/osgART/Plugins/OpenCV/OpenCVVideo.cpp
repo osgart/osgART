@@ -48,8 +48,6 @@ class OpenCVVideo : public osgART::Video
 public:
 
 
-
-
 // Standard Services
 
 	/**
@@ -74,7 +72,7 @@ public:
 	virtual ~OpenCVVideo();
 
 
-	META_Object(osgART,OpenCVVideo);
+	META_Object(osgART,OpenCVVideo)
 
 	/**
 	* Affectation operator.
@@ -235,7 +233,7 @@ OpenCVVideo::pause()
 }
 /*
 void
-OpenCVVideo::update() 
+OpenCVVideo::update()
 {
 
 
@@ -245,24 +243,24 @@ void
 OpenCVVideo::update(osg::NodeVisitor* nv)
 {
 	osg::Timer t;
-	
+
 	if (m_video.grab())
 	{
 		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
-		
+
 		m_video>>m_OCVImage;
 
 		Mat bgr_to_rgb;
 
 		cvtColor(m_OCVImage, bgr_to_rgb, CV_BGR2RGB);
-		
+
 		memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
-		
+
 		this->dirty();
-		
+
 	}
-	
-	if (nv) 
+
+	if (nv)
 	{
 		const osg::FrameStamp *framestamp = nv->getFrameStamp();
 

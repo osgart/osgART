@@ -115,7 +115,7 @@ ARToolKitVideo::open()
 
 		float fps = 0.0f;
 
-#ifdef WIN32		
+#ifdef WIN32
 		ar2VideoInqFreq(video, &fps);
 #endif
 
@@ -181,57 +181,32 @@ ARToolKitVideo::pause()
 void
 ARToolKitVideo::update(osg::NodeVisitor* nv)
 {
-	unsigned char* newImage = NULL;
+	OpenThreads::ScopedLock<OpenThreads::Mutex> lock(this->getMutex());
 
-	if (video)
+	osg::Timer t; t.setStartTick();
+
+	if (video && (0 == ar2VideoCapNext(video)))
 	{
-	    {
-            
-            osg::Timer t;
+		unsigned char* newImage = static_cast<unsigned char*>(ar2VideoGetImage(video));
 
-			if (newImage = (unsigned char*)ar2VideoGetImage(video))
-			{
-			    
-				/*this->setImage(this->s(), this->t(),
-					1, _internalformat_GL, _format_GL, _datatype_GL, newImage ,
-					osg::Image::NO_DELETE, 1);*/
-                
+		if (newImage)
+		{
+			memcpy(this->data(),newImage, this->getImageSizeInBytes());
 
+			this->dirty();
+
+			if (nv) {
+
+				const osg::FrameStamp *framestamp = nv->getFrameStamp();
+
+				if (framestamp && _stats.valid())
 				{
-					OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
-
-					//if (getMutex().trylock() == 0) {
-
-						memcpy(this->data(),newImage, this->getImageSizeInBytes());
-						//getMutex().unlock();
-				//}
-
-
-					
-				}
-
-				this->dirty();
-
-				// hopefully report some interesting data
-				if (nv) {
-
-					const osg::FrameStamp *framestamp = nv->getFrameStamp();
-
-					if (framestamp && _stats.valid())
-					{
-						_stats->setAttribute(framestamp->getFrameNumber(),
-							"Capture time taken", t.time_m());
-
-					}
+					_stats->setAttribute(framestamp->getFrameNumber(),
+										 "Capture time taken", t.time_m());
 				}
 			}
-	    }
-
-	    ar2VideoCapNext(video);
-
+		}
 	}
-
-
 }
 
 osgART::VideoConfiguration*
@@ -275,7 +250,7 @@ int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat,
 #ifdef AR_BIG_ENDIAN
 			*type_GL = GL_UNSIGNED_INT_8_8_8_8_REV;
 #else
-				
+
 			*type_GL = GL_UNSIGNED_INT_8_8_8_8;
 #endif
 			break;
