@@ -4,3 +4,6 @@ option(OSGART_BUILD_PLUGIN_ARTOOLKIT "ARToolKit Multiplatforms interface" OFF)
 
 add_subdirectory(ARToolKit)
 add_subdirectory(OpenCV)
+
+
+add_subdirectory(SMS)
