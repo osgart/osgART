@@ -1,3 +1,6 @@
 build*
 qtcreator*
 CMakeLists.txt.user
+libs/
+obj/
+src/osgART/Plugins/Vuforia/

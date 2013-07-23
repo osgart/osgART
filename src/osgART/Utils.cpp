@@ -34,6 +34,10 @@
 #endif
 namespace osgART {
 
+#ifdef __ANDROID__
+	double log2(double x) { return log(x) / log(2); }
+#endif
+
 	unsigned int equalOrGreaterPowerOfTwo(unsigned int x)
 	{
 		// First check if it is a power of two...

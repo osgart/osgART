@@ -146,6 +146,33 @@ namespace osgART {
 	bool 
 	PluginManager::load(const std::string& pluginname, bool resolveName)
 	{
+		#ifdef __ANDROID__
+			// On Android static linking is used, so there is no need to load a shared library.
+			// However, a plugin can have a corresponding Java helper class so that can be setup here as 
+			// part of the load operation.
+			
+			
+			
+			
+			osg::ref_ptr<osgART::Tracker> tracker = dynamic_cast<osgART::Tracker*>(get(pluginname));
+			if (tracker.valid()) {
+				// This is a tracker plugin and it was successfully retrieved
+				//tracker->initializeJava();
+				registerPluginJavaSide(tracker->javaPluginClassName, pluginname);
+				return true;
+			}
+			
+			osg::ref_ptr<osgART::Video>video = dynamic_cast<osgART::Video*>(get(pluginname));
+			if (video.valid()) {
+				// This is a video plugin and it was successfully retrieved			
+				registerPluginJavaSide(video->javaPluginClassName, pluginname);
+				return true;
+			}
+			
+			return false;
+			
+		#endif
+		
 		std::string fullName;
 
 		#if defined(__unix) || defined(__APPLE__)
@@ -164,4 +191,104 @@ namespace osgART {
 
 		return ( 0 != lib); 
 	}
+	
+	
+	
+#ifdef __ANDROID__
+
+bool PluginManager::registerPluginJavaSide(std::string javaPluginName, std::string nativePluginName) {
+
+	JNIEnv* env = NULL;
+    
+	osg::notify() << "PluginManager: Getting Java environment" << std::endl;
+    int getEnvStat = jvm->GetEnv((void**)&env, JNI_VERSION_1_6);
+	
+	if (jvm->AttachCurrentThread(&env, NULL) != 0) {
+		osg::notify() << "Failed to attach" << std::endl;
+		return false;
+	}
+	
+	osg::notify() << "Getting osgARTManager Java class" << std::endl;
+	jclass osgARTManagerClass = env->FindClass("org/osgart/osgARTManager");	
+	if (osgARTManagerClass == NULL) {
+		osg::notify() << "osgARTManagerClass is NULL" << std::endl;
+		return false;
+	}
+	
+	osg::notify() << "Getting Java method to get osgARTManager instance" << std::endl;
+	jmethodID osgARTManagerInstanceMethod = env->GetStaticMethodID(osgARTManagerClass, "instance", "()Lorg/osgart/osgARTManager;");	
+	if (osgARTManagerInstanceMethod == NULL) {
+		osg::notify() << "osgARTManagerInstanceMethod is NULL" << std::endl;
+		return false;
+	}
+	
+	osg::notify() << "Calling Java method to get osgARTManager instance" << std::endl;	
+	jobject result = env->CallStaticObjectMethod(osgARTManagerClass, osgARTManagerInstanceMethod);
+	
+	if (result == NULL) {
+		osg::notify() << "NULL result trying to get osgARTManager instance" << std::endl;
+		return false;
+	} else {
+		osg::notify() << "Got valid osgARTManager instance" << std::endl;
+	}
+		
+
+	jmethodID osgARTManagerLoadPluginMethod = env->GetMethodID(osgARTManagerClass, "loadPlugin", "(Ljava/lang/String;)V");
+	if (osgARTManagerLoadPluginMethod == NULL) {
+		osg::notify() << "osgARTManagerLoadPluginMethod is NULL" << std::endl;
+		return false;
+	}
+	
+	
+	jstring javaPluginNameString = (jstring)env->NewStringUTF(javaPluginName.c_str());
+	
+	osg::notify() << "calling register plugin" << std::endl;
+	env->CallObjectMethod(result, osgARTManagerLoadPluginMethod, javaPluginNameString);
+	osg::notify() << "called register plugin" << std::endl;
+
+
+	osg::notify() << "Getting Java plugin class" << std::endl;
+	jclass clsPlugin = env->FindClass("org/osgart/plugins/Plugin");
+	if (clsPlugin == NULL) {
+		osg::notify() << "Plugin class is null" << std::endl;
+		return false;
+	}
+	
+	jmethodID osgARTManagerGetPluginMethod = env->GetMethodID(osgARTManagerClass, "getPlugin", "(Ljava/lang/String;)Lorg/osgart/plugins/Plugin;");
+	if (osgARTManagerGetPluginMethod == NULL) {
+		osg::notify() << "osgARTManagerGetPluginMethod is NULL" << std::endl;
+		return false;
+	}
+	
+	jstring javaNativePluginNameString = (jstring)env->NewStringUTF(nativePluginName.c_str());
+	
+	jobject pluginResult = env->CallObjectMethod(result, osgARTManagerGetPluginMethod, javaNativePluginNameString);
+
+	jmethodID pluginInitializeMethod = env->GetMethodID(clsPlugin, "initialize", "()V");
+	if (pluginInitializeMethod == NULL) {
+		osg::notify() << "pluginInitializeMethod is NULL" << std::endl;
+		return false;
+	}
+	
+	// Calling initialize on plugin
+	env->CallObjectMethod(pluginResult, pluginInitializeMethod);
+
+	return true;
+}
+	
+#endif
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

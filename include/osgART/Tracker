@@ -136,6 +136,18 @@ namespace osgART {
 		 */
         virtual void init() {}
 
+		// added back in - julian
+		bool initialized;
+
+		#ifdef __ANDROID__
+		
+		std::string javaPluginClassName;
+		
+		virtual bool initializeJava() {
+			return true;
+		}
+		#endif
+		
 		/**
 		 * \brief close the tracker
 		 *

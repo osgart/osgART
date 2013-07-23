@@ -121,6 +121,15 @@ namespace osgART {
 		 */
 		static Video* cast(osg::Referenced* instance);
 	   		
+			
+		#ifdef __ANDROID__
+		
+		std::string javaPluginClassName;
+		
+		virtual bool initializeJava() {
+			return true;
+		}
+		#endif
 	
 		
 	protected:

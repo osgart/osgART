@@ -48,6 +48,17 @@
 #include "osgART/Video"
 #include "osgART/Tracker"
 
+// Android
+#ifdef __ANDROID__
+	#include <jni.h>
+	#include <android/log.h>
+#endif
+
+extern "C"
+{
+    typedef void (* CPluginFunction) (void);
+}
+
 namespace osgART 
 {
 
@@ -102,6 +113,14 @@ namespace osgART
 		 */
 		void remove(osg::Referenced* plugin);
 
+
+
+#ifdef __ANDROID__
+	JavaVM* jvm;
+	bool registerPluginJavaSide(std::string javaPluginName, std::string nativePluginName);
+#endif
+
+
 	protected:
 		
 		typedef std::map< std::string, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
@@ -143,6 +162,28 @@ namespace osgART
 		 */
 		osg::ref_ptr<osg::Referenced> _plugininterface;		
 	};
+	
+	
+	struct PluginFunctionProxy
+	{
+		PluginFunctionProxy(CPluginFunction function) { 
+			osg::notify() << "Use osgart plugin" << std::endl;
+			(function)();
+		}
+	};
+
+
+	// Julian: Added macros to support static loading of plugins
+	
+	#define USE_OSGARTPLUGIN(pluginname) \
+    extern "C" void osgart_##pluginname(void); \
+    static osgART::PluginFunctionProxy proxy_##pluginname(osgart_##pluginname);
+	
+	#define REGISTER_OSGARTPLUGIN(pluginname, classname) \
+    extern "C" void osgart_##pluginname(void) {} \
+    static osgART::PluginProxy<classname> g_proxy_##pluginname(#pluginname);
+	
+	
 }
 
 #endif  // OSGART_PLUGINANAGER

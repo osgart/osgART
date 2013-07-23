@@ -50,44 +50,7 @@
 namespace osgART {
 
 
-void addTexturedQuad(osgART::VideoGeode& geode, float width, float height)
-{
-
-	float maxU(1.0);
-	float maxV(1.0);
-	
-/*	if (geode.getTextureMode() == osgART::VideoGeode::USE_TEXTURE_RECTANGLE) 
-	{
-		maxU = width;
-		maxV = height;
-	} else 
-	{
-		maxU = width / (float)osgART::nextPowerOfTwo((unsigned int)width);
-		maxV = height / (float)osgART::nextPowerOfTwo((unsigned int)height);
-	}*/
-	
-	osg::Geometry* geometry = new osg::Geometry();
-		
-	osg::Vec3Array* vcoords = new osg::Vec3Array();
-	geometry->setVertexArray(vcoords);
-
-	osg::Vec2Array* tcoords = new osg::Vec2Array();
-	geometry->setTexCoordArray(0, tcoords);
-
-	vcoords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-	vcoords->push_back(osg::Vec3(width, 0.0f, 0.0f));
-	vcoords->push_back(osg::Vec3(width, height, 0.0f));
-	vcoords->push_back(osg::Vec3(0.0f,  height, 0.0f));
-
-	tcoords->push_back(osg::Vec2(0.0f, maxV));
-	tcoords->push_back(osg::Vec2(maxU, maxV));
-	tcoords->push_back(osg::Vec2(maxU, 0.0f));
-	tcoords->push_back(osg::Vec2(0.0f, 0.0f));
-
-	geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4));
-
-	geode.addDrawable(geometry);
-}
+OSGART_EXPORT void addTexturedQuad(osgART::VideoGeode& geode, float width, float height);
 
 /** 
  * Creates and returns an osg::Geode containing a simple box of the specified size.
@@ -95,46 +58,11 @@ void addTexturedQuad(osgART::VideoGeode& geode, float width, float height)
  * \param	color	The color of the cube. Default value is white.
  * \return	The osg::Geode containing the cube shape.
  */
-osg::Geode* testCube(float size = 80.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f)) {
-	osg::Geode* geode = new osg::Geode();
-	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, size / 2.0f), size));
-	sd->setColor(color);
-	geode->addDrawable(sd);
-	return geode;
-}
+OSGART_EXPORT osg::Geode* testCube(float size = 80.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+OSGART_EXPORT osg::Node* loadModel(std::string filename);
+OSGART_EXPORT osg::MatrixTransform* scaleModel(osg::Node* model, float scalefactor);
+OSGART_EXPORT osg::MatrixTransform* translateUpModel(osg::Node* model, float z);
 
-osg::Node* loadModel(std::string filename) {
-
-	osg::Node* model=osgDB::readNodeFile(filename);
-
-	if (model!=NULL)
-	{
-		return model;
-	}
-	else
-	{
-		osg::notify(osg::FATAL) << "Could not load model:" <<filename<<std::endl;
-		exit(-1);
-	}
-}
-
-osg::MatrixTransform* scaleModel(osg::Node* model, float scalefactor) {
-	osg::MatrixTransform* scaleTransfo;
-
-	scaleTransfo=new osg::MatrixTransform(osg::Matrix::scale(scalefactor,scalefactor,scalefactor));
-	scaleTransfo->addChild(model);
-
-	return scaleTransfo;
-}
-
-osg::MatrixTransform* translateUpModel(osg::Node* model, float z) {
-	osg::MatrixTransform* translateUpTransfo;
-
-	translateUpTransfo=new osg::MatrixTransform(osg::Matrix::translate(0.,0.,z));
-	translateUpTransfo->addChild(model);
-
-	return translateUpTransfo;
-}
 } // namespace osgART
 
 #endif  // OSGART_GEOMETRYUTILS

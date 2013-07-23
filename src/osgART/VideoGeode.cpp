@@ -93,16 +93,28 @@ namespace osgART {
 		{
 			
 			const osg::Image* _image = texture.getImage();
-
+/*
 			glTexImage2D(GL_TEXTURE_2D, 0, 
 				// hse25: internal texture format gets overwritten by the image format 
 				// we need just the components - ???
 				//osg::Image::computeNumComponents(_image->getInternalTextureFormat()), 
-				osg::Image::computeNumComponents(_image->getPixelFormat()), 
+				//osg::Image::computeNumComponents(_image->getPixelFormat()), 
+				_image->getPixelFormat(),
 				(float)equalOrGreaterPowerOfTwo((unsigned int)_image->s()), 
 				(float)equalOrGreaterPowerOfTwo((unsigned int)_image->t()), 
 				0, _image->getPixelFormat(), 
 				_image->getDataType(), 0);
+*/
+				int w = equalOrGreaterPowerOfTwo((unsigned int)_image->s());
+				int h = equalOrGreaterPowerOfTwo((unsigned int)_image->t());
+				
+				
+				osg::notify() << "Texture2DCallback load: " << _image->s() << "x" << _image->t() << "  ->  " << w << "x" << h << std::endl;
+				
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				
+				
+				
 
 		}
 		
@@ -113,12 +125,26 @@ namespace osgART {
 			
 			osg::Image* _image = const_cast<osg::Image*>(texture.getImage());
 			osgART::Video* vid = dynamic_cast<osgART::Video*>(_image);
+			
 			if (vid) {
 				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vid->getMutex());
-				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
+				//osg::notify() << "Texture2DCallback subload a" << std::endl;
+				//texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);		
+				
+				//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _image->s(), _image->t(), _image->getPixelFormat(), _image->getDataType(), _image->data());
+				
+				
+				osg::notify() << "Texture2DCallback subload a: " << _image->s() << "x" << _image->t() << std::endl;
+				
+				glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _image->s(), _image->t(), GL_RGB, GL_UNSIGNED_BYTE, _image->data());
+				
+				
 			} else {
+				osg::notify() << "Texture2DCallback subload b" << std::endl;
 				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
+				//glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _image->s(), _image->t(), _image->getPixelFormat(), _image->getDataType(), _image->data());
 			}
+			
 		}
 	}
 
@@ -244,6 +270,38 @@ namespace osgART {
 		}
 
 
+
+
+static const char osgARTVideoBackgroundVert[] =
+ "varying vec4 texCoord0;\n"
+ "void main() \n"
+ "{\n"
+ "gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex; \n"
+ "texCoord0 = gl_MultiTexCoord0;\n"
+ "} \n";
+
+
+static const char osgARTVideoBackgroundFrag[] =
+ "precision mediump float; \n"
+ "varying mediump vec4 texCoord0; \n"
+ "uniform sampler2D tex0; \n"
+ "void main() \n"
+ "{ \n"
+ " gl_FragColor = texture2D( tex0, texCoord0.st );\n"
+ " gl_FragColor.a = 1.0;\n"
+ "} \n";
+ 
+ 	osg::Shader* vBGShader = new osg::Shader(osg::Shader::VERTEX, osgARTVideoBackgroundVert);
+    osg::Shader* fBGShader = new osg::Shader(osg::Shader::FRAGMENT, osgARTVideoBackgroundFrag);
+
+   
+	
+  osg::Program * BGprog = new osg::Program;
+    BGprog->addShader(vBGShader);
+    BGprog->addShader(fBGShader);
+    geom->getOrCreateStateSet()->setAttribute(BGprog);
+
+	//geom->getOrCreateStateSet()->addUniform(new osg::Uniform("s_texture", 0));
 
 		return geom;
 
