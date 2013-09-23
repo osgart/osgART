@@ -1,11 +1,11 @@
 # osgART #
 
 Augmented Reality ToolKit for OpenSceneGraph
-==================
+
 
 ## Overview ##
 
-osgART is a C++ cross-platform development library that simplifies the development of Augmented Reality or Mixed Reality applications.
+osgART is a C++ cross-platform development library that simplifies the development of **Augmented Reality** or **Mixed Reality** applications.
 
 osgART combines video and tracking libraries (e.g. ARToolKit, ARToolKitPlus, SSTT ) with the 3D graphics library OpenSceneGraph. 
 
