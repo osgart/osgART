@@ -89,10 +89,14 @@ namespace osgART {
 	
 	typedef struct {
 		int id;
-		int	width, height;
+
+		std::string config;
+
+		int	width; 
+		int height;
+		
 		FrameRateType framerate;
 		PixelFormatType type;
-		std::string config;
 
 		int selectedWidth;
 		int selectedHeight;
@@ -109,22 +113,34 @@ namespace osgART {
 		virtual int getID() const { return _id; };	
 		virtual void setID(int id) {_id = id;};
 		
-		virtual float getFramerate() const { return _framerate;};
-		void setFrameRate(float framerate) { _framerate = framerate; };
-						
-		virtual const std::string& getDevice() const { return _device; };
-		void setDevice(const std::string& devicename) { _device = devicename; };
-		void setDevice(int id) { _device = devicename; };
-		void setDevice(const std::string& devicename) { _device = devicename; };
-		
 		virtual const osg::Vec2s& getSize() const { return _size;};
 		virtual void setSize(const osg::Vec2s& size) {_size = size;};
 		virtual void setSize(short width, short height) { _size = osg::Vec2s(width,height);};
-		
+
+		virtual float getFramerate() const { return _framerate;};
+		void setFrameRate(float framerate) { _framerate = framerate; };
+					
 		virtual void setPixelFormat(const std::string& fourcc);
+		virtual const std::string getPixelFormat() {return _pixelFormatfourcc;};
+	
+		virtual const std::string& getDevice() const { return _device; };
 		
+		void setDeviceName(const std::string& devicename) { _device = devicename; };
 		
+		void setDevice(int deviceid) { _deviceId = deviceid; };
 		
+		//void setDeviceUUID(const std::string& devicename) { _device = devicename; };
+		
+		//void setConfigXML(const std::string filename) {};
+		//void getConfigXML(const std::string filename) {};
+		
+		//void setConfigJSON(const std::string filename) {};
+		//void getConfigJSON(const std::string filename) {};
+		
+		//void setConfigYAML(const std::string filename) {};
+		//void getConfigYAML(const std::string filename) {};
+		
+				
 		virtual void showDeviceDialog();
 		virtual void showFormatDialog();
 		
@@ -136,10 +152,12 @@ namespace osgART {
 		float _framerate;
 	
 		std::string _device;
+		//std::string _devicename;
 		int _deviceId;
 		int _deviceUUID;
 		
 		// FrameRateType framerate;
+		std::string _pixelFormatfourcc;
 		PixelFormatType _pixelformat;
 		
 	};

@@ -75,6 +75,8 @@ namespace osgART {
 			texture->setTextureSize(equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s()),
 				equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t()));
 
+			std::cout<<"texture format.."<<equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->s())<<"x"<<
+				equalOrGreaterPowerOfTwo((unsigned int)texture->getImage()->t())<<std::endl;
 			texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
 			texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
 			texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::CLAMP);

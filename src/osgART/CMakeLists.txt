@@ -146,6 +146,16 @@ if(WIN32)
 	set(lib_libinstalldir bin)
 endif(WIN32)
 
+if(APPLE)
+	set(lib_libinstalldir ${CMAKE_INSTALL_PREFIX}/lib/)	
+		install(TARGETS ${lib_name} 
+			RUNTIME DESTINATION bin
+			LIBRARY DESTINATION ${lib_libinstalldir}
+			# LIBRARY DESTINATION ${lib_libinstalldir}
+			ARCHIVE DESTINATION lib
+			)
+endif(APPLE)
+
 # if (NOT OSGART_USE_FRAMEWORKS)
 # 	install(TARGETS ${lib_name}
 # 			RUNTIME DESTINATION bin

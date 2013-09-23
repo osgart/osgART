@@ -189,12 +189,36 @@ OpenCVVideo::open()
 	// create an image that same size (packing set to 1)
 
 	*/
+#ifdef __APPLE__
+	// in OpenCV version 2.4.6, The QTKit or AVFoundation interface 
+	// only uses BGRA format, only allow you to specify (or query) width, height format
+	// with AVFoundation, default resolution is 480x360 and min frame duration 1/30
+	//_format_GL=GL_BGRA;
+	//TODO add a warning here about format
+#else
+	_format_GL=GL_BGR;
+#endif
+
+	_format_GL=GL_RGB;
+
+//m_video.set(CV_CAP_PROP_FRAME_WIDTH,800);
+//	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,600);
+	m_video.set(CV_CAP_PROP_FRAME_WIDTH,1280);
+	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,720);
+
 	xsize=m_video.get(CV_CAP_PROP_FRAME_WIDTH);
 	ysize=m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
 	m_video.set(CV_CAP_PROP_FPS,30);
+	//m_video.get(CV_CAP_PROP_FPS,30);
+	
 //	m_video.set(CV_CAP_PROP_CONVERT_RGB,1.0);
 //	m_video.set(CV_CAP_PROP_FOURCC,0x32424752);//RGB
-	_format_GL=GL_RGB;
+	//_format_GL=GL_RGB;
+//	_format_GL=GL_RGB;
+	
+	std::cout << "OpenCVVideo::open() size of video " <<
+			xsize << " x " << ysize << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
+	
 	_datatype_GL=GL_UNSIGNED_BYTE;
 
 	m_config.selectedWidth = xsize;
@@ -239,29 +263,58 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 {
 	osg::Timer t;
 
-	if (m_video.grab())
+	if (m_video.isOpened())
 	{
-		OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
-
-		m_video>>m_OCVImage;
-
-		Mat bgr_to_rgb;
-
-		cvtColor(m_OCVImage, bgr_to_rgb, CV_BGR2RGB);
-
-		memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
-
-		this->dirty();
-
-	}
-
-	if (nv)
-	{
-		const osg::FrameStamp *framestamp = nv->getFrameStamp();
-
-		if (framestamp && _stats.valid())
+		if (m_video.grab())
 		{
-			_stats->setAttribute(framestamp->getFrameNumber(), "Capture time taken", t.time_m());
+			OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
+
+			 cv::Mat frame;
+		
+			m_video.retrieve(frame);
+
+					// only clone if it is not continous (most of the time)
+			  //      _image = (frame.isContinuous()) ? frame : frame.clone();
+
+					// check for nv (NodeVisitor) - otherwise being called from a constructor!
+				   // if (nv && _subscriber.valid()) _subscriber->updateWithImage(_image);
+
+					// set format - OpenCV always BGR
+					//setPixelFormat(GL_BGR);
+
+			// copy data
+			//memcpy(data(),frame.data,getImageSizeInBytes());
+
+					// need to use dirty() as setModifiedCount(int) does not update
+					// the backend buffer object
+
+			Mat bgra_to_rgb;
+			
+			cvtColor(frame, bgra_to_rgb, CV_BGRA2RGB);
+
+			memcpy(data(),(unsigned char*)bgra_to_rgb.data,getImageSizeInBytes());
+				
+					/*
+			m_video>>m_OCVImage;
+
+			Mat bgr_to_rgb;
+
+			cvtColor(m_OCVImage, bgr_to_rgb, CV_BGR2RGB);
+
+			memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
+			*/
+			this->dirty();
+
+		}
+
+		if (nv)
+		{
+			const osg::FrameStamp *framestamp = nv->getFrameStamp();
+
+			if (framestamp && _stats.valid())
+			{
+				_stats->setAttribute(framestamp->getFrameNumber(), "Capture time taken", t.time_m());
+			}
 		}
 	}
 }

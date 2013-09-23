@@ -73,13 +73,19 @@ namespace osgART {
 		return 0L;
 	}
 
+	/* virtual */
+	void 
+	Video::setConfiguration(VideoConfiguration* config)
+	{
+
+	}
+	
 	void 
 	Video::setFlip(bool horizontal,
 		bool vertical) 
 	{
 		m_horizontal_flip = horizontal;
 		m_vertical_flip = vertical;
-
 	}
 
 	

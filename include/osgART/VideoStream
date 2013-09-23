@@ -103,9 +103,8 @@ namespace osgART {
 		/**
 		 * Set the video configuration struct
 		 * \param VideoConfiguration video configuration
-		*/
 		virtual void setConfiguration(VideoConfiguration* config);		 
-		 
+		 */
 		 
 		/**
 		 * Set internal flipping. 

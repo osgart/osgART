@@ -19,9 +19,15 @@ macro(install_osgart_plugin target)
 
 	set(OSGART_FILES_PLUGINS ${OSGART_FILES_PLUGINS} ${plugin_file})
 	
-#	message(STATUS "\n----------------\n${OSGART_FILES_PLUGINS}")
+	#message(STATUS "\naa----------------\n${OSGART_FILES_PLUGINS}")
 	
+
 	set(lib_libinstalldir ${OSGART_LIB_PREFIX})
+	
+	if(APPLE)
+		set(lib_libinstalldir ${CMAKE_INSTALL_PREFIX}/lib/)	
+	#	message(STATUS "\n Install in:----------------\n${lib_libinstalldir}")
+	endif(APPLE)
 	
 	if(WIN32)
 		set(lib_libinstalldir bin)

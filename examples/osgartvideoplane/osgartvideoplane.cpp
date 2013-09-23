@@ -1,22 +1,20 @@
-/*
- *	osgART/osgARTTest
- *	osgART: AR ToolKit for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- *	Copyright (c) 2005-2007 ARToolworks, Inc. All rights reserved.
- *	
- *	Rev		Date		Who		Changes
- *  1.0   	2006-12-08  ---     Version 1.0 release.
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- */
-// @@OSGART_LICENSE_HEADER_BEGIN@@
-// @@OSGART_LICENSE_HEADER_END@@
-
-/*
- *
- * A simple example to demonstrate the most basic functionality of osgART.
- * By Julian Looser, Philip Lamb, Raphael Grasset, Hartmut Seichter.
- *
- */
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
 
 
 #include <osg/Geometry>
@@ -139,7 +137,9 @@ int main(int argc, char* argv[])
 		// it is possible to configure the plugin before opening it
 
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+
 		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
+
 		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
 	}
 	
