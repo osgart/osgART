@@ -2,6 +2,8 @@
 
 Augmented Reality ToolKit for OpenSceneGraph
 
+[![ScreenShot]http://www.osgart.org/images/thumb/a/a7/Osgart_logo.png/300px-Osgart_logo.png)](http://www.osgart.org)
+
 
 ## Overview ##
 
