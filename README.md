@@ -11,7 +11,7 @@ osgART combines video and tracking libraries (e.g. ARToolKit, ARToolKitPlus, SST
 
 ## Build Instructions, Documentation ##
 
-See our wiki: www.osgart.org
+See our website: www.osgart.org
 
 
 ## License ##
@@ -20,6 +20,3 @@ osgART is licensed under the terms of the OpenSceneGraph Public License (OSGPL) 
 
 ## Authors ##
 Julian Looser, Raphael Grasset, Hartmut Seichter
-
---
-EOF
