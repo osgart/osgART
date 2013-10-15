@@ -1,4 +1,4 @@
-#include "osgART/VideoPlugin"
+#include "osgART/ExportPlugin"
 #include "osgART/VideoConfig"
 #include "osgART/GenericVideo"
 #include "IntranelStreamVideo"

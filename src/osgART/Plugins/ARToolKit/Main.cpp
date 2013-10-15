@@ -16,6 +16,6 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include "osgART/VideoPlugin"
+#include "osgART/ExportPlugin"
 
 OSGART_PLUGIN_ENTRY()

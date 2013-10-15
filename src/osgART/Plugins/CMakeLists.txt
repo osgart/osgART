@@ -18,7 +18,7 @@ add_subdirectory(ARToolKit)
 #platform specifics plugins
 if(APPLE)
 	add_subdirectory(SMS)
-	add_subdirectory(QTKit)
-	add_subdirectory(AVFoundation)
+#	add_subdirectory(QTKit)
+#	add_subdirectory(AVFoundation)
 endif()
 

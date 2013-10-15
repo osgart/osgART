@@ -63,9 +63,9 @@ namespace osgART {
 		osgDB::Registry::instance()->getLibraryFilePathList().push_back(getCurrentExecutablePath()+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
 
 		// only do if environment variable exists
-		if (getenv("OSGART_ROOT"))
+		if (getenv("OSGART_DIR"))
 		{
-			osgDB::getLibraryFilePathList().push_front(std::string(getenv("OSGART_ROOT"))+SLASH+"bin"+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
+			osgDB::getLibraryFilePathList().push_front(std::string(getenv("OSGART_DIR"))+SLASH+"bin"+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
 			osg::notify() << "osgART::PluginManager::PluginManager() added osgART root path:" << osgDB::getLibraryFilePathList().front() << std::endl;
 		}
 

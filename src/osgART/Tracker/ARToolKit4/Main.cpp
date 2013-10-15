@@ -11,7 +11,7 @@
 // @@OSGART_LICENSE_HEADER_BEGIN@@
 // @@OSGART_LICENSE_HEADER_END@@
 
-#include "osgART/VideoPlugin"
+#include "osgART/ExportPlugin"
 #include "osgART/VideoConfig"
 #include "osgART/Video"
 

@@ -18,13 +18,13 @@
 
 /**
  *  \file  VideoPlugin
- *  \brief Preprocessor macros to help with correct linkage of exported symbols in video plugins.
+ *  \brief Preprocessor macros to help with correct linkage of exported symbols in plugins.
  *
- * Preprocessor macros to help with correct linkage of exported symbols in video plugins.
+ * Preprocessor macros to help with correct linkage of exported symbols in plugins.
  */
 
-#ifndef OSGART_VIDEOPLUGIN
-#define OSGART_VIDEOPLUGIN 1
+#ifndef OSGART_EXPORTPLUGIN
+#define OSGART_EXPORTPLUGIN 1
 
 #if defined(_WIN32)
 	#if defined(OSGART_PLUGIN_EXPORT)
@@ -60,4 +60,4 @@ extern "C" int __stdcall DllMain(HINSTANCE hInst,DWORD reason,LPVOID reserved) {
 #endif
 
 
-#endif // OSGART_VIDEOPLUGIN
+#endif // OSGART_EXPORTPLUGIN

@@ -38,7 +38,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Export
 	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
+	${CMAKE_SOURCE_DIR}/include/osgART/ExportPlugin
 	${CMAKE_SOURCE_DIR}/include/osgART/Video
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoCallback	

@@ -11,7 +11,7 @@
 
 #include <osgART/Video>
 #include <osgART/PluginManager>
-#include "osgART/VideoPlugin"
+#include "osgART/ExportPlugin"
 #include "osgART/VideoConfig"
 #include "osgART/Utils"
 
@@ -72,9 +72,13 @@ OSGART_PLUGIN_ENTRY()
 
 ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 #if  AR_TRACKER_PROFILE
+
 	ARToolKitTrackerProfiler<int>(),
+
 #else
+
 	Tracker(),
+
 #endif
 			m_threshold		(_ART_PLUS_DFLT_THRESHOLD),
 			m_debugMode		(false),
@@ -91,20 +95,38 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 			m_PlusTracker	(NULL)
 	{
 		//version and name of the tracker
+
 		m_name		= "ARToolkitPlus";
+
 		m_version	= "2.1";
+
 //		__AR_DO_PROFILE(m_version+="(Prf)");
 
+
+
 		if(m_debugMode)
+
 		#if	AR_TRACKER_PROFILE
+
 			{
+
 				std::cout << "Profiling Mode"<< std::endl;
+
 				std::cout << std::endl << "should be : osgart_artoolkitplus_tracker_profiler.dll"<< std::endl;
+
 			}
+
 		#else
+
 			std::cout << std::endl << "should be : osgart_artoolkitplus_tracker.dll"<< std::endl;
 
+
+
 		#endif
+
+
+
+
 
 
 
@@ -116,44 +138,64 @@ ARToolKitTracker_Plus::ARToolKitTracker_Plus() :
 		
 		//attach the field to the corresponding callbacks
 		m_fields["threshold"] = new CallbackField<ARToolKitTracker_Plus,int>(this,
+
 			&ARToolKitTracker_Plus::getThreshold,
+
 			&ARToolKitTracker_Plus::setThreshold);
 
 		m_fields["autothreshold"] = new CallbackField<ARToolKitTracker_Plus,bool>(this,
+
 			&ARToolKitTracker_Plus::getAutoThreshold,
+
 			&ARToolKitTracker_Plus::setAutoThreshold);
 
 		m_fields["autothreshold_retries"] = new CallbackField<ARToolKitTracker_Plus,int>(this,
+
 			&ARToolKitTracker_Plus::getAutoThresholdRetries,
+
 			&ARToolKitTracker_Plus::setAutoThresholdRetries);
 			
 		m_fields["marker_mode"] = new CallbackField<ARToolKitTracker_Plus,int>(this,
+
 			&ARToolKitTracker_Plus::getMarkerMode,
+
 			&ARToolKitTracker_Plus::setMarkerMode);
 
 		m_fields["img_proc_mode"] = new CallbackField<ARToolKitTracker_Plus,int>(this,
+
 			&ARToolKitTracker_Plus::getImgProcMode,
+
 			&ARToolKitTracker_Plus::setImgProcMode);
 
 		m_fields["pos_estim_mode"] = new CallbackField<ARToolKitTracker_Plus,int>(this,
+
 			&ARToolKitTracker_Plus::getPosEstimMode,
+
 			&ARToolKitTracker_Plus::setPosEstimMode);
 
 		m_fields["undistort_mode"] = new CallbackField<ARToolKitTracker_Plus,int>(this,
+
 			&ARToolKitTracker_Plus::getUndistortionMode,
+
 			&ARToolKitTracker_Plus::setUndistortionMode);
 
 		m_fields["use_detect_lite"] = new CallbackField<ARToolKitTracker_Plus,bool>(this,
+
 			&ARToolKitTracker_Plus::getUseDetectLite,
+
 			&ARToolKitTracker_Plus::setUseDetectLite);
 		
 		m_fields["debug"]		= new CallbackField<ARToolKitTracker_Plus,bool>(this,
+
 			&ARToolKitTracker_Plus::getDebugMode,
+
 			&ARToolKitTracker_Plus::setDebugMode);
 
 
 		//set the internal format of ARToolkit Plus, defined at compile time
+
 		//see setImageRaw() for conversion
+
 #if YCK_GENERIC_TRACKER
 		m_arInternalFormat	= ConvertARTPixelFormatToOSGART( ARToolKitPlus::PIXEL_FORMAT_BGR);
 #endif
@@ -200,7 +242,9 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		const std::string& _pattlist_name, 
 		const std::string& _camera_name)
 	{
+
 		m_width = _xsize;
+
 		m_height = _xsize; 
 		if (!CreateTracker	(m_markerMode, _xsize,_ysize))
 		{
@@ -247,6 +291,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		// Set the initial camera parameters.
 			m_cparamName = _camera_name;
 			m_width = _xsize;
+
 			m_height= _ysize;
 
 			osg::notify() << "Loading camera param file : " << m_cparamName << std::endl;
@@ -425,16 +470,26 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		//	 PrintMatrix("SetProjectionMatrix() before conversion", osg::Matrix(m_projectionMatrix));
 		//
 
+
 		//convert matrix from left hand to right hand
+
 		//see arglCameraFrustumRH for details
+
 		m_projectionMatrix[0 + 2 *4] *= -1; //	q[0][2] = ((2.0 * p[0][2] / (width - 1))  - 1.0);
+
 		m_projectionMatrix[1 + 1 *4] *= -1; //	q[1][1] = (2.0 * p[1][1] / (height - 1));
+
 		m_projectionMatrix[1 + 2 *4] *= -1; //	q[1][2] = ((2.0 * p[1][2] / (height - 1)) - 1.0);
+
 		m_projectionMatrix[2 + 2 *4] *= -1; //	q[2][3] = -2.0 * focalmax * focalmin / (focalmax - focalmin);
+
 		m_projectionMatrix[3 + 2 *4] *= -1; //	q[3][2] = 1.0;
+
+
 
 		//if (m_debugMode)
 		//	 PrintMatrix("SetProjectionMatrix() aftet right hand conversion", osg::Matrix(m_projectionMatrix));
+
 	}
 
 
@@ -603,44 +658,84 @@ bool ARToolKitTracker_Plus::CreateTracker(
 
 	}
 
+
 	 
+
 	int ARToolKitTracker_Plus::ConvertOSGARTPixelFormatToART(PixelFormatType format)const
+
 	{
+
 		using namespace ARToolKitPlus;
+
 		switch (format)
+
 		{
+
 			case VIDEOFORMAT_RGB24: return PIXEL_FORMAT_RGB;
+
 			case VIDEOFORMAT_BGR24:	return PIXEL_FORMAT_BGR;
+
 			case VIDEOFORMAT_BGRA32:return PIXEL_FORMAT_BGRA;
+
 			case VIDEOFORMAT_RGBA32:return PIXEL_FORMAT_RGBA;
+
 			case VIDEOFORMAT_ABGR32:return PIXEL_FORMAT_ABGR;
+
 			case VIDEOFORMAT_Y8:
+
 			case VIDEOFORMAT_GREY8:
+
 									return PIXEL_FORMAT_LUM;
+
 			default:
+
 				osg::notify(osg::WARN) << "ConvertOSGARTPixelFormatToART() : Unknown pixel format!" << std::endl;
+
 				return 0;
+
 		}        
+
 		return 0;
+
 	}
 
+
+
 	PixelFormatType ARToolKitTracker_Plus::ConvertARTPixelFormatToOSGART(int format)const
+
 	{
+
 		using namespace ARToolKitPlus;
+
 		switch (format)
+
 		{
+
 			case PIXEL_FORMAT_RGB : return VIDEOFORMAT_RGB24;
+
 			case PIXEL_FORMAT_BGR : return VIDEOFORMAT_BGR24;
+
 			case PIXEL_FORMAT_BGRA :return VIDEOFORMAT_BGRA32;
+
 			case PIXEL_FORMAT_RGBA :return VIDEOFORMAT_RGBA32;
+
 			case PIXEL_FORMAT_ABGR :return VIDEOFORMAT_ABGR32;
+
 			case PIXEL_FORMAT_LUM :return VIDEOFORMAT_Y8;//or VIDEOFORMAT_GREY8:
+
 			default:
+
 				osg::notify(osg::WARN) << "ConvertARTPixelFormatToOSGART() : Unknown pixel format!" << std::endl;
+
 				
+
 		}        
+
 		return VIDEOFORMAT_ANY;
+
 	}
+
+
 
     
 	/*virtual*/ 	
@@ -730,6 +825,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				iter++)		
 		{
 			SingleMarker*	singleMarker = dynamic_cast<SingleMarker*>((*iter).get());
+
 			MultiMarker*	multiMarker  = dynamic_cast<MultiMarker*>((*iter).get());
 
 			if (singleMarker)
@@ -792,8 +888,11 @@ bool ARToolKitTracker_Plus::CreateTracker(
 				{
 					multiMarker->update(marker_info, m_marker_num);
 				}
+
 				else {
+
 					osg::notify(osg::WARN)<< "ARToolKitPlusTracker::update() : Unknown marker type id!" << std::endl;
+
 				}
 			}
 
@@ -982,6 +1081,7 @@ bool ARToolKitTracker_Plus::CreateTracker(
 		}
 		m_fields["confidence"] = new TypedField<double>(&m_confidence);
 		m_fields["patt_id"] = new TypedField<int>(&m_patt_id);
+
 		//m_fields["patt_code"] = new TypedField<int>(&m_patt_artag_code);
 	}
 
