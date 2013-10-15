@@ -185,12 +185,6 @@ OpenCVVideo::open()
 
 	}
 
-	if (m_video.open(m_camIndex))
-	{
-		osg::notify() << std::dec<< "OpenCVVideo::open() succesful.."<<std::endl;
-	}
-
-
 //GL_BGRA, GL_UNSIGNED_BYTE
 	// create an image that same size (packing set to 1)
 

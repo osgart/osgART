@@ -94,10 +94,16 @@ add_subdirectory(osgartintermstats)
 
 # -- PLUGINS -- 
 
+add_subdirectory(osgartpluginvdummyvideotest)
+#add_subdirectory(osgartpluginvdummyvideRGBDtest)
+add_subdirectory(osgartplugintdummytrackertest)
+add_subdirectory(osgartpluginvopencvtest)
+#add_subdirectory(osgartpluginvartoolkittest)
+#add_subdirectory(osgartplugintartoolkittest)
+
 #add_subdirectory(osgartplugintopiratest)
 #add_subdirectory(osgartplugintstbtest)
 #add_subdirectory(osgartpluginvtsstttest)
-add_subdirectory(osgartpluginvopencvtest)
 
 ## -- TODO --
 #add_subdirectory(osgartvideobackground)

@@ -1,0 +1,36 @@
+/*  --------------------------------------------------------------------------
+*   Copyright (C) 2004 Hitlab NZ.
+*   The distribution policy is describe on the Copyright.txt furnish 
+*    with this library.
+*   -------------------------------------------------------------------------*/
+/**
+*  \file  DummyVideo
+*  \brief A Video class for image input
+*
+* 
+* A video class that just displaying always the same image, ideal for
+* debugging or taking snapshot. The image format is mainly the one
+* implicitly supported in OpenSceneGraph.
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 07/05/31
+**/
+/*  --------------------------------------------------------------------------
+*   History : 
+*   Rev		Date		Who		Changes
+*
+*----------------------------------------------------------------------------*/
+
+#ifndef OSGART_DummyVideo
+#define OSGART_DummyVideo
+
+
+
+
+
+#endif

@@ -29,12 +29,12 @@ namespace osgART {
 		return (fourcc[3] << 24) + (fourcc[2] << 16) + (fourcc[1] << 8 ) + fourcc[0];
 	}
 
-	VideoConfig::VideoConfig() : _id(0)
+	VideoConfiguration::VideoConfiguration() : _id(0)
 	{
 	}
 
 	/*virtual*/
-	VideoConfig::~VideoConfig() 
+	VideoConfiguration::~VideoConfiguration() 
 	{
 	}
 
@@ -62,7 +62,7 @@ namespace osgART {
 		//VIDEOFORMAT_ANY 
 
 
-	void VideoConfig::setPixelFormat(const std::string& fourcc)
+	void VideoConfiguration::setPixelFormat(const std::string& fourcc)
 	{
 		unsigned int fourcc_num = charToFourCC(fourcc.c_str());
 
@@ -100,12 +100,12 @@ namespace osgART {
 
 	/*virtual*/ 
 	void 
-	VideoConfig::showDeviceDialog()
+	VideoConfiguration::showDeviceDialog()
 	{}
 
 	/*virtual*/ 
 	void 
-	VideoConfig::showFormatDialog()
+	VideoConfiguration::showFormatDialog()
 	{}
 
 }

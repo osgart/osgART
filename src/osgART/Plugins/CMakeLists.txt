@@ -1,9 +1,24 @@
 
-option(OSGART_BUILD_PLUGIN_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
-option(OSGART_BUILD_PLUGIN_ARTOOLKIT "ARToolKit Multiplatforms interface" OFF)
+#dummy plugins
+add_subdirectory(DummyVideo)
+add_subdirectory(DummyTracker)
 
-add_subdirectory(ARToolKit)
+#multiplatforms video plugins
 add_subdirectory(OpenCV)
 
+#multiplatforms tracker plugins
 
-add_subdirectory(SMS)
+#multiplatforms sensor plugins
+
+#multiplatforms video/tracker plugins
+add_subdirectory(ARToolKit)
+
+#multiplatforms sensor/tracker plugins
+
+#platform specifics plugins
+if(APPLE)
+	add_subdirectory(SMS)
+	add_subdirectory(QTKit)
+	add_subdirectory(AVFoundation)
+endif()
+

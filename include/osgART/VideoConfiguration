@@ -86,8 +86,10 @@ namespace osgART {
 		VIDEOFRAMERATE_MAX = 0xFF // force short
 	} FrameRateType;
 	
+
+	class OSGART_EXPORT VideoConfiguration {
+	public:
 	
-	typedef struct {
 		int id;
 
 		std::string config;
@@ -101,14 +103,9 @@ namespace osgART {
 		int selectedWidth;
 		int selectedHeight;
 		float selectedFrameRate;
-
-	} VideoConfiguration;
 	
-	class OSGART_EXPORT VideoConfig {
-	public:
-	
-		VideoConfig();
-		virtual ~VideoConfig();
+		VideoConfiguration();
+		virtual ~VideoConfiguration();
 		
 		virtual int getID() const { return _id; };	
 		virtual void setID(int id) {_id = id;};
