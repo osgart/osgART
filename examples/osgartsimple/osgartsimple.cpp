@@ -54,7 +54,7 @@ int main(int argc, char* argv[])  {
 
 	//add a video background (video plugin name, video configuration)
 	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
-	//add a tracker (tracker plugin name,calibration configuration, tracker configuration)
+	//add a tracker (tracker plugin name,camera configuration, tracker configuration)
 	scene->addTracker("osgart_tracker_dummytracker","","mode=0;");
 
 	//add a target (target configuration) and a model

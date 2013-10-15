@@ -9,7 +9,7 @@
 #	include_directories(${CMAKE_SOURCE_DIR}/include ${OSGINTROSPECTION_INCLUDE_DIR})
 
 #	set(srcs
-#		Calibration.cpp
+#		CameraConfiguration.cpp
 #		Field.cpp
 #		ImageStreamCallback.cpp
 #		MarkerCallback.cpp

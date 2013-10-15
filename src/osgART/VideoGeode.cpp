@@ -18,7 +18,7 @@
 
 #include "OpenThreads/ScopedLock"
 
-#include "osgART/Calibration"
+#include "osgART/CameraConfiguration"
 #include "osgART/Utils"
 #include "osgART/Video"
 #include "osgART/VideoGeode"
@@ -126,7 +126,7 @@ namespace osgART {
 
 	VideoGeode::VideoGeode(
 				osg::Image* image,					// Image to texture
-		osgART::Calibration* calibration,	// Calibration object for undistortion calculation
+		osgART::CameraConfiguration* cameraconfig,	// Camera Configuration object for undistortion calculation
 		double width,
 		double height,
 		int cols,							// Number of columns
@@ -137,7 +137,7 @@ namespace osgART {
 		 : osg::Geode()
 	{ 
 
-		this->addDrawable(createVideoMesh(image, calibration, width, height, cols, rows, textureMode));
+		this->addDrawable(createVideoMesh(image, cameraconfig, width, height, cols, rows, textureMode));
 
 	}
 
@@ -151,7 +151,7 @@ namespace osgART {
 
 	osg::Geometry* VideoGeode::createVideoMesh(
 		osg::Image* image,					// Image to texture
-		osgART::Calibration* calibration,	// Calibration object for undistortion calculation
+		osgART::CameraConfiguration* cameraconfig,	// Camera Configuration object for undistortion calculation
 		double width,
 		double height,
 		int cols,							// Number of columns
@@ -214,11 +214,11 @@ namespace osgART {
 				osg::Vec2d p1(dc, dr1), p2(dc, dr2);	// Normalised coordinates of distorted pixels
 				osg::Vec2d u_p1 = p1, u_p2 = p2;		// Normalises coordinates of undistorted pixels (to be computed)
 
-				if (calibration) {
-					calibration->undistort(p1[0] * imageWidth, p1[1] * imageHeight, &u_p1[0], &u_p1[1]);
+				if (cameraconfig) {
+					cameraconfig->undistort(p1[0] * imageWidth, p1[1] * imageHeight, &u_p1[0], &u_p1[1]);
 					u_p1[0] /= imageWidth;
 					u_p1[1] /= imageHeight;
-					calibration->undistort(p2[0] * imageWidth, p2[1] * imageHeight, &u_p2[0], &u_p2[1]);
+					cameraconfig->undistort(p2[0] * imageWidth, p2[1] * imageHeight, &u_p2[0], &u_p2[1]);
 					u_p2[0] /= imageWidth;
 					u_p2[1] /= imageHeight;
 				}

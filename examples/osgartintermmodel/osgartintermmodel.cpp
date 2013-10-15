@@ -124,9 +124,9 @@ int main(int argc, char* argv[])  {
 		_configtracker->config="mode=0;";
 	}
 
-	// get the tracker calibration object
-	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	calibration->load("");
+	// get the tracker camera configuration object
+	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
+	cameraconfig->load("");
 
 
 	// setup one target
@@ -159,7 +159,7 @@ int main(int argc, char* argv[])  {
 	root->addChild(videoBackground.get());
 
 	//add a virtual camera
-	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);
 	root->addChild(cam.get());
 
 	//add a target transform callback (update transform from target information)

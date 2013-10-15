@@ -178,14 +178,15 @@ int main(int argc, char* argv[])  {
 		_configtracker->config="";
 	}
 
-	// get the tracker calibration object
-	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
-	
-	// load a calibration file
-	if (!calibration->load("data/artoolkit2/camera_para.dat")) 
+	// get the tracker camera configuration object
+	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
+
+	// load a camera configuration file
+	if (!cameraconfig->load("data/camera_para.dat")) 
 	{
-		// the calibration file was non-existing or couldn't be loaded
-		osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+
+		// the camera configuration file was non-existing or couldnt be loaded
+		osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 		exit(-1);
 	}
 
@@ -236,7 +237,7 @@ int main(int argc, char* argv[])  {
 	root->addChild(videoBackground.get());
 
 	//add a virtual camera
-	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);
 	root->addChild(cam.get());
 
 	//add two transforms: one for each target

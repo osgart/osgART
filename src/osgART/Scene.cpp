@@ -135,7 +135,7 @@ namespace osgART {
 
 	//"osgart_tracker_artoolkit2"
 
-	osgART::Tracker* Scene::addTracker( const std::string& t, std::string calibrationconfigfile,  std::string trackerconfigfile)
+	osgART::Tracker* Scene::addTracker( const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
 	{
 
 		osgART::PluginManager::instance()->load(t);
@@ -161,16 +161,16 @@ namespace osgART {
 
 		}
 
-		// get the tracker calibration object
-		_calibration = _tracker->getOrCreateCalibration();
+		// get the tracker Camera Configuration object
+		_cameraconfiguration = _tracker->getOrCreateCameraConfiguration();
 
-		// load a calibration file
-		//if (calibrationconfigfile!="")
+		// load a Camera Configuration file
+		//if (cameraconfigurationconfigfile!="")
 		//{
-			if (!_calibration->load(calibrationconfigfile))
+			if (!_cameraconfiguration->load(cameraconfigurationconfigfile))
 			{
-				// the calibration file was non-existing or couldn't be loaded
-				osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+				// the Camera Configuration file was non-existing or couldn't be loaded
+				osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 				return NULL;
 			}
 		//}
@@ -180,14 +180,14 @@ namespace osgART {
 			// set the image source for the tracker
 			_tracker->setImage(_video.get());
 
-			// Update the video background with new tracker calibration etc...
+			// Update the video background with new tracker camera configuration etc...
 			//configureVideoBackground();
 
 		}
 
 		osgART::addEventCallback(this, new osgART::TrackerCallback(_tracker.get()));
 
-		_camera = osgART::createBasicCamera(_calibration);
+		_camera = osgART::createBasicCamera(_cameraconfiguration);
 		this->addChild(_camera.get());
 
 		return _tracker.get();

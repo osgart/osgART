@@ -109,7 +109,7 @@ namespace osgART {
 					osg::ref_ptr<osg::Vec2Array> outline = new osg::Vec2Array();
 					for (int v = 0; v < 4; v++) {
 						double x, y;
-						tracker->getOrCreateCalibration()->undistort(target->vertex[v][0], target->vertex[v][1], &x, &y);
+						tracker->getOrCreateCameraConfiguration()->undistort(target->vertex[v][0], target->vertex[v][1], &x, &y);
 						outline->push_back(osg::Vec2(x, h - y));
 					}
 

@@ -45,19 +45,19 @@
 // OSGART
 #include "osgART/Export"
 #include "osgART/Field"
-#include "osgART/Calibration"
+#include "osgART/CameraConfiguration"
 
 
 namespace osgART {
 
 	/**
 		* Creates a camera with a projection matrix representing the
-		* loaded intrinsic parameters (from a calibration object)
+		* loaded intrinsic parameters (from a Camera Configuration object)
 		*
 		* \return camera object
 		*/
-	OSGART_EXPORT osg::Camera* createBasicCamera(osgART::Calibration* calib);
-//	OSGART_EXPORT osg::Camera* createBasicCamera(osgART::Calibration* calib);
+	OSGART_EXPORT osg::Camera* createBasicCamera(osgART::CameraConfiguration* calib);
+//	OSGART_EXPORT osg::Camera* createBasicCamera(osgART::CameraConfiguration* calib);
 
 //	OSGART_EXPORT osg::MatrixTransform createBasicTransform(osgART::Target* target);
 };

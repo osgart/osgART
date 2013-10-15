@@ -148,7 +148,7 @@ int main(int argc, char* argv[])  {
 	/* loading the config file */
 	std::ifstream file(config.c_str());
 
-	std::string _calibration_file("data/camera_para.dat");
+	std::string _cameraconfiguration_file("data/camera_para.dat");
 
 	// A video plugin.
 	osg::ref_ptr<osgART::Video> video;
@@ -187,9 +187,9 @@ int main(int argc, char* argv[])  {
 			video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + tokens[1]));
 		}
 
-		if (tokens[0] == "calibration" && tokens.size() == 2)
+		if (tokens[0] == "cameraconfig" && tokens.size() == 2)
 		{
-			_calibration_file = tokens[1];
+			_cameraconfiguration_file = tokens[1];
 		}
 
 		if (tokens[0] == "target" && tokens.size() == 3)
@@ -272,15 +272,15 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
-	// get the tracker calibration object
-	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
+	// get the tracker camera configuration object
+	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
-	// load a calibration file
-	if (!calibration->load(osgDB::findDataFile(_calibration_file)))
+	// load a camera configuration file
+	if (!cameraconfig->load(osgDB::findDataFile(_cameraconfiguration_file)))
 	{
 
-		// the calibration file was non-existing or couldnt be loaded
-		osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+		// the camera configuration file was non-existing or couldnt be loaded
+		osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 		exit(-1);
 	}
 
@@ -296,7 +296,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);
 
 
 	cam->addChild(videoBackground.get());

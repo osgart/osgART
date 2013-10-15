@@ -87,15 +87,15 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
-	// get the tracker calibration object
-	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
+	// get the tracker camera configuration object
+	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
-	// load a calibration file
-	if (!calibration->load("data/camera_para.dat")) 
+	// load a camera configuration file
+	if (!cameraconfig->load("data/camera_para.dat")) 
 	{
 
-		// the calibration file was non-existing or couldnt be loaded
-		osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+		// the camera configuration file was non-existing or couldnt be loaded
+		osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 		exit(-1);
 	}
 
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Group> videoBackground = createImageBackground(video.get());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	osg::ref_ptr<osg::Camera> cam = calibration->createCamera();
+	osg::ref_ptr<osg::Camera> cam = cameraconfig->createCamera();
 
 	cam->addChild(arTransform.get());
 	cam->addChild(videoBackground.get());

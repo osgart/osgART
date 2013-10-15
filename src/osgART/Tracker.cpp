@@ -110,9 +110,9 @@ namespace osgART {
     }
 
 	/*virtual*/
-	Calibration* Tracker::getOrCreateCalibration()
+	CameraConfiguration* Tracker::getOrCreateCameraConfiguration()
 	{
-		return _calibration.get();
+		return _cameraconfiguration.get();
 	}
 
 	/* static */

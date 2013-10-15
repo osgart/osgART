@@ -66,7 +66,7 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 #include "MultiTarget"
 
 #include <osgART/Video>
-#include <osgART/Calibration>
+#include <osgART/CameraConfiguration>
 
 #include <osg/Notify>
 
@@ -98,7 +98,7 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 namespace osgART {
 
 
-	class ARToolKitCalibration : public Calibration
+	class ARToolKitCameraConfiguration : public CameraConfiguration
 	{
 		ARParam cparam;
 		ARParam wparam;
@@ -112,7 +112,7 @@ namespace osgART {
 
 			if(arParamLoad((char*)actualFileName.c_str(), 1, &wparam) < 0) 
 			{
-				osg::notify(osg::FATAL) << "osgART::ARToolKitCalibration::init : Error: Can't load camera parameters from '"<<
+				osg::notify(osg::FATAL) << "osgART::ARToolKitCameraConfiguration::init : Error: Can't load camera parameters from '"<<
 						filename <<"'." << std::endl;
 			
 				return false;
@@ -220,11 +220,11 @@ namespace osgART {
 	}
 
 
-	inline Calibration* ARToolKitTracker::getOrCreateCalibration() 
+	inline CameraConfiguration* ARToolKitTracker::getOrCreateCameraConfiguration() 
 	{
-		if (!_calibration.valid()) _calibration = new ARToolKitCalibration;
+		if (!_cameraconfiguration.valid()) _cameraconfiguration = new ARToolKitCameraConfiguration;
 
-		return Tracker::getOrCreateCalibration();
+		return Tracker::getOrCreateCameraConfiguration();
 	}
 
 	inline void ARToolKitTracker::setImage(osg::Image* image)
@@ -236,7 +236,7 @@ namespace osgART {
 
 		if (image) {
 			
-			this->getOrCreateCalibration()->setSize(*image);
+			this->getOrCreateCameraConfiguration()->setSize(*image);
 	
 			// Initialise debug image to match video image		
 			m_debugimage->allocateImage(image->s(), image->t(), 1, image->getPixelFormat(), image->getDataType());
@@ -642,7 +642,7 @@ namespace osgART {
 
 	//inline void ARToolKitTracker::setProjection(const double n, const double f) 
 	//{
-	//	arglCameraFrustumRH(&(m_cparam->cparam), n, f, _calibration._projection);
+	//	arglCameraFrustumRH(&(m_cparam->cparam), n, f, _cameraconfiguration._projection);
 	//}
 
 	/*inline void ARToolKitTracker::createUndistortedMesh(

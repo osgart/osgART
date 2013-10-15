@@ -15,7 +15,7 @@
 #include <osg/NodeVisitor>
 #include <osg/Referenced>
 #include <osg/Stats>
-#include <osgART/Calibration>
+#include <osgART/CameraConfiguration>
 #include <osgART/Marker>
 #include <osgART/Tracker>
 
@@ -38,11 +38,11 @@ BEGIN_OBJECT_REFLECTOR(osgART::Tracker)
 	          __void__setImage__osg_Image_P1,
 	          "Set the image to analyzed. ",
 	          " param video the video object to use  ");
-	I_Method0(osgART::Calibration *, getOrCreateCalibration,
+	I_Method0(osgART::CameraConfiguration *, getOrCreateCameraConfiguration,
 	          Properties::VIRTUAL,
-	          __Calibration_P1__getOrCreateCalibration,
-	          "Creates or gets the calibration object. ",
-	          "calibration object  ");
+	          __CameraConfiguration_P1__getOrCreateCameraConfiguration,
+	          "Creates or gets the Camera Configuration object. ",
+	          "Camera Configuration object  ");
 	I_MethodWithDefaults1(void, update, IN, osg::NodeVisitor *, nv, 0L,
 	                      Properties::VIRTUAL,
 	                      __void__update__osg_NodeVisitor_P1,

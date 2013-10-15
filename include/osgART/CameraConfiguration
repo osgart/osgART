@@ -23,8 +23,8 @@
  * Encapsulates camera CameraConfiguration information about a video source.
  */
 
-#ifndef OSGART_CameraConfiguration
-#define OSGART_CameraConfiguration 1
+#ifndef OSGART_CAMERACONFIGURATION
+#define OSGART_CAMERACONFIGURATION 1
 
 #include "osgART/Export"
 #include "osgART/VideoGeode"
@@ -110,4 +110,4 @@ namespace osgART
 }
 
 
-#endif // OSGART_CameraConfiguration
+#endif // OSGART_CAMERACONFIGURATION

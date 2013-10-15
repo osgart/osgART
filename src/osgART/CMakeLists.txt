@@ -21,7 +21,7 @@ set(lib_srcs
 	Tracker.cpp
 	TrackerCallback.cpp
 	TrackerConfiguration.cpp
-	Calibration.cpp
+	CameraConfiguration.cpp
 	TrackerTrainingSupport.cpp
 	TrackerUtils.cpp
 	Target.cpp
@@ -50,7 +50,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Tracker
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerConfiguration
-	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
+	${CMAKE_SOURCE_DIR}/include/osgART/CameraConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerTrainingSupport
 	${CMAKE_SOURCE_DIR}/include/osgART/Target

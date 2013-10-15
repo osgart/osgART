@@ -107,7 +107,7 @@ namespace osgART {
 		bool getDebugMode() const;
 		
 		
-		virtual Calibration* getOrCreateCalibration();
+		virtual CameraConfiguration* getOrCreateCameraConfiguration();
 
 		/** 
 		* \brief Register a single target with the tracker.

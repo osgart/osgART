@@ -26,7 +26,7 @@
 #include "osgART/Target"
 #include "osgART/Tracker"
 #include "osgART/Video"
-#include "osgART/Calibration"
+#include "osgART/CameraConfiguration"
 #include "osgART/Utils"
 #include "osgART/PluginManager"
 
@@ -35,20 +35,20 @@
 #include <osg/io_utils>
 
 
-class DummyCalibration : public osgART::Calibration
+class DummyCameraConfiguration : public osgART::CameraConfiguration
 {
 
 public:
 
-	inline DummyCalibration()
+	inline DummyCameraConfiguration()
 	{
 	}
 
-	inline ~DummyCalibration()
+	inline ~DummyCameraConfiguration()
 	{
 	}
 
-	inline const DummyCalibration* getCalibration() const
+	inline const DummyCameraConfiguration* getCameraConfiguration() const
 	{
 		return this;
 	}
@@ -60,7 +60,7 @@ public:
 
 		//in this example we do nothing here
 
-		osg::notify() << "Dummy Calibration load " <<std::endl;
+		osg::notify() << "Dummy Camera Configuration load " <<std::endl;
 
 		osg::Matrix dummy_projection_matrix_test;
 		//dummy_projection_matrix_test.makePerspective(40.,1.3,1.,10000.);
@@ -82,7 +82,7 @@ public:
 
 	inline void setSize(int width, int height)
 	{
-		osg::notify() << "Dummy Calibration resize '" <<
+		osg::notify() << "Dummy Camera Configuration resize '" <<
 			width << " x " << height << std::endl;
 
 		//you can adjust the image resolution keeping similar projection matrix
@@ -124,7 +124,7 @@ public:
 	DummyTracker();
 	virtual ~DummyTracker();
 
-	osgART::Calibration* getOrCreateCalibration();
+	osgART::CameraConfiguration* getOrCreateCameraConfiguration();
 
 	void setImage(osg::Image* image);
 
@@ -203,20 +203,20 @@ DummyTracker::~DummyTracker()
 //this call allow to access intrinsics parameters
 //for optical tracker
 //it's used also for 
-inline osgART::Calibration*
-DummyTracker::getOrCreateCalibration()
+inline osgART::CameraConfiguration*
+DummyTracker::getOrCreateCameraConfiguration()
 {
 	//you have two choices here
 
-	//1. you create a specific calibration class, that can hold
+	//1. you create a specific Camera Configuration class, that can hold
 	//more parameters for your tracker
-	if (!_calibration.valid()) _calibration = new DummyCalibration;
+	if (!_cameraconfiguration.valid()) _cameraconfiguration = new DummyCameraConfiguration;
 
-	//2.you only create a default calibration
+	//2.you only create a default camera configuration
 	//and you setup the proj matrix
-	//_calibration=new osgART::Calibration();
-	//_calibration._prjection..etc 
-	return osgART::Tracker::getOrCreateCalibration();
+	//_cameraconfiguration=new osgART::CameraConfiguration();
+	//_cameraconfiguration._prjection..etc 
+	return osgART::Tracker::getOrCreateCameraConfiguration();
 }
 
 inline void
@@ -230,7 +230,7 @@ DummyTracker::setImage(osg::Image* image)
 
 	osgART::Tracker::setImage(image);
 
-	this->getOrCreateCalibration()->setSize(*image);
+	this->getOrCreateCameraConfiguration()->setSize(*image);
 
 	//you can initialize debug image here
 

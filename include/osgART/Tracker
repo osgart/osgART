@@ -43,7 +43,7 @@
 #include "osgART/Target"
 #include "osgART/Field"
 #include "osgART/TrackerConfiguration"
-#include "osgART/Calibration"
+#include "osgART/CameraConfiguration"
 #include "osgART/TrackerTrainingSupport"
 #include "osgART/Event"
 
@@ -119,11 +119,11 @@ namespace osgART {
 		
 
 		/**
-		 * Creates or gets the calibration object
+		 * Creates or gets the Camera Configuration object
 		 *
-		 * \return calibration object
+		 * \return Camera Configuration object
 		 */
-		virtual Calibration* getOrCreateCalibration();
+		virtual CameraConfiguration* getOrCreateCameraConfiguration();
 
 		/**
 		 * \brief initialize the tracker
@@ -266,9 +266,9 @@ namespace osgART {
 		unsigned int _modifiedCount;
 
 		/**
-		 * Calibration object that encapsulates the intrinsic camera parameters and distortion parameters.
+		 * Camera Configuration object that encapsulates the intrinsic camera parameters and distortion parameters.
 		 */
-		osg::ref_ptr<Calibration> _calibration;
+		osg::ref_ptr<CameraConfiguration> _cameraconfiguration;
 
 		/** output all data channels */
         void dump();

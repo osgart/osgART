@@ -31,9 +31,8 @@
 
 #include "osgART/Target"
 #include "osgART/Tracker"
-#include "osgART/Calibration"
 #include <osgART/VideoConfiguration>
-#include <osgART/Calibration>
+#include <osgART/CameraConfiguration>
 #include <osgART/TrackerConfiguration>
 
 #include <osg/Group>
@@ -95,7 +94,7 @@ namespace osgART {
 
 
 		Video* addVideoBackground(const std::string& v, std::string videoconfigfile="");
-		Tracker* addTracker(const std::string& t, std::string calibrationconfigfile="", std::string trackerconfigfile="");
+		Tracker* addTracker(const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
 
 		Target* addTarget(const std::string& cfg);
 		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
@@ -126,7 +125,7 @@ namespace osgART {
 		osg::ref_ptr<osgART::Tracker> _tracker;
 		osg::ref_ptr<osgART::Video> _video;
 		osg::ref_ptr<osg::Camera> _camera;
-		osg::ref_ptr<osgART::Calibration> _calibration;
+		osg::ref_ptr<osgART::CameraConfiguration> _cameraconfiguration;
 
 		void configureVideoBackground();
 

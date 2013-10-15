@@ -24,7 +24,7 @@
 namespace osgART {
 
 	osg::Camera*
-	createBasicCamera(osgART::Calibration* calib)
+	createBasicCamera(osgART::CameraConfiguration* calib)
 	{
 		osg::Camera* cam = new osg::Camera();
 		cam->setRenderOrder(osg::Camera::NESTED_RENDER);

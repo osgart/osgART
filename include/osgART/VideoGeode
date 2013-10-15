@@ -41,7 +41,7 @@
 namespace osgART {
 
 
-	class Calibration; // forward declartion for VideoMesh
+	class CameraConfiguration; // forward declartion for VideoMesh
 
 	class OSGART_EXPORT VideoGeode : public osg::Geode
 	{
@@ -62,7 +62,7 @@ namespace osgART {
 		
 		VideoGeode(
 				osg::Image* image,					// Image to texture
-		osgART::Calibration* calibration,	// Calibration object for undistortion calculation
+		osgART::CameraConfiguration* cameraconfiguration,	// Camera Configuration object for undistortion calculation
 		double width,
 		double height,
 		int cols,							// Number of columns
@@ -77,7 +77,7 @@ namespace osgART {
 		 
 		 
 		static osg::Geometry* createVideoMesh(osg::Image* image, 
-			osgART::Calibration* calibration = NULL,
+			osgART::CameraConfiguration* cameraconfiguration = NULL,
 			double width = 1.0, 
 			double height = 1.0,
 			int cols = 20, 
