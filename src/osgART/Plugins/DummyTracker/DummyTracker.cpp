@@ -126,7 +126,7 @@ public:
 
 	osgART::CameraConfiguration* getOrCreateCameraConfiguration();
 
-	void setImage(osg::Image* image);
+	void setImage(osg::Image* image,bool useInternalVideo=false);
 
 	osgART::Target* addTarget(const std::string& config);
 
@@ -220,7 +220,7 @@ DummyTracker::getOrCreateCameraConfiguration()
 }
 
 inline void
-DummyTracker::setImage(osg::Image* image)
+DummyTracker::setImage(osg::Image* image,bool useInternalVideo)
 {
 
 	if (!image) {

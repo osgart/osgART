@@ -182,7 +182,7 @@ namespace osgART {
 		 */
 		virtual ~ARToolKitTracker();
 
-		virtual void setImage(osg::Image* image);
+		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
 				
 	private:
 	

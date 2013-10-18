@@ -31,6 +31,7 @@
 #include <osg/Timer>
 
 #include <osgDB/FileUtils>
+#include <osgDB/WriteFile>
 
 #include <iostream>
 
@@ -107,7 +108,6 @@ namespace osgART {
 		
 		inline bool load(const std::string& filename)
 		{
-
 			std::string actualFileName = osgDB::findDataFile(filename);
 
 			if(arParamLoad((char*)actualFileName.c_str(), 1, &wparam) < 0) 
@@ -124,6 +124,8 @@ namespace osgART {
 		inline void setSize(int width, int height)
 		{
 			GLdouble temp[16];
+
+			std::cerr<<"call here.."<<std::endl;
 
 			arParamChangeSize(&wparam, width, height, &cparam);
 
@@ -222,20 +224,30 @@ namespace osgART {
 
 	inline CameraConfiguration* ARToolKitTracker::getOrCreateCameraConfiguration() 
 	{
-		if (!_cameraconfiguration.valid()) _cameraconfiguration = new ARToolKitCameraConfiguration;
-
-		return Tracker::getOrCreateCameraConfiguration();
+		if (!_cameraconfiguration.valid()) 
+		{
+			std::cerr<<"create camera configuration.."<<std::endl;
+			_cameraconfiguration = new ARToolKitCameraConfiguration();
+		}
+		//return Tracker::getOrCreateCameraConfiguration();
+		return _cameraconfiguration;
 	}
 
-	inline void ARToolKitTracker::setImage(osg::Image* image)
+	inline void ARToolKitTracker::setImage(osg::Image* image,bool useInternalVideo)
 	{
+
+		if (!image) {
+			osg::notify() << "osgART::ARToolKit::setImage() called with NULL image" << std::endl;
+			return;
+		}
+
 		Tracker::setImage(image);
 
 		arFittingMode = AR_FITTING_TO_IDEAL;
 	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;
 
 		if (image) {
-			
+		
 			this->getOrCreateCameraConfiguration()->setSize(*image);
 	
 			// Initialise debug image to match video image		
@@ -465,6 +477,7 @@ namespace osgART {
 	
 	inline void ARToolKitTracker::update()
 	{
+
 	}
 
 
@@ -483,7 +496,7 @@ namespace osgART {
 
 		const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;
 
-		
+		//osgDB::writeImageFile(*(_imagesource.get()), "saved.bmp");
 
 		// Pointer to array holding the details of detected targets.
 		ARMarkerInfo *target_info;
@@ -542,6 +555,7 @@ namespace osgART {
 			return;
 		}
 
+		std::cout<<"target num="<<m_target_num<<std::endl;
 		if (framestamp && _stats.valid())
 		{
 			_stats->setAttribute(framestamp->getFrameNumber(),

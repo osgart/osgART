@@ -129,7 +129,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
 	// load a camera configuration file
-	if (!cameraconfig->load("data/camera_para.dat")) 
+	if (!cameraconfig->load("data/artoolkit2/camera_para.dat")) 
 	{
 
 		// the camera configuration file was non-existing or couldnt be loaded
