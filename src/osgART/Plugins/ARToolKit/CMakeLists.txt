@@ -1,10 +1,12 @@
-set(module_name osgart_artoolkit2)
+set(module_name osgart_artoolkit)
+
+option(OSGART_BUILD_PLUGIN_ARTOOLKIT "Build with ARToolKit 2.8.1-prehartmut" OFF)
 
 if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 
-	find_package(ARToolKit2)
+	find_package(ARToolKit)
 	
-#if(ARTOOLKIT2_FOUND)
+#if(ARTOOLKIT_FOUND)
 #	add_subdirectory(ARToolKit)
 #endif()
 
@@ -18,7 +20,7 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 		ARToolKitTrainingSupport.cpp
 	)
 
-	if(ARTOOLKIT2_LIBARVIDEO)
+	if(ARTOOLKIT_LIBARVIDEO)
 		list(APPEND SRCS ARToolKitVideo.cpp ARToolKitVideo)
 	endif()
 
@@ -41,7 +43,7 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 	source_group("Source Files" FILES
 		${SRCS})	
 
-	include_directories("." ${ARTOOLKIT2_INCLUDE_DIR})
+	include_directories("." ${ARTOOLKIT_INCLUDE_DIR})
 		
 	add_library(${module_name} MODULE ${SRCS} ${HDRS})
 
@@ -54,39 +56,39 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 		${OSG_LIBRARY}
 		${OSGDB_LIBRARY} 
 		${OPENTHREADS_LIBRARY} 
-		${ARTOOLKIT2_LIBARGSUB_LITE}	
-		${ARTOOLKIT2_LIBARMULTI} 
-		${ARTOOLKIT2_LIBAR}	
+		${ARTOOLKIT_LIBARGSUB_LITE}	
+		${ARTOOLKIT_LIBARMULTI} 
+		${ARTOOLKIT_LIBAR}	
 		osgART
 		)
 
 
-	if(ARTOOLKIT2_LIBARVIDEO)
+	if(ARTOOLKIT_LIBARVIDEO)
 		target_link_libraries(${module_name}
-			${ARTOOLKIT2_LIBARVIDEO}
+			${ARTOOLKIT_LIBARVIDEO}
 		)
 	endif()
 
 	install_osgart_plugin(${module_name})
 
-	file(GLOB ARTOOLKIT2_MISC_FILES
+	file(GLOB ARTOOLKIT_MISC_FILES
 		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/patt.*
 		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/*.dat
 		)
 		
-	#file(GLOB ARTOOLKIT2_PATT_PRINT
-	#	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.pdf
-	#	${ARTOOLKIT2_INCLUDE_DIR}/../patterns/*.gif
+	#file(GLOB ARTOOLKIT_PATT_PRINT
+	#	${ARTOOLKIT_INCLUDE_DIR}/../patterns/*.pdf
+	#	${ARTOOLKIT_INCLUDE_DIR}/../patterns/*.gif
 	#	)
 
 #	if(WIN32)
 #		file(GLOB GLUT_DLL
-#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/freeglut*.dll
-#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/*glut32.dll
+#			${ARTOOLKIT_INCLUDE_DIR}/../bin/freeglut*.dll
+#			${ARTOOLKIT_INCLUDE_DIR}/../bin/*glut32.dll
 #		)
 		
 #		file(GLOB WDM_XML
-#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/data/*.xml
+#			${ARTOOLKIT_INCLUDE_DIR}/../bin/data/*.xml
 #		)
 		
 #		message(STATUS "${GLUT_DLL}")
@@ -96,7 +98,7 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 #			)
 		
 #		install(PROGRAMS
-#			${ARTOOLKIT2_INCLUDE_DIR}/../bin/mk_patt.exe
+#			${ARTOOLKIT_INCLUDE_DIR}/../bin/mk_patt.exe
 #			${GLUT_DLL}
 #			DESTINATION bin
 #			)
@@ -104,12 +106,12 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 		
 
 	#install(FILES
-	#	${ARTOOLKIT2_PATT_PRINT}
+	#	${ARTOOLKIT_PATT_PRINT}
 	#	DESTINATION share/osgART/patterns
 	#	)
 		
 	#install(FILES 
-	#		${ARTOOLKIT2_MISC_FILES}
+	#		${ARTOOLKIT_MISC_FILES}
 	#		DESTINATION bin/data
 	#		)
 	

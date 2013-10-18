@@ -141,12 +141,12 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");
+	osgART::PluginManager::instance()->load("osgart_video_artoolkit");
 	//tracker plugin
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit2");
+	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
@@ -182,7 +182,7 @@ int main(int argc, char* argv[])  {
 	video->open();
 
 	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit2"));
+		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
 
 	if (!tracker.valid())
 	{

@@ -65,10 +65,10 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	viewer.setSceneData(root.get());
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit2");//videoinput");
+	osgART::PluginManager::instance()->load("osgart_video_artoolkit");//videoinput");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit2"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())  {

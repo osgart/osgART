@@ -4,16 +4,16 @@
 #
 # Locate ARToolKit
 # This module defines
-# ARTOOLKIT2_LIBRARIES
-# ARTOOLKIT2_FOUND, if false, do not try to link to ARToolKit
-# ARTOOLKIT2_INCLUDE_DIR, where to find the headers
+# ARTOOLKIT_LIBRARIES
+# ARTOOLKIT_FOUND, if false, do not try to link to ARToolKit
+# ARTOOLKIT_INCLUDE_DIR, where to find the headers
 
 
 
 
-find_path(ARTOOLKIT2_INCLUDE_DIR AR/config.h
+find_path(ARTOOLKIT_INCLUDE_DIR AR/config.h
     PATHS
-    $ENV{ARTOOLKIT_2_ROOT}/include
+    $ENV{ARTOOLKIT_ROOT}/include
 	~/Library/Frameworks
     /Library/Frameworks
     /usr/local/include
@@ -22,47 +22,47 @@ find_path(ARTOOLKIT2_INCLUDE_DIR AR/config.h
     /opt/local/include # DarwinPorts
     /opt/csw/include # Blastwave
     /opt/include
-    [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_2_ROOT]/include
+    [HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/include
     ${CMAKE_SOURCE_DIR}/../ARToolKit/include
     NO_DEFAULT_PATH
 )
 
-find_library(ARTOOLKIT2_LIBAR
+find_library(ARTOOLKIT_LIBAR
     NAMES AR libAR
     PATHS	
-	$ENV{ARTOOLKIT_2_ROOT}/lib
-	[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_2_ROOT]/lib
-	${ARTOOLKIT2_INCLUDE_DIR}/../lib
+	$ENV{ARTOOLKIT_ROOT}/lib
+	[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
+	${ARTOOLKIT_INCLUDE_DIR}/../lib
     NO_DEFAULT_PATH
 )
 
 # pointless if libAR couldn't be found
-if (ARTOOLKIT2_LIBAR) 
+if (ARTOOLKIT_LIBAR) 
 	
-	find_library(ARTOOLKIT2_LIBARMULTI
+	find_library(ARTOOLKIT_LIBARMULTI
 		NAMES ARMulti ARmulti libARmulti
 		PATHS	
-		$ENV{ARTOOLKIT_2_ROOT}/lib
-		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_2_ROOT]/lib
-		${ARTOOLKIT2_INCLUDE_DIR}/../lib
+		$ENV{ARTOOLKIT_ROOT}/lib
+		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
+		${ARTOOLKIT_INCLUDE_DIR}/../lib
 		NO_DEFAULT_PATH
 	)
 	
-	find_library(ARTOOLKIT2_LIBARGSUB_LITE
+	find_library(ARTOOLKIT_LIBARGSUB_LITE
 		NAMES ARgsub_lite libARgsub_lite
 		PATHS	
 		$ENV{ARTOOLKIT_2_ROOT}/lib
-		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_2_ROOT]/lib
+		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
 		${ARTOOLKIT2_INCLUDE_DIR}/../lib
 		NO_DEFAULT_PATH
 	)
 	
-	find_library(ARTOOLKIT2_LIBARVIDEO
+	find_library(ARTOOLKIT_LIBARVIDEO
 		NAMES ARvideo libARVideo libARvideo
 		PATHS	
-		$ENV{ARTOOLKIT_2_ROOT}/lib
-		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_2_ROOT]/lib
-		${ARTOOLKIT2_INCLUDE_DIR}/../lib
+		$ENV{ARTOOLKIT_ROOT}/lib
+		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
+		${ARTOOLKIT_INCLUDE_DIR}/../lib
 		NO_DEFAULT_PATH
 	)
 
@@ -73,11 +73,11 @@ if (ARTOOLKIT2_LIBAR)
 	
 	endif(UNIX)
 
-endif(ARTOOLKIT2_LIBAR)
+endif(ARTOOLKIT_LIBAR)
 
 
 
-set(ARTOOLKIT2_FOUND "NO")
-if(ARTOOLKIT2_INCLUDE_DIR AND ARTOOLKIT2_LIBAR)
-	set(ARTOOLKIT2_FOUND "YES")
-endif(ARTOOLKIT2_INCLUDE_DIR AND ARTOOLKIT2_LIBAR)
+set(ARTOOLKIT_FOUND "NO")
+if(ARTOOLKIT_INCLUDE_DIR AND ARTOOLKIT_LIBAR)
+	set(ARTOOLKIT_FOUND "YES")
+endif(ARTOOLKIT_INCLUDE_DIR AND ARTOOLKIT_LIBAR)

@@ -285,6 +285,6 @@ int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat,
 }
 
 // initializer for dynamic loading
-osgART::PluginProxy<ARToolKitVideo> g_artoolkitvideo("osgart_video_artoolkit2");
+osgART::PluginProxy<ARToolKitVideo> g_artoolkitvideo("osgart_video_artoolkit");
 
 

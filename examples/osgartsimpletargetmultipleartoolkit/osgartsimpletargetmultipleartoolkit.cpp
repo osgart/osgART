@@ -51,8 +51,8 @@ int main(int argc, char* argv[])  {
 
 	osgART::Scene* scene = new osgART::Scene();
 
-	scene->addVideoBackground("osgart_video_artoolkit2");
-	scene->addTracker("osgart_tracker_artoolkit2","data/artoolkit2/camera_para.dat");
+	scene->addVideoBackground("osgart_video_artoolkit");
+	scene->addTracker("osgart_tracker_artoolkit","data/artoolkit2/camera_para.dat");
 
 	scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0")->addChild(osgDB::readNodeFile("media/models/hitl_logo.osg"));
 	

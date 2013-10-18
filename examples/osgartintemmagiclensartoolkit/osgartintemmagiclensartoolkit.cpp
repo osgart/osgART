@@ -57,8 +57,8 @@ int main(int argc, char* argv[])  {
 
 
 	// preload the video and tracker
-	int _video_id = osgART::PluginManager::getInstance()->load("osgart_video_artoolkit2");
-	int _tracker_id = osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit2");
+	int _video_id = osgART::PluginManager::getInstance()->load("osgart_video_artoolkit");
+	int _tracker_id = osgART::PluginManager::getInstance()->load("osgart_tracker_artoolkit");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = 

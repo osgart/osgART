@@ -35,7 +35,7 @@
 #include <iostream>
 
 // initializer for dynamic loading
-osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker("osgart_tracker_artoolkit2");
+osgART::PluginProxy<osgART::ARToolKitTracker> g_artoolkittracker("osgart_tracker_artoolkit");
 
 	   
 const int		osgART::ARToolKitTracker::ARTOOLKIT_DEFAULT_THRESHOLD = 100;
