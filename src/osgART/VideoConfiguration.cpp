@@ -29,7 +29,7 @@ namespace osgART {
 		return (fourcc[3] << 24) + (fourcc[2] << 16) + (fourcc[1] << 8 ) + fourcc[0];
 	}
 
-	VideoConfiguration::VideoConfiguration() : _id(0)
+	VideoConfiguration::VideoConfiguration() : _id(0),deviceid(-1),devicename(""),width(-1),height(-1),framerate(-1),format(VIDEOFORMAT_UNDEFINED)
 	{
 	}
 

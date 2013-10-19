@@ -162,39 +162,34 @@ OpenCVVideo::operator=(const OpenCVVideo &)
 bool
 OpenCVVideo::open()
 {
-	int xsize=0, ysize=0;
-	m_camIndex=0;
-
-	if (m_video.open(m_camIndex))
+	//check first device name, after device id
+	//if (m_config.devicename!="")
+	//{
+	//
+	//}
+	
+	if (m_config.deviceid!=-1)
 	{
-		osg::notify() << std::dec<< "OpenCVVideo::open() succesful.."<<std::endl;
+		if (m_video.open(m_config.deviceid))
+		{
+			osg::notify() << std::dec<< "OpenCVVideo::open() succesful.."<<std::endl;
+		}
 	}
-
-/*
-	if (m_config.deviceconfig != "") {
-		config = (char*)&m_config.deviceconfig.c_str()[0];
-	}
-
-		// report the actual
-		osg::notify() << std::dec << "OpenCVVideo::open() size of video " <<
-			xsize << " x " << ysize << ", fps: " << fps << std::endl;
-
-	//	m_config.selectedWidth = xsize;
-	//	m_config.selectedHeight = ysize;
-	//	m_config.selectedFrameRate = fps;
-
-	}
-
-	if (m_video.open(m_camIndex))
+	else
 	{
-		osg::notify() << std::dec<< "OpenCVVideo::open() succesful.."<<std::endl;
+		m_video.open(0);
+		std::cout << "OpenCVVideo::open() use default device " <<0<<std::endl;
 	}
+	
 
+	//if (m_config.deviceconfig != "") {
+	//	config = (char*)&m_config.deviceconfig.c_str()[0];
+	//}
 
 //GL_BGRA, GL_UNSIGNED_BYTE
 	// create an image that same size (packing set to 1)
 
-	*/
+	
 #ifdef __APPLE__
 	// in OpenCV version 2.4.6, The QTKit or AVFoundation interface 
 	// only uses BGRA format, only allow you to specify (or query) width, height format
@@ -209,34 +204,49 @@ OpenCVVideo::open()
 
 //m_video.set(CV_CAP_PROP_FRAME_WIDTH,800);
 //	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,600);
+	if ((m_config.width!=-1)&&(m_config.height!=-1))
+	{
+		m_video.set(CV_CAP_PROP_FRAME_WIDTH,m_config.width);
+		m_video.set(CV_CAP_PROP_FRAME_HEIGHT,m_config.height);
+	}
+	else
+	{
+#ifdef __APPLE__
 	m_video.set(CV_CAP_PROP_FRAME_WIDTH,1280);
 	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,720);
+	std::cout << "OpenCVVideo::open() use default resolution " <<1280<<"x"<<720<<std::endl;
+#else
+	m_video.set(CV_CAP_PROP_FRAME_WIDTH,640);
+	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+	std::cout << "OpenCVVideo::open() use default resolution " <<640<<"x"<<480<<std::endl;
+#endif	
 
-	xsize=m_video.get(CV_CAP_PROP_FRAME_WIDTH);
-	ysize=m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
-	m_video.set(CV_CAP_PROP_FPS,30);
-	//m_video.get(CV_CAP_PROP_FPS,30);
+	}
 	
-//	m_video.set(CV_CAP_PROP_CONVERT_RGB,1.0);
-//	m_video.set(CV_CAP_PROP_FOURCC,0x32424752);//RGB
-	//_format_GL=GL_RGB;
-//	_format_GL=GL_RGB;
-	
-	std::cout << "OpenCVVideo::open() size of video " <<
-			xsize << " x " << ysize << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
-	
+	if (m_config.framerate!=-1)
+	{
+		m_video.set(CV_CAP_PROP_FPS,m_config.framerate);	
+	}
+	else
+	{
+		m_video.set(CV_CAP_PROP_FPS,30);		
+		std::cout << "OpenCVVideo::open() use default framerate " <<30<<std::endl;
+	}
+		
 	_datatype_GL=GL_UNSIGNED_BYTE;
 
-	m_config.selectedWidth = xsize;
-	m_config.selectedHeight = ysize;
-	m_config.selectedFrameRate = 30;
+	m_config.selectedWidth = m_video.get(CV_CAP_PROP_FRAME_WIDTH);
+	m_config.selectedHeight = m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
+	m_config.selectedFrameRate =  m_video.get(CV_CAP_PROP_FPS);
 
-	this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
+	std::cout << "OpenCVVideo::open() size of video " <<
+			m_config.selectedWidth << " x " << m_config.selectedHeight << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
+
+	this->allocateImage(m_config.selectedWidth, m_config.selectedHeight, 1, _format_GL, _datatype_GL, 1);
 
 	this->setDataVariance(osg::Object::DYNAMIC);
 
 	return true;
-
 }
 
 void

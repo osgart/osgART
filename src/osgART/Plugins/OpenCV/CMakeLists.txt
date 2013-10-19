@@ -1,6 +1,6 @@
 set(module_name osgart_video_opencv)
 
-option(OSGART_BUILD_PLUGIN_OPENCV "Build with OpenCV (OpenCV 2.3 and later)" OFF)
+option(OSGART_BUILD_PLUGIN_OPENCV "Build with OpenCV (OpenCV 2.4.6 and later)" OFF)
 
 if(OSGART_BUILD_PLUGIN_OPENCV)
 
@@ -24,6 +24,10 @@ if(OSGART_BUILD_PLUGIN_OPENCV)
 
 	if(APPLE)
 		target_link_libraries(${module_name}
+			osgART
+			${OSG_LIBRARY}
+			${OPENTHREADS_LIBRARY}
+			${OpenCV_LIBS}
 			"-framework Cocoa"
 			"-framework QTKit"
 			"-framework CoreVideo"

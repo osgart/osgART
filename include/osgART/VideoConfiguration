@@ -39,6 +39,7 @@ namespace osgART {
 	*
 	*/
 	typedef enum {
+		VIDEOFORMAT_UNDEFINED = -1,
 		VIDEOFORMAT_ANY = 0x0,
 		VIDEOFORMAT_RGB555,
 		VIDEOFORMAT_RGB565,
@@ -94,15 +95,19 @@ namespace osgART {
 
 		std::string config;
 
+		int deviceid;
+		std::string devicename;
+		
 		int	width; 
 		int height;
-		
-		FrameRateType framerate;
-		PixelFormatType type;
+		float framerate;		
+		//FrameRateType framerate;
+		PixelFormatType format;
 
 		int selectedWidth;
 		int selectedHeight;
 		float selectedFrameRate;
+		PixelFormatType selectedFormat;
 	
 		VideoConfiguration();
 		virtual ~VideoConfiguration();

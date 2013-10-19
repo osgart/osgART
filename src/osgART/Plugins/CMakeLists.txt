@@ -22,3 +22,7 @@ if(APPLE)
 #	add_subdirectory(AVFoundation)
 endif()
 
+if (WIN32)
+#	add_subdirectory(DSVL)
+#	add_subdirectory(videoInput)
+endif()
