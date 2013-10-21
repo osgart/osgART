@@ -16,42 +16,20 @@
  * OpenSceneGraph Public License for more details.
 */
 
-/**
- *  \file  Object
- *  \brief Base class for any object triggering events
- *  \author Raphael Grasset
- *
- * Base class for any object triggering events
- */
 
-#ifndef OSGART_OBJECT
-#define OSGART_OBJECT 1
+#include "osgART/SensorConfiguration"
 
-// std include
-
-// OSG include
-
-// local include
 
 namespace osgART {
 
-	/**
-	 * \class XXX
-	 *
-	 * 
-	 */
-    class Object {
-    public:
-        Object() {}
-        virtual ~Object() {}
+	SensorConfiguration::SensorConfiguration() : 
+		_id(-1),
+		config("")
+	{
+	}
 
-	//	inline virtual void init() {};
-	//	inline virtual void close() {};
-	//	inline virtual void start() {};
-	//	inline virtual void stop() {};
-	//	inline virtual void update() {};
-    };
-
+	/*virtual*/
+	SensorConfiguration::~SensorConfiguration() 
+	{
+	}
 }
-
-#endif  // OSGART_OBJECT

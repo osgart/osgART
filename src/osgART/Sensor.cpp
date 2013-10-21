@@ -16,9 +16,8 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include "osgART/Tracker"
-#include "osgART/Target"
-#include "osgART/Video"
+#include "osgART/Sensor"
+#include "osgART/SensorData"
 
 #include <osg/Notify>
 
@@ -29,13 +28,12 @@ namespace osgART {
 
     ///
 
-	Tracker::Tracker() :
+	Sensor::Sensor() :
         osgART::Object(),
         osg::Object(), 
         osgART::EventHandler(),
-        FieldContainer<Tracker>(),
-        _modifiedCount(0xFFFFF),
-        _stats(new osg::Stats("tracker"))
+        FieldContainer<Sensor>(),
+        _stats(new osg::Stats("sensor"))
 	{
         osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
 
@@ -44,7 +42,6 @@ namespace osgART {
 
         osg::Object* o = new osg::TemplateValueObject<std::string>("name",std::string("what?"));
         udc->addUserObject(o);
-
 
         this->dump();
 
@@ -58,34 +55,34 @@ namespace osgART {
         //			&Tracker::setEnable);
     }
 
-    Tracker::Tracker(const Tracker &container, 
+    Sensor::Sensor(const Sensor &container, 
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
 		osg::Object(), 
         osgART::EventHandler(),
-		FieldContainer<Tracker>()
+		FieldContainer<Sensor>()
     {
     }
 
-	Tracker::~Tracker()
+	Sensor::~Sensor()
 	{
-		removeAllTargets();
+	
 	}
 	
-	Tracker& 
-	Tracker::operator=(const Tracker &)
+	Sensor& 
+	Sensor::operator=(const Sensor &)
 	{
 		return *this;
 	}
 
 	// static 
-	Tracker* Tracker::cast(osg::Referenced* instance)
+	Sensor* Sensor::cast(osg::Referenced* instance)
 	{ 
-		return reinterpret_cast<Tracker*>(instance);
+		return reinterpret_cast<Sensor*>(instance);
 	}
 	
 	Field*
-	Tracker::get(const std::string& name)
+	Sensor::get(const std::string& name)
 	{
 		FieldMap::iterator _found = _fields.find(name);
 		// return 0 if the field is not existant
@@ -93,54 +90,35 @@ namespace osgART {
 	}
 
 	// virtual
-	TrackerConfiguration* 
-	Tracker::getConfiguration()
+	SensorConfiguration* 
+	Sensor::getConfiguration()
 	{
         return 0L;
     }
 
 	// virtual
 	void 
-	Tracker::setConfiguration(TrackerConfiguration* config)
+	Sensor::setConfiguration(SensorConfiguration* config)
 	{
 
 	}
 	
 	/*virtual*/
 	void
-	Tracker::update()
+	Sensor::update()
 	{
 
 	}
 
 	/*virtual*/
 	void
-	Tracker::updateCallback(osg::NodeVisitor* nv /*=0L*/)
+	Sensor::updateCallback(osg::NodeVisitor* nv /*=0L*/)
 	{
 		update();
 	}
 	
-	void
-	Tracker::removeAllTargets()
-	{
-		//
-		// Explicitly delete/unref all targets
-		//
-        for( TargetList::iterator mi = _targetlist.begin();
-			mi != _targetlist.end();
-			mi++)
-		{
-			(*mi) = 0L;
-		}
-		
-		// Targets are associated with a specific tracker instance,
-		// so will be deleted when the tracker is deleted.
-		_targetlist.clear();
-
-	}
-
 	void 
-	Tracker::dump()
+	Sensor::dump()
 	{
 		osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
 		for (osg::UserDataContainer::DescriptionList::iterator it = udc->getDescriptions().begin();
@@ -150,74 +128,4 @@ namespace osgART {
 			OSG_INFO << (*it) << std::endl;
 		}
 	}
-
-
-    // virtual
-    Tracker::Traits Tracker::getTraits()
-    {
-        return NoTraits;
-    }
-
-	/*virtual*/
-	CameraConfiguration* Tracker::getOrCreateCameraConfiguration()
-	{
-		return _cameraconfiguration.get();
-	}
-
-	/*virtual */
-	Target*
-	Tracker::addTarget(const std::string& config)
-	{
-		OSG_WARN << "Method not implemented for this tracker!" << std::endl;
-
-		return 0L;
-	}
-
-	/*virtual */
-	void
-    Tracker::removeTarget(Target *target)
-	{
-		TargetList pruned; pruned.reserve(_targetlist.size());
-
-		for (TargetList::iterator it = _targetlist.begin();
-			it != _targetlist.end();
-			++it)
-		{
-			if ((*it) != target) pruned.push_back(*it);
-		}
-
-		std::swap(_targetlist,pruned);
-	}
-
-
-
-	Target* Tracker::getTarget( size_t idx )
-	{
-		return _targetlist.at(idx);
-	}
-
-	/*virtual*/
-	void
-	Tracker::createUndistortedMesh(int,int,
-		float,float,osg::Geometry&)
-	{
-		osg::notify(osg::WARN) << "Warning: osgART::Tracker::createUndistortedMesh(): "
-			"Empty implementation called!" << std::endl;
-	}
-
-	/*virtual*/
-	void
-	Tracker::setImage(osg::Image* image,bool useInternalImage)
-	{
-		_imagesource = image;
-	}
-
-	/*virtual*/
-	osg::Image* Tracker::getImage()
-	{
-		return _imagesource.get();
-	}
-
-
-
 };

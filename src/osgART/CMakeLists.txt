@@ -13,6 +13,7 @@ set(lib_srcs
 	VideoCallback.cpp
 	VideoConfiguration.cpp
 	VideoImageStream.cpp
+	VideoStream.cpp
 #	VideoImageStreamCallback.cpp
 	ImageStreamCallback.cpp
 	VideoGeode.cpp
@@ -27,6 +28,10 @@ set(lib_srcs
 	Target.cpp
 	TargetCallback.cpp
 	TransformFilterCallback.cpp
+	Sensor.cpp
+#	SensorCallback.cpp
+	SensorData.cpp
+	Sensorconfiguration.cpp
 	Scene.cpp
 	Utils.cpp
 )
@@ -42,6 +47,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Video
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoCallback	
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoStream
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
 	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
 #	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStreamCallback
@@ -57,6 +63,9 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/TargetCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TransformFilterCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerUtils	
+	${CMAKE_SOURCE_DIR}/include/osgART/Sensor
+	${CMAKE_SOURCE_DIR}/include/osgART/SensorConfiguration
+	${CMAKE_SOURCE_DIR}/include/osgART/SensorData
 	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Scene
 	${CMAKE_SOURCE_DIR}/include/osgART/Utils

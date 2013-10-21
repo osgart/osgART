@@ -22,8 +22,8 @@
 
 namespace osgART {
 
-	Video::Video() 
-		: osgART::Object(),
+	Video::Video() :
+		osgART::Object(),
 		VideoImageStream(), 
 		FieldContainer<Video>()
 	{
@@ -40,12 +40,6 @@ namespace osgART {
 	{
 		
 	}
-
-	Video* Video::cast(osg::Referenced* instance)
-	{ 
-		return reinterpret_cast<Video*>(instance);
-	}
-
 	
 	Video::~Video()
 	{	    
@@ -58,6 +52,12 @@ namespace osgART {
 		return *this;
 	}
 
+	// static
+	Video* Video::cast(osg::Referenced* instance)
+	{ 
+		return reinterpret_cast<Video*>(instance);
+	}
+
 	Field*
 	Video::get(const std::string& name)
 	{
@@ -66,19 +66,20 @@ namespace osgART {
 		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
 
-	/* virtual */
+	// virtual
 	VideoConfiguration* 
 	Video::getConfiguration()
 	{
 		return 0L;
 	}
 
-	/* virtual */
+	// virtual
 	void 
 	Video::setConfiguration(VideoConfiguration* config)
 	{
 
 	}
+	
 	
 	void 
 	Video::setFlip(bool horizontal,
@@ -87,8 +88,6 @@ namespace osgART {
 		m_horizontal_flip = horizontal;
 		m_vertical_flip = vertical;
 	}
-
-	
 
 
 };

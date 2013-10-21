@@ -27,19 +27,20 @@
 #ifndef OSGART_TARGET
 #define OSGART_TARGET 1
 
+// std include
 #include <string>
 #include <vector>
 
-// local headers
-#include "osgART/Export"
-#include "osgART/Field"
-
-// OSG headers
+// OSG include
 #include <osg/Matrix>
 #include <osg/Vec3>
 #include <osg/Object>
 #include <osg/ImageStream>
 #include <osg/CopyOp>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Field"
 
 
 namespace osgART {
@@ -57,12 +58,9 @@ namespace osgART {
 
 		enum TargetType
 		{
-			ART_UNKNOWN = 0,/**< Unknown or unspecified target type. */
-			ART_SINGLE,		/**< A single target. */
-			ART_MULTI,		/**< A multi-target. */
-			ART_NFT,		/**< A natural feature tracking target. */
-			ART_NFT_OPIRA,	/**< A natural feature tracking target for the OPIRA library. */
-			ART_BAZAR		/**< A target for the Bazar library. */
+			TARGET_UNKNOWN = 0,/**< Unknown or unspecified target type. */
+			TARGET_SINGLE,		/**< A single target. */
+			TARGET_MULTI		/**< A multi-target. */
 		};
 
 		/**
@@ -91,13 +89,6 @@ namespace osgART {
 		virtual bool valid() const;
 
 		/**
-		* Obtain the transformation of the target.
-		* Return return a 4x4 transformation of the target.
-		* \return a 4x4 transformation matrix
-		*/
-		const osg::Matrix& getTransform() const;
-
-		/**
 		* \brief Set the respective target active
 		* \param active set to TRUE if the target should be tracked
 		*/
@@ -108,6 +99,13 @@ namespace osgART {
 		* \return TRUE if the target is active
 		*/
 		bool active() const;
+		
+		/**
+		* Obtain the transformation of the target.
+		* Return return a 4x4 transformation of the target.
+		* \return a 4x4 transformation matrix
+		*/
+		const osg::Matrix& getTransform() const;
 
 		/**
 		* \brief Return the tracking confidence of this target.

@@ -36,7 +36,7 @@ namespace osgART {
 	/* virtual */
 	Target::TargetType MultiTarget::getType() const 
 	{
-		return Target::ART_MULTI;
+		return Target::TARGET_MULTI;
 	}
 
 	bool 

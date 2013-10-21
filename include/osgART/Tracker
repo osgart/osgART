@@ -31,6 +31,7 @@
 #include <map>
 #include <iostream>
 
+// OSG include
 #include <osg/Geometry>
 #include <osg/Projection>
 #include <osg/NodeVisitor>
@@ -39,13 +40,15 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Object"
+#include "osgART/Event"
+#include "osgART/Field"
+
 #include "osgART/Video"
 #include "osgART/Target"
-#include "osgART/Field"
 #include "osgART/TrackerConfiguration"
 #include "osgART/CameraConfiguration"
+
 #include "osgART/TrackerTrainingSupport"
-#include "osgART/Event"
 
 namespace osgART {
 
@@ -59,7 +62,9 @@ namespace osgART {
 	 * that connects video streams, targets and their representation in
 	 * the virtual environment.
 	 */
-    class OSGART_EXPORT Tracker : public osg::Object, public osgART::EventHandler {
+    class OSGART_EXPORT Tracker : public osgART::Object, public osg::Object, 
+    							  public osgART::EventHandler, public FieldContainer<Tracker>
+    {
 	public:
 
         META_Object(osgART,Tracker)
@@ -76,55 +81,52 @@ namespace osgART {
             ProvidesSensors = (1 << 5)          ///< tracker provides its own sensor support
         };
 
-
-		/**
-		 * \brief Constructor.
-		 *
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
 		 */
 		Tracker();
 
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        Tracker(const Tracker& container, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
 
-        Tracker(const Tracker& rhs, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
-
-		/**
-		 * \brief Set the image to analyzed.
+		/** 
+		 * \brief assignemnt operator.
 		 *
-		 * \param video the video object to use
-		 * \param useInternalVideo internal video capture being used (image should be NULL)
 		 */
-		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
-
-
+		Tracker& operator = (const Tracker &);
+		
 		/**
-		 * \brief retrieve the image used by the tracker
-		 * 
-		 * \return NULL if there is no image (sensor tracker)
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted
+		 * \return 0 if can't cast otherwise correctly typed instance
 		 */
-		virtual osg::Image* getImage();
-
-
+		static Tracker* cast(osg::Referenced* instance);
+		
+		 /**
+		 * Access a field by its name. You need to cast
+		 * the field into its respective type in order
+		 * to access it.
+		 * \param name Name of the field
+		 * \return pointer to the field (0L if not found)
+		 */
+		Field* get(const std::string& name);
+				
 		/**
 		 * Get the tracker configuration struct
 		 * \return struct TrackerConfiguration
 		 */
 		virtual TrackerConfiguration* getConfiguration();
-
-
-		/**
-		 * \brief get the traits of the tracker
-		 * 
-		 * \return flags comprising of Traits
-		 */
-        virtual Traits getTraits();
 		
-
 		/**
-		 * Creates or gets the Camera Configuration object
-		 *
-		 * \return Camera Configuration object
-		 */
-		virtual CameraConfiguration* getOrCreateCameraConfiguration();
-
+		 * Set the tracker configuration struct
+		 * \param TrackerConfiguration tracker configuration
+		*/
+		virtual void setConfiguration(TrackerConfiguration* config);		
+		
 		/**
 		 * \brief initialize the tracker
 		 *
@@ -165,6 +167,39 @@ namespace osgART {
 		 */
         virtual void updateCallback(osg::NodeVisitor* nv = 0L);
 
+
+		/**
+		 * \brief Set the image to analyzed.
+		 *
+		 * \param video the video object to use
+		 * \param useInternalVideo internal video capture being used (image should be NULL)
+		 */
+		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
+
+
+		/**
+		 * \brief retrieve the image used by the tracker
+		 * 
+		 * \return NULL if there is no image (sensor tracker)
+		 */
+		virtual osg::Image* getImage();
+
+
+		/**
+		 * \brief get the traits of the tracker
+		 * 
+		 * \return flags comprising of Traits
+		 */
+        virtual Traits getTraits();
+		
+
+		/**
+		 * Creates or gets the Camera Configuration object
+		 *
+		 * \return Camera Configuration object
+		 */
+		virtual CameraConfiguration* getOrCreateCameraConfiguration();
+
 		/**
 		 * \brief XXX.
 		 *
@@ -200,15 +235,6 @@ namespace osgART {
 		virtual TrackerTrainingSupport* getTrainingSupport() { return NULL; }
 
 
-		/**
-		 * Needed for plugin loaded objects which are used in other
-		 * languages which don't support dynamic casting (e.g. Python)
-		 * \param instance instance to be casted to a tracker
-		 * \return 0 if can't cast otherwise correctly typed instance
-		 */
-		static Tracker* cast(osg::Referenced* instance);
-
-
 		inline osg::Stats* getStats() { return _stats.get(); }
 
 		inline void setStats(osg::Stats* stats) { _stats = stats; }
@@ -217,7 +243,18 @@ namespace osgART {
 
 	protected:
 
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~Tracker();
+		
+		
 		osg::ref_ptr<osg::Stats> _stats;
+
+
+		/* only videolayer and the container needs to access protected methods */
+		friend class VideoLayer;
+		friend class TrackerContainer;
 
 		/**
 		 * Creates an undistorted mesh, according to the
@@ -233,16 +270,7 @@ namespace osgART {
 		createUndistortedMesh(int width, int height,
 			float maxU, float maxV,
 			osg::Geometry &geometry);
-
-		/* only videolayer and the container needs to access protected methods */
-		friend class VideoLayer;
-		friend class TrackerContainer;
-
-		/**
-		 * \brief destructor.
-		 */
-		virtual ~Tracker();
-
+			
 		/**
 		 * type for a vector of reference counted targets.
 		 */

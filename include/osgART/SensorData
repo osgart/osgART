@@ -1,0 +1,120 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  SensorData
+ *  \brief Sensor Data Objects. produce sensor data (pos, rotation, multiple digital values)
+ * 
+ * 
+ **/
+
+#ifndef OSGART_SENSORDATA
+#define OSGART_SENSORDATA 1
+
+// std include 
+
+// OSG include
+#include <osg/Version>
+#include <osg/Node>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Field"
+
+
+namespace osgART {
+
+	class Sensor;
+
+	/**
+	* \class Sensor
+	* \brief A base class from which specific types of sensor data are derived.
+	*/
+	class OSGART_EXPORT SensorData : public osg::Object, public FieldContainer<SensorData>
+	{
+	public:
+
+		META_Object(osgART,SensorData)
+		
+		enum SensorDataType
+		{
+			SENSORDATA_UNKNOWN = 0,/**< Unknown or unspecified target type. */
+			SENSORDATA_POS, /** 3D position */
+			SENSORDATA_ROT, /** 3D orientation */
+			SENSORDATA_MULTI /** */
+		};
+
+		/**
+		* \brief default constructor.
+		*
+		*/
+		SensorData();
+
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+		SensorData(const SensorData& sensordata, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+		/**
+		* Return the type of the Sensor Data.
+		* \return Type of sensor data
+		*/
+		virtual SensorDataType getType() const;
+
+		/**
+		* Determine if the sensor is active.
+		* \return the validity of the target (true if valid).
+		*/
+		virtual bool valid() const;
+
+		/**
+		* \brief Set the respective target active
+		* \param active set to TRUE if the target should be tracked
+		*/
+		virtual void setActive(bool active);
+
+		/**
+		* \brief retrieve activity status from the target
+		* \return TRUE if the target is active
+		*/
+		bool active() const;
+		
+		/**
+		 * override for usage in trackers
+		 */
+        virtual void update(Sensor& sensor) {}
+
+	protected:
+
+		/**
+		* \brief destructor.
+		*/
+		virtual ~SensorData();
+
+	protected:
+
+		bool _valid;
+		bool _active;
+		std::string _name;
+	};
+
+}
+
+#endif // OSGART_SENSORDATA

@@ -22,5 +22,14 @@
 
 namespace osgART {
 
+	TrackerConfiguration::TrackerConfiguration() : 
+		_id(-1),
+		config("")
+	{
+	}
 
+	/*virtual*/
+	TrackerConfiguration::~TrackerConfiguration() 
+	{
+	}
 }

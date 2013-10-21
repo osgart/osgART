@@ -16,138 +16,138 @@
  * OpenSceneGraph Public License for more details.
 */
 
- /**
- *  \file  Video
- *  \brief video class
- *
- * A Video is a class generating image content.
- */
+/**
+ *  \file  VideoImageStream
+ *  \brief Extension of osg::ImageStream with additional features
+ * 
+ * Extension of osg::ImageStream with additional features
+ **/
 
-#ifndef OSGART_VIDEO
-#define OSGART_VIDEO 1
+#ifndef OSGART_VIDEOSTREAM
+#define OSGART_VIDEOSTREAM 1
 
 // OSG include
-#include <osg/ref_ptr>
-#include <osg/Image>
+#include <osg/Version>
+#include <osg/Node>
+#include <osg/NodeVisitor>
 #include <osg/ImageStream>
-#include <osg/Object>
+#include <osg/Stats>
 
 // Local include
 #include "osgART/Export"
-#include "osgART/Object"
-#include "osgART/VideoImageStream"
-#include "osgART/VideoConfiguration"
-#include "osgART/VideoGeode"
-#include "osgART/Field"
-
-// OpenThreads
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
 
 namespace osgART {
-	/**
-	 * Video encapsulates different capturing devices and sources. 
-	 * 
-	 */	
-	class OSGART_EXPORT Video : public osgART::Object, public VideoImageStream,
-		public FieldContainer<Video>
-	{
-	public:
 
-		META_Object(osgART,Video);
+
+	class OSGART_EXPORT VideoStream : public osg::ImageStream
+	{	
+	public:
 	
-		/** 
-		 * Default constructor. Initializes also the FieldContainer 
-		 * explicitly.
-		 */
-		Video();
-	    
-		/** 
-		 * Copy constructor. Needed for cloning in OSG
-		 */
-		Video(const Video& container,
-			const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
-	    
-		/** 
-		 * \brief assignemnt operator.
-		 *
-		 */
-		Video& operator = (const Video &);
-	
+		/** Constructor */
+		VideoStream();
 		
-		/** 
-		 * Get the mutex for a video object to lock against read/write operations
-		 * \return reference to the internal mutex
-		 */
-		inline OpenThreads::Mutex& getMutex()
-		{
-			return _mutex;		
+        /** Copy constructor using CopyOp to manage deep vs shallow copy. */
+        VideoStream(const VideoStream& image, 
+			const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
+        virtual osg::Object* cloneType() const 
+        { 
+			return new VideoStream(); 
 		}
+        
+        virtual osg::Object* clone(const osg::CopyOp& copyop) const 
+        { 
+			return new VideoStream(*this,copyop); 
+		}
+			
+        virtual bool isSameKindAs(const osg::Object* obj) const 
+        {
+			return dynamic_cast<const VideoStream*>(obj) != 0; 
+		}
+        
+        virtual const char* libraryName() const 
+        {
+			return "osgART"; 
+		}
+        
+        virtual const char* className() const 
+        {
+			return "VideoStream";
+		}			
 		
 		/**
-		 * Access a field by its name. You need to cast
-		 * the field into its respective type in order
-		 * to access it.
-		 * \param name Name of the field
-		 * \return pointer to the field (0L if not found)
+		 * \brief start the  video stream grabbing.
+		 * Start to get image from the  video stream. In function of the implementation on different
+		 * platform, this function can run a thread, signal or real-time function. 
 		 */
-		Field* get(const std::string& name);
-		
+		virtual void start();
 		
 		/**
-		 * Get the video configuration struct
-		 * \return struct VideoConfiguration
+		 * \brief stop the  video stream grabbing.
+		 * Stop to get image from the  video stream. In function of 
+		 * the implementation on different platform, this function can 
+		 * stop a thread, signal or real-time function. 
 		 */
-		virtual VideoConfiguration* getConfiguration();
+		virtual void stop();
 		
 		/**
-		 * Set the video configuration struct
-		 * \param VideoConfiguration video configuration
-		virtual void setConfiguration(VideoConfiguration* config);		 
-		 */
-		 
+		 * \brief open the Video stream.
+		 * Access the Video stream (hardware or file) and get an handle on it.
+		 */		
+		virtual bool open();
+				
 		/**
-		 * Set internal flipping. 
-		 * \param horizontal switch on and off horizontal flipping
-		 * \param vertical switch on and off vertical flipping
+		 * \brief close the video stream.
+		 * Terminate the connection with the video stream and 
+		 * clean handle.
+		 */	
+		virtual void close(bool waitForThread = true);
+		
+		
+		
+#if (OPENSCENEGRAPH_SOVERSION <= 41)
+
+		/** 
+		 * This is a proxy method overiding ImageStream::update() for older 
+		 * OpenSceneGraph versions
 		 */
-		void setFlip(bool horizontal, bool vertical);
+		inline virtual void update()
+		{
+			this->update(0);
+		}
+
+		/**
+		 * Additionally we proxy the new API of OpenSceneGraph introduced 
+		 * around version 2.5.6
+		 */
+		inline virtual void update(osg::NodeVisitor* nv) 
+		{			
+		}		
+#endif
+		/**
+		 * Returns stats for the Video capture
+		 *
+		 * \return pointer to the stats connected to the video
+		 */		 
+		inline osg::Stats* getStats() { return _stats.get(); };
 		
 		/**
-		 * Needed for plugin loaded objects which are used in other
-		 * languages which don't support dynamic casting (e.g. Python)
-		 * \param instance instance to be casted to a tracker
-		 * \return 0 if can't cast otherwise correctly typed instance
-		 */
-		static Video* cast(osg::Referenced* instance);
-	   		
-	
+		 * Set the stats for the Video capture
+		 *
+		 * \param stats pointer to the stats capturing timings
+		 */		 		
+		inline void setStats(osg::Stats* stats) { _stats = stats; } ;
 		
 	protected:
 	
-		bool m_vertical_flip;
-		bool m_horizontal_flip;
+		osg::ref_ptr<osg::Stats> _stats;
+	
+		virtual ~VideoStream();
 		
-		/** 
-		 * \brief destructor.
-		 *
-		 */
-		virtual ~Video();   
-
-		/**
-		 * type for a vector of reference counted targets.
-		 */
-        typedef std::vector< osg::ref_ptr<VideoImageStream> > VideoImageList;
-
-		VideoImageList _videoImageList;
-
-   		// used for locking
-		OpenThreads::Mutex _mutex;
-
+		
+	};
 	
-	}; // class Video
 
-	
-}; // namespace osgART
+}
 
-#endif //  OSGART_VIDEO
+#endif // OSGART_VIDEOSTREAM

@@ -35,10 +35,14 @@
 // Local include
 #include "osgART/Export"
 #include "osgART/Object"
+#include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/VideoStream"
 #include "osgART/VideoImageStream"
 #include "osgART/VideoConfiguration"
+
 #include "osgART/VideoGeode"
-#include "osgART/Field"
 
 // OpenThreads
 #include <OpenThreads/ScopedLock>
@@ -50,7 +54,7 @@ namespace osgART {
 	 * 
 	 */	
 	class OSGART_EXPORT Video : public osgART::Object, public VideoImageStream,
-		public FieldContainer<Video>
+								public FieldContainer<Video>
 	{
 	public:
 
@@ -73,17 +77,15 @@ namespace osgART {
 		 *
 		 */
 		Video& operator = (const Video &);
-	
 		
-		/** 
-		 * Get the mutex for a video object to lock against read/write operations
-		 * \return reference to the internal mutex
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted (by a tracker)
+		 * \return 0 if can't cast otherwise correctly typed instance
 		 */
-		inline OpenThreads::Mutex& getMutex()
-		{
-			return _mutex;		
-		}
-		
+		static Video* cast(osg::Referenced* instance);
+			
 		/**
 		 * Access a field by its name. You need to cast
 		 * the field into its respective type in order
@@ -92,7 +94,6 @@ namespace osgART {
 		 * \return pointer to the field (0L if not found)
 		 */
 		Field* get(const std::string& name);
-		
 		
 		/**
 		 * Get the video configuration struct
@@ -106,6 +107,15 @@ namespace osgART {
 		*/
 		virtual void setConfiguration(VideoConfiguration* config);		 
 		 
+		
+		/** 
+		 * Get the mutex for a video object to lock against read/write operations
+		 * \return reference to the internal mutex
+		 */
+		inline OpenThreads::Mutex& getMutex()
+		{
+			return _mutex;		
+		}
 		 
 		/**
 		 * Set internal flipping. 
@@ -114,33 +124,27 @@ namespace osgART {
 		 */
 		void setFlip(bool horizontal, bool vertical);
 		
-		/**
-		 * Needed for plugin loaded objects which are used in other
-		 * languages which don't support dynamic casting (e.g. Python)
-		 * \param instance instance to be casted to a tracker
-		 * \return 0 if can't cast otherwise correctly typed instance
-		 */
-		static Video* cast(osg::Referenced* instance);
-	   		
-	
-		
 	protected:
 	
-		bool m_vertical_flip;
-		bool m_horizontal_flip;
-		
 		/** 
 		 * \brief destructor.
 		 *
 		 */
 		virtual ~Video();   
-
+		
+		bool m_vertical_flip;
+		bool m_horizontal_flip;
+	
 		/**
 		 * type for a vector of reference counted targets.
 		 */
         typedef std::vector< osg::ref_ptr<VideoImageStream> > VideoImageList;
 
 		VideoImageList _videoImageList;
+
+        typedef std::vector< osg::ref_ptr<VideoStream> > VideoStreamListType;
+
+		VideoStreamListType _videoStreamList;
 
    		// used for locking
 		OpenThreads::Mutex _mutex;

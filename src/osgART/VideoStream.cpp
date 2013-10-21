@@ -16,74 +16,59 @@
  * OpenSceneGraph Public License for more details.
 */
 
+#include "osgART/VideoStream"
+
 #include <osg/Notify>
 
-#include "osgART/Target"
-#include "osgART/TransformFilterCallback"
+/**
+ * \file osgART\VideoStream.cpp
+ * \author Hartmut Seichter <hartmut@technotecture.com>
+ * \brief implements a video sources using osg::ImageStream
+ */
+namespace osgART 
+{
 
-namespace osgART {
-
-
-	Target::Target()
-		: osg::Object()
-		, _valid(false)
-		, _active(false)
+	VideoStream::VideoStream() : osg::ImageStream()
 	{
 	}
 
-	Target::Target(const Target& target, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/)
-		: osg::Object(target,copyop)
+	VideoStream::VideoStream(const VideoStream& video,
+		const osg::CopyOp& copyop) : 
+		osg::ImageStream(video,copyop)
 	{
-		if (this != &target)
-		{
-			_active = target.active();
-			_valid = target.valid();
-		}
 	}
 
-	Target::~Target()
+	/* virtual */
+	void
+	VideoStream::start() 
 	{
+		this->play();
+	}
+	
+	/*virtual*/
+	void
+	VideoStream::stop()
+	{
+		this->pause();
+	}
+	
+	/*virtual*/
+	bool
+	VideoStream::open() 
+	{
+		return false;
 	}
 
 	/*virtual*/
-	Target::TargetType
-	Target::getType() const
-	{
-		return TARGET_UNKNOWN;
-	}
-
-	const
-	osg::Matrix& Target::getTransform() const
-	{
-		return _transform;
-	}
-
-	/*virtual */
-	bool
-	Target::valid() const
-	{
-		return _valid;
-	}
-
-	/*virtual*/
-	bool
-	Target::active() const
-	{
-		return _active;
-	}
-
 	void
-	Target::updateTransform(const osg::Matrix& transform)
+	VideoStream::close(bool waitForThread/* = true*/) 
 	{
-		_transform = transform;
+		this->quit(waitForThread);
 	}
 
-
-	/*virtual */
-	void
-	Target::setActive(bool active /*= true*/)
+	VideoStream::~VideoStream()
 	{
-		_active = active;
+		this->close(false);
 	}
-
+	
 }

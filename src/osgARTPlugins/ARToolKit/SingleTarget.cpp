@@ -38,7 +38,7 @@ namespace osgART {
 
 	Target::TargetType SingleTarget::getType() const
 	{
-		return Target::ART_SINGLE;
+		return Target::TARGET_SINGLE;
 	}
 
 	bool SingleTarget::initialise(const std::string& pattFile, double width, double center[2])

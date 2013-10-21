@@ -23,8 +23,8 @@
  * Types used in defining configuration of video data.
  */
 
-#ifndef OSGART_VIDEOCONFIG
-#define OSGART_VIDEOCONFIG 1
+#ifndef OSGART_VIDEOCONFIGURATION
+#define OSGART_VIDEOCONFIGURATION 1
 
 #include <osg/Vec2s>
 
@@ -91,8 +91,6 @@ namespace osgART {
 	class OSGART_EXPORT VideoConfiguration {
 	public:
 	
-		int id;
-
 		std::string config;
 
 		int deviceid;
@@ -167,4 +165,4 @@ namespace osgART {
 };
 
 
-#endif // OSGART_VIDEOCONFIG
+#endif // OSGART_VIDEOCONFIGURATION

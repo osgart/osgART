@@ -18,70 +18,52 @@
 
 #include <osg/Notify>
 
-#include "osgART/Target"
-#include "osgART/TransformFilterCallback"
+#include "osgART/SensorData"
 
 namespace osgART {
 
-
-	Target::Target()
+	SensorData::SensorData()
 		: osg::Object()
-		, _valid(false)
-		, _active(false)
 	{
 	}
 
-	Target::Target(const Target& target, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/)
-		: osg::Object(target,copyop)
+	SensorData::SensorData(const SensorData& sensordata, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/)
+		: osg::Object(sensordata,copyop)
 	{
-		if (this != &target)
+		if (this != &sensordata)
 		{
-			_active = target.active();
-			_valid = target.valid();
+
 		}
 	}
 
-	Target::~Target()
+	SensorData::~SensorData()
 	{
 	}
 
 	/*virtual*/
-	Target::TargetType
-	Target::getType() const
+	SensorData::SensorDataType
+	SensorData::getType() const
 	{
-		return TARGET_UNKNOWN;
+		return SENSORDATA_UNKNOWN;
 	}
 
-	const
-	osg::Matrix& Target::getTransform() const
-	{
-		return _transform;
-	}
-
-	/*virtual */
+	//virtual 
 	bool
-	Target::valid() const
+	SensorData::valid() const
 	{
 		return _valid;
 	}
 
-	/*virtual*/
+	//virtual 
 	bool
-	Target::active() const
+	SensorData::active() const
 	{
 		return _active;
 	}
 
+	//virtual
 	void
-	Target::updateTransform(const osg::Matrix& transform)
-	{
-		_transform = transform;
-	}
-
-
-	/*virtual */
-	void
-	Target::setActive(bool active /*= true*/)
+	SensorData::setActive(bool active /*= true*/)
 	{
 		_active = active;
 	}
