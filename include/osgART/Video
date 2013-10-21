@@ -26,6 +26,12 @@
 #ifndef OSGART_VIDEO
 #define OSGART_VIDEO 1
 
+// std include
+
+// OpenThreads include
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
@@ -42,10 +48,6 @@
 #include "osgART/VideoConfiguration"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
-
-// OpenThreads
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
 
 namespace osgART {
 	/**

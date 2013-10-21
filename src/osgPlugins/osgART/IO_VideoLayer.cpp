@@ -50,7 +50,7 @@ bool VideoLayer_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 			{
 
 				
-				// node.setImageSource(_video.get());
+				// node.setImageSource(_video->getStream());
 
 				
 				// node.init();

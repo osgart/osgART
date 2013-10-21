@@ -294,8 +294,8 @@ bool DummyVideo::init() {
 	//if we have RGB, or RGBA we convert
 	if ((img->getPixelFormat()==GL_RGB)||(img->getPixelFormat()==GL_RGBA))
 	{
-		for (int j = 0; j < h; j++) {
-			for (int i = 0; i < w; i++) {
+		for (unsigned int j = 0; j < h; j++) {
+			for (unsigned int i = 0; i < w; i++) {
 
 				// image->data() return a pixel in the supported channel format (3 or 4 bytes or less)
 				unsigned char* srcPtr = img->data(i, j);

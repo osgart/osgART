@@ -26,7 +26,6 @@
 #ifndef OSGART_TRACKER
 #define OSGART_TRACKER 1
 
-
 // std include
 #include <map>
 #include <iostream>

@@ -141,15 +141,9 @@ namespace osgART {
 
 	};
 
-
-
-
-
-
-	ARToolKitTrainingSupport::ARToolKitTrainingSupport(ARToolKitTracker* tracker) : TrackerTrainingSupport(),
+	ARToolKitTrainingSupport::ARToolKitTrainingSupport(ARToolKitTracker* tracker) : 
+		TrackerTrainingSupport(),
 		mTracker(tracker) {
-
-
 
 	}
 

@@ -19,17 +19,19 @@
 #ifndef OSGART_ARToolKitTrainingSupport
 #define OSGART_ARToolKitTrainingSupport 1
 
+// std include
+
+// OSG include
+#include <osg/Image>
+
+// Local include
+#include "osgART/Export"
 #include "osgART/TrackerTrainingSupport"
-#include <osg/Referenced>
 
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/ar.h>
 #include <AR/gsub_lite.h>
-
-#include <osg/Image>
-
-
 
 namespace osgART {
 
@@ -40,7 +42,7 @@ namespace osgART {
 	 * 
 	 * Provides marker training support for the ARToolKit tracker.
 	 */
-	class OSGART_EXPORT ARToolKitTrainingSupport : public TrackerTrainingSupport
+	class ARToolKitTrainingSupport : public TrackerTrainingSupport
 	{
 	
 	public:        

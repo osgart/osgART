@@ -26,13 +26,16 @@
 #ifndef OSGART_TRACKERTRAININGSUPPORT
 #define OSGART_TRACKERTRAININGSUPPORT 1
 
-#include "osgART/Export"
+// std include
+#include <string>
 
+// OSG include
 #include <osg/Referenced>
 #include <osg/Array>
 #include <osg/Image>
 
-#include <string>
+// local include
+#include "osgART/Export"
 
 namespace osgART {
 

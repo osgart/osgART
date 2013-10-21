@@ -89,7 +89,7 @@ int main(int argc, char* argv[])  {
 	// get information about the format of the video which is essential
 	// for connecting a tracker
 	// Note: configuration should be defined before opening the video
-	if (!video->open()) {
+	if (!video->init()) {
 		// If the video doesn't start,  video an AR application can not work. Quit if none found.
 		osg::notify(osg::FATAL) << "Could not start the video !" << std::endl;
 	}
@@ -98,7 +98,7 @@ int main(int argc, char* argv[])  {
 	// AR SCENE GRAPH INIT
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
+	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video->getStream())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 

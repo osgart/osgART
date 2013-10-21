@@ -100,7 +100,7 @@ int main(int argc, char* argv[])  {
 	// get information about the format of the video which is essential
 	// for connecting a tracker
 	// Note: configuration should be defined before opening the video
-	video->open();
+	video->init();
 
 	osg::ref_ptr<osgART::Tracker> tracker 
 		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])  {
 	
 	target->setActive(true);
 
-	tracker->setImage(video.get());
+	tracker->setImage(video->getStream());
 
 	tracker->init();
 
@@ -145,7 +145,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
 	//add video update callback (update video stream)
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
+	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video->getStream())) {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
@@ -153,7 +153,7 @@ int main(int argc, char* argv[])  {
 	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
 
 	//add a video background
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	root->addChild(videoBackground.get());
