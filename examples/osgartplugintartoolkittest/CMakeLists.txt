@@ -1,7 +1,7 @@
-set(exe_name osgartpluginvopencvtest)
+set(exe_name osgartplugintartoolkittest)
 
 set(SRCS
-	osgartpluginvopencvtest.cpp
+	osgartplugintartoolkittest.cpp
 	)
 
 

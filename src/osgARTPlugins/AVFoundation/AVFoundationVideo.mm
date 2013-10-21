@@ -717,6 +717,10 @@ AVFoundationVideo::init()
 		m_config.height=720;
 	}
 	
+	
+	//we need to create one video stream
+	_videoStreamList.push_back(new osgART::VideoStream());
+
 	_videoStreamList[0]->allocateImage(m_config.width, m_config.height, 1, GL_RGB, GL_UNSIGNED_BYTE, 1);
 
 	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
@@ -754,14 +758,6 @@ AVFoundationVideo::stop()
 	
 	return true;
 }
-
-/*
-void
-AVFoundationVideo::update()
-{
-
-
-}*/
 
 bool
 AVFoundationVideo::update(osg::NodeVisitor* nv)

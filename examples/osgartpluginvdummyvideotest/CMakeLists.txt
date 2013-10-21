@@ -1,7 +1,7 @@
 set(exe_name osgartpluginvdummyvideotest)
 
 set(SRCS
-	osgartpluginvdummyvideotest
+	osgartpluginvdummyvideotest.cpp
 	)
 
 

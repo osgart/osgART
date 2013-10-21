@@ -566,6 +566,10 @@ QTKitVideo::init()
 		m_config.height=720;
 	}
 	
+	
+	//we need to create one video stream
+	_videoStreamList.push_back(new osgART::VideoStream());
+
 	_videoStreamList[0]->allocateImage(m_config.width, m_config.height, 1, GL_RGB, GL_UNSIGNED_BYTE, 1);
 
 	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
@@ -603,14 +607,6 @@ QTKitVideo::stop()
 	
 	return true;
 }
-
-/*
-void
-QTKitVideo::update()
-{
-
-
-}*/
 
 bool
 QTKitVideo::update(osg::NodeVisitor* nv)

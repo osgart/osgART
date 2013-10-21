@@ -3,25 +3,25 @@ echo "run osgart examples.."
 export OSG_NOTIFY_LEVEL=WARN
 
 echo "run osgartblank.."
-./osgartblank                            
-echo "-- SIMPLE API--"
-
+./osgartblank        
+                    
 echo "-- SIMPLE API--"
 echo "run simple - simple.."
-osgartsimple
+./osgartsimple
 echo "run simple - model.."
-osgartsimplemodel
+./osgartsimplemodel
 echo "run simple - keyboard input.."
-osgartsimplekeyboardinput 
+./osgartsimplekeyboardinput 
 echo "run simple - mouse picking.."
-osgartsimplemousepicking   
+./osgartsimplemousepicking   
 echo "run simple - manipulator.."
-osgartsimplemanipulator         
+./osgartsimplemanipulator         
 echo "run simple - rigid body anim.."    
-osgartsimplerbanim
+./osgartsimplerbanim
 echo "run simple - particle.."
-osgartsimpleparticle
+./osgartsimpleparticle
 
+#osgartsimpleparticle
 #osgartsimpleartoolkit   
 #osgartsimplerbanimartoolkit
 #osgartsimpletarget2cproximityartoolkit                           
@@ -67,13 +67,21 @@ echo "run interm - manipulator.."
 echo "-- ADVANCED API--"
 
 echo "-- PLUGINS TESTS--"
+
+#osgartpluginsdummysensortest 
+#osgartpluginsdummygsptest 
+#osgartpluginsdummyinertialtest 
+#osgartplugintdummytrackergpsinertialtest 
+
 echo "run plugin - dummy video.."
 ./osgartpluginvdummyvideotest 
 echo "run plugin - dummy tracker.."
 ./osgartplugintdummytrackertest          
 
-#echo "run plugin - v4l video.."
-#./osgartpluginvv4ltest 
+echo "run plugin - avfoundation video.."
+./osgartpluginvqtkittest 
+echo "run plugin - avfoundation video.."
+./osgartpluginvavfoundationtest 
 
 echo "run plugin - opencv video.."
 ./osgartpluginvopencvtest
@@ -83,14 +91,6 @@ echo "run plugin - artoolkit video.."
 
 echo "run plugin - artoolkit tracker.."
 #./osgartplugintartoolkittest
-
-#osgartpluginsdummysensortest 
-#osgartpluginsdummygsptest 
-#osgartpluginsdummyinertialtest 
-#osgartplugintdummytrackergpsinertialtest          
-#osgartpluginvopencvtest
-#osgartpluginvartoolkittest
-#osgartplugintartoolkittest
 
 #osgartviewer
 #osgartmarkertraining                   
