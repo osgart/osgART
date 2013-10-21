@@ -1,21 +1,25 @@
-/* -*-c++-*- 
- * 
- * osgART - Augmented Reality ToolKit for OpenSceneGraph
- * 
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This library is open source and may be redistributed and/or modified under
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
- * (at your option) any later version.  The full license is in LICENSE file
- * included with this distribution, and on the osgart.org website.
+ * This file is part of osgART
  *
- * This library is distributed in the hope that it will be useful,
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * OpenSceneGraph Public License for more details.
-*/
-
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
@@ -62,10 +66,10 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	osgART::PluginManager::instance()->load("osgart_video_avfoundation");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_avfoundation"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
@@ -74,7 +78,6 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not initialize video plug-in!" << std::endl;
 	}
 
-
 	// found video - configure now
 	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
 
@@ -82,19 +85,22 @@ int main(int argc, char* argv[])  {
 	if (_configvideo)
 	{
 		// it is possible to configure the plugin before opening it
-		_configvideo->config="data/dummyvideo/dummyvideo.png";
+		//_configvideo->width=1280;
+		//_configvideo->height=720;
+		
+		_configvideo->width=640;
+		_configvideo->height=480;
 	}
 
 	//you can also configure the plugin using fields
 	//before/after open/start in function of the specific field variable/function
-	video->getField < osgART::TypedField<bool>* >("flip_vertical")->set(true);	
+	//video->getField < osgART::TypedField<bool>* >("flip_vertical")->set(true);	
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for connecting a tracker
 	// Note: configuration should be defined before opening the video
 	video->open();
-
 
 	//AR SCENEGRAPH INIT
 	
@@ -107,7 +113,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	//add a video background
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get(),false);
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	root->addChild(videoBackground.get());
@@ -116,7 +122,7 @@ int main(int argc, char* argv[])  {
 
 	//for this example we activate notification level to debug
 	//to see log of video call
-	osg::setNotifyLevel(osg::DEBUG_INFO);
+	//osg::setNotifyLevel(osg::DEBUG_INFO);
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());

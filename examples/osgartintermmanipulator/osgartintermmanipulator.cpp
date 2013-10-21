@@ -164,7 +164,7 @@ int main(int argc, char* argv[])  {
 	if (_configvideo)
 	{
 		// it is possible to configure the plugin before opening it
-		_configvideo->config="Data/dummyvideo/dummyvideo.png";
+		_configvideo->config="data/dummyvideo/dummyvideo.png";
 	}
 
 	//you can also configure the plugin using fields
@@ -246,10 +246,10 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransform.get());
 
 	//adjust window size
-	viewer.setUpViewInWindow(0,0,800,800);
+	//viewer.setUpViewInWindow(0,0,800,800);
 
 	//adjust camera viewport
-	cam->setViewport(0,0,800,800); //RESOLUTION same as VIEWER
+	//cam->setViewport(0,0,800,800); //RESOLUTION same as VIEWER
 
 	//add our manipulator handle
 	viewer.addEventHandler(new MouseManipulatorEventHandler(cam.get()));
@@ -309,13 +309,37 @@ int main(int argc, char* argv[])  {
 	/** Command Manager - connects Dragger objects with Selection objects **/
 	commandManager->connect(*(dragger.get()), *(selection.get()));
 
+
 	//BOOTSTRAP INIT
+	viewer.setSceneData(root.get());
 
-    /// \todo: fixme
-    viewer.setSceneData(group);
+	viewer.realize();
 
-	//MAIN LOOP & EXIT CLEANUP
+	//video start
+	video->start();
 
-	//run call is equivalent to a while loop with a viewer.frame call
-	return viewer.run();
+	//tracker start
+	tracker->start();
+
+
+	//MAIN LOOP
+	while (!viewer.done()) {
+		viewer.frame();
+	}
+
+	//EXIT CLEANUP
+
+	//tracker stop
+	tracker->stop();
+
+	//video stop
+	video->stop();
+
+	//tracker open
+	tracker->close();
+
+	//video open
+	video->close();
+
+	return 0;
 }

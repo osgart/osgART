@@ -1,46 +1,38 @@
-PROJECT(OSGART_PLUGINS_MASTER)
 
-IF(NOT DYNAMIC_OSGART)
-    ADD_DEFINITIONS(-DOSGART_LIBRARY_STATIC)
+#dummy plugins
+add_subdirectory(DummyVideo)
+add_subdirectory(DummyTracker)
+
+#multiplatforms video plugins
+add_subdirectory(OpenCV)
+
+#multiplatforms tracker plugins
+
+#multiplatforms sensor plugins
+
+#multiplatforms video/tracker plugins
+add_subdirectory(ARToolKit)
+
+#multiplatforms sensor/tracker plugins
+
+#platform specifics plugins
+IF(APPLE)
+	add_subdirectory(SMS)
+	add_subdirectory(QTKit)
+	add_subdirectory(AVFoundation)
 ENDIF()
 
-#IF(NOT MSVC)
-#    SET(LIBRARY_OUTPUT_PATH "${LIBRARY_OUTPUT_PATH}/${OSG_PLUGINS}")
-#    SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${OSG_PLUGINS}")
-#ENDIF()
+IF(WIN32)
+#	add_subdirectory(DSVL)
+#	add_subdirectory(videoInput)
+ENDIF()
 
-#SET(CMAKE_SHARED_MODULE_PREFIX ${OSG_PLUGIN_PREFIX})
+IF(ANDROID)
 
-#IF(MSVC80 OR MSVC90)
-#    IF(NOT OSG_MSVC_GENERATE_PLUGINS_AND_WRAPPERS_MANIFESTS)
-#        SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /MANIFEST:NO")
-#    ENDIF()
-#ENDIF()
+ENDIF()
 
-#SET(TARGET_DEFAULT_PREFIX "osgdb_")
-#SET(TARGET_DEFAULT_LABEL_PREFIX "Plugins")
-#SET(TARGET_COMMON_LIBRARIES
-#    OpenThreads
-#    osg
-#    osgDB
-#    osgUtil
-#)
+IF(ANDROID)
 
-############################################################
-#
-#  Video plugins
-#
-#ADD_SUBDIRECTORY(osga)
+ENDIF()
 
-############################################################
-#
-#  Sensor plugins
-#
-#ADD_SUBDIRECTORY(osga)
-
-############################################################
-#
-#  Tracker plugins
-#
-#ADD_SUBDIRECTORY(osga)
 

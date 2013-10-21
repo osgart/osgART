@@ -18,7 +18,7 @@ set(OSGART_VERSION_PATCH 2)
 set(OSGART_VERSION_FULL ${OSGART_VERSION_MAJOR}.${OSGART_VERSION_PATCH}.${OSGART_VERSION_PATCH})
 
 # Patch in the osgART CMake module directory
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/etc/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/CMakeModules)
 
 if(WIN32)
 	set(CMAKE_DEBUG_POSTFIX  "_debug")
@@ -126,7 +126,7 @@ if(DOXYGEN_FOUND)
 	if   (OSGART_BUILD_APIDOC)
 
 		configure_file(
-			${CMAKE_SOURCE_DIR}/etc/cmake/osgART.dox.in
+			${CMAKE_SOURCE_DIR}/CMakeModules/osgART.dox.in
 			${CMAKE_BINARY_DIR}/.doxygen/osgART.dox
 			@ONLY
 			)
@@ -151,7 +151,7 @@ endif()
 # Uninstall
 #
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/etc/cmake/cmake_uninstall.cmake.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/cmake_uninstall.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
   IMMEDIATE @ONLY)
 
@@ -167,7 +167,7 @@ add_custom_target(uninstall
 option(OSGART_BUILD_PACKAGE "Build distribution packages" OFF)
 if(OSGART_BUILD_PACKAGE)
 	configure_file(
-		${CMAKE_SOURCE_DIR}/etc/cmake/Packaging.cmake.in
+		${CMAKE_SOURCE_DIR}/CMakeModules/Packaging.cmake.in
 		${CMAKE_BINARY_DIR}/.cpack/OSGARTPackaging.cmake
 		@ONLY IMMEDIATE
 	)

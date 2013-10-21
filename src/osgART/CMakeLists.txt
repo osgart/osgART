@@ -121,11 +121,6 @@ target_link_libraries(${lib_name}
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
 
 
-add_subdirectory(Plugins)
-
-#add_subdirectory(Tracker)
-#add_subdirectory(Video)
-#add_subdirectory(Sensor)
 
 if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
         message(STATUS "x86-64 detected")
@@ -168,7 +163,7 @@ endif(APPLE)
 install(FILES ${lib_hdrs}
 		DESTINATION include/${lib_name}
 		)
-
+ 
 
 #
 # Install share/
@@ -179,10 +174,10 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/share
 	)
 
 #
-# Optional SDK packaging (default is on)
+# Optional SDK packaging (default is off)
 #
 if(WIN32)
-	option(OSGART_BUILD_SDK "Build as an SDK which will copy all necessary files into the osgART folder" ON)
+	option(OSGART_BUILD_SDK "Build as an SDK which will copy all necessary files into the osgART folder (osg)" OFF)
 	if(OSGART_BUILD_SDK)
 		install(
 			DIRECTORY "${OSG_INCLUDE_DIR}/../"

@@ -66,10 +66,10 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_opencv");
+	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_opencv"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
@@ -85,12 +85,13 @@ int main(int argc, char* argv[])  {
 	if (_configvideo)
 	{
 		// it is possible to configure the plugin before opening it
-		//_configvideo->config="Data/dummyvideo/dummyvideo.png";
+		_configvideo->config="data/dummyvideo/dummyvideo.png";
 	}
 
 	//you can also configure the plugin using fields
 	//before/after open/start in function of the specific field variable/function
-	//video->getField < osgART::TypedField<bool>* >("flip_vertical")->set(true);	
+	
+	video->getField < osgART::TypedField<bool>* >("flip_vertical")->set(true);
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
