@@ -39,10 +39,9 @@
 #include "osgART/Field"
 
 #include "osgART/VideoStream"
-#include "osgART/VideoImageStream"
 #include "osgART/VideoConfiguration"
-
 #include "osgART/VideoGeode"
+#include "osgART/Field"
 
 // OpenThreads
 #include <OpenThreads/ScopedLock>
@@ -53,7 +52,7 @@ namespace osgART {
 	 * Video encapsulates different capturing devices and sources. 
 	 * 
 	 */	
-	class OSGART_EXPORT Video : public osgART::Object, public VideoImageStream,
+	class OSGART_EXPORT Video : public osgART::Object, public osg::Object,
 								public FieldContainer<Video>
 	{
 	public:
@@ -107,6 +106,11 @@ namespace osgART {
 		*/
 		virtual void setConfiguration(VideoConfiguration* config);		 
 		 
+		/**
+		 * return a video stream
+		 * \param stream identification
+		*/
+		virtual VideoStream* getStream(int idx=0);
 		
 		/** 
 		 * Get the mutex for a video object to lock against read/write operations
@@ -138,9 +142,6 @@ namespace osgART {
 		/**
 		 * type for a vector of reference counted targets.
 		 */
-        typedef std::vector< osg::ref_ptr<VideoImageStream> > VideoImageList;
-
-		VideoImageList _videoImageList;
 
         typedef std::vector< osg::ref_ptr<VideoStream> > VideoStreamListType;
 

@@ -17,7 +17,7 @@
 */
 
 /**
- *  \file  VideoImageStream
+ *  \file  VideoStream
  *  \brief Extension of osg::ImageStream with additional features
  * 
  * Extension of osg::ImageStream with additional features
@@ -38,9 +38,8 @@
 
 namespace osgART {
 
-
 	class OSGART_EXPORT VideoStream : public osg::ImageStream
-	{	
+	{
 	public:
 	
 		/** Constructor */
@@ -74,73 +73,12 @@ namespace osgART {
         {
 			return "VideoStream";
 		}			
-		
-		/**
-		 * \brief start the  video stream grabbing.
-		 * Start to get image from the  video stream. In function of the implementation on different
-		 * platform, this function can run a thread, signal or real-time function. 
-		 */
-		virtual void start();
-		
-		/**
-		 * \brief stop the  video stream grabbing.
-		 * Stop to get image from the  video stream. In function of 
-		 * the implementation on different platform, this function can 
-		 * stop a thread, signal or real-time function. 
-		 */
-		virtual void stop();
-		
-		/**
-		 * \brief open the Video stream.
-		 * Access the Video stream (hardware or file) and get an handle on it.
-		 */		
-		virtual bool open();
 				
-		/**
-		 * \brief close the video stream.
-		 * Terminate the connection with the video stream and 
-		 * clean handle.
-		 */	
-		virtual void close(bool waitForThread = true);
+		virtual void play();
 		
-		
-		
-#if (OPENSCENEGRAPH_SOVERSION <= 41)
-
-		/** 
-		 * This is a proxy method overiding ImageStream::update() for older 
-		 * OpenSceneGraph versions
-		 */
-		inline virtual void update()
-		{
-			this->update(0);
-		}
-
-		/**
-		 * Additionally we proxy the new API of OpenSceneGraph introduced 
-		 * around version 2.5.6
-		 */
-		inline virtual void update(osg::NodeVisitor* nv) 
-		{			
-		}		
-#endif
-		/**
-		 * Returns stats for the Video capture
-		 *
-		 * \return pointer to the stats connected to the video
-		 */		 
-		inline osg::Stats* getStats() { return _stats.get(); };
-		
-		/**
-		 * Set the stats for the Video capture
-		 *
-		 * \param stats pointer to the stats capturing timings
-		 */		 		
-		inline void setStats(osg::Stats* stats) { _stats = stats; } ;
+		virtual void pause();
 		
 	protected:
-	
-		osg::ref_ptr<osg::Stats> _stats;
 	
 		virtual ~VideoStream();
 		

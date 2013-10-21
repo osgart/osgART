@@ -55,7 +55,7 @@ namespace osgART {
 	 * the virtual environment.
 	 */
     class OSGART_EXPORT Sensor : public osgART::Object, public osg::Object, 
-    							  public osgART::EventHandler, public FieldContainer<Sensor>
+    							 public FieldContainer<Sensor>
     {
 	public:
 
@@ -106,37 +106,7 @@ namespace osgART {
 		 * \param SensorConfiguration sensor configuration
 		*/
 		virtual void setConfiguration(SensorConfiguration* config);		
-		
-		/**
-		 * \brief initialize the sensor
-		 *
-		 */
-        virtual void init() {}
-
-		/**
-		 * \brief close the sensor
-		 *
-		 */
-        virtual void close() {}
-
-		/**
-		 * \brief start the sensor
-		 *
-		 */
-        virtual void start() {}
-
-		/**
-		 * \brief stop the sensor
-		 *
-		 */
-        virtual void stop() {}
-
-		/**
-		 * \brief update the sensor
-		 *
-		 */
-		virtual void update();
-		
+				
 		/**
 		 * \brief update the sensor from node callback.
 		 *
@@ -155,19 +125,12 @@ namespace osgART {
 		//inline size_t
 		//getSensorDataNum() const { return _sensordatalist.size(); }
 
-		inline osg::Stats* getStats() { return _stats.get(); }
-
-		inline void setStats(osg::Stats* stats) { _stats = stats; }
-
-
 	protected:
 
 		/**
 		 * \brief destructor.
 		 */
 		virtual ~Sensor();
-
-		osg::ref_ptr<osg::Stats> _stats;
 
 		/** output all data channels */
         void dump();

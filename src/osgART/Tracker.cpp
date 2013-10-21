@@ -32,11 +32,11 @@ namespace osgART {
 	Tracker::Tracker() :
         osgART::Object(),
         osg::Object(), 
-        osgART::EventHandler(),
         FieldContainer<Tracker>(),
-        _modifiedCount(0xFFFFF),
-        _stats(new osg::Stats("tracker"))
+        _modifiedCount(0xFFFFF)    
 	{
+		_stats=new osg::Stats("tracker");
+		 
         osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
 
         // *cough*
@@ -61,8 +61,7 @@ namespace osgART {
     Tracker::Tracker(const Tracker &container, 
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		osg::Object(), 
-        osgART::EventHandler(),
+		osg::Object(),
 		FieldContainer<Tracker>()
     {
     }
@@ -105,21 +104,7 @@ namespace osgART {
 	{
 
 	}
-	
-	/*virtual*/
-	void
-	Tracker::update()
-	{
 
-	}
-
-	/*virtual*/
-	void
-	Tracker::updateCallback(osg::NodeVisitor* nv /*=0L*/)
-	{
-		update();
-	}
-	
 	void
 	Tracker::removeAllTargets()
 	{

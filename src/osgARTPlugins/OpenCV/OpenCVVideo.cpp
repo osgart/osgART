@@ -78,39 +78,32 @@ public:
 	/**
 		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
 		*/
-	bool open();
+	bool init();
 
 	/**
 		* Close the video stream. Terminates the connection with the video stream and clean handle.
 		*/
-	void close(bool = true);
+	bool close(bool = true);
 
 	/**
 		* Start the video stream grabbing. Start to get image from the video stream. In function of the
 		* implementation on different platform, this function can run a thread, signal or
 		* real-time function.
 		*/
-	void play();
+	bool start();
 
 	/**
 		* Stop the video stream grabbing. Stop to get image from the video stream. In function
 		* of the implementation on different platform, this function can stop a thread, signal or
 		* real-time function.
 		*/
-	void pause();
+	bool stop();
 
 	/**
 		* Update the video stream grabbing. Try to get an image of the video instance, usable
 		* by your application.
 		*/
-	//void update();
-
-	/**
-		* Update the video stream grabbing. Try to get an image of the video instance, usable
-		* by your application.
-		*/
-	void update(osg::NodeVisitor* nv);
-//	void updateCB(osg::NodeVisitor* nv);
+	bool update(osg::NodeVisitor* nv = 0L);
 
 	/**
 	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
@@ -160,7 +153,7 @@ OpenCVVideo::operator=(const OpenCVVideo &)
 }
 
 bool
-OpenCVVideo::open()
+OpenCVVideo::init()
 {
 	//check first device name, after device id
 	//if (m_config.devicename!="")
@@ -242,39 +235,38 @@ OpenCVVideo::open()
 	std::cout << "OpenCVVideo::open() size of video " <<
 			m_config.selectedWidth << " x " << m_config.selectedHeight << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
 
-	this->allocateImage(m_config.selectedWidth, m_config.selectedHeight, 1, _format_GL, _datatype_GL, 1);
+	_videoStreamList[0]->allocateImage(m_config.selectedWidth, m_config.selectedHeight, 1, _format_GL, _datatype_GL, 1);
 
-	this->setDataVariance(osg::Object::DYNAMIC);
+	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
 
 	return true;
 }
 
-void
+bool
 OpenCVVideo::close(bool waitForThread)
 {
 	m_video.release();
+	
+	return true;
 }
 
-void
-OpenCVVideo::play()
+bool
+OpenCVVideo::start()
 {
-	osg::ImageStream::play();
+	_videoStreamList[0]->play();
+	
+	return true;
 }
 
-void
-OpenCVVideo::pause()
+bool
+OpenCVVideo::stop()
 {
-	osg::ImageStream::pause();
+	_videoStreamList[0]->pause();
+	
+	return true;
 }
-/*
-void
-OpenCVVideo::update()
-{
 
-
-}*/
-
-void
+bool
 OpenCVVideo::update(osg::NodeVisitor* nv)
 {
 	osg::Timer t;
@@ -308,9 +300,9 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 			
 			cvtColor(frame, bgra_to_rgb, CV_BGRA2RGB);
 
-			memcpy(data(),(unsigned char*)bgra_to_rgb.data,getImageSizeInBytes());
+			memcpy(_videoStreamList[0]->data(),(unsigned char*)bgra_to_rgb.data,_videoStreamList[0]->getImageSizeInBytes());
 				
-					/*
+			/*
 			m_video>>m_OCVImage;
 
 			Mat bgr_to_rgb;
@@ -319,7 +311,7 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 
 			memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
 			*/
-			this->dirty();
+			_videoStreamList[0]->dirty();
 
 		}
 
@@ -333,6 +325,7 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 			}
 		}
 	}
+	return true;
 }
 
 osgART::VideoConfiguration*

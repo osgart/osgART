@@ -50,7 +50,7 @@ namespace osgART {
 		{
 			if (nv->getFrameStamp()->getFrameNumber() != _framenumber)
 			{
-				_tracker->updateCallback(nv);
+				_tracker->update(nv);
 
 				_framenumber = nv->getFrameStamp()->getFrameNumber();
 			}

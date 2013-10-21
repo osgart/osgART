@@ -30,6 +30,7 @@ namespace osgART
 
 	VideoStream::VideoStream() : osg::ImageStream()
 	{
+		this->setPixelBufferObject(new osg::PixelBufferObject(this));
 	}
 
 	VideoStream::VideoStream(const VideoStream& video,
@@ -38,37 +39,43 @@ namespace osgART
 	{
 	}
 
-	/* virtual */
-	void
-	VideoStream::start() 
+	VideoStream::~VideoStream()
 	{
+		//this->close(false);
+		this->setPixelBufferObject(NULL);
+	}
+	
+	
+	// virtual 
+	void
+	VideoStream::play() 
+	{
+		osg::ImageStream::play();
 		this->play();
 	}
 	
-	/*virtual*/
+	//virtual
 	void
-	VideoStream::stop()
+	VideoStream::pause()
 	{
+		osg::ImageStream::pause();
 		this->pause();
 	}
 	
-	/*virtual*/
+	/*
+	//virtual 
 	bool
 	VideoStream::open() 
 	{
 		return false;
 	}
 
-	/*virtual*/
+	//virtual
 	void
-	VideoStream::close(bool waitForThread/* = true*/) 
+	VideoStream::close(bool waitForThread) 
 	{
 		this->quit(waitForThread);
 	}
-
-	VideoStream::~VideoStream()
-	{
-		this->close(false);
-	}
+	*/
 	
 }

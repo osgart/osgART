@@ -422,39 +422,32 @@ public:
 	/**
 		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
 		*/
-	bool open();
+	bool init();
 
 	/**
 		* Close the video stream. Terminates the connection with the video stream and clean handle.
 		*/
-	void close(bool = true);
+	bool close(bool waitForThread = true);
 
 	/**
 		* Start the video stream grabbing. Start to get image from the video stream. In function of the
 		* implementation on different platform, this function can run a thread, signal or
 		* real-time function.
 		*/
-	void play();
+	bool start();
 
 	/**
 		* Stop the video stream grabbing. Stop to get image from the video stream. In function
 		* of the implementation on different platform, this function can stop a thread, signal or
 		* real-time function.
 		*/
-	void pause();
+	bool stop();
 
 	/**
 		* Update the video stream grabbing. Try to get an image of the video instance, usable
 		* by your application.
 		*/
-	//void update();
-
-	/**
-		* Update the video stream grabbing. Try to get an image of the video instance, usable
-		* by your application.
-		*/
-	void update(osg::NodeVisitor* nv);
-//	void updateCB(osg::NodeVisitor* nv);
+	bool update(osg::NodeVisitor* nv = 0L);
 
 	/**
 	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
@@ -502,7 +495,7 @@ QTKitVideo::operator=(const QTKitVideo &)
 }
 
 bool
-QTKitVideo::open()
+QTKitVideo::init()
 {
 	int xsize=0, ysize=0;
 	m_camIndex=0;
@@ -573,37 +566,42 @@ QTKitVideo::open()
 		m_config.height=720;
 	}
 	
-	this->allocateImage(m_config.width, m_config.height, 1, GL_RGB, GL_UNSIGNED_BYTE, 1);
+	_videoStreamList[0]->allocateImage(m_config.width, m_config.height, 1, GL_RGB, GL_UNSIGNED_BYTE, 1);
 
-	this->setDataVariance(osg::Object::DYNAMIC);
+	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
 
 	return true;
 
 }
 
-void
+bool
 QTKitVideo::close(bool waitForThread)
 {
 	//m_video.release();
+	
+	return true;
 }
 
-void
-QTKitVideo::play()
+bool
+QTKitVideo::start()
 {
-	osg::ImageStream::play();
-	
 	//	VideoQTKit* video new VideoQTKit;
 	capture = [[VideoQTKit alloc] init];
 	[capture setSize:m_config.height width:m_config.width];
 
 	[capture initVideo];
 
+	_videoStreamList[0]->play();	
+	
+	return true;
 }
 
-void
-QTKitVideo::pause()
+bool
+QTKitVideo::stop()
 {
-	osg::ImageStream::pause();
+	_videoStreamList[0]->pause();
+	
+	return true;
 }
 
 /*
@@ -614,7 +612,7 @@ QTKitVideo::update()
 
 }*/
 
-void
+bool
 QTKitVideo::update(osg::NodeVisitor* nv)
 {
 	osg::Timer t;
@@ -642,7 +640,7 @@ QTKitVideo::update(osg::NodeVisitor* nv)
 
 			// copy data
 			if (buffer)
-				memcpy(this->data(),buffer,this->getImageSizeInBytes());
+				memcpy(_videoStreamList[0]->data(),buffer,_videoStreamList[0]->getImageSizeInBytes());
 
 					// need to use dirty() as setModifiedCount(int) does not update
 					// the backend buffer object
@@ -662,7 +660,7 @@ QTKitVideo::update(osg::NodeVisitor* nv)
 
 			memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
 			*/
-			this->dirty();
+			_videoStreamList[0]->dirty();
 
 		}
 
@@ -676,6 +674,7 @@ QTKitVideo::update(osg::NodeVisitor* nv)
 			}
 		}
 	}
+	return true;
 }
 
 osgART::VideoConfiguration*

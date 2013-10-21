@@ -72,7 +72,7 @@ ARToolKitVideo::operator=(const ARToolKitVideo &)
 }
 
 bool
-ARToolKitVideo::open()
+ARToolKitVideo::init()
 {
 	char* config = 0;
 	int xsize = 0, ysize = 0;
@@ -125,15 +125,15 @@ ARToolKitVideo::open()
 	}
 
 	// create an image that same size (packing set to 1)
-	this->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
+	_videoStreamList[0]->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 
-	this->setDataVariance(osg::Object::DYNAMIC);
+	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
 
 	return true;
 
 }
 
-void
+bool
 ARToolKitVideo::close(bool waitForThread)
 {
 
@@ -143,7 +143,7 @@ ARToolKitVideo::close(bool waitForThread)
 //#if !defined( WIN32 )
 	if (NULL != video) {
 
-		this->pause();
+		this->stop();
 		int _ret = ar2VideoClose(video);
 
 		if (0 == _ret) {
@@ -151,29 +151,32 @@ ARToolKitVideo::close(bool waitForThread)
 		}
 	}
 //#endif
+	return true;
 }
 
-void
-ARToolKitVideo::play()
+bool
+ARToolKitVideo::start()
 {
 	if (video)
 	{
 		ar2VideoCapStart(video);
-		osg::ImageStream::play();
+		_videoStreamList[0]->play();
 	}
+	return true;
 }
 
-void
-ARToolKitVideo::pause()
+bool
+ARToolKitVideo::stop()
 {
 	if (video) {
 		ar2VideoCapStop(video);
 
-		osg::ImageStream::pause();
+		_videoStreamList[0]->pause();
 	}
+	return true;
 }
 
-void
+bool
 ARToolKitVideo::update(osg::NodeVisitor* nv)
 {
 	OpenThreads::ScopedLock<OpenThreads::Mutex> lock(this->getMutex());
@@ -186,9 +189,9 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 
 		if (newImage)
 		{
-			memcpy(this->data(),newImage, this->getImageSizeInBytes());
+			memcpy(_videoStreamList[0]->data(),newImage, _videoStreamList[0]->getImageSizeInBytes());
 
-			this->dirty();
+			_videoStreamList[0]->dirty();
 
 			if (nv) {
 
@@ -202,6 +205,8 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 			}
 		}
 	}
+	
+	return true;
 }
 
 osgART::VideoConfiguration*

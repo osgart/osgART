@@ -63,7 +63,7 @@ namespace osgART {
 	 * the virtual environment.
 	 */
     class OSGART_EXPORT Tracker : public osgART::Object, public osg::Object, 
-    							  public osgART::EventHandler, public FieldContainer<Tracker>
+    							  public FieldContainer<Tracker>
     {
 	public:
 
@@ -126,47 +126,6 @@ namespace osgART {
 		 * \param TrackerConfiguration tracker configuration
 		*/
 		virtual void setConfiguration(TrackerConfiguration* config);		
-		
-		/**
-		 * \brief initialize the tracker
-		 *
-		 */
-        virtual void init() {}
-
-		/**
-		 * \brief close the tracker
-		 *
-		 */
-        virtual void close() {}
-
-		/**
-		 * \brief start the tracker
-		 *
-		 */
-        virtual void start() {}
-
-		/**
-		 * \brief stop the tracker
-		 *
-		 */
-        virtual void stop() {}
-
-
-		/**
-		 * \brief update the tracker
-		 *
-		 */
-		virtual void update();
-
-		/**
-		 * \brief update the tracking from node callback.
-		 *
-		 * Request that the tracker update the position of tracked
-		 * targets, using the most recent image supplied by setImage.
-		 * \param nv NodeVisitor which should be used to get stats information
-		 */
-        virtual void updateCallback(osg::NodeVisitor* nv = 0L);
-
 
 		/**
 		 * \brief Set the image to analyzed.
@@ -201,9 +160,9 @@ namespace osgART {
 		virtual CameraConfiguration* getOrCreateCameraConfiguration();
 
 		/**
-		 * \brief XXX.
+		 * \brief return a target object.
 		 *
-		 * XXX.
+		 * get a target in the list of managed target by the tracker.
 		 */
 		virtual Target* getTarget(size_t idx);
 
@@ -235,12 +194,6 @@ namespace osgART {
 		virtual TrackerTrainingSupport* getTrainingSupport() { return NULL; }
 
 
-		inline osg::Stats* getStats() { return _stats.get(); }
-
-		inline void setStats(osg::Stats* stats) { _stats = stats; }
-
-
-
 	protected:
 
 		/**
@@ -248,10 +201,6 @@ namespace osgART {
 		 */
 		virtual ~Tracker();
 		
-		
-		osg::ref_ptr<osg::Stats> _stats;
-
-
 		/* only videolayer and the container needs to access protected methods */
 		friend class VideoLayer;
 		friend class TrackerContainer;

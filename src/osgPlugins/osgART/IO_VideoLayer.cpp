@@ -41,21 +41,33 @@ bool VideoLayer_readLocalData(osg::Object& obj, osgDB::Input& fr) {
 			_video_id = fr[1].getStr();
 				
 			osg::ref_ptr<osgART::Video> _video = 
-				dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
+				
+			dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(_video_id));
 
+			
 			if (_video.valid()) 
+			
 			{
 
+				
 				// node.setImageSource(_video.get());
 
+				
 				// node.init();
 
-				_video->open();
-			} else 
+				
+				_video->init();
+			
+			} 
+			else 
+			
 			{
+				
 				std::cout << "Error getting the video!" << std::endl;
+			
 			}
 		
+			
 			fr += 2;
 
             iteratorAdvanced = true;

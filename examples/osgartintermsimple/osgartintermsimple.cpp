@@ -95,7 +95,7 @@ int main(int argc, char* argv[])  {
 	// get information about the format of the video which is essential
 	// for connecting a tracker
 	// Note: configuration should be defined before opening the video
-	video->open();
+	video->init();
 
 	osg::ref_ptr<osgART::Tracker> tracker 
 		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])  {
 	
 	target->setActive(true);
 
-	tracker->setImage(video.get());
+	tracker->setImage(video.getStream());
 
 	tracker->init();
 

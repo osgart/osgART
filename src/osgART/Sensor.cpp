@@ -30,11 +30,11 @@ namespace osgART {
 
 	Sensor::Sensor() :
         osgART::Object(),
-        osg::Object(), 
-        osgART::EventHandler(),
-        FieldContainer<Sensor>(),
-        _stats(new osg::Stats("sensor"))
+        osg::Object(),
+        FieldContainer<Sensor>()
 	{
+		_stats=new osg::Stats("sensor");
+
         osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
 
         // *cough*
@@ -59,7 +59,6 @@ namespace osgART {
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
 		osg::Object(), 
-        osgART::EventHandler(),
 		FieldContainer<Sensor>()
     {
     }
@@ -102,15 +101,8 @@ namespace osgART {
 	{
 
 	}
-	
-	/*virtual*/
-	void
-	Sensor::update()
-	{
 
-	}
-
-	/*virtual*/
+	// virtual
 	void
 	Sensor::updateCallback(osg::NodeVisitor* nv /*=0L*/)
 	{

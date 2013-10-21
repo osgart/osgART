@@ -16,27 +16,39 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGART_VIDEOCALLBACK
-#define OSGART_VIDEOCALLBACK 1
+/**
+ *  \file  SensorUtils
+ *  \brief utility class
+ *
+ * Utility class for logging, string tools, etc.
+ */
+
+#ifndef OSGART_SENSORUTILS
+#define OSGART_SENSORUTILS 1
+
+// std include
+#include <iostream>
+#include <string>
+#include <vector>
 
 // OSG include
-#include <osg/ref_ptr>
-#include <osg/Image>
-#include <osg/ImageStream>
-#include <osg/Object>
+#include <osg/Notify>
+#include <osg/Matrix>
+#include <osg/Vec2>
+#include <osg/Texture>
+#include <osg/Texture2D>
+#include <osg/TextureRectangle>
+#include <osg/Camera>
 
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
-
-// Local include
+// local include
 #include "osgART/Export"
 #include "osgART/Field"
-#include "osgART/VideoStream"
-#include "osgART/VideoGeode"
+#include "osgART/CameraConfiguration"
 
 
 namespace osgART {
 
-}; // namespace osgART
 
-#endif // OSGART_VIDEOCALLBACK
+};
+
+#endif // OSGART_SENSORUTILS

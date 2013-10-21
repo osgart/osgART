@@ -98,14 +98,7 @@ public:
     *
     */
     DummyVideo& operator=(const DummyVideo &);
-    
-    /**
-    * \brief open the Video stream.
-    * Access the Video stream (hardware or file) and get an handle on it.
-    */
-	bool open();
-	
-	
+    	
     /**
 	 * Get the video configuration struct for Dummy Video.
 	 * in this example, we will use the config string 
@@ -126,32 +119,37 @@ public:
     */	
 	std::string getImageFile()const;
  //==================
+	    /**
+    * \brief init the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
+	bool init();
 	
 	/**
     * \brief close the Video stream.
     * Terminate the connection with the Video stream and clean handle.
     */
-	void close();
+	bool close(bool waitForThread=true);
 	
 	/**
     * \brief start the Video stream grabbing.
     * Start to get image from the Video stream. In function of the implementation on different
     * platform, this function can run a thread, signal or real-time function. 
     */
-	void start();
+	bool start();
 	
 	/**
     * \brief stop the Video stream grabbing.
     * Stop to get image from the Video stream. In function of the implementation on different
     * platform, this function can stop a thread, signal or real-time function. 
     */
-	void stop();
+	bool stop();
 	
 	/**
     * \brief update the Video stream grabbing.
     * Try to get an image of the Video instance, usable by your application.
     */
-	void update(osg::NodeVisitor* nv);
+	bool update(osg::NodeVisitor* nv = 0L);
 	
     
     inline virtual void releaseImage() {};
@@ -221,7 +219,7 @@ DummyVideo&  DummyVideo::operator=(const DummyVideo &) {
 }
 
 
-bool DummyVideo::open() {
+bool DummyVideo::init() {
 
 	//open the video 
 	//if you are using a device, you can open the device
@@ -280,7 +278,7 @@ bool DummyVideo::open() {
 	//here you define the image format, image size
 	//that will be streamed by your plugin
 	
-	this->allocateImage(w, h, 1, GL_BGRA, GL_UNSIGNED_BYTE);
+	_videoStreamList[0]->allocateImage(w, h, 1, GL_BGRA, GL_UNSIGNED_BYTE);
 
 	//if you need any format conversion you need to handle it internally
 	//in the update before updating the image
@@ -291,7 +289,7 @@ bool DummyVideo::open() {
 		
 	//if we have BGRA we just do a copy
 	if (img->getPixelFormat()==GL_BGRA)
-		memcpy(this->data(),img->data(), this->getImageSizeInBytes());
+		memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
 	//otherwise
 	//if we have RGB, or RGBA we convert
 	if ((img->getPixelFormat()==GL_RGB)||(img->getPixelFormat()==GL_RGBA))
@@ -301,7 +299,7 @@ bool DummyVideo::open() {
 
 				// image->data() return a pixel in the supported channel format (3 or 4 bytes or less)
 				unsigned char* srcPtr = img->data(i, j);
-				unsigned char* dstPtr = this->data(i, j);
+				unsigned char* dstPtr = _videoStreamList[0]->data(i, j);
 
 				dstPtr[0] = srcPtr[2];
 				dstPtr[1] = srcPtr[1];
@@ -336,15 +334,15 @@ bool DummyVideo::open() {
 	}
 	*/
 	
-	if (m_flip_vertical) this->flipVertical();
-	if (m_flip_horizontal) this->flipHorizontal();
+	if (m_flip_vertical) _videoStreamList[0]->flipVertical();
+	if (m_flip_horizontal) _videoStreamList[0]->flipHorizontal();
 
 	return true;
 
 }
 
 
-void DummyVideo::update(osg::NodeVisitor* nv) {
+bool DummyVideo::update(osg::NodeVisitor* nv) {
 
 	//this is the main function of your video plugin
 	//you can either retrieve images from your video stream/camera/file
@@ -372,7 +370,7 @@ void DummyVideo::update(osg::NodeVisitor* nv) {
 
 	//3. don't forget to call this to notify the rest of the application
 	//that you have a new video image
-	this->dirty();
+	_videoStreamList[0]->dirty();
 	}
 
 	//4. hopefully report some interesting data
@@ -390,10 +388,11 @@ void DummyVideo::update(osg::NodeVisitor* nv) {
 
 	// Increase modified count every X ms to ensure tracker updates
 	if (updateTimer.time_m() > 50) {
-		this->dirty();
+		_videoStreamList[0]->dirty();
 		updateTimer.setStartTick();
 	}
 
+	return true;
 }
 
 osgART::VideoConfiguration* DummyVideo::getConfiguration() {
@@ -409,43 +408,50 @@ osgART::VideoConfiguration* DummyVideo::getConfiguration() {
 //field function get/set
 void DummyVideo::setImageFile(const std::string & _NewFile) {
 	videoName = _NewFile;
-	open();
+	init();
 }
 	
 std::string DummyVideo::getImageFile() const {
 	return videoName;
 }
 
-void DummyVideo::start() 
+bool DummyVideo::start() 
 { 
 	//here you can start to stream the images, starting the camera acquisition
 	//or starting to decompress video files
 
 	//if you run a threaded video plugin, you can start the thread here
 
+	//in this example we only start to play the VideoStream 0
+	
+	_videoStreamList[0]->play();	
 
-	//in this example we don't do anything
+	return true;
 }
 
-void DummyVideo::stop() 
+bool DummyVideo::stop() 
 { 
 
 	//here you can stop any streaming, camera acquisition or video file decompression
 
 	//if you run a threaded video plugin, you can stop the thread here
 
-	//in this example we don't do anything
+	//in this example we only pause the VideoStream 0
 
+	_videoStreamList[0]->pause();	
+
+	return true;
 }
 
-void DummyVideo::close() 
+bool DummyVideo::close(bool waitForThread) 
 { 
 	//here you can close any streaming open, close a camera 
 	//and clean your specific data structure
 
 	//in this example we don't do anything
+	
+	return true;
 }
-
 
 //at the end you register your video plugin, the syntax generally
 //osgART::PluginProxy<PluginClassNameVideo> g_PluginClassNameVideo("osgart_video_pluginclassnamevideo");

@@ -73,7 +73,7 @@ namespace osgART {
 		_videoBackground->removeChildren(0, _videoBackground->getNumChildren());
 
 		// Add a new background video geode using the current set of parameters
-		_videoBackground->addChild(osgART::createBasicVideoBackground(_video.get()));
+		_videoBackground->addChild(osgART::createBasicVideoBackground(_video->getStream()));
 
 		_videoBackground->getOrCreateStateSet()->setRenderBinDetails(_settings._background_renderbin, "RenderBin");
 
@@ -108,7 +108,7 @@ namespace osgART {
 		}
 
 
-		if (!_video->open()) {
+		if (!_video->init()) {
 			osg::notify(osg::FATAL) << "Could not open video!" << std::endl;
 			return NULL;
 		}
@@ -119,14 +119,14 @@ namespace osgART {
 
 
 
-		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video.get()))
+		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video->getStream()))
 		{
 			osgART::addEventCallback(this, new osgART::ImageStreamCallback(imagestream));
 		}
 
 		// If tracker was added already, associate video with tracker
 		if (_tracker.valid()) {
-			_tracker->setImage(_video.get());
+			_tracker->setImage(_video->getStream());
 		}
 
 		return _video.get();
@@ -178,7 +178,7 @@ namespace osgART {
 		// If video was added already, associate video with tracker
 		if (_video.valid()) {
 			// set the image source for the tracker
-			_tracker->setImage(_video.get());
+			_tracker->setImage(_video->getStream());
 
 			// Update the video background with new tracker camera configuration etc...
 			//configureVideoBackground();

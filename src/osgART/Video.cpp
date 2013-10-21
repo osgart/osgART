@@ -24,18 +24,16 @@ namespace osgART {
 
 	Video::Video() :
 		osgART::Object(),
-		VideoImageStream(), 
+		osg::Object(), 
 		FieldContainer<Video>()
 	{
-
-		this->setPixelBufferObject(new osg::PixelBufferObject(this));
-		
+		_stats=new osg::Stats("video");
 	}
 
 	Video::Video(const Video& container,
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		VideoImageStream(container),
+		osg::Object(),
 		FieldContainer<Video>()
 	{
 		
@@ -43,7 +41,6 @@ namespace osgART {
 	
 	Video::~Video()
 	{	    
-		this->setPixelBufferObject(NULL);
 	}
 
 	Video& 
@@ -80,6 +77,12 @@ namespace osgART {
 
 	}
 	
+	// virtual 
+	VideoStream* 
+	Video::getStream(int i) 
+	{
+		return _videoStreamList[i];
+	}
 	
 	void 
 	Video::setFlip(bool horizontal,

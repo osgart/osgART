@@ -30,8 +30,11 @@
 // std include
 
 // OSG include
+#include <osg/NodeVisitor>
+#include <osg/Stats>
 
 // local include
+#include "osgART/Event"
 
 namespace osgART {
 
@@ -40,16 +43,34 @@ namespace osgART {
 	 *
 	 * 
 	 */
-    class Object {
+    class Object: public osgART::EventHandler {
     public:
-        Object() {}
+        Object() :  osgART::EventHandler() {}
         virtual ~Object() {}
 
-	//	inline virtual void init() {};
-	//	inline virtual void close() {};
-	//	inline virtual void start() {};
-	//	inline virtual void stop() {};
-	//	inline virtual void update() {};
+		inline virtual bool init() {return false;};
+		inline virtual bool close(bool waitForThread=true) {return false;};
+		inline virtual bool start() {return false;};
+		inline virtual bool stop() {return false;};
+		inline virtual bool update(osg::NodeVisitor* nv = 0L) {return false;};
+	
+		 /**
+		 * Returns stats for the Object 
+		 *
+		 * \return pointer to the stats connected to the object
+		 */		 
+		inline osg::Stats* getStats() { return _stats.get(); };
+		
+		/**
+		 * Set the stats for the Object 
+		 *
+		 * \param stats pointer to the object measurements
+		 */		 		
+		inline void setStats(osg::Stats* stats) { _stats = stats; } ;
+		
+	protected:
+		int robert;
+		osg::ref_ptr<osg::Stats> _stats;
     };
 
 }

@@ -87,32 +87,32 @@ public:
     /**
         * Open the video stream. Access the video stream (hardware or file) and get an handle on it.
         */
-    bool open();
+    bool init();
 
     /**
         * Close the video stream. Terminates the connection with the video stream and clean handle.
         */
-    void close(bool = true);
+    bool close(bool waitForThread = true);
 
     /**
         * Start the video stream grabbing. Start to get image from the video stream. In function of the
         * implementation on different platform, this function can run a thread, signal or
         * real-time function.
         */
-    void play();
+    bool start();
 
     /**
         * Stop the video stream grabbing. Stop to get image from the video stream. In function
         * of the implementation on different platform, this function can stop a thread, signal or
         * real-time function.
         */
-    void pause();
+    bool stop();
 
     /**
         * Update the video stream grabbing. Try to get an image of the video instance, usable
         * by your application.
         */
-    void update(osg::NodeVisitor* nv);
+    bool update(osg::NodeVisitor* nv = 0L);
 
 
     /**

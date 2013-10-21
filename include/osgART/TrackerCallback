@@ -34,7 +34,7 @@
 
 // Local include
 #include "osgART/Export"
-#include "osgART/VideoImageStream"
+#include "osgART/VideoStream"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
 #include <osgART/Tracker>

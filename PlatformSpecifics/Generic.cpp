@@ -16,27 +16,40 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#ifndef OSGART_VIDEOCALLBACK
-#define OSGART_VIDEOCALLBACK 1
+//std include
 
-// OSG include
-#include <osg/ref_ptr>
-#include <osg/Image>
-#include <osg/ImageStream>
-#include <osg/Object>
+//OSG include
 
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
-
-// Local include
-#include "osgART/Export"
-#include "osgART/Field"
-#include "osgART/VideoStream"
-#include "osgART/VideoGeode"
-
+//local include
+#include "XXX"
 
 namespace osgART {
 
-}; // namespace osgART
+    ///
+	XXX::XXX() :
+        osgART::Object(),
+        osg::Object()
 
-#endif // OSGART_VIDEOCALLBACK
+	{
+
+    }
+
+    XXX::XXX(const XXX &container, 
+		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
+		osgART::Object(),
+		osg::Object()
+    {
+    }
+
+	XXX::~XXX()
+	{
+	
+	}
+	
+	XXX& 
+	XXX::operator=(const XXX &)
+	{
+		return *this;
+	}
+
+};

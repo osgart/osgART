@@ -135,9 +135,7 @@ public:
 
 	osgART::Target* addTarget(const std::string& config);
 
-	void update();
-
-	void updateCallback(osg::NodeVisitor* nv);
+	bool update(osg::NodeVisitor* nv = 0L);
 
 };
 
@@ -262,14 +260,8 @@ DummyTracker::addTarget(const std::string& config)
 	return target;
 }
 
-inline void
-DummyTracker::update()
-{
-
-}
-
-inline void
-DummyTracker::updateCallback(osg::NodeVisitor* nv)
+inline bool
+DummyTracker::update(osg::NodeVisitor* nv)
 {
 	const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;
 
@@ -343,6 +335,7 @@ DummyTracker::updateCallback(osg::NodeVisitor* nv)
 		//update the counter of the processed image
 		_modifiedCount = _imagesource->getModifiedCount();
 	}
+	return true;
 }
 
 
