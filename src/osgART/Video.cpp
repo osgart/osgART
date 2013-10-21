@@ -20,6 +20,8 @@
 
 #include <osg/Notify>
 
+const int max_video_number=32;
+
 namespace osgART {
 
 	Video::Video() :
@@ -28,6 +30,7 @@ namespace osgART {
 		FieldContainer<Video>()
 	{
 		_stats=new osg::Stats("video");
+		_videoStreamList.reserve(max_video_number);
 	}
 
 	Video::Video(const Video& container,
@@ -81,6 +84,7 @@ namespace osgART {
 	VideoStream* 
 	Video::getStream(int i) 
 	{
+		//todo check stream id exist
 		return _videoStreamList[i];
 	}
 	

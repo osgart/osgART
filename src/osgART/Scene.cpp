@@ -81,7 +81,7 @@ namespace osgART {
 
 
 
-	//"osgart_video_artoolkit2"
+	//"osgart_artoolkit2"
 	osgART::Video* Scene::addVideoBackground(  const std::string& v, std::string videoconf)
 	{
 

@@ -258,7 +258,7 @@ bool DummyVideo::init() {
 	unsigned int w = img->s();
 	unsigned int h = img->t();
 	
-	std::cerr <<"image size="<<w<<"x"<<h<<std::endl;	
+	//std::cerr <<"image size="<<w<<"x"<<h<<std::endl;	
 
 	if (w > m_max_width) {
 		osg::notify() << "DummyVideo: Image width exceeds maximum (" << m_max_width << "). Image will be resized";
@@ -273,6 +273,9 @@ bool DummyVideo::init() {
 
 	}
 
+	//we need to create one video stream
+	_videoStreamList.push_back(new osgART::VideoStream());
+
 	//this is main function you need to call to be sure to
 	//allocate your image
 	//here you define the image format, image size
@@ -286,7 +289,9 @@ bool DummyVideo::init() {
 	//here we do a simple conversion as our dummy plugin only read the content
 	//once
 	//int components = osg::Image::computeNumComponents(img->getPixelFormat());
-		
+	
+	//std::cout<<"image format="<<img->getPixelFormat()<<"(GL_RGB="<<GL_RGB<<" GL_RGBA="<<GL_RGBA<<" GL_BGR="<<GL_BGR<<" GL_BGRA="<<GL_BGRA<<std::endl;
+
 	//if we have BGRA we just do a copy
 	if (img->getPixelFormat()==GL_BGRA)
 		memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
@@ -424,7 +429,7 @@ bool DummyVideo::start()
 
 	//in this example we only start to play the VideoStream 0
 	
-	_videoStreamList[0]->play();	
+	//_videoStreamList[0]->play();	
 
 	return true;
 }
@@ -438,7 +443,7 @@ bool DummyVideo::stop()
 
 	//in this example we only pause the VideoStream 0
 
-	_videoStreamList[0]->pause();	
+	//_videoStreamList[0]->pause();	
 
 	return true;
 }

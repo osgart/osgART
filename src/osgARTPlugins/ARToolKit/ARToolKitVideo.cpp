@@ -125,6 +125,9 @@ ARToolKitVideo::init()
 	}
 
 	// create an image that same size (packing set to 1)
+
+	_videoStreamList.push_back(new osgART::VideoStream());
+
 	_videoStreamList[0]->allocateImage(xsize, ysize, 1, _format_GL, _datatype_GL, 1);
 
 	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
@@ -160,7 +163,7 @@ ARToolKitVideo::start()
 	if (video)
 	{
 		ar2VideoCapStart(video);
-		_videoStreamList[0]->play();
+		//_videoStreamList[0]->play();
 	}
 	return true;
 }
@@ -171,7 +174,7 @@ ARToolKitVideo::stop()
 	if (video) {
 		ar2VideoCapStop(video);
 
-		_videoStreamList[0]->pause();
+		//_videoStreamList[0]->pause();
 	}
 	return true;
 }

@@ -102,13 +102,11 @@ int main(int argc, char* argv[])  {
 		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
 	}
 
-
 	//APPLICATION INIT
 
 	//for the demo we activate notification level to debug
 	//to see log of video call
 	osg::setNotifyLevel(osg::DEBUG_INFO);
-
 
 	//BOOTSTRAP INIT
 

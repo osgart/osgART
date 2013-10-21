@@ -235,6 +235,8 @@ OpenCVVideo::init()
 	std::cout << "OpenCVVideo::open() size of video " <<
 			m_config.selectedWidth << " x " << m_config.selectedHeight << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
 
+	_videoStreamList.push_back(new osgART::VideoStream());
+
 	_videoStreamList[0]->allocateImage(m_config.selectedWidth, m_config.selectedHeight, 1, _format_GL, _datatype_GL, 1);
 
 	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);

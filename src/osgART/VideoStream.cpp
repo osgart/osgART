@@ -50,16 +50,16 @@ namespace osgART
 	void
 	VideoStream::play() 
 	{
-		osg::ImageStream::play();
-		this->play();
+		//osg::ImageStream::play();
+		//this->play();
 	}
 	
 	//virtual
 	void
 	VideoStream::pause()
 	{
-		osg::ImageStream::pause();
-		this->pause();
+		//osg::ImageStream::pause();
+		//this->pause();
 	}
 	
 	/*
