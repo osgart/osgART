@@ -429,7 +429,7 @@ bool DummyVideo::start()
 
 	//in this example we only start to play the VideoStream 0
 	
-	//_videoStreamList[0]->play();	
+	_videoStreamList[0]->play();	
 
 	return true;
 }
@@ -443,7 +443,7 @@ bool DummyVideo::stop()
 
 	//in this example we only pause the VideoStream 0
 
-	//_videoStreamList[0]->pause();	
+	_videoStreamList[0]->pause();	
 
 	return true;
 }

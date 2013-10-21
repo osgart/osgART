@@ -69,8 +69,8 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 	install_osgart_plugin(${module_name})
 
 	file(GLOB ARTOOLKIT_MISC_FILES
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/patt.*
-		${CMAKE_SOURCE_DIR}/etc/data/artoolkit2/*.dat
+		${CMAKE_SOURCE_DIR}/etc/data/artoolkit/patt.*
+		${CMAKE_SOURCE_DIR}/etc/data/artoolkit/*.dat
 		)
 		
 	#file(GLOB ARTOOLKIT_PATT_PRINT

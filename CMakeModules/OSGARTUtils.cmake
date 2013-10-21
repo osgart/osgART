@@ -45,22 +45,22 @@ endmacro(install_osgart_plugin target)
 # at the moment only applies to Mac and ARToolKit 
 macro(osgart_get_data)
 
-	set(ARTOOLKIT_2_DATAFILES
-		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/camera_para.dat
-		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.hiro
-		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.kanji
-		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.sample1
-		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit2/patt.sample2
+	set(ARTOOLKIT_DATAFILES
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit/camera_para.dat
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit/patt.hiro
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit/patt.kanji
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit/patt.sample1
+		${CMAKE_SOURCE_DIR}/share/osgART/artoolkit/patt.sample2
 		)
 
 	if(APPLE)
 		set_source_files_properties(
-			${ARTOOLKIT_2_DATAFILES}
+			${ARTOOLKIT_DATAFILES}
 			PROPERTIES
 			MACOSX_PACKAGE_LOCATION "Resources/data"
 			)
 			
-		set(OSGART_MISC_DATA ${ARTOOLKIT_2_DATAFILES})
+		set(OSGART_MISC_DATA ${ARTOOLKIT_DATAFILES})
 		
 	endif(APPLE)
 	

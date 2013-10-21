@@ -16,14 +16,9 @@
  * OpenSceneGraph Public License for more details.
 */
 
+#include <fstream>
+
 #include "OpenThreads/ScopedLock"
-
-#include "osgART/CameraConfiguration"
-#include "osgART/Utils"
-#include "osgART/Video"
-#include "osgART/VideoGeode"
-#include "osgART/ImageStreamCallback"
-
 
 #include <osg/Node>
 #include <osg/Texture>
@@ -34,7 +29,12 @@
 #include <osg/Geometry>
 #include <osg/ImageStream>
 
-#include <fstream>
+#include "osgART/CameraConfiguration"
+#include "osgART/Utils"
+#include "osgART/Video"
+#include "osgART/VideoGeode"
+#include "osgART/VideoStream"
+
 
 namespace osgART {
 
@@ -109,9 +109,9 @@ namespace osgART {
 		{
 			
 			osg::Image* _image = const_cast<osg::Image*>(texture.getImage());
-			osgART::Video* vid = dynamic_cast<osgART::Video*>(_image);
+			osgART::VideoStream* vid = dynamic_cast<osgART::VideoStream*>(_image);
 			if (vid) {
-				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vid->getMutex());
+				//OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vid->getMutex());
 				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);
 			} else {
 				texture.applyTexImage2D_subload(state, GL_TEXTURE_2D, _image, _image->s(), _image->t(), _image->getInternalTextureFormat(), 1);

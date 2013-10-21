@@ -29,8 +29,8 @@
 # Config file
 #
 
-video artoolkit2
-tracker artoolkit2
+video artoolkit
+tracker artoolkit
 
 # hiro is an ID
 target hiro single;data/patt.hiro;80;0;0
@@ -63,7 +63,7 @@ model hiro thunderbird.lwo
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
@@ -262,7 +262,7 @@ int main(int argc, char* argv[])  {
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
-	video->open();
+	video->init();
 
 
 	if (!tracker.valid())
@@ -285,15 +285,15 @@ int main(int argc, char* argv[])  {
 	}
 
 	// set the image source for the tracker
-	tracker->setImage(video.get());
+	tracker->setImage(video->getStream());
 
-	osgART::addEventCallback(root.get(), new osgART::TrackerCallback(tracker.get()));
+	//add video update callback (update video + video stream)
+	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
+	//add tracker update callback (update tracker from video stream)
+	osgART::TrackerUpdateCallback::addOrSet(root.get(),tracker.get());
 
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);

@@ -84,9 +84,9 @@ int main(int argc, char* argv[])  {
 	osgART::Scene* scene = new osgART::Scene();
 
 	scene->addVideoBackground("osgart_video_artoolkit");
-	scene->addTracker("osgart_tracker_artoolkit","data/artoolkit2/camera_para.dat");
+	scene->addTracker("osgart_tracker_artoolkit","data/artoolkit/camera_para.dat");
 
-	osg::MatrixTransform* mt = scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0");
+	osg::MatrixTransform* mt = scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0");
 	
 	osg::ref_ptr<osg::MatrixTransform> hitlabMT = new osg::MatrixTransform();
 	hitlabMT->addChild(osgDB::readNodeFile("media/models/hitl_logo.osg"));

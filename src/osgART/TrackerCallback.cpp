@@ -27,15 +27,15 @@
 namespace osgART {
 
 
-	TrackerCallback::TrackerCallback(Tracker* tracker): _tracker(tracker), _framenumber(-1) {
+	TrackerUpdateCallback::TrackerUpdateCallback(Tracker* tracker): _tracker(tracker), _framenumber(-1) {
 
 	}
 
 	/* static */
-	TrackerCallback*
-		TrackerCallback::addOrSet(osg::Node* node, osgART::Tracker* tracker)
+	TrackerUpdateCallback*
+		TrackerUpdateCallback::addOrSet(osg::Node* node, osgART::Tracker* tracker)
 	{
-		TrackerCallback *callback = new TrackerCallback(tracker);
+		TrackerUpdateCallback *callback = new TrackerUpdateCallback(tracker);
 
 		node->getEventCallback() ? node->getEventCallback()->addNestedCallback(callback)
 			: node->setEventCallback(callback);
@@ -44,7 +44,7 @@ namespace osgART {
 
 	}
 
-	void TrackerCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
+	void TrackerUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
 	{
 		if (_tracker.valid())
 		{

@@ -163,7 +163,7 @@ ARToolKitVideo::start()
 	if (video)
 	{
 		ar2VideoCapStart(video);
-		//_videoStreamList[0]->play();
+		_videoStreamList[0]->play();
 	}
 	return true;
 }
@@ -174,7 +174,7 @@ ARToolKitVideo::stop()
 	if (video) {
 		ar2VideoCapStop(video);
 
-		//_videoStreamList[0]->pause();
+		_videoStreamList[0]->pause();
 	}
 	return true;
 }

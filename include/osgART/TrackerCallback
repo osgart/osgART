@@ -44,7 +44,7 @@
 #include <OpenThreads/Mutex>
 
 namespace osgART {
-	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {
+	class OSGART_EXPORT TrackerUpdateCallback : public osg::NodeCallback {
 	public:
 
 		/**
@@ -52,14 +52,14 @@ namespace osgART {
 		 * \param node Node which will trigger an update on the attached tracker
 		 * \param tracker an instance of osgART::Tracker which is been updated
 		 */
-		static TrackerCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
+		static TrackerUpdateCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
 
 
 
 		/**
 		 * Creates a tracker callback
 		 */
-		TrackerCallback(Tracker* tracker);
+		TrackerUpdateCallback(Tracker* tracker);
 
 	protected:
 

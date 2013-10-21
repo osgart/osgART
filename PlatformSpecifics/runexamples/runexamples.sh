@@ -3,7 +3,7 @@ echo "run osgart examples.."
 export OSG_NOTIFY_LEVEL=WARN
 
 echo "run osgartblank.."
-osgartblank                            
+./osgartblank                            
 echo "-- SIMPLE API--"
 #osgartsimple
 #osgartsimplemodel

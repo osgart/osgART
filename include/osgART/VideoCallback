@@ -31,12 +31,43 @@
 // Local include
 #include "osgART/Export"
 #include "osgART/Field"
-#include "osgART/VideoStream"
+#include "osgART/Video"
 #include "osgART/VideoGeode"
 
 
 namespace osgART {
 
+	class OSGART_EXPORT VideoUpdateCallback : public osg::NodeCallback {
+	public:
+
+		/**
+		 * Add or sets a VideoUpdateCallback to any node
+		 * \param node Node which will trigger an update on the attached video
+		 * \param tracker an instance of osgART::Video which is been updated
+		 */
+		static VideoUpdateCallback* addOrSet(osg::Node* node, osgART::Video* video);
+
+
+
+		/**
+		 * Creates a video callback
+		 */
+		VideoUpdateCallback(Video* video);
+
+	protected:
+
+		/**
+		 * Updates the video within here. The tracker will
+		 * not update the image it is attached to.
+		 */
+		void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+
+	private:
+
+		osg::ref_ptr<Video> _video;
+		int _framenumber;
+	};
 }; // namespace osgART
 
 #endif // OSGART_VIDEOCALLBACK

@@ -26,5 +26,36 @@
 
 namespace osgART {
 
+	VideoUpdateCallback::VideoUpdateCallback(Video* video): _video(video), _framenumber(-1) {
 
+	}
+
+	/* static */
+	VideoUpdateCallback*
+		VideoUpdateCallback::addOrSet(osg::Node* node, osgART::Video* video)
+	{
+		VideoUpdateCallback *callback = new VideoUpdateCallback(video);
+
+		node->getEventCallback() ? node->getEventCallback()->addNestedCallback(callback)
+			: node->setEventCallback(callback);
+
+		return callback;
+
+	}
+
+	void VideoUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
+	{
+		if (_video.valid())
+		{
+			if (nv->getFrameStamp()->getFrameNumber() != _framenumber)
+			{
+				_video->update(nv);
+
+				_framenumber = nv->getFrameStamp()->getFrameNumber();
+			}
+		}
+
+		// must traverse the Node's subgraph
+		traverse(node,nv);
+	}
 };

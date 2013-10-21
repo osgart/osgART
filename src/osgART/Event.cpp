@@ -19,6 +19,7 @@
 #include "osgART/Event"
 
 
+
 namespace osgART {
 
 Event::Event()

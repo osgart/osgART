@@ -38,7 +38,7 @@
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
 #include <iostream>
 #include <sstream>
@@ -104,10 +104,8 @@ int main(int argc, char* argv[])  {
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
-	//add video update callback (update video stream)
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video->getStream())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
+	//add video update callback (update video + video stream)
+	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
 	//add a video background
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream(),false);

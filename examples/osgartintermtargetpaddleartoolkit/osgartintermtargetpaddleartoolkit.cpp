@@ -35,7 +35,7 @@
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
 #include <iostream>
 #include <sstream>
@@ -167,10 +167,10 @@ int main(int argc, char* argv[])  {
 	{
 		// it is possible to configure the plugin before opening it
 
-		//artoolkit2 plugin will generate a default configuration for you
+		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
-		//here we use the default config file in the artoolkit2 data directory
-		_configvideo->config="Data/artoolkit2/WDM_camera.xml";
+		//here we use the default config file in the artoolkit data directory
+		_configvideo->config="Data/artoolkit/WDM_camera.xml";
 
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -204,7 +204,7 @@ int main(int argc, char* argv[])  {
 	if (_configtracker)
 	{
 		// it is possible to configure the plugin before opening it
-		//artoolkit2: no configuration
+		//artoolkit: no configuration
 		_configtracker->config="";
 	}
 
@@ -223,7 +223,7 @@ int main(int argc, char* argv[])  {
 	// setup two targets
 
 	//first target: multi-target
-	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("multi;data/artoolkit2/multi/marker.dat");
+	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("multi;data/artoolkit/multi/marker.dat");
 	if (!targetA.valid()) 
 	{
 		// Without target an AR application can not work. Quit if none found.
@@ -234,7 +234,7 @@ int main(int argc, char* argv[])  {
 	targetA->setActive(true);
 
 	//second target
-	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit2/patt.paddle;40;0;0");
+	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit/patt.paddle;40;0;0");
 	if (!targetB.valid()) 
 	{
 		// Without target an AR application can not work. Quit if none found.
@@ -253,13 +253,11 @@ int main(int argc, char* argv[])  {
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
-	//add video update callback (update video stream)
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video->getStream())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
+	//add video update callback (update video + video stream)
+	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
 	//add tracker update callback (update tracker from video stream)
-	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
+	osgART::TrackerUpdateCallback::addOrSet(root.get(),tracker.get());
 
 	//add a video background
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());

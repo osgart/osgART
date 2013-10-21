@@ -30,7 +30,7 @@
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
 
 namespace osgART {
@@ -81,7 +81,7 @@ namespace osgART {
 
 
 
-	//"osgart_artoolkit2"
+	//"osgart_artoolkit"
 	osgART::Video* Scene::addVideoBackground(  const std::string& v, std::string videoconf)
 	{
 
@@ -118,11 +118,9 @@ namespace osgART {
 		configureVideoBackground();
 
 
+		//add video update callback (update video + video stream)
+		osgART::VideoUpdateCallback::addOrSet(this,_video.get());
 
-		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video->getStream()))
-		{
-			osgART::addEventCallback(this, new osgART::ImageStreamCallback(imagestream));
-		}
 
 		// If tracker was added already, associate video with tracker
 		if (_tracker.valid()) {
@@ -133,7 +131,7 @@ namespace osgART {
 
 	}
 
-	//"osgart_tracker_artoolkit2"
+	//"osgart_tracker_artoolkit"
 
 	osgART::Tracker* Scene::addTracker( const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
 	{
@@ -185,7 +183,7 @@ namespace osgART {
 
 		}
 
-		osgART::addEventCallback(this, new osgART::TrackerCallback(_tracker.get()));
+		osgART::addEventCallback(this, new osgART::TrackerUpdateCallback(_tracker.get()));
 
 		_camera = osgART::createBasicCamera(_cameraconfiguration);
 		this->addChild(_camera.get());

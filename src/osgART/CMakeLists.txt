@@ -13,8 +13,7 @@ set(lib_srcs
 	VideoCallback.cpp
 	VideoConfiguration.cpp
 	VideoStream.cpp
-#	VideoImageStreamCallback.cpp
-	ImageStreamCallback.cpp
+#	VideoStreamCallback.cpp
 	VideoGeode.cpp
 	VideoLayer.cpp
 	VideoUtils.cpp
@@ -47,8 +46,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoCallback	
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoStream
-	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
-#	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStreamCallback
+#	${CMAKE_SOURCE_DIR}/include/osgART/VideoStreamCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoGeode
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils

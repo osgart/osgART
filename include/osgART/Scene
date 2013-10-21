@@ -77,7 +77,7 @@ namespace osgART {
 		 * osgART::Scene* scene = new osgART::Scene();
 		 * scene->addVideoBackground("osgart_video_artoolkit");
 		 * scene->addTracker("osgart_tracker_artoolkit");
-		 * scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0")->addChild(osgART::testCube(80));
+		 * scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::testCube(80));
 		 *
 		 */
 		Scene();

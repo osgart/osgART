@@ -27,7 +27,7 @@
 
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
 #include <osgART/VideoUtils>
 
@@ -98,9 +98,8 @@ int main(int argc, char* argv[])  {
 	// AR SCENE GRAPH INIT
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video->getStream())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
+	//add video update callback (update video + video stream)
+	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
 	//APPLICATION INIT
 

@@ -279,7 +279,7 @@ int main(int argc, char* argv[])  {
 	trainer->setEnabled(true);
 
 	osg::Camera* hudCamera = new osg::Camera();
-	hudCamera->setProjectionMatrixAsOrtho2D(0, video->s(), 0, video->t());
+	hudCamera->setProjectionMatrixAsOrtho2D(0, video->getStream()->s(), 0, video->getStream()->t());
 	hudCamera->setViewMatrix(osg::Matrix::identity());
 	hudCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
 	hudCamera->setRenderOrder(osg::Camera::POST_RENDER);

@@ -34,7 +34,7 @@
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
 #include <iostream>
 #include <sstream>
@@ -84,10 +84,10 @@ int main(int argc, char* argv[])  {
 	{
 		// it is possible to configure the plugin before opening it
 
-		//artoolkit2 plugin will generate a default configuration for you
+		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
-		//here we use the default config file in the artoolkit2 data directory
-		_configvideo->config="Data/artoolkit2/WDM_camera.xml";
+		//here we use the default config file in the artoolkit data directory
+		_configvideo->config="Data/artoolkit/WDM_camera.xml";
 
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -121,7 +121,7 @@ int main(int argc, char* argv[])  {
 	if (_configtracker)
 	{
 		// it is possible to configure the plugin before opening it
-		//artoolkit2: no configuration
+		//artoolkit: no configuration
 		_configtracker->config="";
 	}
 
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
 	// load a camera configuration file
-	if (!cameraconfig->load("data/artoolkit2/camera_para.dat")) 
+	if (!cameraconfig->load("data/artoolkit/camera_para.dat")) 
 	{
 
 		// the camera configuration file was non-existing or couldnt be loaded
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// setup one target
-	osg::ref_ptr<osgART::Target> target = tracker->addTarget("single;data/artoolkit2/patt.hiro;80;0;0");
+	osg::ref_ptr<osgART::Target> target = tracker->addTarget("single;data/artoolkit/patt.hiro;80;0;0");
 	
 	target->setActive(true);
 
@@ -151,13 +151,11 @@ int main(int argc, char* argv[])  {
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
-	//add video update callback (update video stream)
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video->getStream())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
+	//add video update callback (update video + video stream)
+	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
 	//add tracker update callback (update tracker from video stream)
-	osgART::TrackerCallback::addOrSet(root.get(),tracker.get());
+	osgART::TrackerUpdateCallback::addOrSet(root.get(),tracker.get());
 
 	//add a video background
 	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());

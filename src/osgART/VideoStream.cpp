@@ -50,7 +50,7 @@ namespace osgART
 	void
 	VideoStream::play() 
 	{
-		//osg::ImageStream::play();
+		osg::ImageStream::play();
 		//this->play();
 	}
 	
@@ -58,7 +58,7 @@ namespace osgART
 	void
 	VideoStream::pause()
 	{
-		//osg::ImageStream::pause();
+		osg::ImageStream::pause();
 		//this->pause();
 	}
 	
