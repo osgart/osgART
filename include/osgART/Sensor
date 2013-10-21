@@ -1,0 +1,180 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  Sensor
+ *  \brief Base class for sensor class
+ *
+ * A Sensor generate sensor data 
+ */
+
+#ifndef OSGART_SENSOR
+#define OSGART_SENSOR 1
+
+// std include
+#include <map>
+#include <iostream>
+
+// OSG include
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Object"
+#include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/SensorData"
+#include "osgART/SensorConfiguration"
+
+namespace osgART {
+
+	/**
+	 * \class Sensor.
+	 *
+	 * Base class for a sensor which in the context of AR is an entity
+	 * that connects sensor data and their representation in
+	 * the virtual environment.
+	 */
+    class OSGART_EXPORT Sensor : public osgART::Object, public osg::Object, 
+    							  public osgART::EventHandler, public FieldContainer<Sensor>
+    {
+	public:
+
+        META_Object(osgART,Sensor)
+
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
+		Sensor();
+
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        Sensor(const Sensor& container, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
+
+		/** 
+		 * \brief assignemnt operator.
+		 *
+		 */
+		Sensor& operator = (const Sensor &);
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static Sensor* cast(osg::Referenced* instance);
+		
+		 /**
+		 * Access a field by its name. You need to cast
+		 * the field into its respective type in order
+		 * to access it.
+		 * \param name Name of the field
+		 * \return pointer to the field (0L if not found)
+		 */
+		Field* get(const std::string& name);
+				
+		/**
+		 * Get the sensor configuration struct
+		 * \return struct SensorConfiguration
+		 */
+		virtual SensorConfiguration* getConfiguration();
+		
+		/**
+		 * Set the sensor configuration struct
+		 * \param SensorConfiguration sensor configuration
+		*/
+		virtual void setConfiguration(SensorConfiguration* config);		
+		
+		/**
+		 * \brief initialize the sensor
+		 *
+		 */
+        virtual void init() {}
+
+		/**
+		 * \brief close the sensor
+		 *
+		 */
+        virtual void close() {}
+
+		/**
+		 * \brief start the sensor
+		 *
+		 */
+        virtual void start() {}
+
+		/**
+		 * \brief stop the sensor
+		 *
+		 */
+        virtual void stop() {}
+
+		/**
+		 * \brief update the sensor
+		 *
+		 */
+		virtual void update();
+		
+		/**
+		 * \brief update the sensor from node callback.
+		 *
+		 * Request that the sensor update the position of sensor data
+		 * \param nv NodeVisitor which should be used to get stats information
+		 */
+        virtual void updateCallback(osg::NodeVisitor* nv = 0L);
+
+		/**
+		 * \brief XXX.
+		 *
+		 * XXX.
+		 */
+		//virtual SensorData* getSensorData(size_t idx);
+
+		//inline size_t
+		//getSensorDataNum() const { return _sensordatalist.size(); }
+
+		inline osg::Stats* getStats() { return _stats.get(); }
+
+		inline void setStats(osg::Stats* stats) { _stats = stats; }
+
+
+	protected:
+
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~Sensor();
+
+		osg::ref_ptr<osg::Stats> _stats;
+
+		/** output all data channels */
+        void dump();
+
+
+	}; // class Sensor
+
+} // namespace osgART
+
+#endif // OSGART_SENSOR
