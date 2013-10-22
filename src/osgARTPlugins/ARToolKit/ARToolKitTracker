@@ -127,14 +127,13 @@ namespace osgART {
 		* \return the internal ID of the new target, or -1 on failure
 		*/
 		int addMultiTarget(const std::string& multiFile);
-				
-		void update();
+
 		/** 
 		* \brief update the tracking.
 		* 
 		* This core function applies the ARToolKit algorithm to the last image defined by setImage.
 		*/
-        void updateCallback(osg::NodeVisitor *nv);
+        bool update(osg::NodeVisitor *nv=0L);
 		
 		/**
 		 * Adds an ARToolKit target based on the config string. The format for the configuration string is either:

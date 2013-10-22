@@ -475,12 +475,6 @@ namespace osgART {
 		return (arDebug == 1);
 	}
 	
-	inline void ARToolKitTracker::update()
-	{
-
-	}
-
-
     Tracker::Traits ARToolKitTracker::getTraits()
     {
         return NoTraits;
@@ -491,7 +485,7 @@ namespace osgART {
     }
 
 
-    inline void ARToolKitTracker::updateCallback(osg::NodeVisitor* nv)
+    inline bool ARToolKitTracker::update(osg::NodeVisitor* nv)
 	{
 
 		const osg::FrameStamp* framestamp = (nv) ? nv->getFrameStamp() : 0L;
@@ -506,20 +500,20 @@ namespace osgART {
 		if (!_imagesource.valid())
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker: No connected image source for the tracker" << std::endl;
-			return;
+			return false;
 		}
 
 		// Do not update with a null image.
 		if (!_imagesource->valid())
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker: received NULL pointer as image" << std::endl;
-			return;
+			return false;
 		}
 
 		// hse25: performance measurement: only update if the image was modified
 		if (_imagesource->getModifiedCount() == _modifiedCount)
 		{
-			return; 
+			return false; 
 		}
 		
 		// update internal modified count
@@ -529,7 +523,7 @@ namespace osgART {
 		if (AR_DEFAULT_PIXEL_FORMAT != getARPixelFormatForImage(*_imagesource.get()))
 		{
 			osg::notify(osg::WARN) << "ARToolKitTracker::update() Incompatible pixelformat!" << std::endl;
-			return;
+			return false;
 		}
 	
 		// lock agains video updates
@@ -552,7 +546,7 @@ namespace osgART {
 		{
 			osg::notify(osg::FATAL) << "ARToolKitTracker: Error detecting targets in image." << std::endl;
 			// TODO: unlock the mutex for a graceful shutdown
-			return;
+			return false;
 		}
 
 		std::cout<<"target num="<<m_target_num<<std::endl;
@@ -651,7 +645,8 @@ namespace osgART {
 		{
 			video->getMutex().unlock();
 		}
-
+		
+		return true;
 	}
 
 	//inline void ARToolKitTracker::setProjection(const double n, const double f) 
