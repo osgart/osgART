@@ -67,6 +67,12 @@ echo "run interm - manipulator.."
 echo "-- ADVANCED API--"
 
 echo "-- PLUGINS TESTS--"
+
+#osgartpluginsdummysensortest 
+#osgartpluginsdummygsptest 
+#osgartpluginsdummyinertialtest 
+#osgartplugintdummytrackergpsinertialtest 
+
 echo "run plugin - dummy video.."
 ./osgartpluginvdummyvideotest 
 echo "run plugin - dummy tracker.."
@@ -84,13 +90,5 @@ echo "run plugin - artoolkit video.."
 echo "run plugin - artoolkit tracker.."
 #./osgartplugintartoolkittest
 
-#osgartpluginsdummysensortest 
-#osgartpluginsdummygsptest 
-#osgartpluginsdummyinertialtest 
-#osgartplugintdummytrackergpsinertialtest          
-#osgartpluginvopencvtest
-#osgartpluginvartoolkittest
-#osgartplugintartoolkittest
-
 #osgartviewer
-#osgartmarkertraining                   
+#osgartmarkertraining

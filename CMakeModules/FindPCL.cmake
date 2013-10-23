@@ -1,15 +1,15 @@
-# Locating OpenNI (<2.0)
+# Locating PCL
 # 
 # (c) 2013 Raphael Grasset
 #
-# Locate OpenNI
+# Locate PCL
 # This module defines
-# OPENNI_LIBRARY
-# OPENNI_FOUND, if false, do not try to link to OPENNI
-# OPENNI_INCLUDE_DIR, where to find the headers
+# PCL_LIBRARIES
+# PCL_FOUND, if false, do not try to link to OPENNI
+# PCL_INCLUDE_DIR, where to find the headers
 
 
-find_path(OPENNI_INCLUDE_DIR DSVL.h
+find_path(PCL_INCLUDE_DIR .h
     PATHS
     NO_DEFAULT_PATH
 )
