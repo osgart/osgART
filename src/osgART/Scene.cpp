@@ -31,7 +31,7 @@
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
-
+#include <osgART/VisualTracker>
 
 namespace osgART {
 
@@ -123,9 +123,9 @@ namespace osgART {
 
 
 		// If tracker was added already, associate video with tracker
-		if (_tracker.valid()) {
-			_tracker->setImage(_video->getStream());
-		}
+		//if (_tracker.valid()) {
+		//	_tracker->setImage(_video->getStream());
+		//}
 
 		return _video.get();
 
@@ -133,9 +133,8 @@ namespace osgART {
 
 	//"osgart_tracker_artoolkit"
 
-	osgART::Tracker* Scene::addTracker( const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
+	osgART::Tracker* Scene::addVisualTracker( const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
 	{
-
 		osgART::PluginManager::instance()->load(t);
 		_tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(t));
 
@@ -176,7 +175,7 @@ namespace osgART {
 		// If video was added already, associate video with tracker
 		if (_video.valid()) {
 			// set the image source for the tracker
-			_tracker->setImage(_video->getStream());
+			dynamic_cast<osgART::VisualTracker*>(_tracker.get())->setImage(_video->getStream());
 
 			// Update the video background with new tracker camera configuration etc...
 			//configureVideoBackground();

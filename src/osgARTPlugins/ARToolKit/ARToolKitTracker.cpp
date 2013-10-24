@@ -159,7 +159,7 @@ namespace osgART {
 		ARParam cparam;	
 	};
 
-	ARToolKitTracker::ARToolKitTracker() : Tracker(),
+	ARToolKitTracker::ARToolKitTracker() : VisualTracker(),
 		m_debugimage(new osg::Image),
 		m_threshold(ARTOOLKIT_DEFAULT_THRESHOLD),
 		m_target_num(0),
@@ -241,7 +241,7 @@ namespace osgART {
 			return;
 		}
 
-		Tracker::setImage(image);
+		osgART::VisualTracker::setImage(image);
 
 		arFittingMode = AR_FITTING_TO_IDEAL;
 	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;

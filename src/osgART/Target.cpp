@@ -53,7 +53,7 @@ namespace osgART {
 	}
 
 	const
-	osg::Matrix& Target::getTransform() const
+	osg::Matrix& Target::getMatrix() const
 	{
 		return _transform;
 	}

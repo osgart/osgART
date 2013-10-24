@@ -69,8 +69,8 @@ int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
 
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit");
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit");
+	osgART::PluginManager::instance()->load("osgart_artoolkit");
+
 
 	osgViewer::Viewer viewer;
 	
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])  {
 	osgART::Scene* scene = new osgART::Scene();
 
 	scene->addVideoBackground("osgart_video_artoolkit");
-	scene->addTracker("osgart_tracker_artoolkit","data/artoolkit/camera_para.dat");
+	scene->addVisualTracker("osgart_tracker_artoolkit","data/artoolkit/camera_para.dat");
 
 	osg::MatrixTransform* mt = scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0");
 	

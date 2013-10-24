@@ -36,6 +36,8 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
 
+#include <osgART/VisualTracker>
+
 #include <iostream>
 #include <sstream>
 
@@ -61,10 +63,8 @@ int main(int argc, char* argv[])  {
 	//AR INIT
 
 	//preload plugins
-	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit");
-	//tracker plugin
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit");
+	//video + tracker plugin
+	osgART::PluginManager::instance()->load("osgart_artoolkit");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
@@ -102,8 +102,8 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->init();
 
-	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
+	osg::ref_ptr<osgART::VisualTracker> tracker 
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
 
 	if (!tracker.valid())
 	{
@@ -195,7 +195,7 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransformA.get());
 
 	//add a cube to the targetA transform
-	arTransformA->addChild(osgART::testCube(80));
+	arTransformA->addChild(osgART::createCube(80));
 
 	osg::ref_ptr<osg::MatrixTransform> arTransformB = new osg::MatrixTransform();
 
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransformB.get());
 
 	//add a cube to the targetB transform
-	arTransformB->addChild(osgART::testCube(80));
+	arTransformB->addChild(osgART::createCube(80));
 
 	//APPLICATION INIT
 

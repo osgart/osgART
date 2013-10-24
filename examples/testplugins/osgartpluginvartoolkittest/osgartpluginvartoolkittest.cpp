@@ -66,7 +66,7 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit");
+	osgART::PluginManager::instance()->load("osgart_artoolkit");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));

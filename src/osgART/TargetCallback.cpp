@@ -129,14 +129,14 @@ namespace osgART {
 
 			// Handler for osg::MatrixTransforms
 			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {
-				mt->setMatrix(m_target->getTransform());
+				mt->setMatrix(m_target->getMatrix());
 			}
 
 			// Handler for osg::PositionAttitudeTransforms
 			// TODO: check correct translation/rotation order
 			else if (osg::PositionAttitudeTransform* pat = dynamic_cast<osg::PositionAttitudeTransform*>(node)) {
-				pat->setPosition(m_target->getTransform().getTrans());
-				pat->setAttitude(m_target->getTransform().getRotate());
+				pat->setPosition(m_target->getMatrix().getTrans());
+				pat->setAttitude(m_target->getMatrix().getRotate());
 				pat->setScale(osg::Vec3(1.0f, 1.0f, 1.0f));
 			}
 
@@ -299,7 +299,7 @@ namespace osgART {
 				"Target: " << m_target->getName() << std::endl <<
 				"Type: " << typeid(*m_target).name() << std::endl <<
 				"Confidence: " << m_target->getConfidence() << std::endl <<
-				"Transform: " << std::endl << m_target->getTransform() << std::endl;
+				"Transform: " << std::endl << m_target->getMatrix() << std::endl;
 
 		}
 
@@ -326,8 +326,8 @@ namespace osgART {
 
 		if (bothValid) {
 
-			baseMatrix = m_targetA->getTransform();
-			paddleMatrix = m_targetB->getTransform();
+			baseMatrix = m_targetA->getMatrix();
+			paddleMatrix = m_targetB->getMatrix();
 			baseMatrix.invert(baseMatrix);
 
 			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {

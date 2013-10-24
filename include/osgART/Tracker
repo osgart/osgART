@@ -127,30 +127,12 @@ namespace osgART {
 		virtual void setConfiguration(TrackerConfiguration* config);		
 
 		/**
-		 * \brief Set the image to analyzed.
-		 *
-		 * \param video the video object to use
-		 * \param useInternalVideo internal video capture being used (image should be NULL)
-		 */
-		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
-
-
-		/**
-		 * \brief retrieve the image used by the tracker
-		 * 
-		 * \return NULL if there is no image (sensor tracker)
-		 */
-		virtual osg::Image* getImage();
-
-
-		/**
 		 * \brief get the traits of the tracker
 		 * 
 		 * \return flags comprising of Traits
 		 */
         virtual Traits getTraits();
 		
-
 		/**
 		 * Creates or gets the Camera Configuration object
 		 *
@@ -200,24 +182,6 @@ namespace osgART {
 		 */
 		virtual ~Tracker();
 		
-		/* only videolayer and the container needs to access protected methods */
-		friend class VideoLayer;
-		friend class TrackerContainer;
-
-		/**
-		 * Creates an undistorted mesh, according to the
-		 * camera lens distortion parameters known to the tracker.
-		 * \param width width of the actual video
-		 * \param height height of the actual video
-		 * \param maxU texture coordinate maximum in u direction
-		 * \param maxV texture coordinate maximum in v direction
-		 * \param geometry geometry to be filled with an
-		 * undistorted mesh
-		 */
-		virtual void
-		createUndistortedMesh(int width, int height,
-			float maxU, float maxV,
-			osg::Geometry &geometry);
 			
 		/**
 		 * type for a vector of reference counted targets.
@@ -232,12 +196,6 @@ namespace osgART {
 		osg::Matrix		_projectionMatrix;
 		std::string		_version;	//!< Store the version of the tracker.
 		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
-
-
-		/**
-		 * Object that provides the image used for registration.
-		 */
-		osg::ref_ptr<osg::Image> _imagesource;
 
 		unsigned int _modifiedCount;
 

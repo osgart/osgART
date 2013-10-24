@@ -17,20 +17,20 @@
 */
 
 /**
- *  \file  Tracker
- *  \brief Base class for tracker class
+ *  \file  GPSInertialTracker
+ *  \brief Base class for gps+inertial tracker class
  *
- * A Tracker generate targets and get input sensors or video information.
+ * A GPS+Inertial Tracker generate targets and get sensor information.
  */
 
-#ifndef OSGART_TRACKER
-#define OSGART_TRACKER 1
-
+#ifndef OSGART_GPSINERTIALTRACKER
+#define OSGART_GPSINERTIALTRACKER 1
 
 // std include
 #include <map>
 #include <iostream>
 
+// OSG include
 #include <osg/Geometry>
 #include <osg/Projection>
 #include <osg/NodeVisitor>
@@ -39,243 +39,62 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Object"
-#include "osgART/Video"
-#include "osgART/Target"
-#include "osgART/Field"
-#include "osgART/TrackerConfiguration"
-#include "osgART/CameraConfiguration"
-#include "osgART/TrackerTrainingSupport"
 #include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/Video"
+#include "osgART/Tracker"
 
 namespace osgART {
 
-	/* Forward declaration */
-	class VideoLayer;
-
 	/**
-	 * \class Tracker.
+	 * \class GPSInertialTracker.
 	 *
-	 * Base class for a tracker which in the context of AR is an entity
-	 * that connects video streams, targets and their representation in
-	 * the virtual environment.
+	 * support visual tracker
 	 */
-    class OSGART_EXPORT Tracker : public osg::Object, public osgART::EventHandler {
+    class OSGART_EXPORT GPSInertialTracker : public Tracker
+    {
 	public:
 
-        META_Object(osgART,Tracker)
+        META_Object(osgART,GPSInertialTracker)
 
-        /**
-         * @brief some traits to know how the tracker behaves
-         */
-        enum Traits {
-            NoTraits        = 0,                ///< nothing
-            SensorTracker   = (1 << 1),         ///< a sensor tracker
-            VisionTracker   = (1 << 2),         ///< this is a general vision tracker
-            FusionTracker   = (1 << 3),         ///< fusion tracker (does internal fusion of sensors and vision)
-            ProvidesVideo   = (1 << 4),         ///< tracker provides its own video support
-            ProvidesSensors = (1 << 5)          ///< tracker provides its own sensor support
-        };
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
+		GPSInertialTracker();
 
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        GPSInertialTracker(const GPSInertialTracker& container, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
 
-		/**
-		 * \brief Constructor.
+		/** 
+		 * \brief assignment operator.
 		 *
 		 */
-		Tracker();
-
-
-        Tracker(const Tracker& rhs, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
-
-		/**
-		 * \brief Set the image to analyzed.
-		 *
-		 * \param video the video object to use
-		 * \param useInternalVideo internal video capture being used (image should be NULL)
-		 */
-		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
-
-
-		/**
-		 * \brief retrieve the image used by the tracker
-		 * 
-		 * \return NULL if there is no image (sensor tracker)
-		 */
-		virtual osg::Image* getImage();
-
-
-		/**
-		 * Get the tracker configuration struct
-		 * \return struct TrackerConfiguration
-		 */
-		virtual TrackerConfiguration* getConfiguration();
-
-
-		/**
-		 * \brief get the traits of the tracker
-		 * 
-		 * \return flags comprising of Traits
-		 */
-        virtual Traits getTraits();
+		GPSInertialTracker& operator = (const GPSInertialTracker &);
 		
-
-		/**
-		 * Creates or gets the camera configuration object
-		 *
-		 * \return CameraConfiguration object
-		 */
-		virtual CameraConfiguration* getOrCreateCameraConfiguration();
-
-		/**
-		 * \brief initialize the tracker
-		 *
-		 */
-        virtual void init() {}
-
-		/**
-		 * \brief close the tracker
-		 *
-		 */
-        virtual void close() {}
-
-		/**
-		 * \brief start the tracker
-		 *
-		 */
-        virtual void start() {}
-
-		/**
-		 * \brief stop the tracker
-		 *
-		 */
-        virtual void stop() {}
-
-
-		/**
-		 * \brief update the tracker
-		 *
-		 */
-		virtual void update();
-
-		/**
-		 * \brief update the tracking from node callback.
-		 *
-		 * Request that the tracker update the position of tracked
-		 * targets, using the most recent image supplied by setImage.
-		 * \param nv NodeVisitor which should be used to get stats information
-		 */
-        virtual void updateCallback(osg::NodeVisitor* nv = 0L);
-
-		/**
-		 * \brief XXX.
-		 *
-		 * XXX.
-		 */
-		virtual Target* getTarget(size_t idx);
-
-		inline size_t
-		getTargetNum() const { return _targetlist.size(); }
-
-		/**
-		 * Add a target to the tracker.
-		 * \param config can contain the filename an ID or other tracker specific parameters
-		 * \return Target as been loaded from the tracker or 0 if it failed
-		 */
-		virtual Target* addTarget(const std::string& config);
-
-		/**
-		 * Remove a target.
-		 * \param target pointer to the target to be removed
-		 */
-        virtual void removeTarget(Target* target);
-		
-		/**
-		 * \brief removes all targets from the tracker (all callbacks will be removed as well)
-		 */
-		 virtual void removeAllTargets();
-
-		/**
-		 * Return a training support instance for this tracker.
-		 * \return TrackerTrainingSupport instance, or NULL if target training is not supported.
-		 */
-		virtual TrackerTrainingSupport* getTrainingSupport() { return NULL; }
-
-
 		/**
 		 * Needed for plugin loaded objects which are used in other
 		 * languages which don't support dynamic casting (e.g. Python)
-		 * \param instance instance to be casted to a tracker
+		 * \param instance instance to be casted
 		 * \return 0 if can't cast otherwise correctly typed instance
 		 */
-		static Tracker* cast(osg::Referenced* instance);
-
-
-		inline osg::Stats* getStats() { return _stats.get(); }
-
-		inline void setStats(osg::Stats* stats) { _stats = stats; }
-
-
+		static GPSInertialTracker* cast(osg::Referenced* instance);
 
 	protected:
-
-		osg::ref_ptr<osg::Stats> _stats;
-
-		/**
-		 * Creates an undistorted mesh, according to the
-		 * camera lens distortion parameters known to the tracker.
-		 * \param width width of the actual video
-		 * \param height height of the actual video
-		 * \param maxU texture coordinate maximum in u direction
-		 * \param maxV texture coordinate maximum in v direction
-		 * \param geometry geometry to be filled with an
-		 * undistorted mesh
-		 */
-		virtual void
-		createUndistortedMesh(int width, int height,
-			float maxU, float maxV,
-			osg::Geometry &geometry);
-
-		/* only videolayer and the container needs to access protected methods */
-		friend class VideoLayer;
-		friend class TrackerContainer;
 
 		/**
 		 * \brief destructor.
 		 */
-		virtual ~Tracker();
-
-		/**
-		 * type for a vector of reference counted targets.
-		 */
-        typedef std::vector< osg::ref_ptr<Target> > TargetList;
-
-		/**
-		 * A list of targets associated with this tracker.
-		 */
-        TargetList _targetlist;
-
-		osg::Matrix		_projectionMatrix;
-		std::string		_version;	//!< Store the version of the tracker.
-		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
-
-
-		/**
-		 * Object that provides the image used for registration.
-		 */
-		osg::ref_ptr<osg::Image> _imagesource;
-
-		unsigned int _modifiedCount;
-
-		/**
-		 * Camera Configuration object that encapsulates the intrinsic camera parameters and distortion parameters.
-		 */
-		osg::ref_ptr<CameraConfiguration> _cameraconfiguration;
-
-		/** output all data channels */
-        void dump();
-
-
-	}; // class Tracker
+		virtual ~GPSInertialTracker();
+			
+		//SensorData _gps;
+		//SensorData _inertial;
+		
+	}; // class GPSInertialTracker
 
 } // namespace osgART
 
-#endif // OSGART_TRACKER
+#endif // OSGART_GPSINERTIALTRACKER

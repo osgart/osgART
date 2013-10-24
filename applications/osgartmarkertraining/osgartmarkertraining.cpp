@@ -240,7 +240,7 @@ int main(int argc, char* argv[])  {
 		return -1;
 	}
 
-	osg::ref_ptr<osgART::Tracker> tracker = scene->addTracker("osgart_tracker_artoolkit");
+	osg::ref_ptr<osgART::Tracker> tracker = scene->addVisualTracker("osgart_tracker_artoolkit");
 	if (!tracker.valid()) {
 		std::cout << "No tracker" << std::endl;
 		return -1;

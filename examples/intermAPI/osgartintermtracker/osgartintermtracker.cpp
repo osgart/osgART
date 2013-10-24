@@ -36,6 +36,8 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
 
+#include <osgART/VisualTracker>
+
 #include <iostream>
 #include <sstream>
 
@@ -97,8 +99,8 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->init();
 
-	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
+	osg::ref_ptr<osgART::VisualTracker> tracker 
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
 
 	if (!tracker.valid())
 	{

@@ -181,28 +181,4 @@ namespace osgART {
 		return _targetlist.at(idx);
 	}
 
-	/*virtual*/
-	void
-	Tracker::createUndistortedMesh(int,int,
-		float,float,osg::Geometry&)
-	{
-		osg::notify(osg::WARN) << "Warning: osgART::Tracker::createUndistortedMesh(): "
-			"Empty implementation called!" << std::endl;
-	}
-
-	/*virtual*/
-	void
-	Tracker::setImage(osg::Image* image,bool useInternalImage)
-	{
-		_imagesource = image;
-	}
-
-	/*virtual*/
-	osg::Image* Tracker::getImage()
-	{
-		return _imagesource.get();
-	}
-
-
-
 };

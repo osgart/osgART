@@ -92,7 +92,7 @@ int main(int argc, char* argv[])  {
 
 
 	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
-	scene->addTracker("osgart_tracker_dummytracker","","mode=0;");
+	scene->addVisualTracker("osgart_tracker_dummytracker","","mode=0;");
 
 	osg::MatrixTransform* mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
 	

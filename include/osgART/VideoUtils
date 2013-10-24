@@ -36,6 +36,21 @@ namespace osgART {
 	OSGART_EXPORT osg::Group*
 	createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false);
 
+			/**
+		 * Creates an undistorted mesh, according to the
+		 * camera lens distortion parameters known to the tracker.
+		 * \param width width of the actual video
+		 * \param height height of the actual video
+		 * \param maxU texture coordinate maximum in u direction
+		 * \param maxV texture coordinate maximum in v direction
+		 * \param geometry geometry to be filled with an
+		 * undistorted mesh
+		 */
+	/*	virtual void
+		createUndistortedMesh(int width, int height,
+			float maxU, float maxV,
+			osg::Geometry &geometry);*/
+
 }
 
 

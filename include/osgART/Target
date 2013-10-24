@@ -37,6 +37,7 @@
 #include <osg/Object>
 #include <osg/ImageStream>
 #include <osg/CopyOp>
+#include <osg/Geometry>
 
 // local include
 #include "osgART/Export"
@@ -105,7 +106,11 @@ namespace osgART {
 		* Return return a 4x4 transformation of the target.
 		* \return a 4x4 transformation matrix
 		*/
-		const osg::Matrix& getTransform() const;
+		const osg::Matrix& getMatrix() const;
+		//getPose()
+
+		//const osg::Vec3 getPos()
+		//const osg::Vec3 getRot()
 
 		/**
 		* \brief Return the tracking confidence of this target.
@@ -141,7 +146,21 @@ namespace osgART {
 		std::string _name;
 	};
 
+	/**
+	* \class SLAMTarget
+	* \brief a derived class from Target, which can produce geometry (mapping).
+	*/
+	class SLAMTarget : public Target {
+	public:
+		SLAMTarget(): Target() {};
 
+		osg::Geometry* getGeometry();
+	protected:
+		~SLAMTarget() {};
+
+	};
 };
+
+
 
 #endif  // OSGART_TARGET

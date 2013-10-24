@@ -39,6 +39,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <osgART/VisualTracker>
+
 int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
@@ -97,8 +99,8 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->init();
 
-	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
+	osg::ref_ptr<osgART::VisualTracker> tracker 
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
 
 	if (!tracker.valid())
 	{
@@ -167,7 +169,7 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransform.get());
 
 	//add a cube to the transform node
-	arTransform->addChild(osgART::testCube(8));
+	arTransform->addChild(osgART::createCube(8));
 
 
 	//APPLICATION INIT

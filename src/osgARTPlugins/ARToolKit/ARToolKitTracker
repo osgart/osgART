@@ -36,7 +36,7 @@
 #include "osgART/Export"
 #include "osgART/Target"
 #include "osgART/Video"
-#include "osgART/Tracker"
+#include "osgART/VisualTracker"
 
 #include "ARToolKitTrainingSupport"
 
@@ -52,7 +52,7 @@ namespace osgART {
 	* This tracker supports single and multi-targets.
 	*
 	*/
-	class ARToolKitTracker : public Tracker
+	class ARToolKitTracker : public VisualTracker
 	{
 
 	public:        

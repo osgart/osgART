@@ -39,6 +39,7 @@
 #include <iostream>
 #include <sstream>
 
+#include <osgART/VisualTracker>
 
 class HitTargetGeode : public osg::Geode {
 
@@ -160,8 +161,8 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->init();
 
-	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
+	osg::ref_ptr<osgART::VisualTracker> tracker 
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
 
 	if (!tracker.valid())
 	{
@@ -295,7 +296,7 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new MousePickingEventHandler());
 
 	//create cube
-	osg::Geode* cube = osgART::testCube(20);
+	osg::Geode* cube = osgART::createCube(20);
 
 	//name the cube
 	cube->setName("target");

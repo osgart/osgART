@@ -44,6 +44,9 @@
 #include <osg/PositionAttitudeTransform>
 #include <osg/LineWidth>
 
+#include <osgART/VisualTracker>
+
+
 class TargetProximityUpdateCallback : public osg::NodeCallback {
 
 private:
@@ -144,10 +147,8 @@ int main(int argc, char* argv[])  {
 	//AR INIT
 
 	//preload plugins
-	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit");
-	//tracker plugin
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit");
+	//video + tracker plugin
+	osgART::PluginManager::instance()->load("osgart_artoolkit");
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
@@ -185,8 +186,8 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->init();
 
-	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
+	osg::ref_ptr<osgART::VisualTracker> tracker 
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
 
 	if (!tracker.valid())
 	{
@@ -329,7 +330,7 @@ int main(int argc, char* argv[])  {
 	arTransformA->addChild(arTransformB.get());
 
 	//add a cube to the targetB transform
-	arTransformB->addChild(osgART::testCube(40.0f));
+	arTransformB->addChild(osgART::createCube(40.0f));
 	arTransformB->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE));
 	arTransformB->getOrCreateStateSet()->setAttributeAndModes(new osg::LineWidth(2));
 	arTransformB->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);

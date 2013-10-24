@@ -25,6 +25,8 @@ set(lib_srcs
 	TrackerUtils.cpp
 	Target.cpp
 	TargetCallback.cpp
+	VisualTracker.cpp
+	GPSInertialTracker.cpp
 	TransformFilterCallback.cpp
 	Sensor.cpp
 #	SensorCallback.cpp
@@ -55,6 +57,8 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/CameraConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerTrainingSupport
+	${CMAKE_SOURCE_DIR}/include/osgART/VisualTracker
+	${CMAKE_SOURCE_DIR}/include/osgART/GPSInertialTracker	
 	${CMAKE_SOURCE_DIR}/include/osgART/Target
 	${CMAKE_SOURCE_DIR}/include/osgART/TargetCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TransformFilterCallback

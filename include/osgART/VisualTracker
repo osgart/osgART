@@ -23,8 +23,8 @@
  * A Visual Tracker generate targets and get image information.
  */
 
-#ifndef OSGART_TRACKER
-#define OSGART_TRACKER 1
+#ifndef OSGART_VISUALTRACKER
+#define OSGART_VISUALTRACKER 1
 
 // std include
 #include <map>
@@ -51,29 +51,15 @@ namespace osgART {
 	class VideoLayer;
 
 	/**
-	 * \class Tracker.
+	 * \class VisualTracker.
 	 *
-	 * Base class for a tracker which in the context of AR is an entity
-	 * that connects video streams, targets and their representation in
-	 * the virtual environment.
+	 * support visual tracker
 	 */
     class OSGART_EXPORT VisualTracker : public Tracker
     {
 	public:
 
         META_Object(osgART,VisualTracker)
-
-        /**
-         * @brief some traits to know how the tracker behaves
-         */
-        enum Traits {
-            NoTraits        = 0,                ///< nothing
-            SensorTracker   = (1 << 1),         ///< a sensor tracker
-            VisionTracker   = (1 << 2),         ///< this is a general vision tracker
-            FusionTracker   = (1 << 3),         ///< fusion tracker (does internal fusion of sensors and vision)
-            ProvidesVideo   = (1 << 4),         ///< tracker provides its own video support
-            ProvidesSensors = (1 << 5)          ///< tracker provides its own sensor support
-        };
 
 		/** 
 		 * Default constructor. Initializes also the FieldContainer 
@@ -120,7 +106,7 @@ namespace osgART {
 		 *
 		 * \return Camera Configuration object
 		 */
-		virtual CameraConfiguration* getOrCreateCameraConfiguration();
+		//virtual CameraConfiguration* getOrCreateCameraConfiguration();
 
 	protected:
 
@@ -132,21 +118,6 @@ namespace osgART {
 		/* only videolayer and the container needs to access protected methods */
 		friend class VideoLayer;
 		friend class TrackerContainer;
-
-		/**
-		 * Creates an undistorted mesh, according to the
-		 * camera lens distortion parameters known to the tracker.
-		 * \param width width of the actual video
-		 * \param height height of the actual video
-		 * \param maxU texture coordinate maximum in u direction
-		 * \param maxV texture coordinate maximum in v direction
-		 * \param geometry geometry to be filled with an
-		 * undistorted mesh
-		 */
-		virtual void
-		createUndistortedMesh(int width, int height,
-			float maxU, float maxV,
-			osg::Geometry &geometry);
 			
 		/**
 		 * Object that provides the image used for registration.
@@ -158,7 +129,7 @@ namespace osgART {
 		/**
 		 * Camera Configuration object that encapsulates the intrinsic camera parameters and distortion parameters.
 		 */
-		osg::ref_ptr<CameraConfiguration> _cameraconfiguration;
+		//osg::ref_ptr<CameraConfiguration> _cameraconfiguration;
 		
 	}; // class VisualTracker
 

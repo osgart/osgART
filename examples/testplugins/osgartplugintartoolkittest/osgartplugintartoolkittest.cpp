@@ -40,6 +40,8 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
 
+#include <osgART/VisualTracker>
+
 #include <iostream>
 #include <sstream>
 
@@ -66,9 +68,9 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_artoolkit");
+	osgART::PluginManager::instance()->load("osgart_artoolkit");
 	//tracker plugin
-	osgART::PluginManager::instance()->load("osgart_tracker_artoolkit");
+
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
@@ -107,8 +109,8 @@ int main(int argc, char* argv[])  {
 	// Note: configuration should be defined before opening the video
 	video->init();
 
-	osg::ref_ptr<osgART::Tracker> tracker 
-		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
+	osg::ref_ptr<osgART::VisualTracker> tracker 
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
 
 	if (!tracker.valid())
 	{

@@ -72,6 +72,8 @@ model hiro thunderbird.lwo
 #include <osgDB/FileNameUtils>
 #include <osgDB/WriteFile>
 
+#include <osgART/VisualTracker>
+
 osg::Group* createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
@@ -152,7 +154,9 @@ int main(int argc, char* argv[])  {
 
 	// A video plugin.
 	osg::ref_ptr<osgART::Video> video;
-	osg::ref_ptr<osgART::Tracker> tracker;
+	//osg::ref_ptr<osgART::Tracker> tracker;
+	osg::ref_ptr<osgART::VisualTracker> tracker;
+//	osg::ref_ptr<osgART::GPSInertialTracker> tracker;
 
 	typedef std::map< std::string, std::string > StringMap;
 	typedef std::map< std::string, double > DoubleMap;
@@ -178,7 +182,7 @@ int main(int argc, char* argv[])  {
 		if (tokens[0] == "tracker" && tokens.size() == 2)
 		{
             osgART::PluginManager::instance()->load("osgart_" + tokens[1]);
-			tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
+			tracker = dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
 		}
 
 		if (tokens[0] == "video" && tokens.size() == 2)
@@ -361,7 +365,7 @@ int main(int argc, char* argv[])  {
 			if (_model_map.find(iter->first) != _model_map.end())
 			{
 				if (_model_map.find(iter->first)->second == "cube") {
-					proxynode->addChild(osgART::testCube(80));
+					proxynode->addChild(osgART::createCube(80));
 				} else {
 					proxynode->setFileName(0,_model_map.find(iter->first)->second);
 					osg::notify() << "ProxyNode::getFileName() " << proxynode->getFileName(0) << std::endl;

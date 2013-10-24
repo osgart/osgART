@@ -24,7 +24,7 @@
 #include <osg/Notify>
 
 #include "osgART/Target"
-#include "osgART/Tracker"
+#include "osgART/VisualTracker"
 #include "osgART/Video"
 #include "osgART/CameraConfiguration"
 #include "osgART/Utils"
@@ -121,7 +121,7 @@ protected:
 };
 
 
-class DummyTracker : public osgART::Tracker
+class DummyTracker : public osgART::VisualTracker
 {
 
 public:
@@ -191,7 +191,7 @@ DummyTarget::update(osg::Matrix mat)
 
 
 DummyTracker::DummyTracker() :
-	osgART::Tracker()
+	osgART::VisualTracker()
 {
 	
 
@@ -231,7 +231,7 @@ DummyTracker::setImage(osg::Image* image,bool useInternalVideo)
 		return;
 	}
 
-	osgART::Tracker::setImage(image);
+	osgART::VisualTracker::setImage(image);
 
 	this->getOrCreateCameraConfiguration()->setSize(*image);
 

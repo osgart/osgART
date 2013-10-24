@@ -65,7 +65,7 @@ int main(int argc, char* argv[])  {
 	//add a video background (video plugin name, video configuration)
 	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
 	//add a tracker (tracker plugin name,camera configuration, tracker configuration)
-	scene->addTracker("osgart_tracker_dummytracker","","mode=0;");
+	scene->addVisualTracker("osgart_tracker_dummytracker","","mode=0;");
 
 	//add a target (target configuration) and a model
 	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::scaleModel(osgART::loadModel(filename),0.1));
