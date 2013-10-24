@@ -11,12 +11,18 @@
 
 find_path(OPENNI_INCLUDE_DIR XnOpenNI.h
     PATHS
+    /usr/include
+    /opt/include
+    /usr/local/include
     NO_DEFAULT_PATH
 )
 
 find_library(OPENNI_LIBRARY OpenNI
     NAMES OpenNI
     PATHS
+    /usr/lib
+	/opt/local/lib
+    /usr/local/lib
     NO_DEFAULT_PATH
 )
 

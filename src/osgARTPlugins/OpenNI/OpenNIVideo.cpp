@@ -22,7 +22,7 @@
  */
  
 /**
-*  \file  DummyVideo
+*  \file  OpenNIVideo
 *  \brief A Video class for image input
 *
 * 
@@ -66,11 +66,24 @@
 #include "osgART/Video"
 #include "osgART/VideoConfiguration"
 
+#include "XnOpenNI.h"
+#include <XnLog.h>
+#include <XnCppWrapper.h>
+#include <XnFPSCalculator.h>
+
+using namespace xn;
+
+#define CHECK_RC(rc, what)											\
+	if (rc != XN_STATUS_OK)											\
+{																\
+	printf("%s failed: %s\n", what, xnGetStatusString(rc));		\
+}
+
 /**
- * class DummyVideo.
+ * class OpenNIVideo.
  *
  */
-class DummyVideo : public osgART::Video
+class OpenNIVideo : public osgART::Video
 {
 public:        
 // Standard Services
@@ -81,23 +94,23 @@ public:
     * @param config a string definition of the Video. See documentation
     * of DummyImage for further details.
     */
-    DummyVideo();
+    OpenNIVideo();
     
     /** 
     * \brief copy constructor.
     */
-     DummyVideo(const DummyVideo &, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+     OpenNIVideo(const OpenNIVideo &, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 
 
-	META_Object(osgART,DummyVideo);
+	META_Object(osgART,OpenNIVideo);
 
     
     /** 
     * \brief affectation operator.
     *
     */
-    DummyVideo& operator=(const DummyVideo &);
+    OpenNIVideo& operator=(const OpenNIVideo &);
     	
     /**
 	 * Get the video configuration struct for Dummy Video.
@@ -159,7 +172,7 @@ protected:
     * \brief destructor.
     *
     */
-    virtual ~DummyVideo();       
+    virtual ~OpenNIVideo();       
     
 
 private:
@@ -177,9 +190,17 @@ private:
 
 	osg::Timer updateTimer;
 
+	xn::Context context;
+	xn::DepthGenerator depth_generator;
+	xn::ImageGenerator image_generator;
+	XnFPSData xnFPS;
+	
+	xn::DepthMetaData depthMD;
+	xn::ImageMetaData imageMD;
+
 };
 
-DummyVideo::DummyVideo():
+OpenNIVideo::OpenNIVideo():
 	osgART::Video(),
 	m_flip_horizontal(false),
 	m_flip_vertical(true),
@@ -201,25 +222,25 @@ DummyVideo::DummyVideo():
 	//you can also create some specific get/set function
 	//such as setting up the name of the image file
 	//or calling specific function such as camera exposure, ROI video mode, etc
-	_fields["image_file"]		= new osgART::CallbackField<DummyVideo, std::string>(this,
-		&DummyVideo::getImageFile,
-		&DummyVideo::setImageFile);
+	_fields["image_file"]		= new osgART::CallbackField<OpenNIVideo, std::string>(this,
+		&OpenNIVideo::getImageFile,
+		&OpenNIVideo::setImageFile);
 }
 
-DummyVideo::DummyVideo(const DummyVideo &, const osg::CopyOp& copyop) {
+OpenNIVideo::OpenNIVideo(const OpenNIVideo &, const osg::CopyOp& copyop) {
     
 }
 
-DummyVideo::~DummyVideo(void) {
+OpenNIVideo::~OpenNIVideo(void) {
     
 }
 
-DummyVideo&  DummyVideo::operator=(const DummyVideo &) {
+OpenNIVideo&  OpenNIVideo::operator=(const OpenNIVideo &) {
     return *this;
 }
 
 
-bool DummyVideo::init() {
+bool OpenNIVideo::init() {
 
 	//open the video 
 	//if you are using a device, you can open the device
@@ -240,18 +261,18 @@ bool DummyVideo::init() {
 	//to check if there is a defined videoName
 
 		if (videoName.empty()) {
-			osg::notify(osg::FATAL) << "Error in DummyVideo::open(), File name is empty!";
+			osg::notify(osg::FATAL) << "Error in OpenNIVideo::open(), File name is empty!";
 			return false;
 		}
 	}
 	
-	osg::notify(osg::INFO) << "DummyVideo::open()  open image : " << videoName << std::endl;
+	osg::notify(osg::INFO) << "OpenNIVideo::open()  open image : " << videoName << std::endl;
 
 	//for this example, we load a picture
 	osg::Image* img = osgDB::readImageFile(videoName.c_str());
 
 	if (!img) {
-		osg::notify(osg::FATAL) << "Error in DummyVideo::open(), Could not open File!";
+		osg::notify(osg::FATAL) << "Error in OpenNIVideo::open(), Could not open File!";
 		return false;
 	}
 
@@ -261,7 +282,7 @@ bool DummyVideo::init() {
 	//std::cerr <<"image size="<<w<<"x"<<h<<std::endl;	
 
 	if (w > m_max_width) {
-		osg::notify() << "DummyVideo: Image width exceeds maximum (" << m_max_width << "). Image will be resized";
+		osg::notify() << "OpenNIVideo: Image width exceeds maximum (" << m_max_width << "). Image will be resized";
 
 		float aspect = (float)h / (float)w;
 		w = m_max_width;
@@ -273,6 +294,66 @@ bool DummyVideo::init() {
 
 	}
 
+	xn::EnumerationErrors errors;
+
+	int resolutionX = 640;
+	int resolutionY = 480;
+	unsigned int FPS = 30;
+
+	XnStatus nRetVal = XN_STATUS_OK;
+
+	std::cout<<"Kinect init.."<<std::endl;
+
+	nRetVal = context.Init();
+	CHECK_RC(nRetVal, "context global init");
+
+	//xn::NodeInfoList list;
+	//nRetVal = context.EnumerateProductionTrees(XN_NODE_TYPE_DEVICE, NULL, list, &errors);
+	//CHECK_RC(nRetVal, "enumerate production tree");
+	
+	// HandsGenerator hands;
+	//UserGenerator user;
+	//GestureGenerator gesture;
+	//SceneAnalyzer scene;
+
+	nRetVal = depth_generator.Create(context);
+	CHECK_RC(nRetVal, "creating depth generator");
+
+	nRetVal = image_generator.Create(context);
+	CHECK_RC(nRetVal, "creating image generator");
+
+	
+	if(depth_generator.IsCapabilitySupported(XN_CAPABILITY_ALTERNATIVE_VIEW_POINT))
+	{
+		nRetVal = depth_generator.GetAlternativeViewPointCap().SetViewPoint(image_generator);
+		CHECK_RC(nRetVal, "creating registered image/depth generator");
+	}
+	else
+	{
+		printf("WARNING: XN_CAPABILITY_ALTERNATIVE_VIEW_POINT not supported");
+	}
+
+	if (depth_generator.IsCapabilitySupported(XN_CAPABILITY_FRAME_SYNC))
+	{
+		if( depth_generator.GetFrameSyncCap().CanFrameSyncWith(image_generator)) {
+			//nRetVal=depth.GetFrameSyncCap().FrameSyncWith(image);
+			//CHECK_RC(nRetVal, "creating frame sync image/depth generator");
+		}
+	}
+	else
+	{
+		printf("WARNING: XN_CAPABILITY_FRAME_SYNC not supported");
+	}
+
+	XnMapOutputMode mode = {resolutionX,resolutionY,FPS};
+
+	nRetVal = depth_generator.SetMapOutputMode(mode);
+	CHECK_RC(nRetVal, "set output mode");
+
+	//NOT NEEDED IF SYNCHRO
+	nRetVal = image_generator.SetMapOutputMode(mode);
+	CHECK_RC(nRetVal, "set output mode");
+	
 	//we need to create one video stream
 	_videoStreamList.push_back(new osgART::VideoStream());
 
@@ -316,7 +397,7 @@ bool DummyVideo::init() {
 	//if we have BGR, we just return an error here
 	if (img->getPixelFormat()==GL_BGR)
 	{
-		osg::notify(osg::FATAL) << "DummyVideo::open() doesn't support BGR image";
+		osg::notify(osg::FATAL) << "OpenNIVideo::open() doesn't support BGR image";
 		return false;
 	}
 	/*
@@ -347,7 +428,7 @@ bool DummyVideo::init() {
 }
 
 
-bool DummyVideo::update(osg::NodeVisitor* nv) {
+bool OpenNIVideo::update(osg::NodeVisitor* nv) {
 
 	//this is the main function of your video plugin
 	//you can either retrieve images from your video stream/camera/file
@@ -371,8 +452,38 @@ bool DummyVideo::update(osg::NodeVisitor* nv) {
 	// the newImage can be retrieved from another thread
 	// in this example we do nothing (already make a dummy copy in init())
 
-	osg::notify(osg::DEBUG_INFO)<<"osgART::DummyVideo::update() get new image.."<<std::endl;
+	osg::notify(osg::DEBUG_INFO)<<"osgART::OpenNIVideo::update() get new image.."<<std::endl;
 
+	XnStatus nRetVal = XN_STATUS_OK;
+
+	nRetVal=context.WaitAndUpdateAll();
+	CHECK_RC(nRetVal, "Update Data");
+
+	xnFPSMarkFrame(&xnFPS);
+
+	depth_generator.GetMetaData(depthMD);
+	const XnDepthPixel* pDepthMap = depthMD.Data();
+	//depth pixel floating point depth map.
+	
+	image_generator.GetMetaData(imageMD);
+	const XnUInt8* pImageMap = imageMD.Data();
+
+	// Hybrid mode isn't supported in this sample
+	if (imageMD.FullXRes() != depthMD.FullXRes() || imageMD.FullYRes() != depthMD.FullYRes())
+	{
+		std::cerr<<"The device depth and image resolution must be equal!"<<std::endl;
+		exit(1);
+	}
+
+	// RGB is the only image format supported.
+	if (imageMD.PixelFormat() != XN_PIXEL_FORMAT_RGB24)
+	{
+		std::cerr<<"The device image format must be RGB24"<<std::endl;
+		exit(1);
+	}
+	
+	const XnDepthPixel* pDepth=pDepthMap;
+	const XnUInt8* pImage=pImageMap;
 	//3. don't forget to call this to notify the rest of the application
 	//that you have a new video image
 	_videoStreamList[0]->dirty();
@@ -400,7 +511,7 @@ bool DummyVideo::update(osg::NodeVisitor* nv) {
 	return true;
 }
 
-osgART::VideoConfiguration* DummyVideo::getConfiguration() {
+osgART::VideoConfiguration* OpenNIVideo::getConfiguration() {
 
 	if (!vconf)
 	{
@@ -411,30 +522,31 @@ osgART::VideoConfiguration* DummyVideo::getConfiguration() {
 
 
 //field function get/set
-void DummyVideo::setImageFile(const std::string & _NewFile) {
+void OpenNIVideo::setImageFile(const std::string & _NewFile) {
 	videoName = _NewFile;
 	init();
 }
 	
-std::string DummyVideo::getImageFile() const {
+std::string OpenNIVideo::getImageFile() const {
 	return videoName;
 }
 
-bool DummyVideo::start() 
+bool OpenNIVideo::start() 
 { 
-	//here you can start to stream the images, starting the camera acquisition
-	//or starting to decompress video files
+	XnStatus nRetVal = XN_STATUS_OK;
 
-	//if you run a threaded video plugin, you can start the thread here
+	nRetVal = context.StartGeneratingAll();
+	CHECK_RC(nRetVal, "start generators");
 
-	//in this example we only start to play the VideoStream 0
-	
+	nRetVal = xnFPSInit(&xnFPS, 180);
+	CHECK_RC(nRetVal, "FPS Init");
+
 	_videoStreamList[0]->play();	
 
 	return true;
 }
 
-bool DummyVideo::stop() 
+bool OpenNIVideo::stop() 
 { 
 
 	//here you can stop any streaming, camera acquisition or video file decompression
@@ -448,7 +560,7 @@ bool DummyVideo::stop()
 	return true;
 }
 
-bool DummyVideo::close(bool waitForThread) 
+bool OpenNIVideo::close(bool waitForThread) 
 { 
 	//here you can close any streaming open, close a camera 
 	//and clean your specific data structure
@@ -460,4 +572,4 @@ bool DummyVideo::close(bool waitForThread)
 
 //at the end you register your video plugin, the syntax generally
 //osgART::PluginProxy<PluginClassNameVideo> g_PluginClassNameVideo("osgart_video_pluginclassnamevideo");
-osgART::PluginProxy<DummyVideo> g_DummyVideo("osgart_video_dummyvideo");
+osgART::PluginProxy<OpenNIVideo> g_OpenNIVideo("osgart_video_OpenNIVideo");
