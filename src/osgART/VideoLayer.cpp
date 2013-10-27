@@ -34,15 +34,14 @@
 #include <osg/BlendFunc>
 #include <osg/Notify>
 #include <osg/Image>
-
+#include <osg/GraphicsContext>
 
 namespace osgART {
 
 
 	// VideoLayer
 	VideoLayer::VideoLayer() : osg::Camera()
-	{		
-		
+	{	
 		this->setProjectionMatrixAsOrtho2D(0.0f, 1.0f, 0.0f, 1.0f);
 		this->setViewMatrix(osg::Matrix::identity());
 		this->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
@@ -68,8 +67,26 @@ namespace osgART {
 	{	    
 	}
 	
+	void VideoLayer::setWindowSize(osg::Vec2i pos, osg::Vec2i size) {
+			this->setViewport(new osg::Viewport(pos[0],pos[1],size[0],size[1]));		
+	}
 
+	void VideoLayer::setRelativeSize(osg::Vec2f pos, osg::Vec2f size, osg::Camera* main) {
 
+			this->setGraphicsContext(main->getGraphicsContext());
+
+			this->setViewport(new osg::Viewport(main->getGraphicsContext()->getTraits()->width*pos[0],
+			main->getGraphicsContext()->getTraits()->height*pos[1],
+			main->getGraphicsContext()->getTraits()->width*size[0],
+			main->getGraphicsContext()->getTraits()->height*size[1]));
+
+			this->setProjectionResizePolicy(osg::Camera::FIXED);
+	}
+
+	//void VideoLayer::setRelativeSize(osg::Vec2i pos, osg::Vec2i size) {
+			//this->setViewport(new osg::Viewport(pos[0],pos[1],size[0],size[1]));
+	//}
+	
 	VideoFlipper::VideoFlipper(bool flipH, bool flipV) : osg::MatrixTransform(),
 		_flipH(flipH),
 		_flipV(flipV)

@@ -16,39 +16,35 @@
  * OpenSceneGraph Public License for more details.
 */
 
- /**
- *  \file  ImageStreamCallback
- *  \brief Handling callbacks mechanism
+/**
+ *  \file BaseCallback
+ *  \brief generic function for adding callback
  *
- * Handling callbacks mechanism.
  */
 
-#ifndef OSGART_IMAGESTREAMCALLBACK
-#define OSGART_IMAGESTREAMCALLBACK 1
+#ifndef OSGART_BASECALLBACK
+#define OSGART_BASECALLBACK 1
+
+#include <osg/NodeCallback>
+#include <osg/Timer>
 
 #include <osgART/Export>
 
-#include <osg/NodeCallback>
-#include <osg/ImageStream>
-#include <osg/FrameStamp>
+namespace osgART
+{
 
-namespace osgART {
-	
-	class OSGART_EXPORT ImageStreamCallback : public osg::NodeCallback 
-	{
-	public:
+	/**
+	 * Appends an event callback to a node. It is a convenience wrapper around
+	 * osg::NodeCallback and its nested callbacks
+	 *
+	 * \param node Node affected by the callback
+	 * \param cb callback to be added
+	 */
+	OSGART_EXPORT void addEventCallback(osg::Node* node, osg::NodeCallback* cb);
 
-		ImageStreamCallback(osg::ImageStream* imagestream);
+	OSGART_EXPORT void removeEventCallback(osg::Node* node, osg::NodeCallback* cb);
 
-		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
-		
-	protected:
-	
-		int _framenumber;
-		osg::ImageStream* _imagestream;
-	
-	};
 }
 
+#endif // OSGART_BASECALLBACK
 
-#endif  // OSGART_IMAGESTREAMCALLBACK

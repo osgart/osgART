@@ -33,6 +33,7 @@
 #include "osgART/Field"
 #include "osgART/Video"
 #include "osgART/VideoGeode"
+#include "osgART/BaseCallback"
 
 
 namespace osgART {

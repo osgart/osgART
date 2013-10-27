@@ -26,6 +26,10 @@
 #ifndef OSGART_TRACKERCALLBACK
 #define OSGART_TRACKERCALLBACK 1
 
+// OpenThreads
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
@@ -37,11 +41,9 @@
 #include "osgART/VideoStream"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
-#include <osgART/Tracker>
+#include "osgART/Tracker"
+#include "osgART/BaseCallback"
 
-// OpenThreads
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
 
 namespace osgART {
 	class OSGART_EXPORT TrackerUpdateCallback : public osg::NodeCallback {

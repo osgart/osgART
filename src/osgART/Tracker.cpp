@@ -31,7 +31,6 @@ namespace osgART {
 
 	Tracker::Tracker() :
         osgART::Object(),
-        osg::Object(), 
         FieldContainer<Tracker>(),
         _modifiedCount(0xFFFFF)    
 	{
@@ -61,7 +60,6 @@ namespace osgART {
     Tracker::Tracker(const Tracker &container, 
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		osg::Object(),
 		FieldContainer<Tracker>()
     {
     }

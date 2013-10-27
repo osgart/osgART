@@ -6,8 +6,9 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(lib_srcs
 	Foundation.cpp
-    Object.cpp
-    Event.cpp	
+    	Object.cpp
+    	Event.cpp	
+	BaseCallback.cpp
 	PluginManager.cpp
 	Video.cpp
 	VideoCallback.cpp
@@ -39,9 +40,10 @@ set(lib_srcs
 set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Foundation
 	${CMAKE_SOURCE_DIR}/include/osgART/Object
-    ${CMAKE_SOURCE_DIR}/include/osgART/Event
+    	${CMAKE_SOURCE_DIR}/include/osgART/Event
 	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Export
+	${CMAKE_SOURCE_DIR}/include/osgART/BaseCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
 	${CMAKE_SOURCE_DIR}/include/osgART/ExportPlugin
 	${CMAKE_SOURCE_DIR}/include/osgART/Video

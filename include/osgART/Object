@@ -30,6 +30,7 @@
 // std include
 
 // OSG include
+#include <osg/Object>
 #include <osg/NodeVisitor>
 #include <osg/Stats>
 
@@ -43,9 +44,12 @@ namespace osgART {
 	 *
 	 * 
 	 */
-    class Object: public osgART::EventHandler {
+    class Object: public osg::Object, public osgART::EventHandler {
     public:
-        Object() :  osgART::EventHandler() {}
+        Object() :  osg::Object(), osgART::EventHandler() {}
+        
+    	Object(const Object& container, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : osg::Object() { }
+
         virtual ~Object() {}
 
 		inline virtual bool init() {return false;};

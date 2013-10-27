@@ -130,6 +130,16 @@ osg::MatrixTransform* scaleModel(osg::Node* model, float scalefactor) {
 	return scaleTransfo;
 }
 
+
+osg::MatrixTransform* translateModel(osg::Node* model, osg::Vec3f pos) {
+	osg::MatrixTransform* translateTransfo;
+
+	translateTransfo=new osg::MatrixTransform(osg::Matrix::translate(pos));
+	translateTransfo->addChild(model);
+
+	return translateTransfo;
+}
+
 osg::MatrixTransform* translateUpModel(osg::Node* model, float z) {
 	osg::MatrixTransform* translateUpTransfo;
 

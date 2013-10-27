@@ -46,23 +46,13 @@
 #include <osg/NodeCallback>
 
 #include <osgART/Export>
+#include <osgART/BaseCallback>
 #include <osgART/Target>
 
 #include <osg/Timer>
 
 namespace osgART
 {
-
-	/**
-	 * Appends an event callback to a node. It is a convenience wrapper around
-	 * osg::NodeCallback and its nested callbacks
-	 *
-	 * \param node Node affected by the callback
-	 * \param cb callback to be added
-	 */
-	OSGART_EXPORT void addEventCallback(osg::Node* node, osg::NodeCallback* cb);
-
-	OSGART_EXPORT void removeEventCallback(osg::Node* node, osg::NodeCallback* cb);
 
 	/**
 	 * Creates and attaches a callback chain for a target to

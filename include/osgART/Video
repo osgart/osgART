@@ -54,7 +54,7 @@ namespace osgART {
 	 * Video encapsulates different capturing devices and sources. 
 	 * 
 	 */	
-	class OSGART_EXPORT Video : public osgART::Object, public osg::Object,
+	class OSGART_EXPORT Video : public osgART::Object,
 								public FieldContainer<Video>
 	{
 	public:

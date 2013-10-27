@@ -30,7 +30,6 @@ namespace osgART {
 
 	Sensor::Sensor() :
         osgART::Object(),
-        osg::Object(),
         FieldContainer<Sensor>()
 	{
 		_stats=new osg::Stats("sensor");
@@ -58,7 +57,6 @@ namespace osgART {
     Sensor::Sensor(const Sensor &container, 
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		osg::Object(), 
 		FieldContainer<Sensor>()
     {
     }

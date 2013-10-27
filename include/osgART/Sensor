@@ -54,7 +54,7 @@ namespace osgART {
 	 * that connects sensor data and their representation in
 	 * the virtual environment.
 	 */
-    class OSGART_EXPORT Sensor : public osgART::Object, public osg::Object, 
+    class OSGART_EXPORT Sensor : public osgART::Object,
     							 public FieldContainer<Sensor>
     {
 	public:

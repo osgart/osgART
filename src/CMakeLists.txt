@@ -6,6 +6,7 @@ include_directories(
 	
 add_subdirectory(osgART)
 add_subdirectory(osgARTPlugins)
+#add_subdirectory(osgARTUtils)
 add_subdirectory(osgPlugins)
 add_subdirectory(osgWrappers)
 

@@ -26,17 +26,31 @@
 #ifndef OSGART_VIDEOUTILS
 #define OSGART_VIDEOUTILS 1
 
-#include <osgART/Export>
-
 #include <osg/Image>
 #include <osg/Group>
+#include <osg/Camera>
+#include <osgART/Export>
+
+#include <osgART/CameraConfiguration>
 
 namespace osgART {
 
+	//default background in RenderBin 0
+	
 	OSGART_EXPORT osg::Group*
 	createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false);
 
-			/**
+	OSGART_EXPORT osg::Group*
+	createBasicFixedVideoBackground(osg::Image* video, osg::Vec2i pos, osg::Vec2i size, bool useTextureRectangle = false);
+
+	OSGART_EXPORT osg::Group*
+	createBasicFloatingVideoBackground(osg::Image* video, osg::Vec2f pos, osg::Vec2f size, osg::Camera* main, bool useTextureRectangle = false);
+
+	OSGART_EXPORT osg::Group*
+	createUndistortVideoBackground(osg::Image* video, osgART::CameraConfiguration *config,bool useTextureRectangle = false);
+
+
+		/**
 		 * Creates an undistorted mesh, according to the
 		 * camera lens distortion parameters known to the tracker.
 		 * \param width width of the actual video

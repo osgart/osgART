@@ -26,7 +26,6 @@ namespace osgART {
 
 	Video::Video() :
 		osgART::Object(),
-		osg::Object(), 
 		FieldContainer<Video>()
 	{
 		_stats=new osg::Stats("video");
@@ -36,7 +35,6 @@ namespace osgART {
 	Video::Video(const Video& container,
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		osg::Object(),
 		FieldContainer<Video>()
 	{
 		

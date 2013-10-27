@@ -59,6 +59,8 @@ namespace osgART {
 	{
 	public:        
 	    
+	    META_Node(osgART, VideoLayer)
+
 		/** 
 		 * \brief default constructor.
 		 * \param videoId the number of the video used for the background
@@ -72,10 +74,10 @@ namespace osgART {
 		VideoLayer(const VideoLayer&, 
 			const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
 						
-		META_Node(osgART, VideoLayer)
-
+						
+		void setWindowSize(osg::Vec2i pos, osg::Vec2i size);
 			
-	    
+	    void setRelativeSize(osg::Vec2f pos, osg::Vec2f size, osg::Camera* main);
 	protected:
 	    
 		/**

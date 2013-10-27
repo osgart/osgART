@@ -17,9 +17,10 @@
 */
 
 /**
- *  \file  
- *  \brief 
- * 
+ *  \file  VideoStreamCallback
+ *  \brief Handling callbacks mechanism
+ *
+ * Handling callbacks mechanism.
  * 
  **/
 
@@ -32,12 +33,31 @@
 #include <osg/NodeVisitor>
 #include <osg/ImageStream>
 #include <osg/Stats>
+#include <osg/NodeCallback>
+#include <osg/ImageStream>
+#include <osg/FrameStamp>
+
 
 // Local include
 #include "osgART/Export"
+#include "osgART/VideoStream"
 
 namespace osgART {
 
+	class OSGART_EXPORT VideoStreamUpdateCallback : public osg::NodeCallback 
+	{
+	public:
+
+		VideoStreamUpdateCallback(osg::ImageStream* imagestream);
+
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+		
+	protected:
+	
+		int _framenumber;
+		osg::ImageStream* _imagestream;
+	
+	};
 
 }
 

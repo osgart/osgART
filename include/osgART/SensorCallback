@@ -36,6 +36,7 @@
 
 // Local include
 #include "osgART/Export"
+#include "osgART/BaseCallback"
 
 namespace osgART {
 

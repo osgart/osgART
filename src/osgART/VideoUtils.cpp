@@ -34,6 +34,41 @@ namespace osgART {
 		return _layer;
 	}
 
+	osg::Group*
+	createUndistortVideoBackground(osg::Image* video,osgART::CameraConfiguration* config,
+						  bool useTextureRectangle /*= false*/)
+	{
+		osgART::VideoLayer* _layer = new osgART::VideoLayer();
+		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, config, 1, 1, 20, 20,
+			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
+		_layer->addChild(_geode);
+		return _layer;
+	}
+	
+	osg::Group*
+	createBasicFixedVideoBackground(osg::Image* video, osg::Vec2i pos, osg::Vec2i size,
+						  bool useTextureRectangle /*= false*/)
+	{
+		osgART::VideoLayer* _layer = new osgART::VideoLayer();
+		_layer->setWindowSize(pos,size);
+		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
+			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
+		_layer->addChild(_geode);
+		return _layer;
+	}
+	
+	osg::Group*
+	createBasicFloatingVideoBackground(osg::Image* video, osg::Vec2f pos, osg::Vec2f size,osg::Camera* main,
+						  bool useTextureRectangle /*= false*/)
+	{
+		osgART::VideoLayer* _layer = new osgART::VideoLayer();
+		_layer->setRelativeSize(pos,size,main);
+		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
+			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
+		_layer->addChild(_geode);
+		return _layer;
+	}
+	
 	/*
 	osg::Group* createImageBackground(osg::Image* video) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();

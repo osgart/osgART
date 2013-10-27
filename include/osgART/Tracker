@@ -61,7 +61,7 @@ namespace osgART {
 	 * that connects video streams, targets and their representation in
 	 * the virtual environment.
 	 */
-    class OSGART_EXPORT Tracker : public osgART::Object, public osg::Object, 
+    class OSGART_EXPORT Tracker : public osgART::Object, 
     							  public FieldContainer<Tracker>
     {
 	public:

@@ -19,18 +19,18 @@
 #include <osg/Version>
 #include <osg/NodeVisitor>
 
-#include "osgART/ImageStreamCallback"
+#include "osgART/VideoStreamCallback"
 
 namespace osgART {
 
 
-ImageStreamCallback::ImageStreamCallback(osg::ImageStream* imagestream)
+VideoStreamCallback::VideoStreamCallback(osg::ImageStream* imagestream)
 	: _imagestream(imagestream)
 	, _framenumber(-1)
 {
 }
 
-void ImageStreamCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
+void VideoStreamCallback::operator()(osg::Node* node, osg::NodeVisitor* nv) 
 {
 	
 	if (_imagestream) 
