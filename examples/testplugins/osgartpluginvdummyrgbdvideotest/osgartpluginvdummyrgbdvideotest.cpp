@@ -1,21 +1,25 @@
-/* -*-c++-*- 
- * 
- * osgART - Augmented Reality ToolKit for OpenSceneGraph
- * 
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This library is open source and may be redistributed and/or modified under
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
- * (at your option) any later version.  The full license is in LICENSE file
- * included with this distribution, and on the osgart.org website.
+ * This file is part of osgART
  *
- * This library is distributed in the hope that it will be useful,
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * OpenSceneGraph Public License for more details.
-*/
-
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
@@ -39,8 +43,6 @@
 #include <iostream>
 #include <sstream>
 
-#include <osg/GraphicsContext>
-
 int main(int argc, char* argv[])  {
 
 	//ARGUMENTS INIT
@@ -63,10 +65,10 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	osgART::PluginManager::instance()->load("osgart_video_dummyrgbdvideo");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyrgbdvideo"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
@@ -75,7 +77,6 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not initialize video plug-in!" << std::endl;
 	}
 
-
 	// found video - configure now
 	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
 
@@ -83,7 +84,7 @@ int main(int argc, char* argv[])  {
 	if (_configvideo)
 	{
 		// it is possible to configure the plugin before opening it
-		_configvideo->config="data/dummyvideo/dummyvideo.png";
+		_configvideo->config="Data/dummyrgbdvideo/dummyrgbd2color.png;Data/dummyrgbdvideo/dummyrgbd2depth.png;";
 	}
 
 	//you can also configure the plugin using fields
@@ -99,45 +100,25 @@ int main(int argc, char* argv[])  {
 
 	//AR SCENEGRAPH INIT
 	
+	//setup a non full screen window (necessary for the videoFlBackground to start!)
+	viewer.setUpViewInWindow( 10, 10, 1600, 600 );
+
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
 	//add video update callback (update video + video stream)
 	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
-	
-	//setup a non full screen window (necessary for the videoFlBackground to start!)
-	viewer.setUpViewInWindow( 100, 100, 800, 600 );
+	//add a video background for color image
+	osg::ref_ptr<osg::Group> videoBackgroundColor = osgART::createBasicFixedVideoBackground(video->getStream(0),osg::Vec2i(0,0),osg::Vec2i(800,600),false);
+	videoBackgroundColor->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	//add a video background: full screen and resize with change of window size
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());
-	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");//place object in layer 0
+	root->addChild(videoBackgroundColor.get());
 
-	root->addChild(videoBackground.get());
+	osg::ref_ptr<osg::Group> videoBackgroundDepth = osgART::createBasicFixedVideoBackground(video->getStream(1),osg::Vec2i(800,0),osg::Vec2i(800,600),false);
+	videoBackgroundDepth->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	//add a fixed video background: absolute size and not affected by resize
-	osg::ref_ptr<osg::Group> videoFBackground = osgART::createBasicFixedVideoBackground(video->getStream(),osg::Vec2i(350,200),osg::Vec2i(200,200));
-	videoFBackground->getOrCreateStateSet()->setRenderBinDetails(1, "RenderBin");
-	
-	root->addChild(videoFBackground.get());
-
-	//add a test cube to show the effect of layers
-	osg::ref_ptr<osg::Geode> cubeTest=osgART::createCube(1.5,osg::Vec4f(1.,0.,0.,1.));
-	cubeTest->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
-
-	root->addChild(osgART::translateModel(cubeTest.get(),osg::Vec3f(0.,1.,-30.)));
-
-	//add a floating video background: relative size  and resize with change of window size
-	osg::ref_ptr<osg::Group> videoFlBackground = osgART::createBasicFloatingVideoBackground(video->getStream(),osg::Vec2f(0.5,0.),osg::Vec2f(0.5,0.5),viewer.getCamera());
-	videoFlBackground->getOrCreateStateSet()->setRenderBinDetails(3, "RenderBin");
-
-	root->addChild(videoFlBackground.get());
-
-	//add a floating video background: relative size  and resize with change of window size
-	osg::ref_ptr<osg::Group> videoFlForeground = osgART::createBasicFloatingVideoForeground(video->getStream(),osg::Vec2f(0.3,0.5),osg::Vec2f(0.6,0.05),viewer.getCamera());
-	videoFlForeground->getOrCreateStateSet()->setRenderBinDetails(3, "RenderBin");
-
-	root->addChild(videoFlForeground.get());
+	root->addChild(videoBackgroundDepth.get());
 
 	//APPLICATION INIT
 
@@ -157,7 +138,6 @@ int main(int argc, char* argv[])  {
 	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
-		
 	}
 
 

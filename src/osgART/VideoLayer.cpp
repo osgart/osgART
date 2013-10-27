@@ -67,6 +67,17 @@ namespace osgART {
 	{	    
 	}
 	
+	void 
+	VideoLayer::setType(LayerType ltype) {		
+		if (ltype==VIDEO_BACKGROUND) {
+			this->setRenderOrder(osg::Camera::NESTED_RENDER);	
+		}
+		else
+		{
+			this->setRenderOrder(osg::Camera::POST_RENDER);			
+		}
+		
+	}
 	void VideoLayer::setWindowSize(osg::Vec2i pos, osg::Vec2i size) {
 			this->setViewport(new osg::Viewport(pos[0],pos[1],size[0],size[1]));		
 	}

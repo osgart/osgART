@@ -120,17 +120,6 @@ public:
 	*/
     virtual osgART::VideoConfiguration* getConfiguration();
 
-
-	/**
-    * \brief Select a new image and open the Video stream.
-    * Access the Video stream (hardware or file) and get an handle on it.
-    */
-	void setImageFile(const std::string &_NewFile);
-	
-	/**
-    * \brief Get the image filename.
-    */	
-	std::string getImageFile()const;
  //==================
 	    /**
     * \brief init the Video stream.
@@ -198,6 +187,8 @@ private:
 	xn::DepthMetaData depthMD;
 	xn::ImageMetaData imageMD;
 
+	unsigned short* _depthBufferShort;
+	unsigned char* _depthBufferByte;
 };
 
 OpenNIVideo::OpenNIVideo():
@@ -218,13 +209,6 @@ OpenNIVideo::OpenNIVideo():
 	_fields["flip_vertical"]	= new osgART::TypedField<bool>(&m_flip_vertical);
 
 	_fields["max_width"] = new osgART::TypedField<unsigned int>(&m_max_width);
-
-	//you can also create some specific get/set function
-	//such as setting up the name of the image file
-	//or calling specific function such as camera exposure, ROI video mode, etc
-	_fields["image_file"]		= new osgART::CallbackField<OpenNIVideo, std::string>(this,
-		&OpenNIVideo::getImageFile,
-		&OpenNIVideo::setImageFile);
 }
 
 OpenNIVideo::OpenNIVideo(const OpenNIVideo &, const osg::CopyOp& copyop) {
@@ -247,53 +231,6 @@ bool OpenNIVideo::init() {
 	//if you are using video streaming, you can initialize the connection
 	//if you are using video files, you can read the configuration, cache the data, etc.
 
-	//first, you can check if there is a video configuration defined
-	if (vconf)
-	{
-		if (!vconf->config.empty())
-		{
-			videoName=vconf->config;
-		}
-	}
-	else
-	{
-	//if there is no configuration we use the field variable
-	//to check if there is a defined videoName
-
-		if (videoName.empty()) {
-			osg::notify(osg::FATAL) << "Error in OpenNIVideo::open(), File name is empty!";
-			return false;
-		}
-	}
-	
-	osg::notify(osg::INFO) << "OpenNIVideo::open()  open image : " << videoName << std::endl;
-
-	//for this example, we load a picture
-	osg::Image* img = osgDB::readImageFile(videoName.c_str());
-
-	if (!img) {
-		osg::notify(osg::FATAL) << "Error in OpenNIVideo::open(), Could not open File!";
-		return false;
-	}
-
-	unsigned int w = img->s();
-	unsigned int h = img->t();
-	
-	//std::cerr <<"image size="<<w<<"x"<<h<<std::endl;	
-
-	if (w > m_max_width) {
-		osg::notify() << "OpenNIVideo: Image width exceeds maximum (" << m_max_width << "). Image will be resized";
-
-		float aspect = (float)h / (float)w;
-		w = m_max_width;
-		h = w * aspect;
-
-		img->scaleImage(w, h, 1);
-
-		//osgDB::writeImageFile(*img, "test_resize.jpg");
-
-	}
-
 	xn::EnumerationErrors errors;
 
 	int resolutionX = 640;
@@ -301,8 +238,6 @@ bool OpenNIVideo::init() {
 	unsigned int FPS = 30;
 
 	XnStatus nRetVal = XN_STATUS_OK;
-
-	std::cout<<"Kinect init.."<<std::endl;
 
 	nRetVal = context.Init();
 	CHECK_RC(nRetVal, "context global init");
@@ -354,75 +289,32 @@ bool OpenNIVideo::init() {
 	nRetVal = image_generator.SetMapOutputMode(mode);
 	CHECK_RC(nRetVal, "set output mode");
 	
+	_depthBufferShort=new unsigned short[resolutionX*resolutionY];
+	_depthBufferByte=new unsigned char[resolutionX*resolutionY];
+	
 	//we need to create one video stream
 	_videoStreamList.push_back(new osgART::VideoStream());
-
-	//this is main function you need to call to be sure to
-	//allocate your image
-	//here you define the image format, image size
-	//that will be streamed by your plugin
 	
-	_videoStreamList[0]->allocateImage(w, h, 1, GL_BGRA, GL_UNSIGNED_BYTE);
+	_videoStreamList[0]->allocateImage(resolutionX,resolutionY, 1, GL_RGB, GL_UNSIGNED_BYTE);
 
-	//if you need any format conversion you need to handle it internally
-	//in the update before updating the image
+	//we need to create one video stream
+	_videoStreamList.push_back(new osgART::VideoStream());
 	
-	//here we do a simple conversion as our dummy plugin only read the content
-	//once
-	//int components = osg::Image::computeNumComponents(img->getPixelFormat());
+//	_videoStreamList[1]->allocateImage(resolutionX,resolutionY, 1, GL_LUMINANCE, GL_FLOAT);
+	_videoStreamList[1]->allocateImage(resolutionX,resolutionY, 1, GL_LUMINANCE, GL_UNSIGNED_BYTE);
+	//_videoStreamList[1]->allocateImage(resolutionX,resolutionY, 1, GL_LUMINANCE, GL_UNSIGNED_SHORT);
+	//_videoStreamList[1]->allocateImage(w, h, 1, GL_DEPTHCOMPONENT16, GL_UNSIGNED_BYTE);
 	
-	//std::cout<<"image format="<<img->getPixelFormat()<<"(GL_RGB="<<GL_RGB<<" GL_RGBA="<<GL_RGBA<<" GL_BGR="<<GL_BGR<<" GL_BGRA="<<GL_BGRA<<std::endl;
-
-	//if we have BGRA we just do a copy
-	if (img->getPixelFormat()==GL_BGRA)
-		memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
-	//otherwise
-	//if we have RGB, or RGBA we convert
-	if ((img->getPixelFormat()==GL_RGB)||(img->getPixelFormat()==GL_RGBA))
+	if (m_flip_vertical) 
 	{
-		for (unsigned int j = 0; j < h; j++) {
-			for (unsigned int i = 0; i < w; i++) {
-
-				// image->data() return a pixel in the supported channel format (3 or 4 bytes or less)
-				unsigned char* srcPtr = img->data(i, j);
-				unsigned char* dstPtr = _videoStreamList[0]->data(i, j);
-
-				dstPtr[0] = srcPtr[2];
-				dstPtr[1] = srcPtr[1];
-				dstPtr[2] = srcPtr[0];
-				dstPtr[3] = 0;
-			}
-		}
+		_videoStreamList[0]->flipVertical();
+		_videoStreamList[1]->flipVertical();
 	}
-	//if we have BGR, we just return an error here
-	if (img->getPixelFormat()==GL_BGR)
+	if (m_flip_horizontal) 
 	{
-		osg::notify(osg::FATAL) << "OpenNIVideo::open() doesn't support BGR image";
-		return false;
+		_videoStreamList[0]->flipHorizontal();
+		_videoStreamList[1]->flipHorizontal();
 	}
-	/*
-	xsize = m_image->s();
-	ysize = m_image->t();
-
-	if (osg::Image::computeNumComponents(m_image->getPixelFormat()) == 3) {
-		m_image->setPixelFormat(GL_RGB);
-		pixelsize=3;
-		pixelformat=VIDEOFORMAT_RGB24;
-	} else {
-		if (osg::Image::computeNumComponents(m_image->getPixelFormat()) == 4) {
-			m_image->setPixelFormat(GL_RGBA);
-			pixelsize=4;
-			pixelformat=VIDEOFORMAT_RGBA32;
-		} else {
-			std::cerr<<"ERROR:can't load the image, format not supported."<<std::endl;
-			exit(-1);
-		}
-	}
-	*/
-	
-	if (m_flip_vertical) _videoStreamList[0]->flipVertical();
-	if (m_flip_horizontal) _videoStreamList[0]->flipHorizontal();
-
 	return true;
 
 }
@@ -445,12 +337,6 @@ bool OpenNIVideo::update(osg::NodeVisitor* nv) {
 
 	//1. mutex lock access to the image video stream
 	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
-
-	//2. you can copy here the video buffer to the main image video stream
-	//with a call like
-	//memcpy(this->data(),newImage, this->getImageSizeInBytes());
-	// the newImage can be retrieved from another thread
-	// in this example we do nothing (already make a dummy copy in init())
 
 	osg::notify(osg::DEBUG_INFO)<<"osgART::OpenNIVideo::update() get new image.."<<std::endl;
 
@@ -484,9 +370,22 @@ bool OpenNIVideo::update(osg::NodeVisitor* nv) {
 	
 	const XnDepthPixel* pDepth=pDepthMap;
 	const XnUInt8* pImage=pImageMap;
+	
+	XnDepthPixel zMax = depthMD.ZRes();
+    //convert float buffer to unsigned short
+	for ( unsigned int i=0; i<(depthMD.XRes() * depthMD.YRes()); ++i )
+    {
+            *(_depthBufferByte + i) = 255 * (float(*(pDepth + i)) / float(zMax));
+    }
+
+	memcpy(_videoStreamList[0]->data(),pImage, _videoStreamList[0]->getImageSizeInBytes());
+	
+	memcpy(_videoStreamList[1]->data(),_depthBufferByte, _videoStreamList[1]->getImageSizeInBytes());
+
 	//3. don't forget to call this to notify the rest of the application
 	//that you have a new video image
 	_videoStreamList[0]->dirty();
+	_videoStreamList[1]->dirty();
 	}
 
 	//4. hopefully report some interesting data
@@ -505,6 +404,7 @@ bool OpenNIVideo::update(osg::NodeVisitor* nv) {
 	// Increase modified count every X ms to ensure tracker updates
 	if (updateTimer.time_m() > 50) {
 		_videoStreamList[0]->dirty();
+		_videoStreamList[1]->dirty();
 		updateTimer.setStartTick();
 	}
 
@@ -518,17 +418,6 @@ osgART::VideoConfiguration* OpenNIVideo::getConfiguration() {
 		vconf=new osgART::VideoConfiguration();
 	}
 	return vconf;
-}
-
-
-//field function get/set
-void OpenNIVideo::setImageFile(const std::string & _NewFile) {
-	videoName = _NewFile;
-	init();
-}
-	
-std::string OpenNIVideo::getImageFile() const {
-	return videoName;
 }
 
 bool OpenNIVideo::start() 
@@ -572,4 +461,4 @@ bool OpenNIVideo::close(bool waitForThread)
 
 //at the end you register your video plugin, the syntax generally
 //osgART::PluginProxy<PluginClassNameVideo> g_PluginClassNameVideo("osgart_video_pluginclassnamevideo");
-osgART::PluginProxy<OpenNIVideo> g_OpenNIVideo("osgart_video_OpenNIVideo");
+osgART::PluginProxy<OpenNIVideo> g_OpenNIVideo("osgart_video_openni");

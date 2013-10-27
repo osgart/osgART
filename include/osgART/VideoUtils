@@ -49,6 +49,17 @@ namespace osgART {
 	OSGART_EXPORT osg::Group*
 	createUndistortVideoBackground(osg::Image* video, osgART::CameraConfiguration *config,bool useTextureRectangle = false);
 
+	OSGART_EXPORT osg::Group*
+	createBasicVideoForeground(osg::Image* video, bool useTextureRectangle = false);
+
+	OSGART_EXPORT osg::Group*
+	createBasicFixedVideoForeground(osg::Image* video, osg::Vec2i pos, osg::Vec2i size, bool useTextureRectangle = false);
+
+	OSGART_EXPORT osg::Group*
+	createBasicFloatingVideoForeground(osg::Image* video, osg::Vec2f pos, osg::Vec2f size, osg::Camera* main, bool useTextureRectangle = false);
+
+	OSGART_EXPORT osg::Group*
+	createUndistortVideoForeground(osg::Image* video, osgART::CameraConfiguration *config,bool useTextureRectangle = false);
 
 		/**
 		 * Creates an undistorted mesh, according to the

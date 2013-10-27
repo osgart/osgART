@@ -1,11 +1,11 @@
-set(module_name osgart_video_dummyvideorgbd)
+set(module_name osgart_video_dummyrgbdvideo)
 
-option(OSGART_BUILD_PLUGIN_DUMMYVIDEORGBD "Build with Dummy Video RGBD (REQUIRED for examples)" ON)
+option(OSGART_BUILD_PLUGIN_DUMMYRGBDVIDEO "Build with Dummy RGBD Video (REQUIRED for examples)" ON)
 
-if(OSGART_BUILD_PLUGIN_DUMMYVIDEORGBD)
+if(OSGART_BUILD_PLUGIN_DUMMYRGBDVIDEO)
 
 
-	add_library(${module_name} MODULE DummyVideoRGBD.cpp)
+	add_library(${module_name} MODULE DummyRGBDVideo.cpp)
 		set_target_properties(${module_name}
 		PROPERTIES
 		PREFIX ""

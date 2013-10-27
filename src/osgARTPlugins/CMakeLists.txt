@@ -1,7 +1,15 @@
 
 #dummy plugins
 add_subdirectory(DummyVideo)
+#add_subdirectory(DummyVideoMulti)
+add_subdirectory(DummyRGBDVideo)
+
+#add_subdirectory(DummyGPSSensor)
+#add_subdirectory(DummyInertialSensor)
+
+#add_subdirectory(DummyGPSInertialTracker)
 add_subdirectory(DummyTracker)
+#add_subdirectory(DummySLAMTracker)
 
 #multiplatforms video plugins
 add_subdirectory(OpenCV)

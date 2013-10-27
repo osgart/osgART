@@ -7,7 +7,7 @@ include_directories(${OSG_INCLUDE_DIR} ${OPENTHREADS_INCLUDE_DIR} ${CMAKE_SOURCE
 
 ## -- VIDEO PLUGINS -- 
 add_subdirectory(osgartpluginvdummyvideotest)
-#add_subdirectory(osgartpluginvdummyvideRGBDtest)
+add_subdirectory(osgartpluginvdummyrgbdvideotest)
 
 add_subdirectory(osgartpluginvopencvtest)
 add_subdirectory(osgartpluginvopennitest)

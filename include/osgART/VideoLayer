@@ -73,8 +73,10 @@ namespace osgART {
 		 */
 		VideoLayer(const VideoLayer&, 
 			const osg::CopyOp& = osg::CopyOp::SHALLOW_COPY);
-						
-						
+		
+		typedef enum {VIDEO_FOREGROUND,VIDEO_BACKGROUND} LayerType;
+		
+		void setType(LayerType ltype);		
 		void setWindowSize(osg::Vec2i pos, osg::Vec2i size);
 			
 	    void setRelativeSize(osg::Vec2f pos, osg::Vec2f size, osg::Camera* main);
