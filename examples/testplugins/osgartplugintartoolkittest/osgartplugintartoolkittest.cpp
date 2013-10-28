@@ -83,7 +83,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found video - configure now
-	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
+	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)
@@ -91,8 +91,9 @@ int main(int argc, char* argv[])  {
 		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
 		//here we use the default config file in the artoolkit data directory
-		_configvideo->config="Data/artoolkit/WDM_camera.xml";
-
+#ifdef __WIN32__
+		_configvideo->config="data/artoolkit/WDM_camera.xml";
+#endif
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
@@ -122,7 +123,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found tracker - configure now
-	osgART::TrackerConfiguration* _configtracker = tracker->getConfiguration();
+	osgART::TrackerConfiguration* _configtracker = tracker->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configtracker)

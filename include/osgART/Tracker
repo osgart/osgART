@@ -33,8 +33,6 @@
 // OSG include
 #include <osg/Geometry>
 #include <osg/Projection>
-#include <osg/NodeVisitor>
-#include <osg/Stats>
 
 // local include
 #include "osgART/Export"
@@ -118,7 +116,7 @@ namespace osgART {
 		 * Get the tracker configuration struct
 		 * \return struct TrackerConfiguration
 		 */
-		virtual TrackerConfiguration* getConfiguration();
+		virtual TrackerConfiguration* getOrCreateConfiguration();
 		
 		/**
 		 * Set the tracker configuration struct
@@ -141,11 +139,18 @@ namespace osgART {
 		virtual CameraConfiguration* getOrCreateCameraConfiguration();
 
 		/**
+		 * set Camera Configuration object
+		 *
+		 * \param CameraConfiguration config object
+		 */
+		virtual void setCameraConfiguration(CameraConfiguration* config);
+
+		/**
 		 * \brief return a target object.
 		 *
 		 * get a target in the list of managed target by the tracker.
 		 */
-		virtual Target* getTarget(size_t idx);
+		virtual Target* getTarget(size_t idx=0);
 
 		inline size_t
 		getTargetNum() const { return _targetlist.size(); }
@@ -181,32 +186,28 @@ namespace osgART {
 		 * \brief destructor.
 		 */
 		virtual ~Tracker();
-		
-			
+					
 		/**
 		 * type for a vector of reference counted targets.
 		 */
-        typedef std::vector< osg::ref_ptr<Target> > TargetList;
+        typedef std::vector< osg::ref_ptr<Target> > TargetListType;
 
 		/**
 		 * A list of targets associated with this tracker.
 		 */
-        TargetList _targetlist;
-
-		osg::Matrix		_projectionMatrix;
-		std::string		_version;	//!< Store the version of the tracker.
-		bool			_enable;	//!< Flag to specify if the tracker is enable or not, if we do tracking or not.
-
-		unsigned int _modifiedCount;
+        TargetListType _targetlist;
 
 		/**
 		 * Camera Configuration object that encapsulates the intrinsic camera parameters and distortion parameters.
 		 */
-		osg::ref_ptr<CameraConfiguration> _cameraconfiguration;
+		osg::ref_ptr<CameraConfiguration> _cameraConfiguration;
 
-		/** output all data channels */
-        void dump();
+		/**
+		 * Tracker Configuration object that encapsulates the initialization parameters.
+		 */
+		osg::ref_ptr<TrackerConfiguration> _trackerConfiguration;
 
+		osg::Matrix		_projectionMatrix;//use to store intrinsics parameters from CameraConfiguration
 
 	}; // class Tracker
 

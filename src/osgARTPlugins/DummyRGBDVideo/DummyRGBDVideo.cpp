@@ -105,7 +105,7 @@ public:
 	 * to setup the name of an image file.
 	 * \return struct VideoConfiguration
 	*/
-    virtual osgART::VideoConfiguration* getConfiguration();
+    //virtual osgART::VideoConfiguration* getOrCreateConfiguration();
 
 
 	/**
@@ -176,15 +176,9 @@ protected:
 
 private:
 
-	//video configuration
-	osgART::VideoConfiguration* vconf;
-
 	//set/get variables
 	std::string videoNameColor;
 	std::string videoNameDepth;
-
-	bool m_flip_horizontal;
-	bool m_flip_vertical;
 
 	unsigned int m_max_width;
 
@@ -194,20 +188,18 @@ private:
 
 DummyRGBDVideo::DummyRGBDVideo():
 	osgART::Video(),
-	m_flip_horizontal(false),
-	m_flip_vertical(true),
-	m_max_width(640),
-	vconf(0L)
+	m_max_width(640)
 {
 
 	//initialize here any specific variables
+	_verticalFlip=true;
 
 	//define specific field variables and functions
 
 	//in this example, we create some options to change
 	//the orientation of the image
-	_fields["flip_horizontal"] = new osgART::TypedField<bool>(&m_flip_horizontal);
-	_fields["flip_vertical"]	= new osgART::TypedField<bool>(&m_flip_vertical);
+	_fields["flip_horizontal"] = new osgART::TypedField<bool>(&_horizontalFlip);
+	_fields["flip_vertical"]	= new osgART::TypedField<bool>(&_verticalFlip);
 
 	_fields["max_width"] = new osgART::TypedField<unsigned int>(&m_max_width);
 
@@ -222,7 +214,7 @@ DummyRGBDVideo::DummyRGBDVideo():
 		&DummyRGBDVideo::setImageFileDepth);
 }
 
-DummyRGBDVideo::DummyRGBDVideo(const DummyRGBDVideo &, const osg::CopyOp& copyop) {
+DummyRGBDVideo::DummyRGBDVideo(const DummyRGBDVideo &, const osg::CopyOp& copyop): osgART::Video() {
     
 }
 
@@ -243,11 +235,11 @@ bool DummyRGBDVideo::init() {
 	//if you are using video files, you can read the configuration, cache the data, etc.
 
 	//first, you can check if there is a video configuration defined
-	if (vconf)
+	if (_videoConfiguration)
 	{
-		if (!vconf->config.empty())
+		if (!_videoConfiguration->config.empty())
 		{
-			std::vector<std::string> imageNameList=osgART::tokenize(vconf->config,";");
+			std::vector<std::string> imageNameList=osgART::tokenize(_videoConfiguration->config,";");
 			if (imageNameList.size()==2)
 			{
 				videoNameColor=imageNameList[0];
@@ -437,12 +429,12 @@ bool DummyRGBDVideo::init() {
 	}
 	*/
 	
-	if (m_flip_vertical) 
+	if (_verticalFlip) 
 	{
 		_videoStreamList[0]->flipVertical();
 		_videoStreamList[1]->flipVertical();
 	}
-	if (m_flip_horizontal) 
+	if (_horizontalFlip) 
 	{
 		_videoStreamList[0]->flipHorizontal();
 		_videoStreamList[1]->flipHorizontal();
@@ -510,14 +502,17 @@ bool DummyRGBDVideo::update(osg::NodeVisitor* nv) {
 	return true;
 }
 
-osgART::VideoConfiguration* DummyRGBDVideo::getConfiguration() {
+//if you define your own Video Configuration, you can overload
+//this method
+//osgART::VideoConfiguration* DummyRGBDVideo::getConfiguration() {
 
-	if (!vconf)
-	{
-		vconf=new osgART::VideoConfiguration();
-	}
-	return vconf;
-}
+//	if (!_videoConfiguration)
+//	{
+//      //create your own video configuration
+//		_videoConfiguration=new osgART::DummyVideoConfiguration();
+//	}
+//	return _videoConfiguration;
+//}
 
 
 //field function get/set

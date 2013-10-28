@@ -121,14 +121,9 @@ public:
     */
     void releaseImage();
 
-    virtual osgART::VideoConfiguration* getVideoConfiguration();
-
-
 private:
 
     AR2VideoParamT *video;
-
-    osgART::VideoConfiguration m_config;
 
     GLint _internalformat_GL;
     GLenum _format_GL;

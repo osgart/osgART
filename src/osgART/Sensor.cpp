@@ -30,7 +30,8 @@ namespace osgART {
 
 	Sensor::Sensor() :
         osgART::Object(),
-        FieldContainer<Sensor>()
+        FieldContainer<Sensor>(),
+		_sensorConfiguration(0L)
 	{
 		_stats=new osg::Stats("sensor");
 
@@ -57,7 +58,8 @@ namespace osgART {
     Sensor::Sensor(const Sensor &container, 
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		FieldContainer<Sensor>()
+		FieldContainer<Sensor>(),
+		_sensorConfiguration(0L)
     {
     }
 
@@ -82,40 +84,34 @@ namespace osgART {
 	Sensor::get(const std::string& name)
 	{
 		FieldMap::iterator _found = _fields.find(name);
-		// return 0 if the field is not existant
+		// return 0 if the field is not existent
 		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
 
 	// virtual
 	SensorConfiguration* 
-	Sensor::getConfiguration()
+	Sensor::getOrCreateConfiguration()
 	{
-        return 0L;
+		if (!_sensorConfiguration)
+		{
+			_sensorConfiguration=new osgART::SensorConfiguration();
+		}
+		return _sensorConfiguration;
     }
 
 	// virtual
 	void 
 	Sensor::setConfiguration(SensorConfiguration* config)
 	{
+		*_sensorConfiguration=*config;
 
 	}
 
-	// virtual
-	void
-	Sensor::updateCallback(osg::NodeVisitor* nv /*=0L*/)
+	// virtual 
+	SensorData* 
+		Sensor::getSensorData(size_t i /* =0 */) 
 	{
-		update();
-	}
-	
-	void 
-	Sensor::dump()
-	{
-		osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
-		for (osg::UserDataContainer::DescriptionList::iterator it = udc->getDescriptions().begin();
-			it != udc->getDescriptions().end();
-			++it)
-		{
-			OSG_INFO << (*it) << std::endl;
-		}
+		//todo check stream id exist
+		return _sensorDataList[i];
 	}
 };

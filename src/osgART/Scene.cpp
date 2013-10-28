@@ -98,7 +98,7 @@ namespace osgART {
 		}
 
 		// found video - configure now
-		osgART::VideoConfiguration* _configvideo = _video->getConfiguration();
+		osgART::VideoConfiguration* _configvideo = _video->getOrCreateConfiguration();
 
 		// if the configuration is existing
 		if (_configvideo)
@@ -148,7 +148,7 @@ namespace osgART {
 		}
 
 		// found tracker - configure now
-		osgART::TrackerConfiguration* _configtracker = _tracker->getConfiguration();
+		osgART::TrackerConfiguration* _configtracker = _tracker->getOrCreateConfiguration();
 
 		// if the configuration is existing
 		if (_configtracker)
@@ -214,7 +214,7 @@ namespace osgART {
 		} else {
 
 			target->setActive(true);
-			osgART::attachDefaultEventCallbacks(arTransform, target
+			osgART::attachDefaultTargetCallbacks(arTransform, target
 				);
 
 		}

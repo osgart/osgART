@@ -1,6 +1,8 @@
+@echo off
+
 echo "run osgart examples.."
 
-export OSG_NOTIFY_LEVEL=WARN
+set OSG_NOTIFY_LEVEL=WARN
 
 echo "-- BASIC TEST--"
 echo "run osgartblank.."
@@ -26,18 +28,18 @@ osgartsimplerbanim
 echo "run simple - particle.."
 osgartsimpleparticle
 
-#osgartsimpleartoolkit   
-#osgartsimplerbanimartoolkit
-#osgartsimpletarget2cproximityartoolkit                           
-#osgartsimpletarget2tproximityartoolkit        
-#osgartsimpletargetmultipleartoolkit                  
-#osgartsimplemousepickingartoolkit
-#osgartsimplekeyboardinputartoolkit
-#osgartsimpleparticleartoolkit
-#osgartsimplemanipulatorartoolkit
+REM osgartsimpleartoolkit   
+REM osgartsimplerbanimartoolkit
+REM osgartsimpletarget2cproximityartoolkit                           
+REM osgartsimpletarget2tproximityartoolkit        
+REM osgartsimpletargetmultipleartoolkit                  
+REM osgartsimplemousepickingartoolkit
+REM osgartsimplekeyboardinputartoolkit
+REM osgartsimpleparticleartoolkit
+REM osgartsimplemanipulatorartoolkit
 
 echo "-- INTERMEDIATE API--"
-#osgartintermsensor
+REM osgartintermsensor
 echo "run interm - video.."
 osgartintermvideo
 echo "run interm - videobackground.."
@@ -56,46 +58,50 @@ echo "run interm - mouse picking.."
 osgartintermmousepicking 
 echo "run interm - manipulator.."
 osgartintermmanipulator 
-#echo "run interm - stats.."
-#osgartintermstats
+REM echo "run interm - stats.."
+REM osgartintermstats
 
-#osgartintermtargetmultipleartoolkit              
-#osgartintermtargetpaddleartoolkit     
-#osgartintermkeyboardinputartoolkit     
-#osgartintermmanipulatorartoolkit       
-#osgartintermmousepickingartoolkit      
-#osgartintermsimpleartoolkit               
-#osgartintermtarget2tproximityartoolkit 
-#osgartintermtarget2cproximityartoolkit 
+REM osgartintermtargetmultipleartoolkit              
+REM osgartintermtargetpaddleartoolkit     
+REM osgartintermkeyboardinputartoolkit     
+REM osgartintermmanipulatorartoolkit       
+REM osgartintermmousepickingartoolkit      
+REM osgartintermsimpleartoolkit               
+REM osgartintermtarget2tproximityartoolkit 
+REM osgartintermtarget2cproximityartoolkit 
 
 echo "-- ADVANCED API--"
 
 echo "-- PLUGINS TESTS--"
+
+echo "run plugin - dummy gps sensor.."
+REM osgartpluginsdummysgsptest 
+echo "run plugin - dummy inertial sensor.."
+REM osgartpluginsdummysinertialtest 
 echo "run plugin - dummy video.."
 osgartpluginvdummyvideotest 
-echo "run plugin - dummy rgbdvideo.."
+echo "run plugin - dummy rgbd video.."
 osgartpluginvdummyrgbdvideotest 
 echo "run plugin - dummy tracker.."
 osgartplugintdummytrackertest          
 echo "run plugin - dummy slam tracker.."
-osgartplugintdummyslamtrackertest   
+osgartplugintdummytslamtrackertest   
+echo "run plugin - dummy gps inertial tracker.."
+REM osgartplugintdummyttrackergpsinertialtest
 
-echo "run plugin - opencv video.."
-osgartpluginvopencvtest
+REM echo "run plugin - opencv video.."
+REM osgartpluginvopencvtest
 
-echo "run plugin - artoolkit video.."
-#osgartpluginvartoolkittest
+REM echo "run plugin - artoolkit video.."
+REM osgartpluginvartoolkittest
 
-echo "run plugin - artoolkit tracker.."
-#osgartplugintartoolkittest
+REM echo "run plugin - artoolkit tracker.."
+REM osgartplugintartoolkittest
 
-#osgartpluginsdummysensortest 
-#osgartpluginsdummygsptest 
-#osgartpluginsdummyinertialtest 
-#osgartplugintdummytrackergpsinertialtest          
-#osgartpluginvopencvtest
-#osgartpluginvartoolkittest
-#osgartplugintartoolkittest
+REM echo "run plugin - artoolkit plus tracker.."
+REM osgartplugintartoolkitplustest
 
-#osgartviewer
-#osgartmarkertraining                   
+
+
+REM osgartviewer
+REM osgartmarkertraining                   

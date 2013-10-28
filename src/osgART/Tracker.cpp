@@ -32,7 +32,7 @@ namespace osgART {
 	Tracker::Tracker() :
         osgART::Object(),
         FieldContainer<Tracker>(),
-        _modifiedCount(0xFFFFF)    
+		_trackerConfiguration(0L)
 	{
 		_stats=new osg::Stats("tracker");
 		 
@@ -44,9 +44,7 @@ namespace osgART {
         osg::Object* o = new osg::TemplateValueObject<std::string>("name",std::string("what?"));
         udc->addUserObject(o);
 
-
         this->dump();
-
 
 //        udc->addUserObject(new osg::TemplateValueObject(name,std::string("gah")));
 
@@ -60,8 +58,10 @@ namespace osgART {
     Tracker::Tracker(const Tracker &container, 
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		FieldContainer<Tracker>()
+		FieldContainer<Tracker>(),
+		_trackerConfiguration(0L)
     {
+
     }
 
 	Tracker::~Tracker()
@@ -85,22 +85,42 @@ namespace osgART {
 	Tracker::get(const std::string& name)
 	{
 		FieldMap::iterator _found = _fields.find(name);
-		// return 0 if the field is not existant
+		// return 0 if the field is not existent
 		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
 
 	// virtual
 	TrackerConfiguration* 
-	Tracker::getConfiguration()
+	Tracker::getOrCreateConfiguration()
 	{
-        return 0L;
+		if (!_trackerConfiguration)
+		{
+			_trackerConfiguration=new osgART::TrackerConfiguration();
+		}
+		return _trackerConfiguration;
     }
 
 	// virtual
 	void 
 	Tracker::setConfiguration(TrackerConfiguration* config)
 	{
+		*_trackerConfiguration=*config;
+	}
 
+	// virtual
+	CameraConfiguration* Tracker::getOrCreateCameraConfiguration()
+	{
+		if (!_cameraConfiguration)
+		{
+			_cameraConfiguration=new osgART::CameraConfiguration();
+		}
+		return _cameraConfiguration;
+	}
+
+	// virtual
+	void Tracker::setCameraConfiguration(CameraConfiguration* config)
+	{
+		*_cameraConfiguration=*config;
 	}
 
 	void
@@ -109,7 +129,7 @@ namespace osgART {
 		//
 		// Explicitly delete/unref all targets
 		//
-        for( TargetList::iterator mi = _targetlist.begin();
+        for( TargetListType::iterator mi = _targetlist.begin();
 			mi != _targetlist.end();
 			mi++)
 		{
@@ -122,30 +142,11 @@ namespace osgART {
 
 	}
 
-	void 
-	Tracker::dump()
-	{
-		osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
-		for (osg::UserDataContainer::DescriptionList::iterator it = udc->getDescriptions().begin();
-			it != udc->getDescriptions().end();
-			++it)
-		{
-			OSG_INFO << (*it) << std::endl;
-		}
-	}
-
-
     // virtual
     Tracker::Traits Tracker::getTraits()
     {
         return NoTraits;
     }
-
-	/*virtual*/
-	CameraConfiguration* Tracker::getOrCreateCameraConfiguration()
-	{
-		return _cameraconfiguration.get();
-	}
 
 	/*virtual */
 	Target*
@@ -160,9 +161,9 @@ namespace osgART {
 	void
     Tracker::removeTarget(Target *target)
 	{
-		TargetList pruned; pruned.reserve(_targetlist.size());
+		TargetListType pruned; pruned.reserve(_targetlist.size());
 
-		for (TargetList::iterator it = _targetlist.begin();
+		for (TargetListType::iterator it = _targetlist.begin();
 			it != _targetlist.end();
 			++it)
 		{

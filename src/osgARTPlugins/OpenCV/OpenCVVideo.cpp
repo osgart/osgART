@@ -111,7 +111,8 @@ public:
 	*/
 	void releaseImage();
 
-	virtual osgART::VideoConfiguration* getVideoConfiguration();
+	//we use the default video configuration class
+	//virtual osgART::VideoConfiguration* getOrCreateConfiguration();
 
 
 private:
@@ -120,9 +121,6 @@ private:
 	int m_camIndex;
 
 	Mat m_OCVImage;
-
-
-	osgART::VideoConfiguration m_config;
 
 	GLint _internalformat_GL;
 	GLenum _format_GL;
@@ -137,7 +135,7 @@ OpenCVVideo::OpenCVVideo() : osgART::Video()
 }
 
 OpenCVVideo::OpenCVVideo(const OpenCVVideo &,
-		const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/)
+		const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/) : osgART::Video()
 {
 }
 
@@ -161,9 +159,9 @@ OpenCVVideo::init()
 	//
 	//}
 	
-	if (m_config.deviceid!=-1)
+	if (_videoConfiguration->deviceid!=-1)
 	{
-		if (m_video.open(m_config.deviceid))
+		if (m_video.open(_videoConfiguration->deviceid))
 		{
 			osg::notify() << std::dec<< "OpenCVVideo::open() succesful.."<<std::endl;
 		}
@@ -200,10 +198,10 @@ OpenCVVideo::init()
 
 //m_video.set(CV_CAP_PROP_FRAME_WIDTH,800);
 //	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,600);
-	if ((m_config.width!=-1)&&(m_config.height!=-1))
+	if ((_videoConfiguration->width!=-1)&&(_videoConfiguration->height!=-1))
 	{
-		m_video.set(CV_CAP_PROP_FRAME_WIDTH,m_config.width);
-		m_video.set(CV_CAP_PROP_FRAME_HEIGHT,m_config.height);
+		m_video.set(CV_CAP_PROP_FRAME_WIDTH,_videoConfiguration->width);
+		m_video.set(CV_CAP_PROP_FRAME_HEIGHT,_videoConfiguration->height);
 	}
 	else
 	{
@@ -219,9 +217,9 @@ OpenCVVideo::init()
 
 	}
 	
-	if (m_config.framerate!=-1)
+	if (_videoConfiguration->framerate!=-1)
 	{
-		m_video.set(CV_CAP_PROP_FPS,m_config.framerate);	
+		m_video.set(CV_CAP_PROP_FPS,_videoConfiguration->framerate);	
 	}
 	else
 	{
@@ -229,16 +227,16 @@ OpenCVVideo::init()
 		std::cout << "OpenCVVideo::open() use default framerate " <<30<<std::endl;
 	}
 		
-	m_config.selectedWidth = m_video.get(CV_CAP_PROP_FRAME_WIDTH);
-	m_config.selectedHeight = m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
-	m_config.selectedFrameRate =  m_video.get(CV_CAP_PROP_FPS);
+	_videoConfiguration->selectedWidth = m_video.get(CV_CAP_PROP_FRAME_WIDTH);
+	_videoConfiguration->selectedHeight = m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
+	_videoConfiguration->selectedFrameRate =  m_video.get(CV_CAP_PROP_FPS);
 
 	std::cout << "OpenCVVideo::open() size of video " <<
-			m_config.selectedWidth << " x " << m_config.selectedHeight << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
+			_videoConfiguration->selectedWidth << " x " << _videoConfiguration->selectedHeight << " format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
 
 	_videoStreamList.push_back(new osgART::VideoStream());
 
-	_videoStreamList[0]->allocateImage(m_config.selectedWidth, m_config.selectedHeight, 1, _format_GL, _datatype_GL, 1);
+	_videoStreamList[0]->allocateImage(_videoConfiguration->selectedWidth, _videoConfiguration->selectedHeight, 1, _format_GL, _datatype_GL, 1);
 
 	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
 
@@ -336,13 +334,6 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 	}
 	return true;
 }
-
-osgART::VideoConfiguration*
-OpenCVVideo::getVideoConfiguration()
-{
-	return &m_config;
-}
-
 
 void OpenCVVideo::releaseImage()
 {

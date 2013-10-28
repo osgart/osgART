@@ -127,8 +127,12 @@ class DummyTracker : public osgART::VisualTracker
 public:
 
 	DummyTracker();
+
+	DummyTracker(const DummyTracker &, const osg::CopyOp& copyop);
+
 	virtual ~DummyTracker();
 
+	//we overload this function as we define our own camera configuration
 	osgART::CameraConfiguration* getOrCreateCameraConfiguration();
 
 	void setImage(osg::Image* image,bool useInternalVideo=false);
@@ -185,7 +189,6 @@ DummyTarget::update(osg::Matrix mat)
 	_transform=mat;
 	_valid=true;
 
-
 }
 
 
@@ -196,6 +199,12 @@ DummyTracker::DummyTracker() :
 	
 
 }
+
+DummyTracker::DummyTracker(const DummyTracker &, const osg::CopyOp& copyop):	osgART::VisualTracker()
+{
+
+}
+
 
 DummyTracker::~DummyTracker()
 {
@@ -213,7 +222,7 @@ DummyTracker::getOrCreateCameraConfiguration()
 
 	//1. you create a specific Camera Configuration class, that can hold
 	//more parameters for your tracker
-	if (!_cameraconfiguration.valid()) _cameraconfiguration = new DummyCameraConfiguration;
+	if (!_cameraConfiguration.valid()) _cameraConfiguration = new DummyCameraConfiguration;
 
 	//2.you only create a default Camera Configuration
 	//and you setup the proj matrix
@@ -305,7 +314,7 @@ DummyTracker::update(osg::NodeVisitor* nv)
 
 		//once it's done, you can update your specific targets with processed information
 
-        for (osgART::Tracker::TargetList::iterator iter = _targetlist.begin();
+        for (osgART::Tracker::TargetListType::iterator iter = _targetlist.begin();
             iter != _targetlist.end();
             iter++)
         {

@@ -28,6 +28,7 @@
 
 #include <osg/Vec2s>
 #include <osg/Vec3f>
+#include <osg/Referenced>
 
 #include "osgART/Export"
 
@@ -35,7 +36,7 @@
 
 namespace osgART {
 
-	class OSGART_EXPORT SensorConfiguration {
+	class OSGART_EXPORT SensorConfiguration:public osg::Referenced {
 	public:
 	
 		std::string config;

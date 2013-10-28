@@ -26,6 +26,7 @@
 #ifndef OSGART_VIDEOCONFIGURATION
 #define OSGART_VIDEOCONFIGURATION 1
 
+#include <osg/Referenced>
 #include <osg/Vec2s>
 
 #include "osgART/Export"
@@ -88,7 +89,7 @@ namespace osgART {
 	} FrameRateType;
 	
 
-	class OSGART_EXPORT VideoConfiguration {
+	class OSGART_EXPORT VideoConfiguration: public osg::Referenced {
 	public:
 	
 		std::string config;

@@ -201,7 +201,7 @@ namespace osgART {
 		*/
 		Field* get(const std::string& name);		
 
-		void dump();
+		//void dump();
 	
 	protected:
 	
@@ -223,7 +223,7 @@ namespace osgART {
 	}
 
 
-	template <typename T> void FieldContainer<T>::dump()
+	/* template <typename T> void FieldContainer<T>::dump()
 	{
 		
 
@@ -234,7 +234,7 @@ namespace osgART {
 			std::cout << "Field: " << (*_i).first << std::endl;
 		}
 
-	}
+	}*/
 
  };
  

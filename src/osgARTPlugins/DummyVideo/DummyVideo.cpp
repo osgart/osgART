@@ -66,6 +66,17 @@
 #include "osgART/Video"
 #include "osgART/VideoConfiguration"
 
+
+// you can create your own video configuration with
+//additional parameters, overloaded function
+class DummyVideoConfiguration: public osgART::VideoConfiguration {
+public:
+	DummyVideoConfiguration() : osgART::VideoConfiguration() {};
+
+	~DummyVideoConfiguration() {};
+
+};
+
 /**
  * class DummyVideo.
  *
@@ -101,11 +112,11 @@ public:
     	
     /**
 	 * Get the video configuration struct for Dummy Video.
-	 * in this example, we will use the config string 
+	 * in this example, we create our own VideoConfiguration class and use the config string 
 	 * to setup the name of an image file.
 	 * \return struct VideoConfiguration
 	*/
-    virtual osgART::VideoConfiguration* getConfiguration();
+    virtual osgART::VideoConfiguration* getOrCreateConfiguration();
 
 
 	/**
@@ -164,14 +175,8 @@ protected:
 
 private:
 
-	//video configuration
-	osgART::VideoConfiguration* vconf;
-
 	//set/get variables
 	std::string videoName;
-
-	bool m_flip_horizontal;
-	bool m_flip_vertical;
 
 	unsigned int m_max_width;
 
@@ -181,20 +186,17 @@ private:
 
 DummyVideo::DummyVideo():
 	osgART::Video(),
-	m_flip_horizontal(false),
-	m_flip_vertical(true),
-	m_max_width(640),
-	vconf(0L)
+	m_max_width(640)
 {
-
 	//initialize here any specific variables
+	_verticalFlip=true;
 
 	//define specific field variables and functions
 
 	//in this example, we create some options to change
 	//the orientation of the image
-	_fields["flip_horizontal"] = new osgART::TypedField<bool>(&m_flip_horizontal);
-	_fields["flip_vertical"]	= new osgART::TypedField<bool>(&m_flip_vertical);
+	_fields["flip_horizontal"] = new osgART::TypedField<bool>(&_horizontalFlip);
+	_fields["flip_vertical"]	= new osgART::TypedField<bool>(&_verticalFlip);
 
 	_fields["max_width"] = new osgART::TypedField<unsigned int>(&m_max_width);
 
@@ -206,7 +208,8 @@ DummyVideo::DummyVideo():
 		&DummyVideo::setImageFile);
 }
 
-DummyVideo::DummyVideo(const DummyVideo &, const osg::CopyOp& copyop) {
+DummyVideo::DummyVideo(const DummyVideo &, const osg::CopyOp& copyop):	osgART::Video()
+{
     
 }
 
@@ -227,11 +230,11 @@ bool DummyVideo::init() {
 	//if you are using video files, you can read the configuration, cache the data, etc.
 
 	//first, you can check if there is a video configuration defined
-	if (vconf)
+	if (_videoConfiguration)
 	{
-		if (!vconf->config.empty())
+		if (!_videoConfiguration->config.empty())
 		{
-			videoName=vconf->config;
+			videoName=_videoConfiguration->config;
 		}
 	}
 	else
@@ -339,8 +342,8 @@ bool DummyVideo::init() {
 	}
 	*/
 	
-	if (m_flip_vertical) _videoStreamList[0]->flipVertical();
-	if (m_flip_horizontal) _videoStreamList[0]->flipHorizontal();
+	if (_verticalFlip) _videoStreamList[0]->flipVertical();
+	if (_horizontalFlip) _videoStreamList[0]->flipHorizontal();
 
 	return true;
 
@@ -400,13 +403,16 @@ bool DummyVideo::update(osg::NodeVisitor* nv) {
 	return true;
 }
 
-osgART::VideoConfiguration* DummyVideo::getConfiguration() {
+//if you define your own Video Configuration, you can overload
+//this method
+osgART::VideoConfiguration* DummyVideo::getOrCreateConfiguration() {
 
-	if (!vconf)
+	if (!_videoConfiguration)
 	{
-		vconf=new osgART::VideoConfiguration();
+      //create your own video configuration
+		_videoConfiguration=new DummyVideoConfiguration();
 	}
-	return vconf;
+	return _videoConfiguration;
 }
 
 

@@ -80,7 +80,7 @@ int main(int argc, char* argv[])  {
 
 
 	// found video - configure now
-	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
+	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found tracker - configure now
-	osgART::TrackerConfiguration* _configtracker = tracker->getConfiguration();
+	osgART::TrackerConfiguration* _configtracker = tracker->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configtracker)

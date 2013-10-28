@@ -99,31 +99,23 @@ namespace osgART {
 		 * Get the sensor configuration struct
 		 * \return struct SensorConfiguration
 		 */
-		virtual SensorConfiguration* getConfiguration();
+		virtual SensorConfiguration* getOrCreateConfiguration();
 		
 		/**
 		 * Set the sensor configuration struct
 		 * \param SensorConfiguration sensor configuration
 		*/
 		virtual void setConfiguration(SensorConfiguration* config);		
-				
+			
 		/**
-		 * \brief update the sensor from node callback.
-		 *
-		 * Request that the sensor update the position of sensor data
-		 * \param nv NodeVisitor which should be used to get stats information
+		 * \brief retrieve specific sensor.
+		 * \param sensor data identification
+		 * get a sensor data from the list of sensor managed by the sensor.
 		 */
-        virtual void updateCallback(osg::NodeVisitor* nv = 0L);
+		virtual SensorData* getSensorData(size_t idx=0);
 
-		/**
-		 * \brief XXX.
-		 *
-		 * XXX.
-		 */
-		//virtual SensorData* getSensorData(size_t idx);
-
-		//inline size_t
-		//getSensorDataNum() const { return _sensordatalist.size(); }
+		inline size_t
+		getSensorDataNum() const { return _sensorDataList.size(); }
 
 	protected:
 
@@ -132,9 +124,20 @@ namespace osgART {
 		 */
 		virtual ~Sensor();
 
-		/** output all data channels */
-        void dump();
+		/**
+		 * type for a vector of reference counted targets.
+		 */
+        typedef std::vector< osg::ref_ptr<SensorData> > SensorDataListType;
 
+		/**
+		 * A list of video stream associated with this video.
+		 */
+		SensorDataListType _sensorDataList;
+	
+		/**
+		 * Video Configuration object that encapsulates the initialization parameters.
+		 */
+		osg::ref_ptr<SensorConfiguration> _sensorConfiguration;
 
 	}; // class Sensor
 

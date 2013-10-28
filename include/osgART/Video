@@ -28,10 +28,6 @@
 
 // std include
 
-// OpenThreads include
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
-
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
@@ -100,7 +96,7 @@ namespace osgART {
 		 * Get the video configuration struct
 		 * \return struct VideoConfiguration
 		 */
-		virtual VideoConfiguration* getConfiguration();
+		virtual VideoConfiguration* getOrCreateConfiguration();
 		
 		/**
 		 * Set the video configuration struct
@@ -112,16 +108,10 @@ namespace osgART {
 		 * return a video stream
 		 * \param stream identification
 		*/
-		virtual VideoStream* getStream(int idx=0);
+		virtual VideoStream* getStream(size_t idx=0);
 		
-		/** 
-		 * Get the mutex for a video object to lock against read/write operations
-		 * \return reference to the internal mutex
-		 */
-		inline OpenThreads::Mutex& getMutex()
-		{
-			return _mutex;		
-		}
+		inline size_t
+		getVideoStreamtNum() const { return _videoStreamList.size(); }
 		 
 		/**
 		 * Set internal flipping. 
@@ -137,21 +127,24 @@ namespace osgART {
 		 *
 		 */
 		virtual ~Video();   
-		
-		bool m_vertical_flip;
-		bool m_horizontal_flip;
 	
 		/**
 		 * type for a vector of reference counted targets.
 		 */
-
         typedef std::vector< osg::ref_ptr<VideoStream> > VideoStreamListType;
 
+		/**
+		 * A list of video stream associated with this video.
+		 */
 		VideoStreamListType _videoStreamList;
 
-   		// used for locking
-		OpenThreads::Mutex _mutex;
-
+		/**
+		 * Video Configuration object that encapsulates the initialization parameters.
+		 */
+		osg::ref_ptr<VideoConfiguration> _videoConfiguration;
+			
+		bool _verticalFlip;
+		bool _horizontalFlip;
 	
 	}; // class Video
 

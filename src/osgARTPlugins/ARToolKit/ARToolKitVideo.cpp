@@ -53,11 +53,14 @@ using namespace osgART;
 ARToolKitVideo::ARToolKitVideo() : osgART::Video(),
 	video(0L)
 {
+	_verticalFlip=true;
 }
 
 ARToolKitVideo::ARToolKitVideo(const ARToolKitVideo &,
-		const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/)
+	const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/): osgART::Video(),
+	video(0L)
 {
+
 }
 
 ARToolKitVideo::~ARToolKitVideo()
@@ -94,10 +97,17 @@ ARToolKitVideo::init()
 			"0x" << std::hex << std::uppercase << _datatype_GL << "]" << std::endl;
 	}
 
-
-	if (m_config.config != "") {
-		config = (char*)&m_config.config.c_str()[0];
+	if (_videoConfiguration)
+	{
+		std::cout<<"we got a video config"<<std::endl;
+		if (_videoConfiguration->config != "") {
+			config = (char*)&_videoConfiguration->config.c_str()[0];
+		}
 	}
+	else
+		config="";
+	
+	std::cout<<"config="<<config<<std::endl;
 
 	// open the video capture device
 	video = ar2VideoOpen(config);
@@ -118,9 +128,9 @@ ARToolKitVideo::init()
 		osg::notify() << std::dec << "ARToolKitVideo::open() size of video " <<
 			xsize << " x " << ysize << ", fps: " << fps << std::endl;
 
-		m_config.selectedWidth = xsize;
-		m_config.selectedHeight = ysize;
-		m_config.selectedFrameRate = fps;
+		_videoConfiguration->selectedWidth = xsize;
+		_videoConfiguration->selectedHeight = ysize;
+		_videoConfiguration->selectedFrameRate = fps;
 
 	}
 
@@ -211,13 +221,6 @@ ARToolKitVideo::update(osg::NodeVisitor* nv)
 	
 	return true;
 }
-
-osgART::VideoConfiguration*
-ARToolKitVideo::getVideoConfiguration()
-{
-	return &m_config;
-}
-
 
 void ARToolKitVideo::releaseImage()
 {

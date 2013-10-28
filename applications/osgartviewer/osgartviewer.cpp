@@ -324,7 +324,7 @@ int main(int argc, char* argv[])  {
 
 			osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 
-			osgART::attachDefaultEventCallbacks(arTransform.get(),target.get());
+			osgART::attachDefaultTargetCallbacks(arTransform.get(),target.get());
 
 			arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 			arTransform->getOrCreateStateSet()->setMode(GL_RESCALE_NORMAL, osg::StateAttribute::ON);

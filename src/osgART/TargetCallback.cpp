@@ -25,15 +25,15 @@
 
 namespace osgART {
 
-	void attachDefaultEventCallbacks(osg::Node* node, Target* target)
+	void attachDefaultTargetCallbacks(osg::Node* node, Target* target)
 	{
 		if (!node) {
-			osg::notify() << "attachDefaultEventCallbacks: Can't attach callbacks to NULL node" << std::endl;
+			osg::notify() << "attachDefaultTargetCallbacks: Can't attach callbacks to NULL node" << std::endl;
 			return;
 		}
 
 		if (!target) {
-			osg::notify() << "attachDefaultEventCallbacks: Can't attach callbacks with NULL target" << std::endl;
+			osg::notify() << "attachDefaultTargetCallbacks: Can't attach callbacks with NULL target" << std::endl;
 			return;
 		}
 

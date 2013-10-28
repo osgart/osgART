@@ -79,7 +79,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found video - configure now
-	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
+	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])  {
 		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
 		//here we use the default config file in the artoolkit data directory
-		_configvideo->config="Data/artoolkit/WDM_camera.xml";
+		_configvideo->config="data/artoolkit/WDM_camera.xml";
 
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"

@@ -62,7 +62,7 @@ namespace osgART
 	 * \param node Node which should be mapped to a target
 	 * \param target Target which provides visibility and transformation information
 	 */
-	OSGART_EXPORT void attachDefaultEventCallbacks(osg::Node* node, Target *target);
+	OSGART_EXPORT void attachDefaultTargetCallbacks(osg::Node* node, Target *target);
 
 
 	class OSGART_EXPORT SingleTargetCallback : public osg::NodeCallback

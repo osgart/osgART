@@ -16,10 +16,23 @@
  * OpenSceneGraph Public License for more details.
 */
 
+#include <osg/ValueObject>
+#include <osg/UserDataContainer>
 
 #include "osgART/Object"
 
 
 namespace osgART {
 
+	/*
+	void Object::dump()
+	{
+		osg::UserDataContainer* udc = this->getOrCreateUserDataContainer();
+		for (osg::UserDataContainer::DescriptionList::iterator it = udc->getDescriptions().begin();
+			it != udc->getDescriptions().end();
+			++it)
+		{
+			OSG_INFO << (*it) << std::endl;
+		}
+	}*/
 }

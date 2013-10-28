@@ -26,7 +26,11 @@ namespace osgART {
 
 	Video::Video() :
 		osgART::Object(),
-		FieldContainer<Video>()
+		FieldContainer<Video>(),
+		_videoConfiguration(0L),
+		_horizontalFlip(false),
+		_verticalFlip(false)
+
 	{
 		_stats=new osg::Stats("video");
 		_videoStreamList.reserve(max_video_number);
@@ -35,7 +39,10 @@ namespace osgART {
 	Video::Video(const Video& container,
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		FieldContainer<Video>()
+		FieldContainer<Video>(),
+		_videoConfiguration(0L),
+		_horizontalFlip(false),
+		_verticalFlip(false)
 	{
 		
 	}
@@ -66,21 +73,25 @@ namespace osgART {
 
 	// virtual
 	VideoConfiguration* 
-	Video::getConfiguration()
+	Video::getOrCreateConfiguration()
 	{
-		return 0L;
+		if (!_videoConfiguration)
+		{
+			_videoConfiguration=new osgART::VideoConfiguration();
+		}
+		return _videoConfiguration;
 	}
 
 	// virtual
 	void 
 	Video::setConfiguration(VideoConfiguration* config)
 	{
-
+		*_videoConfiguration=*config;
 	}
 	
 	// virtual 
 	VideoStream* 
-	Video::getStream(int i) 
+	Video::getStream(size_t i /* =0 */) 
 	{
 		//todo check stream id exist
 		return _videoStreamList[i];
@@ -90,8 +101,8 @@ namespace osgART {
 	Video::setFlip(bool horizontal,
 		bool vertical) 
 	{
-		m_horizontal_flip = horizontal;
-		m_vertical_flip = vertical;
+		_horizontalFlip = horizontal;
+		_verticalFlip = vertical;
 	}
 
 

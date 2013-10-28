@@ -141,6 +141,9 @@ class DummySLAMTracker : public osgART::VisualTracker
 public:
 
 	DummySLAMTracker();
+
+	DummySLAMTracker(const DummySLAMTracker &, const osg::CopyOp& copyop);
+
 	virtual ~DummySLAMTracker();
 
 	osgART::CameraConfiguration* getOrCreateCameraConfiguration();
@@ -164,7 +167,6 @@ DummySLAMTarget::DummySLAMTarget()
 	//initialize a target
 	//parent class initialize the geometry.
 }
-
 
 void
 DummySLAMTarget::init(const std::string& config)
@@ -303,6 +305,11 @@ DummySLAMTracker::DummySLAMTracker() :
 
 }
 
+DummySLAMTracker::DummySLAMTracker(const DummySLAMTracker &, const osg::CopyOp& copyop): osgART::VisualTracker()
+{
+
+}
+
 DummySLAMTracker::~DummySLAMTracker()
 {
 	//clean up the tracker
@@ -319,7 +326,7 @@ DummySLAMTracker::getOrCreateCameraConfiguration()
 
 	//1. you create a specific Camera Configuration class, that can hold
 	//more parameters for your tracker
-	if (!_cameraconfiguration.valid()) _cameraconfiguration = new DummyCameraConfiguration;
+	if (!_cameraConfiguration.valid()) _cameraConfiguration = new DummyCameraConfiguration;
 
 	//2.you only create a default Camera Configuration
 	//and you setup the proj matrix
@@ -411,7 +418,7 @@ DummySLAMTracker::update(osg::NodeVisitor* nv)
 
 		//once it's done, you can update your specific targets with processed information
 
-        for (osgART::Tracker::TargetList::iterator iter = _targetlist.begin();
+        for (osgART::Tracker::TargetListType::iterator iter = _targetlist.begin();
             iter != _targetlist.end();
             iter++)
         {

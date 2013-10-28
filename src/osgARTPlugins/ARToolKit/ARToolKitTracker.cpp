@@ -168,6 +168,7 @@ namespace osgART {
 		
 		// Assign version and name of the tracker.
 		_name = "ARToolKit";
+
 		char *version = NULL;
 		arGetVersion(&version);
 		if (version) {
@@ -224,13 +225,13 @@ namespace osgART {
 
 	inline CameraConfiguration* ARToolKitTracker::getOrCreateCameraConfiguration() 
 	{
-		if (!_cameraconfiguration.valid()) 
+		if (!_cameraConfiguration.valid()) 
 		{
 			std::cerr<<"create camera configuration.."<<std::endl;
-			_cameraconfiguration = new ARToolKitCameraConfiguration();
+			_cameraConfiguration = new ARToolKitCameraConfiguration();
 		}
 		//return Tracker::getOrCreateCameraConfiguration();
-		return _cameraconfiguration;
+		return _cameraConfiguration;
 	}
 
 	inline void ARToolKitTracker::setImage(osg::Image* image,bool useInternalVideo)
@@ -577,12 +578,12 @@ namespace osgART {
 
 		}
 
-		TargetList::iterator _end = _targetlist.end();
+		TargetListType::iterator _end = _targetlist.end();
 	
 
 		// Check through the target_info array for highest confidence
 		// visible target matching our preferred pattern.
-		for (TargetList::iterator iter = _targetlist.begin(); iter != _end; iter++)		
+		for (TargetListType::iterator iter = _targetlist.begin(); iter != _end; iter++)		
 		{
 
 			std::string tag = std::string("Target update ");

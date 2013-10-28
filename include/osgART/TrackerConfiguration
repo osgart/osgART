@@ -28,13 +28,15 @@
 
 #include <osg/Vec2s>
 
+#include <osg/Referenced>
+
 #include "osgART/Export"
 
 #include <string>
 
 namespace osgART {
 
-	class OSGART_EXPORT TrackerConfiguration {
+	class OSGART_EXPORT TrackerConfiguration:public osg::Referenced {
 	public:
 	
 		std::string config;
