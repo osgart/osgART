@@ -9,7 +9,7 @@ add_subdirectory(DummyRGBDVideo)
 
 #add_subdirectory(DummyGPSInertialTracker)
 add_subdirectory(DummyTracker)
-#add_subdirectory(DummySLAMTracker)
+add_subdirectory(DummySLAMTracker)
 
 #multiplatforms video plugins
 add_subdirectory(OpenCV)

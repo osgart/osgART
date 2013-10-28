@@ -150,14 +150,15 @@ namespace osgART {
 	* \class SLAMTarget
 	* \brief a derived class from Target, which can produce geometry (mapping).
 	*/
-	class SLAMTarget : public Target {
+	class OSGART_EXPORT SLAMTarget : public Target {
 	public:
-		SLAMTarget(): Target() {};
+		SLAMTarget(): Target() {		_geometry=new osg::Geometry();};
 
-		osg::Geometry* getGeometry();
+		osg::Geometry* getGeometry() {return _geometry;};
 	protected:
 		~SLAMTarget() {};
 
+		osg::ref_ptr<osg::Geometry> _geometry;
 	};
 };
 

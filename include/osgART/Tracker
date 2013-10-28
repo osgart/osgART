@@ -155,7 +155,7 @@ namespace osgART {
 		 * \param config can contain the filename an ID or other tracker specific parameters
 		 * \return Target as been loaded from the tracker or 0 if it failed
 		 */
-		virtual Target* addTarget(const std::string& config);
+		virtual Target* addTarget(const std::string& config="");
 
 		/**
 		 * Remove a target.

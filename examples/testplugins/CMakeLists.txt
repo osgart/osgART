@@ -20,16 +20,22 @@ add_subdirectory(osgartpluginvavfoundationtest)
 ENDIF()
 
 IF(WIN32)
-
+#add_subdirectory(osgartpluginvdsvidelibtest)
+#add_subdirectory(osgartpluginvvideoinputtest)
 ENDIF()
 
 ## -- TRACKER PLUGINS -- 
 add_subdirectory(osgartplugintdummytrackertest)
+add_subdirectory(osgartplugintdummytslamtrackertest)
 #add_subdirectory(osgartplugintdummytrackergpsinertialtest)
 
 add_subdirectory(osgartplugintartoolkittest)
+#add_subdirectory(osgartplugintartoolkitplustest)
 
 #add_subdirectory(osgartplugintopiratest)
-#add_subdirectory(osgartplugintstbtest)
 #add_subdirectory(osgartpluginvtsstttest)
 
+#add_subdirectory(osgartpluginticg3dtrackingtest)
+#add_subdirectory(osgartplugintvuforiatest)
+#add_subdirectory(osgartplugintsatest)
+#add_subdirectory(osgartplugintkinfutest)
