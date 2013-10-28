@@ -177,9 +177,14 @@ private:
 
 	osg::Timer updateTimer;
 
+	xn::DepthMetaData* depthMD;
+	xn::ImageMetaData* imageMD;
+
 	pcl::OpenNIGrabber interface;
 
 	bool save;
+	
+	unsigned char* _depthBufferByte;
 
 };
 
@@ -240,7 +245,7 @@ PCLVideo::cloud_cb_ (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud)
 }
 
 void 
-PCLVideo::imageDepthImageCallback (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>& d_img, float constant)
+PCLVideo::imageDepthImageCallback (const boost::shared_ptr<openni_wrapper::Image>& color_img, const boost::shared_ptr<openni_wrapper::DepthImage>& depth_img, float constant)
 {
   static unsigned count = 0;
   static double last = pcl::getTime ();
@@ -248,10 +253,44 @@ PCLVideo::imageDepthImageCallback (const boost::shared_ptr<openni_wrapper::Image
   {
 	double now = pcl::getTime ();
 	std::cout << "got synchronized image x depth-image with constant factor: " << constant << ". Average framerate: " << double(count)/double(now - last) << " Hz" <<  std::endl;
-	std::cout << "Depth baseline: " << d_img->getBaseline () << " and focal length: " << d_img->getFocalLength () << std::endl;
+	std::cout << "Depth baseline: " << depth_img->getBaseline () << " and focal length: " << depth_img->getFocalLength () << std::endl;
 	count = 0;
 	last = now;
   }
+  
+  	{
+
+	//1. mutex lock access to the image video stream
+	OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
+
+	osg::notify(osg::DEBUG_INFO)<<"osgART::OpenNIVideo::update() get new image.."<<std::endl;
+
+//	depthMD=depth_img->getDepthMetaData();
+	const XnDepthPixel* pDepthMap = depth_img->getDepthMetaData().Data();
+	//depth pixel floating point depth map.
+	
+//	imageMD=color_img->getMetaData();
+	const XnUInt8* pImageMap = color_img->getMetaData().Data();
+
+	const XnDepthPixel* pDepth=pDepthMap;
+	const XnUInt8* pImage=pImageMap;
+	
+	XnDepthPixel zMax = depth_img->getDepthMetaData().ZRes();
+    //convert float buffer to unsigned short
+	for ( unsigned int i=0; i<(depth_img->getDepthMetaData().XRes() * depth_img->getDepthMetaData().YRes()); ++i )
+    {
+            *(_depthBufferByte + i) = 255 * (float(*(pDepth + i)) / float(zMax));
+    }
+
+	memcpy(_videoStreamList[0]->data(),pImage, _videoStreamList[0]->getImageSizeInBytes());
+	
+	memcpy(_videoStreamList[1]->data(),_depthBufferByte, _videoStreamList[1]->getImageSizeInBytes());
+
+	//3. don't forget to call this to notify the rest of the application
+	//that you have a new video image
+	_videoStreamList[0]->dirty();
+	_videoStreamList[1]->dirty();
+	}
 }
     
 bool PCLVideo::init() {
@@ -278,6 +317,11 @@ bool PCLVideo::init() {
       // connect callback function for desired signal. In this case its a point cloud with color values
       boost::signals2::connection c2 = interface.registerCallback (f2);
 
+	int w=640;
+	int h=480;
+	
+	_depthBufferByte=new unsigned char[w*h];
+
 	//we need to create one video stream
 	_videoStreamList.push_back(new osgART::VideoStream());
 
@@ -286,9 +330,7 @@ bool PCLVideo::init() {
 	//here you define the image format, image size
 	//that will be streamed by your plugin
 	
-	int w=640;
-	int h=480;
-	
+
 	_videoStreamList[0]->allocateImage(w, h, 1, GL_BGRA, GL_UNSIGNED_BYTE);
 
 	
