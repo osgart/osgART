@@ -161,18 +161,16 @@ int main(int argc, char* argv[])  {
 	// if the configuration is existing
 	if (_configvideo)
 	{
-		// it is possible to configure the plugin before opening it
-
 		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
 		//here we use the default config file in the artoolkit data directory
+#ifdef __WIN32__
 		_configvideo->config="data/artoolkit/WDM_camera.xml";
-
+#endif
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
 		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
-
 	}
 
 	// Open the video. This will not yet start the video stream but will
@@ -208,7 +206,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
 	// load a camera configuration file
-	if (!cameraconfig->load("data/camera_para.dat")) 
+	if (!cameraconfig->load("data/artoolkit/camera_para.dat")) 
 	{
 
 		// the camera configuration file was non-existing or couldnt be loaded
@@ -253,12 +251,6 @@ int main(int argc, char* argv[])  {
 	osgART::attachDefaultTargetCallbacks(arTransform.get(), target.get());
 
 	cam->addChild(arTransform.get());
-
-	//adjust window size
-	viewer.setUpViewInWindow(0,0,800,800);
-
-	//adjust camera viewport
-	cam->setViewport(0,0,800,800); //RESOLUTION same as VIEWER
 
 	//add our manipulator handle
 	viewer.addEventHandler(new MouseManipulatorEventHandler(cam.get()));

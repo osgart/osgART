@@ -2,9 +2,14 @@ echo "run osgart examples.."
 
 export OSG_NOTIFY_LEVEL=WARN
 
+echo "-- BASIC TEST--"
 echo "run osgartblank.."
 ./osgartblank        
                     
+echo "-- VIDEO TEST--"
+echo "run osgartvideolayer.."
+./osgartvideolayer
+                  
 echo "-- SIMPLE API--"
 echo "run simple - simple.."
 ./osgartsimple
@@ -75,21 +80,28 @@ echo "-- PLUGINS TESTS--"
 
 echo "run plugin - dummy video.."
 ./osgartpluginvdummyvideotest 
+
+echo "run plugin - dummy rgbd video.."
+./osgartpluginvdummyrgbdvideotest 
+
 echo "run plugin - dummy tracker.."
 ./osgartplugintdummytrackertest          
 
-echo "run plugin - avfoundation video.."
-./osgartpluginvqtkittest 
-echo "run plugin - avfoundation video.."
-./osgartpluginvavfoundationtest 
+echo "run plugin - dummy slam tracker.."
+./osgartplugintdummyslamtrackertest  
 
-echo "run plugin - opencv video.."
-./osgartpluginvopencvtest
+#echo "run plugin - avfoundation video.."
+#./osgartpluginvqtkittest 
+#echo "run plugin - avfoundation video.."
+#./osgartpluginvavfoundationtest 
 
-echo "run plugin - artoolkit video.."
+#echo "run plugin - opencv video.."
+#./osgartpluginvopencvtest
+
+#echo "run plugin - artoolkit video.."
 #./osgartpluginvartoolkittest
 
-echo "run plugin - artoolkit tracker.."
+#echo "run plugin - artoolkit tracker.."
 #./osgartplugintartoolkittest
 
 #osgartviewer

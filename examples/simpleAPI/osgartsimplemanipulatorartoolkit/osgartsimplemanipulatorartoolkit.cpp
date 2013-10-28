@@ -139,12 +139,6 @@ int main(int argc, char* argv[])  {
 
 	osg::ref_ptr<osg::Camera> cam=scene->getCamera(); //call after addTracker
 
-	//adjust window size
-	viewer.setUpViewInWindow(0,0,800,800);
-
-	//adjust camera viewport
-	cam->setViewport(0,0,800,800); //RESOLUTION same as VIEWER
-
 	//add our manipulator handle
 	viewer.addEventHandler(new MouseManipulatorEventHandler(cam.get()));
 

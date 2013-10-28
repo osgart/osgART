@@ -87,8 +87,11 @@ int main(int argc, char* argv[])  {
 		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
 		//here we use the default config file in the artoolkit data directory
+#ifdef __WIN32__
 		_configvideo->config="data/artoolkit/WDM_camera.xml";
-
+#else
+//		_configvideo->config="";
+#endif
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"

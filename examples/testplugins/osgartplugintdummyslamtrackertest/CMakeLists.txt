@@ -1,7 +1,7 @@
-set(exe_name osgartplugintdummytslamtrackertest)
+set(exe_name osgartplugintdummyslamtrackertest)
 
 set(SRCS
-	osgartplugintdummytslamtrackertest.cpp
+	osgartplugintdummyslamtrackertest.cpp
 	)
 
 

@@ -26,7 +26,7 @@ ENDIF()
 
 ## -- TRACKER PLUGINS -- 
 add_subdirectory(osgartplugintdummytrackertest)
-add_subdirectory(osgartplugintdummytslamtrackertest)
+add_subdirectory(osgartplugintdummyslamtrackertest)
 #add_subdirectory(osgartplugintdummytrackergpsinertialtest)
 
 add_subdirectory(osgartplugintartoolkittest)

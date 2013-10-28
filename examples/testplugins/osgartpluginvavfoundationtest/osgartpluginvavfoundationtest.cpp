@@ -79,17 +79,17 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found video - configure now
-	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
+	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)
 	{
 		// it is possible to configure the plugin before opening it
-		//_configvideo->width=1280;
-		//_configvideo->height=720;
+		_configvideo->width=1280;
+		_configvideo->height=720;
 		
-		_configvideo->width=640;
-		_configvideo->height=480;
+		//_configvideo->width=640;
+		//_configvideo->height=480;
 	}
 
 	//you can also configure the plugin using fields

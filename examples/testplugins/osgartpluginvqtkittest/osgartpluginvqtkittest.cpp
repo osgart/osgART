@@ -79,7 +79,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found video - configure now
-	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
+	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)

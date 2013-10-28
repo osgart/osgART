@@ -157,30 +157,28 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found video - configure now
-	osgART::VideoConfiguration* _configvideo = video->getConfiguration();
+	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)
 	{
-		// it is possible to configure the plugin before opening it
-
-		//artoolkit2 plugin will generate a default configuration for you
+		//artoolkit plugin will generate a default configuration for you
 		//if you omit this line
-		//here we use the default config file in the artoolkit2 data directory
-		_configvideo->config="Data/artoolkit2/WDM_camera.xml";
-
+		//here we use the default config file in the artoolkit data directory
+#ifdef __WIN32__
+		_configvideo->config="data/artoolkit/WDM_camera.xml";
+#endif
 		//you can also specify configuration file here:
 		//_config->deviceconfig = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
 		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
-
 	}
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for connecting a tracker
 	// Note: configuration should be defined before opening the video
-	video->open();
+	video->init();
 
 	osg::ref_ptr<osgART::Tracker> tracker 
 		= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
@@ -195,7 +193,7 @@ int main(int argc, char* argv[])  {
 	}
 
 	// found tracker - configure now
-	osgART::TrackerConfiguration* _configtracker = tracker->getConfiguration();
+	osgART::TrackerConfiguration* _configtracker = tracker->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configtracker)
@@ -209,7 +207,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
 	// load a camera configuration file
-	if (!cameraconfig->load("data/camera_para.dat")) 
+	if (!cameraconfig->load("data/artoolkit/camera_para.dat")) 
 	{
 
 		// the camera configuration file was non-existing or couldnt be loaded
@@ -220,7 +218,7 @@ int main(int argc, char* argv[])  {
 	// setup two targets
 
 	//first target: multi target
-	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("multi;data/artoolkit2/multi/marker.dat");
+	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("multi;data/artoolkit/multi/marker.dat");
 	if (!targetA.valid()) 
 	{
 		// Without target an AR application can not work. Quit if none found.
@@ -231,7 +229,7 @@ int main(int argc, char* argv[])  {
 	targetA->setActive(true);
 
 	//second target: interaction target
-	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit2/patt.paddle;40;0;0");
+	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit/patt.paddle;40;0;0");
 	if (!targetB.valid()) 
 	{
 		// Without target an AR application can not work. Quit if none found.
@@ -270,7 +268,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::MatrixTransform> arTransformA = new osg::MatrixTransform();
 
 	arTransformA->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-	osgART::attachDefaultEventCallbacks(arTransformA.get(), targetA.get());
+	osgART::attachDefaultTargetCallbacks(arTransformA.get(), targetA.get());
 
 	cam->addChild(arTransformA.get());
 

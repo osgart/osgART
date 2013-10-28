@@ -1,25 +1,21 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
+ 
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
@@ -40,10 +36,10 @@
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
 
-#include <osgART/VisualTracker>
-
 #include <iostream>
 #include <sstream>
+
+#include <osgART/VisualTracker>
 
 int main(int argc, char* argv[])  {
 
@@ -67,10 +63,8 @@ int main(int argc, char* argv[])  {
 	//AR INIT
 
 	//preload plugins
-	//video plugin
+	//video + tracker plugin
 	osgART::PluginManager::instance()->load("osgart_artoolkit");
-	//tracker plugin
-
 
 	// Load a video plugin.
 	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
@@ -99,10 +93,6 @@ int main(int argc, char* argv[])  {
 		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
 		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
 	}
-
-	//you can also configure the plugin using fields
-	//before/after open/start in function of the specific field variable/function
-	//video->getField < osgART::TypedField<bool>* >("flip_vertical")->set(true);	
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
@@ -153,25 +143,44 @@ int main(int argc, char* argv[])  {
 	tracker->setImage(video->getStream());
 
 	tracker->init();
+
+
 	//AR SCENEGRAPH INIT
-	
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
 	//add video update callback (update video + video stream)
 	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
+	//add tracker update callback (update tracker from video stream)
+	osgART::TrackerUpdateCallback::addOrSet(root.get(),tracker.get());
+
 	//add a video background
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream(),false);
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	root->addChild(videoBackground.get());
 
-	//APPLICATION INIT
+	//add a virtual camera
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);
+	root->addChild(cam.get());
+
+	//add a target transform callback (update transform from target information)
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
+
+	osgART::attachDefaultTargetCallbacks(arTransform.get(), target.get());
+
+	cam->addChild(arTransform.get());
+
+	//add a cube to the transform node
+	arTransform->addChild(osgART::createTopCube(80));
 
 	//for this example we activate notification level to debug
 	//to see log of video call
-	//osg::setNotifyLevel(osg::DEBUG_INFO);
+	osg::setNotifyLevel(osg::DEBUG_INFO);
+	
+	//APPLICATION INIT
 
 	//BOOTSTRAP INIT
 	viewer.setSceneData(root.get());
@@ -181,17 +190,25 @@ int main(int argc, char* argv[])  {
 	//video start
 	video->start();
 
+	//tracker start
+	tracker->start();
+
 
 	//MAIN LOOP
 	while (!viewer.done()) {
 		viewer.frame();
 	}
 
-
 	//EXIT CLEANUP
+
+	//tracker stop
+	tracker->stop();
 
 	//video stop
 	video->stop();
+
+	//tracker open
+	tracker->close();
 
 	//video open
 	video->close();

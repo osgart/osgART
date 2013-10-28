@@ -85,7 +85,7 @@ osgartpluginvdummyrgbdvideotest
 echo "run plugin - dummy tracker.."
 osgartplugintdummytrackertest          
 echo "run plugin - dummy slam tracker.."
-osgartplugintdummytslamtrackertest   
+osgartplugintdummyslamtrackertest   
 echo "run plugin - dummy gps inertial tracker.."
 REM osgartplugintdummyttrackergpsinertialtest
 

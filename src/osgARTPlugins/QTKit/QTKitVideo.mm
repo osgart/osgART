@@ -455,16 +455,11 @@ public:
 	*/
 	void releaseImage();
 
-	virtual osgART::VideoConfiguration* getVideoConfiguration();
-
-
 private:
 
-	int m_camIndex;
+	int _camIndex;
 
 	VideoQTKit* capture;
-
-	osgART::VideoConfiguration m_config;
 
 	GLint _internalformat_GL;
 	GLenum _format_GL;
@@ -498,12 +493,19 @@ bool
 QTKitVideo::init()
 {
 	int xsize=0, ysize=0;
-	m_camIndex=0;
+	_camIndex=0;
 
-	//if (m_video.open(m_camIndex))
+	if (_videoConfiguration)
 	{
-		osg::notify() << std::dec<< "QTKitVideo::open() succesful.."<<std::endl;
+		if (_videoConfiguration->deviceid!=-1)
+			_camIndex=_videoConfiguration->deviceid;
+		else
+			_camIndex=0;
 	}
+	//if (m_video.open(m_camIndex))
+	//{
+	//	osg::notify() << std::dec<< "QTKitVideo::open() succesful.."<<std::endl;
+	//}
 
 /*
 	if (m_config.deviceconfig != "") {
@@ -560,17 +562,27 @@ QTKitVideo::init()
 	//m_config.selectedHeight = ysize;
 	//m_config.selectedFrameRate = 30;
 
-	if (m_config.width==-1)
+	if (_videoConfiguration)
 	{
-		m_config.width=1280;
-		m_config.height=720;
+		if (_videoConfiguration->width==-1)
+		{
+			xsize=1280;
+			ysize=720;
+		}
+		else
+		{
+			xsize=_videoConfiguration->width;
+			ysize=_videoConfiguration->height;
+		}
 	}
 	
+	_videoConfiguration->selectedWidth=xsize;
+	_videoConfiguration->selectedHeight=ysize;
 	
 	//we need to create one video stream
 	_videoStreamList.push_back(new osgART::VideoStream());
 
-	_videoStreamList[0]->allocateImage(m_config.width, m_config.height, 1, GL_RGB, GL_UNSIGNED_BYTE, 1);
+	_videoStreamList[0]->allocateImage(xsize,ysize, 1, GL_RGB, GL_UNSIGNED_BYTE, 1);
 
 	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
 
@@ -589,9 +601,9 @@ QTKitVideo::close(bool waitForThread)
 bool
 QTKitVideo::start()
 {
-	//	VideoQTKit* video new VideoQTKit;
 	capture = [[VideoQTKit alloc] init];
-	[capture setSize:m_config.height width:m_config.width];
+	
+	[capture setSize:_videoConfiguration->selectedHeight width:_videoConfiguration->selectedWidth];
 
 	[capture initVideo];
 
@@ -672,13 +684,6 @@ QTKitVideo::update(osg::NodeVisitor* nv)
 	}
 	return true;
 }
-
-osgART::VideoConfiguration*
-QTKitVideo::getVideoConfiguration()
-{
-	return &m_config;
-}
-
 
 void QTKitVideo::releaseImage()
 {
