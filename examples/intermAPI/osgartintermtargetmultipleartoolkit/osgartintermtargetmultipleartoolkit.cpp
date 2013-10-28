@@ -195,7 +195,7 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransformA.get());
 
 	//add a cube to the targetA transform
-	arTransformA->addChild(osgART::createCube(80));
+	arTransformA->addChild(osgART::createTopCube(80));
 
 	osg::ref_ptr<osg::MatrixTransform> arTransformB = new osg::MatrixTransform();
 
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransformB.get());
 
 	//add a cube to the targetB transform
-	arTransformB->addChild(osgART::createCube(80));
+	arTransformB->addChild(osgART::createTopCube(80));
 
 	//APPLICATION INIT
 

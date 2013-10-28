@@ -296,7 +296,7 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new MousePickingEventHandler());
 
 	//create cube
-	osg::Geode* cube = osgART::createCube(20);
+	osg::Geode* cube = osgART::createTopCube(20);
 
 	//name the cube
 	cube->setName("target");

@@ -122,7 +122,7 @@ int main(int argc, char* argv[])  {
 	root->addChild(videoFBackground.get());
 
 	//add a test cube to show the effect of layers
-	osg::ref_ptr<osg::Geode> cubeTest=osgART::createCube(1.5,osg::Vec4f(1.,0.,0.,1.));
+	osg::ref_ptr<osg::Geode> cubeTest=osgART::createTopCube(1.5,osg::Vec4f(1.,0.,0.,1.));
 	cubeTest->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
 	root->addChild(osgART::translateModel(cubeTest.get(),osg::Vec3f(0.,1.,-30.)));

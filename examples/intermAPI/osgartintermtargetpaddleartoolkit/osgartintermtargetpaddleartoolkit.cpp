@@ -330,7 +330,7 @@ int main(int argc, char* argv[])  {
 	arTransformA->addChild(arTransformB.get());
 
 	//add a cube to the targetB transform
-	arTransformB->addChild(osgART::createCube(40.0f));
+	arTransformB->addChild(osgART::createTopCube(40.0f));
 	arTransformB->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE));
 	arTransformB->getOrCreateStateSet()->setAttributeAndModes(new osg::LineWidth(2));
 	arTransformB->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);

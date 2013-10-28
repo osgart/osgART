@@ -176,7 +176,7 @@ int main(int argc, char* argv[])  {
 	cam->addChild(arTransform.get());
 
 	//add a cube to the transform node
-	arTransform->addChild(osgART::createCube(80));
+	arTransform->addChild(osgART::createTopCube(80));
 
 	//APPLICATION INIT
 

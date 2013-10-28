@@ -224,9 +224,9 @@ int main(int argc, char* argv[])  {
 	osgART::Scene* scene = new osgART::Scene();
 
 	//add a video background (video plugin name, video configuration)
-	scene->addVideoBackground("osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
+	scene->addVideoBackground("osgart_video_dummyvideo","osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
 	//add a tracker (tracker plugin name,calibration configuration, tracker configuration)
-	scene->addVisualTracker("osgart_tracker_dummytracker","","mode=0;");
+	scene->addVisualTracker("osgart_tracker_dummytracker","osgart_tracker_dummytracker","","mode=0;");
 
 	osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
 

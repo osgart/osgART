@@ -53,16 +53,16 @@ int main(int argc, char* argv[])  {
 	osgART::Scene* scene = new osgART::Scene();
 
 	//add a video background (video plugin name, video configuration)
-	scene->addVideoBackground("osgart_video_dummyvideo","data/dummyvideo/dummyvideo.png");
+	scene->addVideoBackground("osgart_video_dummyvideo","osgart_video_dummyvideo","data/dummyvideo/dummyvideo.png");
 	//add a tracker (tracker plugin name,camera configuration, tracker configuration)
-	scene->addVisualTracker("osgart_tracker_dummytracker","","mode=0;");
+	scene->addVisualTracker("osgart_tracker_dummytracker","osgart_tracker_dummytracker","","mode=0;");
 
 	//add a target (target configuration) and a model
-	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::createCube(20));
+	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::createTopCube(20));
 	//Alternative method:
 	//for being able to further add/modify the target transformation:
 	//osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
-	//mt->addChild(osgART::createCube(20));
+	//mt->addChild(osgART::createTopCube(20));
 
 	//APPLICATION INIT
 

@@ -2,8 +2,13 @@ echo "run osgart examples.."
 
 export OSG_NOTIFY_LEVEL=WARN
 
+echo "-- BASIC TEST--"
 echo "run osgartblank.."
-osgartblank      
+osgartblank 
+
+echo "-- VIDEO TEST--"
+echo "run osgartvideolayer.."
+osgartvideolayer
                       
 echo "-- SIMPLE API--"
 echo "run simple - simple.."
@@ -68,8 +73,12 @@ echo "-- ADVANCED API--"
 echo "-- PLUGINS TESTS--"
 echo "run plugin - dummy video.."
 osgartpluginvdummyvideotest 
+echo "run plugin - dummy rgbdvideo.."
+osgartpluginvdummyrgbdvideotest 
 echo "run plugin - dummy tracker.."
 osgartplugintdummytrackertest          
+echo "run plugin - dummy slam tracker.."
+osgartplugintdummyslamtrackertest   
 
 echo "run plugin - opencv video.."
 osgartpluginvopencvtest

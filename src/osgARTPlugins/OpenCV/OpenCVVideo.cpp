@@ -187,13 +187,16 @@ OpenCVVideo::init()
 	// in OpenCV version 2.4.6, The QTKit or AVFoundation interface 
 	// only uses BGRA format, only allow you to specify (or query) width, height format
 	// with AVFoundation, default resolution is 480x360 and min frame duration 1/30
-	//_format_GL=GL_BGRA;
-	//TODO add a warning here about format
+	// by default we convert BGRA to RGB in the update call
+	_format_GL=GL_BGRA;
+	_format_GL=GL_RGB;
+	_datatype_GL=GL_UNSIGNED_BYTE;
 #else
 	_format_GL=GL_BGR;
+	_datatype_GL=GL_UNSIGNED_BYTE;
 #endif
 
-	_format_GL=GL_RGB;
+
 
 //m_video.set(CV_CAP_PROP_FRAME_WIDTH,800);
 //	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,600);
@@ -226,8 +229,6 @@ OpenCVVideo::init()
 		std::cout << "OpenCVVideo::open() use default framerate " <<30<<std::endl;
 	}
 		
-	_datatype_GL=GL_UNSIGNED_BYTE;
-
 	m_config.selectedWidth = m_video.get(CV_CAP_PROP_FRAME_WIDTH);
 	m_config.selectedHeight = m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
 	m_config.selectedFrameRate =  m_video.get(CV_CAP_PROP_FPS);
@@ -279,7 +280,7 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 		{
 			OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 
-			 cv::Mat frame;
+			cv::Mat frame;
 		
 			m_video.retrieve(frame);
 
@@ -299,10 +300,16 @@ OpenCVVideo::update(osg::NodeVisitor* nv)
 					// the backend buffer object
 
 			Mat bgra_to_rgb;
-			
-			cvtColor(frame, bgra_to_rgb, CV_BGRA2RGB);
 
+#ifdef __APPLE__
+			//on mac os, video capture (QTKit/AVFoundation backend) always return bgra
+			cvtColor(frame, bgra_to_rgb, CV_BGRA2RGB);
 			memcpy(_videoStreamList[0]->data(),(unsigned char*)bgra_to_rgb.data,_videoStreamList[0]->getImageSizeInBytes());
+#else	
+			//on windows, video capture (videoInput backend) return rgb
+			memcpy(_videoStreamList[0]->data(),(unsigned char*)frame.data,_videoStreamList[0]->getImageSizeInBytes());
+#endif
+
 				
 			/*
 			m_video>>m_OCVImage;

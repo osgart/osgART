@@ -82,10 +82,10 @@ namespace osgART {
 
 
 	//"osgart_artoolkit"
-	osgART::Video* Scene::addVideoBackground(  const std::string& v, std::string videoconf)
+	osgART::Video* Scene::addVideoBackground(const std::string& vplugin, const std::string& v, std::string videoconf)
 	{
 
-		osgART::PluginManager::instance()->load(v);
+		osgART::PluginManager::instance()->load(vplugin);
 
 		_video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(v));
 
@@ -133,9 +133,11 @@ namespace osgART {
 
 	//"osgart_tracker_artoolkit"
 
-	osgART::Tracker* Scene::addVisualTracker( const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
+	osgART::Tracker* Scene::addVisualTracker(const std::string& tplugin, const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
 	{
-		osgART::PluginManager::instance()->load(t);
+		if (!(osgART::PluginManager::instance()->get(tplugin)))
+			osgART::PluginManager::instance()->load(tplugin);
+
 		_tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(t));
 
 		if (!_tracker.valid())

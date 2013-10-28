@@ -75,9 +75,9 @@ namespace osgART {
 		 *
 		 * \code
 		 * osgART::Scene* scene = new osgART::Scene();
-		 * scene->addVideoBackground("osgart_video_artoolkit");
-		 * scene->addVisualTracker("osgart_tracker_artoolkit");
-		 * scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::createCube(80));
+		 * scene->addVideoBackground("osgart_artoolkit","osgart_video_artoolkit");
+		 * scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit");
+		 * scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::createTopCube(80));
 		 *
 		 */
 		Scene();
@@ -93,8 +93,8 @@ namespace osgART {
 
 
 
-		Video* addVideoBackground(const std::string& v, std::string videoconfigfile="");
-		Tracker* addVisualTracker(const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
+		Video* addVideoBackground(const std::string& vplugin, const std::string& v, std::string videoconfigfile="");
+		Tracker* addVisualTracker(const std::string& tplugin, const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
 		//Tracker* addVisualTracker(const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
 
 		Target* addTarget(const std::string& cfg);

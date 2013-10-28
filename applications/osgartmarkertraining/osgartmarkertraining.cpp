@@ -234,13 +234,13 @@ int main(int argc, char* argv[])  {
 
 	osgART::Scene* scene = new osgART::Scene();
 
-	osg::ref_ptr<osgART::Video> video = scene->addVideoBackground("osgart_video_artoolkit");
+	osg::ref_ptr<osgART::Video> video = scene->addVideoBackground("osgart_artoolkit","osgart_video_artoolkit");
 	if (!video.valid()) {
 		std::cout << "No video" << std::endl;
 		return -1;
 	}
 
-	osg::ref_ptr<osgART::Tracker> tracker = scene->addVisualTracker("osgart_tracker_artoolkit");
+	osg::ref_ptr<osgART::Tracker> tracker = scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit");
 	if (!tracker.valid()) {
 		std::cout << "No tracker" << std::endl;
 		return -1;
