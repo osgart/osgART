@@ -11,6 +11,7 @@ add_subdirectory(osgartpluginvdummyrgbdvideotest)
 
 add_subdirectory(osgartpluginvopencvtest)
 add_subdirectory(osgartpluginvopennitest)
+add_subdirectory(osgartpluginvpcltest)
 add_subdirectory(osgartpluginvartoolkittest)
 
 IF(APPLE)

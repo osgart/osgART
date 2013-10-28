@@ -9,18 +9,30 @@
 # PCL_INCLUDE_DIR, where to find the headers
 
 
-find_path(PCL_INCLUDE_DIR .h
+find_path(PCL_INCLUDE_DIR pcl_base.h
+    PATHS
+    /usr/local/include/pcl-1.7/pcl
+    NO_DEFAULT_PATH
+)
+
+find_library(PCL_COMMON_LIBRARY pcl_common
+    NAMES pcl_common libpcl_common
     PATHS
     NO_DEFAULT_PATH
 )
 
-find_library(OPENNI_LIBRARY OpenNI
-    NAMES OpenNI
+find_library(PCL_IO_LIBRARY pcl_io
+    NAMES pcl_io libpcl_io
+    /usr/local/lib
     PATHS
     NO_DEFAULT_PATH
 )
 
-set(OPENNI_FOUND "NO")
-if(OPENNI_INCLUDE_DIR AND OPENNI_LIBRARY)
+set(PCL_FOUND "NO")
+if(PCL_INCLUDE_DIR AND PCL_COMMON_LIBRARY AND PCL_IO_LIBRARY)
 	set(OPENNI_FOUND "YES")
-endif(OPENNI_INCLUDE_DIR AND OPENNI_LIBRARY)
+	set(PCL_LIBRARIES 
+		${PCL_COMMON_LIBRARY}
+		${PCL_IO_LIBRARY}		
+	)
+endif(PCL_INCLUDE_DIR AND PCL_COMMON_LIBRARY AND PCL_IO_LIBRARY)

@@ -14,6 +14,7 @@ add_subdirectory(DummyTracker)
 #multiplatforms video plugins
 add_subdirectory(OpenCV)
 add_subdirectory(OpenNI)
+add_subdirectory(PCL)
 
 #multiplatforms tracker plugins
 
