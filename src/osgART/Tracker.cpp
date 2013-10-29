@@ -129,8 +129,8 @@ namespace osgART {
 		//
 		// Explicitly delete/unref all targets
 		//
-        for( TargetListType::iterator mi = _targetlist.begin();
-			mi != _targetlist.end();
+        for( TargetListType::iterator mi = _targetList.begin();
+			mi != _targetList.end();
 			mi++)
 		{
 			(*mi) = 0L;
@@ -138,7 +138,7 @@ namespace osgART {
 		
 		// Targets are associated with a specific tracker instance,
 		// so will be deleted when the tracker is deleted.
-		_targetlist.clear();
+		_targetList.clear();
 
 	}
 
@@ -161,23 +161,23 @@ namespace osgART {
 	void
     Tracker::removeTarget(Target *target)
 	{
-		TargetListType pruned; pruned.reserve(_targetlist.size());
+		TargetListType pruned; pruned.reserve(_targetList.size());
 
-		for (TargetListType::iterator it = _targetlist.begin();
-			it != _targetlist.end();
+		for (TargetListType::iterator it = _targetList.begin();
+			it != _targetList.end();
 			++it)
 		{
 			if ((*it) != target) pruned.push_back(*it);
 		}
 
-		std::swap(_targetlist,pruned);
+		std::swap(_targetList,pruned);
 	}
 
 
 
 	Target* Tracker::getTarget( size_t idx )
 	{
-		return _targetlist.at(idx);
+		return _targetList.at(idx);
 	}
 
 };

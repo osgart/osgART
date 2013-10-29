@@ -348,10 +348,10 @@ namespace osgART {
 			return -1;
 		}
 
-		_targetlist.push_back(singleTarget);
+		_targetList.push_back(singleTarget);
 
 		// Return the index of the target just added
-		return _targetlist.size() - 1;
+		return _targetList.size() - 1;
 	}
 
 	int 
@@ -365,10 +365,10 @@ namespace osgART {
 			return -1;
 		}
 
-		_targetlist.push_back(multiTarget);
+		_targetList.push_back(multiTarget);
 
 		// Return the index of the target just added
-		return _targetlist.size() - 1;
+		return _targetList.size() - 1;
 
 	}
 
@@ -415,7 +415,7 @@ namespace osgART {
 
 			osg::notify(osg::INFO) << "Added Target: '" << _tokens[1] << "'" << std::endl;
 
-			_targetlist.push_back(singleTarget);
+			_targetList.push_back(singleTarget);
 
 			return singleTarget;
 
@@ -431,7 +431,7 @@ namespace osgART {
 				return 0L;
 			}
 
-			_targetlist.push_back(multiTarget);
+			_targetList.push_back(multiTarget);
 
 			return multiTarget;
 		}
@@ -445,12 +445,12 @@ namespace osgART {
 	{
 		if (!target) return;
 
-		std::vector< osg::ref_ptr<osgART::Target> >::iterator i = std::find(_targetlist.begin(), _targetlist.end(), target);
+		std::vector< osg::ref_ptr<osgART::Target> >::iterator i = std::find(_targetList.begin(), _targetList.end(), target);
 
-		if (i != _targetlist.end()){
+		if (i != _targetList.end()){
 			std::string n = target->getName();
 			*i = 0L;
-			_targetlist.erase(i);
+			_targetList.erase(i);
 			osg::notify(osg::INFO) << "Removed target: " << n << std::endl;
 		}
 	}
@@ -578,12 +578,12 @@ namespace osgART {
 
 		}
 
-		TargetListType::iterator _end = _targetlist.end();
+		TargetListType::iterator _end = _targetList.end();
 	
 
 		// Check through the target_info array for highest confidence
 		// visible target matching our preferred pattern.
-		for (TargetListType::iterator iter = _targetlist.begin(); iter != _end; iter++)		
+		for (TargetListType::iterator iter = _targetList.begin(); iter != _end; iter++)		
 		{
 
 			std::string tag = std::string("Target update ");

@@ -99,16 +99,17 @@ ARToolKitVideo::init()
 
 	if (_videoConfiguration)
 	{
-		std::cout<<"we got a video config"<<std::endl;
 		if (_videoConfiguration->config != "") {
-			config = (char*)&_videoConfiguration->config.c_str()[0];
+			config = (char*)&(_videoConfiguration->config).c_str()[0];
+		}
+		else
+		{
+			config="";
 		}
 	}
 	else
 		config="";
 	
-	std::cout<<"config="<<config<<std::endl;
-
 	// open the video capture device
 	video = ar2VideoOpen(config);
 

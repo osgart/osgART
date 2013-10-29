@@ -1,22 +1,26 @@
 
 #dummy plugins
+add_subdirectory(DummySensor)
+add_subdirectory(DummyGPSSensor)
+add_subdirectory(DummyInertialSensor)
+
 add_subdirectory(DummyVideo)
-#add_subdirectory(DummyVideoMulti)
 add_subdirectory(DummyRGBDVideo)
 
-#add_subdirectory(DummyGPSSensor)
-#add_subdirectory(DummyInertialSensor)
-
-#add_subdirectory(DummyGPSInertialTracker)
 add_subdirectory(DummyTracker)
+add_subdirectory(DummyGPSInertialTracker)
 add_subdirectory(DummySLAMTracker)
 
 #multiplatforms video plugins
+add_subdirectory(OSGVideo)
 add_subdirectory(OpenCV)
 add_subdirectory(OpenNI)
 add_subdirectory(PCL)
 
 #multiplatforms tracker plugins
+add_subdirectory(ARToolKitPlus)
+#add_subdirectory(ARma)
+#add_subdirectory(aruco)
 
 #multiplatforms sensor plugins
 
@@ -33,15 +37,15 @@ IF(APPLE)
 ENDIF()
 
 IF(WIN32)
-#	add_subdirectory(DSVL)
-#	add_subdirectory(videoInput)
+	add_subdirectory(DSVideoLib)
+	add_subdirectory(videoInput)
 ENDIF()
 
 IF(ANDROID)
 
 ENDIF()
 
-IF(ANDROID)
+IF(IOS)
 
 ENDIF()
 

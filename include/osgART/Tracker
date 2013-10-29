@@ -153,7 +153,7 @@ namespace osgART {
 		virtual Target* getTarget(size_t idx=0);
 
 		inline size_t
-		getTargetNum() const { return _targetlist.size(); }
+		getTargetNum() const { return _targetList.size(); }
 
 		/**
 		 * Add a target to the tracker.
@@ -195,7 +195,7 @@ namespace osgART {
 		/**
 		 * A list of targets associated with this tracker.
 		 */
-        TargetListType _targetlist;
+        TargetListType _targetList;
 
 		/**
 		 * Camera Configuration object that encapsulates the intrinsic camera parameters and distortion parameters.

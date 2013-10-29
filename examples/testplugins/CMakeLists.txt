@@ -4,8 +4,12 @@ include_directories(${OSG_INCLUDE_DIR} ${OPENTHREADS_INCLUDE_DIR} ${CMAKE_SOURCE
 # -- PLUGINS -- 
 
 ## -- SENSOR PLUGINS -- 
+add_subdirectory(osgartpluginsdummysensortest)
+add_subdirectory(osgartpluginsdummygpssensortest)
+add_subdirectory(osgartpluginsdummyinertialsensortest)
 
 ## -- VIDEO PLUGINS -- 
+add_subdirectory(osgartpluginvosgvideotest)
 add_subdirectory(osgartpluginvdummyvideotest)
 add_subdirectory(osgartpluginvdummyrgbdvideotest)
 
@@ -20,17 +24,17 @@ add_subdirectory(osgartpluginvavfoundationtest)
 ENDIF()
 
 IF(WIN32)
-#add_subdirectory(osgartpluginvdsvidelibtest)
-#add_subdirectory(osgartpluginvvideoinputtest)
+add_subdirectory(osgartpluginvdsvideolibtest)
+add_subdirectory(osgartpluginvvideoinputtest)
 ENDIF()
 
 ## -- TRACKER PLUGINS -- 
 add_subdirectory(osgartplugintdummytrackertest)
 add_subdirectory(osgartplugintdummyslamtrackertest)
-#add_subdirectory(osgartplugintdummytrackergpsinertialtest)
+add_subdirectory(osgartplugintdummygpsinertialtrackertest)
 
 add_subdirectory(osgartplugintartoolkittest)
-#add_subdirectory(osgartplugintartoolkitplustest)
+add_subdirectory(osgartplugintartoolkitplustest)
 
 #add_subdirectory(osgartplugintopiratest)
 #add_subdirectory(osgartpluginvtsstttest)

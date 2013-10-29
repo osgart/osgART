@@ -101,6 +101,9 @@ namespace osgART {
 		 */
         virtual void update(Sensor& sensor) {}
 
+		//osg::Vec3f getPos() {return 0L};
+		//osg::Vec3f getEulerRot() {return 0L};
+
 	protected:
 
 		/**

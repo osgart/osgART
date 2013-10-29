@@ -368,7 +368,7 @@ DummySLAMTracker::addTarget(const std::string& config)
 	//and use contentof the config string to define them
 
 	//add it to the list
-	_targetlist.push_back(target);
+	_targetList.push_back(target);
 
 	return target;
 }
@@ -418,8 +418,8 @@ DummySLAMTracker::update(osg::NodeVisitor* nv)
 
 		//once it's done, you can update your specific targets with processed information
 
-        for (osgART::Tracker::TargetListType::iterator iter = _targetlist.begin();
-            iter != _targetlist.end();
+        for (osgART::Tracker::TargetListType::iterator iter = _targetList.begin();
+            iter != _targetList.end();
             iter++)
         {
 

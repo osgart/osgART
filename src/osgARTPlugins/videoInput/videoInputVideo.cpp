@@ -1,348 +1,369 @@
-/* -*-c++-*- 
- * 
- * osgART - Augmented Reality ToolKit for OpenSceneGraph
- * 
+/* -*-c++-*-
+ *
+ * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ * Copyright (C) 2009-2013 osgART Development Team
  *
- * This library is open source and may be redistributed and/or modified under
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
- * (at your option) any later version.  The full license is in LICENSE file
- * included with this distribution, and on the osgart.org website.
+ * This file is part of osgART
  *
- * This library is distributed in the hope that it will be useful,
+ * osgART 2.0 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * osgART 2.0 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * OpenSceneGraph Public License for more details.
-*/
-
-
-//OpenCV header include
-#include "opencv/cv.h"
-#include "opencv/highgui.h"
-
-#include <osg/Object>
-#include <osg/Notify>
-#include <osg/Timer>
-
-#include <osgDB/FileUtils>
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+ 
+/**
+*  \file  videoInput
+*  \brief A Video class for image input
+*
+* 
+* A video class that just displaying always the same image, ideal for
+* debugging or taking snapshot. The image format is mainly the one
+* implicitly supported in OpenSceneGraph.
+*	
+*   \remark 
+*
+*   History :
+*
+*  \author Raphael Grasset Raphael.Grasset@hitlabnz.org
+*  \version 3.1
+*  \date 07/05/31
+**/
 
 #include <iostream>
-#include <iomanip>
-#include <cstring>
+#include <string>
 
+#include <OpenThreads/Thread>
+#include <OpenThreads/Mutex>
 
+#include <osgDB/Registry>
+#include <osgDB/ReadFile>
+#include <osgDB/WriteFile>
+#include <osg/Notify>
+#include <osg/Image>
+#include <osg/Timer>
+
+// graphics include
+#include <osgART/Export>
+
+// local include
 #include "osgART/PluginManager"
 #include "osgART/Video"
 #include "osgART/VideoConfiguration"
+#include "osgART/Utils"
 
-using namespace cv;
+#include "videoInput.h"
 
-class OpenCVVideo : public osgART::Video
+/**
+ * class videoInput.
+ *
+ */
+class VideoInputVideo : public osgART::Video
 {
-public:
-
-
+public:        
 // Standard Services
-
-	/**
-		* Default constructor. It creates a video source from a configuration string
-		* as it is been used in the original AR Toolkit 2.71
-		* \param videoName a string definition of the video background. See documentation
-		* of OpenCV for further details.
-		*/
-	OpenCVVideo();
-
-	/**
-		* Copy constructor.
-		*
-		*/
-	OpenCVVideo(const OpenCVVideo &,
-		const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
-
-	/**
-		* Destructor.
-		*
-		*/
-	virtual ~OpenCVVideo();
+    
+    /** 
+    * \brief default constructor.
+    * The default constructor.
+    * @param config a string definition of the Video. See documentation
+    * of DummyImage for further details.
+    */
+    VideoInputVideo();
+    
+    /** 
+    * \brief copy constructor.
+    */
+     VideoInputVideo(const VideoInputVideo &, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 
-	META_Object(osgART,OpenCVVideo)
 
-	/**
-	* Affectation operator.
-	*
-	*/
-	OpenCVVideo& operator = (const OpenCVVideo &);
+	META_Object(osgART,VideoInputVideo);
 
-	/**
-		* Open the video stream. Access the video stream (hardware or file) and get an handle on it.
-		*/
+    
+    /** 
+    * \brief affectation operator.
+    *
+    */
+    VideoInputVideo& operator=(const VideoInputVideo &);
+    	
+ //==================
+	    /**
+    * \brief init the Video stream.
+    * Access the Video stream (hardware or file) and get an handle on it.
+    */
 	bool init();
-
+	
 	/**
-		* Close the video stream. Terminates the connection with the video stream and clean handle.
-		*/
-	bool close(bool = true);
-
+    * \brief close the Video stream.
+    * Terminate the connection with the Video stream and clean handle.
+    */
+	bool close(bool waitForThread=true);
+	
 	/**
-		* Start the video stream grabbing. Start to get image from the video stream. In function of the
-		* implementation on different platform, this function can run a thread, signal or
-		* real-time function.
-		*/
+    * \brief start the Video stream grabbing.
+    * Start to get image from the Video stream. In function of the implementation on different
+    * platform, this function can run a thread, signal or real-time function. 
+    */
 	bool start();
-
+	
 	/**
-		* Stop the video stream grabbing. Stop to get image from the video stream. In function
-		* of the implementation on different platform, this function can stop a thread, signal or
-		* real-time function.
-		*/
+    * \brief stop the Video stream grabbing.
+    * Stop to get image from the Video stream. In function of the implementation on different
+    * platform, this function can stop a thread, signal or real-time function. 
+    */
 	bool stop();
-
+	
 	/**
-		* Update the video stream grabbing. Try to get an image of the video instance, usable
-		* by your application.
-		*/
+    * \brief update the Video stream grabbing.
+    * Try to get an image of the Video instance, usable by your application.
+    */
 	bool update(osg::NodeVisitor* nv = 0L);
+	
+    
+    inline virtual void releaseImage() {};
+protected:
 
-	/**
-	* Deallocate image memory. Deallocates any internal memory allocated by the instance of this
-	* class.
-	*/
-	void releaseImage();
-
-	virtual osgART::VideoConfiguration* getVideoConfiguration();
-
+	/** 
+    * \brief destructor.
+    *
+    */
+    virtual ~VideoInputVideo();       
+    
 
 private:
 
-	VideoCapture m_video;
-	int m_camIndex;
+	//set/get variables
 
-	Mat m_OCVImage;
+	videoInput _videoInput;
 
-
-	osgART::VideoConfiguration m_config;
-
-	GLint _internalformat_GL;
-	GLenum _format_GL;
-	GLenum _datatype_GL;
+	float _frameFps;
+	int _frameWidth;
+	int _frameHeight;
+	unsigned char* _frameData;
+	int _deviceId;
+	std::string _deviceName;
 
 };
 
-
-OpenCVVideo::OpenCVVideo() : osgART::Video()
-{
+VideoInputVideo::VideoInputVideo():
+	osgART::Video()
+{	
+	//initialize here any specific variables
 
 }
 
-OpenCVVideo::OpenCVVideo(const OpenCVVideo &,
-		const osg::CopyOp& copyop/* = osg::CopyOp::SHALLOW_COPY*/)
+VideoInputVideo::VideoInputVideo(const VideoInputVideo &, const osg::CopyOp& copyop):	osgART::Video()
 {
+    
 }
 
-OpenCVVideo::~OpenCVVideo()
-{
-	//this->close(false);
+VideoInputVideo::~VideoInputVideo(void) {
+    
 }
 
-OpenCVVideo&
-OpenCVVideo::operator=(const OpenCVVideo &)
-{
-	return *this;
+VideoInputVideo&  VideoInputVideo::operator=(const VideoInputVideo &) {
+    return *this;
 }
 
-bool
-OpenCVVideo::init()
-{
-	//check first device name, after device id
-	//if (m_config.devicename!="")
-	//{
-	//
-	//}
-	
-	if (m_config.deviceid!=-1)
+
+bool VideoInputVideo::init() {
+
+	// Get list of devices (for internal use, don't print out)
+	videoInput::listDevices(true);
+
+
+	//open the video 
+	//if you are using a device, you can open the device
+	//if you are using video streaming, you can initialize the connection
+	//if you are using video files, you can read the configuration, cache the data, etc.
+
+	//first, you can check if there is a video configuration defined
+	if (_videoConfiguration)
 	{
-		if (m_video.open(m_config.deviceid))
+		if (!_videoConfiguration->config.empty())
 		{
-			osg::notify() << std::dec<< "OpenCVVideo::open() succesful.."<<std::endl;
+			std::vector<std::string> tokens = osgART::tokenize(_videoConfiguration->config, ";");
+			if (tokens.size() > 0) _deviceId = atoi(tokens[0].c_str());
+			if (tokens.size() > 1) _frameWidth = atoi(tokens[1].c_str());
+			if (tokens.size() > 2) _frameHeight = atoi(tokens[2].c_str());
+			if (tokens.size() > 3) _frameFps = atoi(tokens[3].c_str());		
+		}
+		else
+		{
+			if (_videoConfiguration->deviceid!=-1)
+				_deviceId=_videoConfiguration->deviceid;
+			else
+				_deviceId=0;
+			if (_videoConfiguration->width=-1)
+			{
+				_frameWidth=_videoConfiguration->width;
+				_frameHeight=_videoConfiguration->height;
+			}
+			else
+			{
+				_frameWidth=640;
+				_frameHeight=480;
+			}
+			//fix equal for non integer
+			if (_videoConfiguration->framerate=-1.0)
+			{
+				_frameFps=_videoConfiguration->framerate;
+			}
+			else
+				_frameFps=30;
 		}
 	}
 	else
 	{
-		m_video.open(0);
-		std::cout << "OpenCVVideo::open() use default device " <<0<<std::endl;
+		_deviceId=0;
+		_frameWidth=640;
+		_frameHeight=480;
+		_frameFps=30;
 	}
 	
+	_videoInput.setIdealFramerate(_deviceId, _frameFps);
 
-	//if (m_config.deviceconfig != "") {
-	//	config = (char*)&m_config.deviceconfig.c_str()[0];
-	//}
+	//_VideoInput.setUseCallback(true);
 
-//GL_BGRA, GL_UNSIGNED_BYTE
-	// create an image that same size (packing set to 1)
-
-	
-#ifdef __APPLE__
-	// in OpenCV version 2.4.6, The QTKit or AVFoundation interface 
-	// only uses BGRA format, only allow you to specify (or query) width, height format
-	// with AVFoundation, default resolution is 480x360 and min frame duration 1/30
-	//_format_GL=GL_BGRA;
-	//TODO add a warning here about format
-#else
-	_format_GL=GL_BGR;
-#endif
-
-	_format_GL=GL_RGB;
-
-//m_video.set(CV_CAP_PROP_FRAME_WIDTH,800);
-//	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,600);
-	if ((m_config.width!=-1)&&(m_config.height!=-1))
-	{
-		m_video.set(CV_CAP_PROP_FRAME_WIDTH,m_config.width);
-		m_video.set(CV_CAP_PROP_FRAME_HEIGHT,m_config.height);
+	// Open device
+	if (!_videoInput.setupDevice(_deviceId, _frameWidth, _frameHeight)) {
+		osg::notify(osg::WARN) << "VideoInput: Error setting up device " << _deviceId << " at " << _frameWidth << "x" << _frameHeight << std::endl;
+		return false;
 	}
-	else
-	{
-#ifdef __APPLE__
-	m_video.set(CV_CAP_PROP_FRAME_WIDTH,1280);
-	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,720);
-	std::cout << "OpenCVVideo::open() use default resolution " <<1280<<"x"<<720<<std::endl;
-#else
-	m_video.set(CV_CAP_PROP_FRAME_WIDTH,640);
-	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,480);
-	std::cout << "OpenCVVideo::open() use default resolution " <<640<<"x"<<480<<std::endl;
-#endif	
 
-	}
-	
-	if (m_config.framerate!=-1)
-	{
-		m_video.set(CV_CAP_PROP_FPS,m_config.framerate);	
-	}
-	else
-	{
-		m_video.set(CV_CAP_PROP_FPS,30);		
-		std::cout << "OpenCVVideo::open() use default framerate " <<30<<std::endl;
-	}
-		
-	_datatype_GL=GL_UNSIGNED_BYTE;
+	_deviceName = _videoInput.getDeviceName(_deviceId);
+	_videoConfiguration->selectedWidth = _videoInput.getWidth(_deviceId);
+	_videoConfiguration->selectedHeight = _videoInput.getHeight(_deviceId);
 
-	m_config.selectedWidth = m_video.get(CV_CAP_PROP_FRAME_WIDTH);
-	m_config.selectedHeight = m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
-	m_config.selectedFrameRate =  m_video.get(CV_CAP_PROP_FPS);
+	//frameSize = _videoInput.getSize(_deviceId);
 
-	std::cout << "OpenCVVideo::open() size of video " <<
-			m_config.selectedWidth << " x " << m_config.selectedHeight << "format="<< m_video.get(CV_CAP_PROP_FOURCC)<<std::endl;
+	osg::notify(osg::WARN) << "VideoInput: Opened device " << _deviceId << " (" << _deviceName << ") at " <<
+		_videoConfiguration->selectedWidth << "x" << _videoConfiguration->selectedHeight << std::endl;
 
+	_frameData = new unsigned char[_videoConfiguration->selectedWidth * _videoConfiguration->selectedHeight * 4];
+
+	//we need to create one video stream
 	_videoStreamList.push_back(new osgART::VideoStream());
 
-	_videoStreamList[0]->allocateImage(m_config.selectedWidth, m_config.selectedHeight, 1, _format_GL, _datatype_GL, 1);
-
-	_videoStreamList[0]->setDataVariance(osg::Object::DYNAMIC);
+	_videoStreamList[0]->allocateImage(_videoConfiguration->selectedWidth, _videoConfiguration->selectedHeight, 1, GL_BGRA, GL_UNSIGNED_BYTE);
 
 	return true;
+
 }
 
-bool
-OpenCVVideo::close(bool waitForThread)
-{
-	m_video.release();
-	
-	return true;
-}
 
-bool
-OpenCVVideo::start()
-{
-	_videoStreamList[0]->play();
-	
-	return true;
-}
+bool VideoInputVideo::update(osg::NodeVisitor* nv) {
 
-bool
-OpenCVVideo::stop()
-{
-	_videoStreamList[0]->pause();
-	
-	return true;
-}
+	if (!_videoInput.isDeviceSetup(_deviceId)) return false;
 
-bool
-OpenCVVideo::update(osg::NodeVisitor* nv)
-{
 	osg::Timer t;
 
-	if (m_video.isOpened())
+	if (_videoInput.isFrameNew(_deviceId)) 
 	{
-		if (m_video.grab())
+		//rg: todo use flip option for second and third parameter
+		if (unsigned char* frame = _videoInput.getPixels(_deviceId, false, true)) 
 		{
-			OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 
-			 cv::Mat frame;
-		
-			m_video.retrieve(frame);
+			for (int y = 0; y < _videoConfiguration->selectedHeight; y++) 
+			{
+				for (int x = 0; x < _videoConfiguration->selectedWidth; x++) 
+				{
+					int i = y * _frameWidth + x;
+					_frameData[i * 4 + 0] = frame[i * 3 + 0];
+					_frameData[i * 4 + 1] = frame[i * 3 + 1];
+					_frameData[i * 4 + 2] = frame[i * 3 + 2];		
+					_frameData[i * 4 + 3] = 0;
+				}
+			}
 
-					// only clone if it is not continous (most of the time)
-			  //      _image = (frame.isContinuous()) ? frame : frame.clone();
+			{
+				//1. mutex lock access to the image video stream
+				OpenThreads::ScopedLock<OpenThreads::Mutex> _lock(this->getMutex());
 
-					// check for nv (NodeVisitor) - otherwise being called from a constructor!
-				   // if (nv && _subscriber.valid()) _subscriber->updateWithImage(_image);
-
-					// set format - OpenCV always BGR
-					//setPixelFormat(GL_BGR);
-
-			// copy data
-			//memcpy(data(),frame.data,getImageSizeInBytes());
-
-					// need to use dirty() as setModifiedCount(int) does not update
-					// the backend buffer object
-
-			Mat bgra_to_rgb;
-			
-			cvtColor(frame, bgra_to_rgb, CV_BGRA2RGB);
-
-			memcpy(_videoStreamList[0]->data(),(unsigned char*)bgra_to_rgb.data,_videoStreamList[0]->getImageSizeInBytes());
-				
-			/*
-			m_video>>m_OCVImage;
-
-			Mat bgr_to_rgb;
-
-			cvtColor(m_OCVImage, bgr_to_rgb, CV_BGR2RGB);
-
-			memcpy(this->data(),(unsigned char*)bgr_to_rgb.data,this->getImageSizeInBytes());
-			*/
-			_videoStreamList[0]->dirty();
+				memcpy(_videoStreamList[0]->data(), _frameData, _videoStreamList[0]->getImageSizeInBytes());
+				_videoStreamList[0]->dirty();
+			}
 
 		}
 
-		if (nv)
-		{
-			const osg::FrameStamp *framestamp = nv->getFrameStamp();
+	}
 
-			if (framestamp && _stats.valid())
-			{
-				_stats->setAttribute(framestamp->getFrameNumber(), "Capture time taken", t.time_m());
-			}
+	//4. hopefully report some interesting data
+	if (nv) {
+
+		const osg::FrameStamp *framestamp = nv->getFrameStamp();
+
+		if (framestamp && _stats.valid())
+		{
+			_stats->setAttribute(framestamp->getFrameNumber(),
+				"Capture time taken", t.time_m());
 		}
 	}
+
+
+	// Increase modified count every X ms to ensure tracker updates
+	//if (updateTimer.time_m() > 50) {
+	//	_videoStreamList[0]->dirty();
+	//	updateTimer.setStartTick();
+	//}
+
 	return true;
 }
 
-osgART::VideoConfiguration*
-OpenCVVideo::getVideoConfiguration()
-{
-	return &m_config;
+bool VideoInputVideo::start() 
+{ 
+	//here you can start to stream the images, starting the camera acquisition
+	//or starting to decompress video files
+
+	//if you run a threaded video plugin, you can start the thread here
+
+	//in this example we only start to play the VideoStream 0
+	
+	_videoStreamList[0]->play();	
+
+	return true;
 }
 
+bool VideoInputVideo::stop() 
+{ 
 
-void OpenCVVideo::releaseImage()
-{
+	//here you can stop any streaming, camera acquisition or video file decompression
+
+	//if you run a threaded video plugin, you can stop the thread here
+
+	//in this example we only pause the VideoStream 0
+
+	_videoStreamList[0]->pause();	
+
+	return true;
 }
 
+bool VideoInputVideo::close(bool waitForThread) 
+{ 
+	//here you can close any streaming open, close a camera 
+	//and clean your specific data structure
 
-// initializer for dynamic loading
-osgART::PluginProxy<OpenCVVideo> g_opencvvideo("osgart_video_opencv");
+	//in this example we don't do anything
+	
+	this->stop();
 
+	_videoInput.stopDevice(_deviceId);
 
+	delete[] _frameData;
+
+	return true;
+}
+
+//at the end you register your video plugin, the syntax generally
+//osgART::PluginProxy<PluginClassNameVideo> g_PluginClassNameVideo("osgart_video_pluginclassnamevideo");
+osgART::PluginProxy<VideoInputVideo> g_videoInput("osgart_video_videoinput");

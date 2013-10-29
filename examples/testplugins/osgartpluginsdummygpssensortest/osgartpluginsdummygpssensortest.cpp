@@ -15,7 +15,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
 */
-
+ 
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
@@ -63,11 +63,13 @@ int main(int argc, char* argv[])  {
 	//AR INIT
 
 	//preload plugins
-	//video + tracker plugin
-	osgART::PluginManager::instance()->load("osgart_artoolkit");
+	//video plugin
+	osgART::PluginManager::instance()->load("osgart_video_dummyvideo");
+	//tracker plugin
+	osgART::PluginManager::instance()->load("osgart_tracker_dummytracker");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_dummyvideo"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
@@ -76,23 +78,20 @@ int main(int argc, char* argv[])  {
 		osg::notify(osg::FATAL) << "Could not initialize video plug-in!" << std::endl;
 	}
 
+
 	// found video - configure now
 	osgART::VideoConfiguration* _configvideo = video->getOrCreateConfiguration();
 
 	// if the configuration is existing
 	if (_configvideo)
 	{
-		//artoolkit plugin will generate a default configuration for you
-		//if you omit this line
-		//here we use the default config file in the artoolkit data directory
-#ifdef WIN32
-		_configvideo->config="data/artoolkit/WDM_camera.xml";
-#endif
-		//you can also specify configuration file here:
-		//_configvideo->config = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
-		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
+		// it is possible to configure the plugin before opening it
+		_configvideo->config="Data/dummyvideo/dummyvideo.png";
 	}
+
+	//you can also configure the plugin using fields
+	//before/after open/start in function of the specific field variable/function
+	video->getField < osgART::TypedField<bool>* >("flip_vertical")->set(true);	
 
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
@@ -101,7 +100,10 @@ int main(int argc, char* argv[])  {
 	video->init();
 
 	osg::ref_ptr<osgART::VisualTracker> tracker 
-		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_artoolkit"));
+		= dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
+
+	//osg::ref_ptr<osgART::Tracker> tracker 
+	//	= dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_dummytracker"));
 
 	if (!tracker.valid())
 	{
@@ -119,52 +121,27 @@ int main(int argc, char* argv[])  {
 	if (_configtracker)
 	{
 		// it is possible to configure the plugin before opening it
-		//artoolkit: no configuration
-		_configtracker->config="";
+		_configtracker->config="mode=0;";
 	}
 
 	// get the tracker camera configuration object
 	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
+	cameraconfig->load("");
 
-	// load a camera configuration file
-	if (!cameraconfig->load("data/artoolkit/camera_para.dat")) 
-	{
-
-		// the camera configuration file was non-existing or couldnt be loaded
-		osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
-		exit(-1);
-	}
-
-	// setup two targets
-
-	//first target
-	osg::ref_ptr<osgART::Target> targetA = tracker->addTarget("single;data/artoolkit/patt.hiro;80;0;0");
-	if (!targetA.valid()) 
-	{
-		// Without target an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not add target!" << std::endl;
-		exit(-1);
-	}
-
-	targetA->setActive(true);
-
-	//second target
-	osg::ref_ptr<osgART::Target> targetB = tracker->addTarget("single;data/artoolkit/patt.kanji;80;0;0");
-	if (!targetB.valid()) 
-	{
-		// Without target an AR application can not work. Quit if none found.
-		osg::notify(osg::FATAL) << "Could not add target!" << std::endl;
-		exit(-1);
-	}
-
-	targetB->setActive(true);
-
+	// setup one target
+	osg::ref_ptr<osgART::Target> target = tracker->addTarget("test.pattern;35.2;22.0;0.3");
+	
+	target->setActive(true);
 
 	tracker->setImage(video->getStream());
 
+	//dynamic_cast<osgART::VisualTracker*>(tracker)->setImage(video->getStream());
+
 	tracker->init();
 
+
 	//AR SCENEGRAPH INIT
+	
 	//create root 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
@@ -184,26 +161,17 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);
 	root->addChild(cam.get());
 
-	//add two transforms: one for each target
-	osg::ref_ptr<osg::MatrixTransform> arTransformA = new osg::MatrixTransform();
+	//add a target transform callback (update transform from target information)
+	osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
+	arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 
-	arTransformA->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-	osgART::attachDefaultTargetCallbacks(arTransformA.get(), targetA.get());
+	osgART::attachDefaultTargetCallbacks(arTransform.get(), target.get());
 
-	cam->addChild(arTransformA.get());
+	cam->addChild(arTransform.get());
 
-	//add a cube to the targetA transform
-	arTransformA->addChild(osgART::createTopCube(80));
+	//add a cube to the transform node
+	arTransform->addChild(osgART::createTopCube(8));
 
-	osg::ref_ptr<osg::MatrixTransform> arTransformB = new osg::MatrixTransform();
-
-	arTransformB->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
-	osgART::attachDefaultTargetCallbacks(arTransformB.get(), targetB.get());
-
-	cam->addChild(arTransformB.get());
-
-	//add a cube to the targetB transform
-	arTransformB->addChild(osgART::createTopCube(80));
 
 	//APPLICATION INIT
 
@@ -218,6 +186,7 @@ int main(int argc, char* argv[])  {
 
 	//tracker start
 	tracker->start();
+
 
 	//MAIN LOOP
 	while (!viewer.done()) {

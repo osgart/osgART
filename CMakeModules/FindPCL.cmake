@@ -15,13 +15,13 @@ find_path(PCL_INCLUDE_DIR pcl_base.h
     NO_DEFAULT_PATH
 )
 
-find_library(PCL_COMMON_LIBRARY pcl_common
+find_library(PCL_COMMON_LIBRARY
     NAMES pcl_common libpcl_common
     PATHS
     NO_DEFAULT_PATH
 )
 
-find_library(PCL_IO_LIBRARY pcl_io
+find_library(PCL_IO_LIBRARY
     NAMES pcl_io libpcl_io
     /usr/local/lib
     PATHS

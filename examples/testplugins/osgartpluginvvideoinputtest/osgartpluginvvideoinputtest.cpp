@@ -66,10 +66,10 @@ int main(int argc, char* argv[])  {
 
 	//preload plugins
 	//video plugin
-	osgART::PluginManager::instance()->load("osgart_artoolkit");
+	osgART::PluginManager::instance()->load("osgart_video_videoinput");
 
 	// Load a video plugin.
-	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_artoolkit"));
+	osg::ref_ptr<osgART::Video> video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_videoinput"));
 
 	// check if an instance of the video stream could be started
 	if (!video.valid())
@@ -84,18 +84,10 @@ int main(int argc, char* argv[])  {
 	// if the configuration is existing
 	if (_configvideo)
 	{
-		//artoolkit plugin will generate a default configuration for you
-		//if you omit this line
-		//here we use the default config file in the artoolkit data directory
-#ifdef WIN32
-		_configvideo->config="data/artoolkit/WDM_camera.xml";
-#else
-//		_configvideo->config="";
-#endif
-		//you can also specify configuration file here:
-		//_configvideo->config = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-		//	"<dsvl_input><avi_file use_reference_clock=\"true\" file_name=\"Data\\MyVideo.avi\" loop_avi=\"true\" render_secondary=\"true\">"
-		//	"<pixel_format><RGB32/></pixel_format></avi_file></dsvl_input>";
+
+		//format:deviceid;width;height;fps
+		_configvideo->config="0;640;480;30";
+
 	}
 
 	//you can also configure the plugin using fields
