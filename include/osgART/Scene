@@ -26,18 +26,28 @@
 #ifndef OSGART_SCENE
 #define OSGART_SCENE 1
 
-
-#include "osgART/Export"
-
-#include "osgART/Target"
-#include "osgART/Tracker"
-#include <osgART/VideoConfiguration>
-#include <osgART/CameraConfiguration>
-#include <osgART/TrackerConfiguration>
-
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osg/Camera>
+
+#include "osgART/Export"
+
+#include "osgART/Sensor"
+//#include "osgART/GPSSensor"
+//#include "osgART/InertialSensor"
+#include "osgART/Video"
+#include "osgART/Tracker"
+#include "osgART/VisualTracker"
+#include "osgART/GPSInertialTracker"
+
+#include "osgART/Sensor"
+#include "osgART/VideoStream"
+#include "osgART/Target"
+
+#include "osgART/SensorConfiguration"
+#include "osgART/VideoConfiguration"
+#include "osgART/CameraConfiguration"
+#include "osgART/TrackerConfiguration"
 
 namespace osgART {
 
@@ -75,9 +85,9 @@ namespace osgART {
 		 *
 		 * \code
 		 * osgART::Scene* scene = new osgART::Scene();
-		 * scene->addVideoBackground("osgart_artoolkit","osgart_video_artoolkit");
+         * scene->addVideo("osgart_artoolkit","osgart_video_artoolkit");
 		 * scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit");
-		 * scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::createTopCube(80));
+         * scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::createTopCube(80));
 		 *
 		 */
 		Scene();
@@ -91,30 +101,40 @@ namespace osgART {
 		virtual Scene* asScene() { return this; }
 		virtual const Scene* asScene() const { return this; }
 
-
-
-		Video* addVideoBackground(const std::string& vplugin, const std::string& v, std::string videoconfigfile="");
+        Video* addVideo(const std::string& vplugin, const std::string& v, std::string videoconfigfile="");
 		Tracker* addVisualTracker(const std::string& tplugin, const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
-		//Tracker* addVisualTracker(const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
+        //Tracker* addInertialTracker
+        //Tracker* addGPSInertialTracker
+
+//      Video* addVideoConfig(const std::string& vplugin, const std::string& v,VideoConfiguration& vconfig);
+//		Tracker* addVisualTrackerConfig(const std::string& tplugin, const std::string& t,CameraConfiguration& camconfig, VideoConfiguration& config);
 
 		Target* addTarget(const std::string& cfg);
-		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
+        osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
 
-		osg::MatrixTransform* addTrackedTransform(Target *target);
+        osg::MatrixTransform* addTrackedTransform(Target *target);
 
-		inline osg::Camera* getCamera() const {
-			return _camera.get();
-		}
+        inline const Target* getTarget(size_t id=0) const {
+            return _tracker->getTarget(id);
+        }
 
-		inline SceneSetting& getSetting() { return _settings; }
+        inline const VideoStream* getVideoStream() const {
+            return _video->getStream();
+        }
 
-		inline const osgART::Tracker* getTracker() const {
+        inline osg::Camera* getCamera() const {
+            return _camera.get();
+        }
+
+        inline const Tracker* getTracker() const {
 			return _tracker.get();
 		}
 
-		inline const osgART::Video* getVideo() const {
+        inline const Video* getVideo() const {
 			return _video.get();
 		}
+
+        inline SceneSetting& getSetting() { return _settings; }
 
 	protected:
 

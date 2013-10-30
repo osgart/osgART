@@ -63,7 +63,7 @@ int main(int argc, char* argv[])  {
 	osgART::Scene* scene = new osgART::Scene();
 
 	//add a video background (video plugin name, video configuration)
-	scene->addVideoBackground("osgart_video_dummyvideo","osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
+	scene->addVideo("osgart_video_dummyvideo","osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
 	//add a tracker (tracker plugin name,camera configuration, tracker configuration)
 	scene->addVisualTracker("osgart_tracker_dummytracker","osgart_tracker_dummytracker","","mode=0;");
 

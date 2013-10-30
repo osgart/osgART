@@ -56,10 +56,9 @@ namespace osgART {
 		enum SensorDataType
 		{
 			SENSORDATA_UNKNOWN = 0,/**< Unknown or unspecified target type. */
-			SENSORDATA_POS, /** 3D position */
-			SENSORDATA_ROT, /** 3D orientation */
-			SENSORDATA_MULTI /** */
-		};
+            SENSORDATA_ANALOG, /** 3D position */
+            SENSORDATA_DIGITAL /** 3D orientation */
+        };
 
 		/**
 		* \brief default constructor.
@@ -80,21 +79,21 @@ namespace osgART {
 
 		/**
 		* Determine if the sensor is active.
-		* \return the validity of the target (true if valid).
+        * \return the validity of the sensor (true if valid).
 		*/
 		virtual bool valid() const;
 
 		/**
-		* \brief Set the respective target active
+        * \brief set the respective target active
 		* \param active set to TRUE if the target should be tracked
 		*/
 		virtual void setActive(bool active);
 
 		/**
-		* \brief retrieve activity status from the target
-		* \return TRUE if the target is active
+        * \brief retrieve activity status from the sensor
+        * \return true if the sensor is active
 		*/
-		bool active() const;
+        virtual bool active() const;
 		
 		/**
 		 * override for usage in trackers
@@ -118,6 +117,31 @@ namespace osgART {
 		std::string _name;
 	};
 
+
+    class OSGART_EXPORT GPSSensorData : public SensorData {
+
+    public:
+       GPSSensorData(): SensorData() {};
+
+       osg::Vec2f getPos() {};
+
+       osg::Vec3f GetPosECEF() {};
+
+    protected:
+        ~GPSSensorData() {};
+
+       osg::Vec2f _position;
+       osg::Vec3f _ecefPosition;
+    };
+
+    class OSGART_EXPORT InertialSensorData: public SensorData {
+
+    public:
+        InertialSensorData() : SensorData() {};
+
+        virtual osg::Quat getRot() {};
+        virtual osg::Vec3f getEulerRot() {};
+    };
 }
 
 #endif // OSGART_SENSORDATA

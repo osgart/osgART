@@ -138,7 +138,7 @@ int main(int argc, char* argv[])  {
 	osgART::Scene* scene = new osgART::Scene();
 
 
-	scene->addVideoBackground("osgart_artoolkit","osgart_video_artoolkit");
+	scene->addVideo("osgart_artoolkit","osgart_video_artoolkit");
 	scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit","data/artoolkit/camera_para.dat");
 
 	osg::MatrixTransform* mt = scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0");

@@ -61,7 +61,7 @@ namespace osgART {
 		{
 			TARGET_UNKNOWN = 0,/**< Unknown or unspecified target type. */
 			TARGET_SINGLE,		/**< A single target. */
-			TARGET_MULTI		/**< A multi-target. */
+            TARGET_MULTI		/**< A multi-target. */
 		};
 
 		/**

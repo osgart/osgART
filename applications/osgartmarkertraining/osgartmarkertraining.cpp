@@ -234,7 +234,7 @@ int main(int argc, char* argv[])  {
 
 	osgART::Scene* scene = new osgART::Scene();
 
-	osg::ref_ptr<osgART::Video> video = scene->addVideoBackground("osgart_artoolkit","osgart_video_artoolkit");
+    osg::ref_ptr<osgART::Video> video = scene->addVideo("osgart_artoolkit","osgart_video_artoolkit");
 	if (!video.valid()) {
 		std::cout << "No video" << std::endl;
 		return -1;

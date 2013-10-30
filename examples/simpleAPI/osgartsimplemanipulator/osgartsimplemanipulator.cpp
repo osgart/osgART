@@ -131,7 +131,7 @@ int main(int argc, char* argv[])  {
 	//AR SCENEGRAPH INIT
 	osgART::Scene* scene = new osgART::Scene();
 
-	scene->addVideoBackground("osgart_video_dummyvideo","osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
+	scene->addVideo("osgart_video_dummyvideo","osgart_video_dummyvideo","Data/dummyvideo/dummyvideo.png");
 	scene->addVisualTracker("osgart_tracker_dummytracker","osgart_tracker_dummytracker","","mode=0;");
 
 	osg::MatrixTransform* mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");

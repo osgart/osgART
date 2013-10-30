@@ -82,7 +82,7 @@ namespace osgART {
 
 
 	//"osgart_artoolkit"
-	osgART::Video* Scene::addVideoBackground(const std::string& vplugin, const std::string& v, std::string videoconf)
+    osgART::Video* Scene::addVideo(const std::string& vplugin, const std::string& v, std::string videoconf)
 	{
 
 		osgART::PluginManager::instance()->load(vplugin);
