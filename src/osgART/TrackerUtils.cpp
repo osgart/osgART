@@ -16,8 +16,14 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include "osgART/TrackerUtils"
+// std include
 
+// OpenThreads include
+
+// OSG include
+
+// local include
+#include "osgART/TrackerUtils"
 
 
 

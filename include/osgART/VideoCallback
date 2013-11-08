@@ -19,16 +19,19 @@
 #ifndef OSGART_VIDEOCALLBACK
 #define OSGART_VIDEOCALLBACK 1
 
+// std include
+
+// OpenThreads include
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
 #include <osg/ImageStream>
 #include <osg/Object>
 
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
-
-// Local include
+// local include
 #include "osgART/Export"
 #include "osgART/Field"
 #include "osgART/Video"
@@ -41,34 +44,84 @@ namespace osgART {
 	class OSGART_EXPORT VideoUpdateCallback : public osg::NodeCallback {
 	public:
 
-		/**
+        /**
+         * Creates a video update callback
+         */
+        VideoUpdateCallback(Video* video);
+
+        /**
 		 * Add or sets a VideoUpdateCallback to any node
 		 * \param node Node which will trigger an update on the attached video
-		 * \param tracker an instance of osgART::Video which is been updated
+         * \param video an instance of osgART::Video which is been updated
 		 */
 		static VideoUpdateCallback* addOrSet(osg::Node* node, osgART::Video* video);
-
-
-
-		/**
-		 * Creates a video callback
-		 */
-		VideoUpdateCallback(Video* video);
 
 	protected:
 
 		/**
-		 * Updates the video within here. The tracker will
-		 * not update the image it is attached to.
+         * Updates the video within here.
 		 */
 		void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
-
 	private:
 
-		osg::ref_ptr<Video> _video;
+        osg::observer_ptr<Video> _video;
 		int _framenumber;
 	};
+
+    class OSGART_EXPORT VideoStartCallback : public osg::NodeCallback {
+
+    public:
+
+        /**
+         * Creates a video start callback
+         */
+        VideoStartCallback(osgART::Video* Video);
+
+        /**
+         * Add or sets a VideoStartCallback to any node
+         * \param node Node which will trigger a start on the attached video
+         * \param video an instance of osgART::Video which is been updated
+         */
+        static VideoStartCallback* addOrSet(osg::Node* node, osgART::Video* video);
+
+        /**
+         * Starts the video within here.
+         */
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+    private:
+        osg::observer_ptr<osgART::Video> _video;
+        bool _oneshot;
+    };
+
+
+    class OSGART_EXPORT VideoStartAndUpdateCallback : public osg::NodeCallback {
+
+    public:
+
+        /**
+         * Creates a video start and update callback
+         */
+        VideoStartAndUpdateCallback(osgART::Video* Video);
+
+        /**
+         * Add or sets a VideoStartAndUpdateCallback to any node
+         * \param node Node which will trigger a start and update on the attached video
+         * \param video an instance of osgART::Video which is been updated
+         */
+        static VideoStartAndUpdateCallback* addOrSet(osg::Node* node, osgART::Video* video);
+
+        /**
+         * Starts and updates the video within here.
+         */
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+     protected:
+        osg::observer_ptr<osgART::Video> _video;
+        int _framenumber;
+        bool _oneshot;
+    };
 }; // namespace osgART
 
 #endif // OSGART_VIDEOCALLBACK

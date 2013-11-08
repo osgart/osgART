@@ -16,9 +16,16 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Notify>
+
+// local include
 #include "osgART/Video"
 
-#include <osg/Notify>
 
 const int max_video_number=32;
 

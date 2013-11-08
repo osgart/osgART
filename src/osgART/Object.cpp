@@ -16,10 +16,17 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/ValueObject>
 #include <osg/UserDataContainer>
 
+// local include
 #include "osgART/Object"
+
 
 
 namespace osgART {

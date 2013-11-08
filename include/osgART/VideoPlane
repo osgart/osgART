@@ -1,0 +1,104 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  VideoPlane
+ *  \brief Geometry wrapper being used to render a video onto
+ *  \author Raphael Grasset
+ *  \version 1.0
+ *  \date 08/11/2013
+ * 
+ * Geometry wrapper being used to render a video onto
+ **/
+
+#ifndef OSGART_VIDEOPLANE
+#define OSGART_VIDEOPLANE 1
+
+// std include
+#include <deque>
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Drawable>
+#include <osg/Geode>
+
+// local include
+#include "osgART/Export"
+#include "osgART/VideoGeode"
+
+
+
+namespace osgART {
+
+	class CameraConfiguration; // forward declartion for VideoMesh
+
+   class OSGART_EXPORT VideoPlane : public VideoGeode
+   {
+   public:
+       VideoPlane(
+               osg::Image* image=0L,					// Image to texture
+               TextureMode textureMode=USE_TEXTURE_2D,			// Mode to texture with
+               double width=1.0,
+               double height=1.0,
+               int cols=10,							// Number of columns
+               int rows=10							// Number of rows);
+        );
+
+       /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
+       VideoPlane(const VideoPlane&, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+       META_Node(osgART, VideoPlane);
+
+   protected:
+       osg::Geometry* createVideoPlane(
+           double width,
+           double height,
+           int cols,
+           int rows);
+   };
+
+   class OSGART_EXPORT UndistortedVideoPlane : public VideoPlane
+   {
+   public:
+       UndistortedVideoPlane(
+               osg::Image* image=0L,					// Image to texture
+               TextureMode textureMode=USE_TEXTURE_2D,			// Mode to texture with
+               osgART::CameraConfiguration* cameraconfiguration=0L,	// Camera Configuration object for undistortion calculation
+               double width=1.0,
+               double height=1.0,
+               int cols=10,							// Number of columns
+               int rows=10							// Number of rows);
+        );
+
+       /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
+       UndistortedVideoPlane(const UndistortedVideoPlane&, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+       META_Node(osgART, UndistortedVideoPlane);
+
+   protected:
+       osg::Geometry* createUndistortedVideoPlane(
+           osgART::CameraConfiguration* cameraconfiguration,
+           double width,
+           double height,
+           int cols,
+           int rows);
+   };
+}
+
+#endif // OSGART_VIDEOGEODE

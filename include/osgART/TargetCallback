@@ -43,13 +43,19 @@
 #ifndef OSGART_TARGETCALLBACK
 #define OSGART_TARGETCALLBACK 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/NodeCallback>
-
-#include <osgART/Export>
-#include <osgART/BaseCallback>
-#include <osgART/Target>
-
 #include <osg/Timer>
+
+// local include
+#include "osgART/Export"
+#include "osgART/BaseCallback"
+#include "osgART/Target"
+
 
 namespace osgART
 {

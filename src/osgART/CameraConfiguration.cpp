@@ -16,7 +16,15 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+
+// local include
 #include "osgART/CameraConfiguration"
+
 
 
 namespace osgART {

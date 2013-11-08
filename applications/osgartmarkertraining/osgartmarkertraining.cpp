@@ -25,16 +25,24 @@
 #include <windows.h>
 #endif
 
+// std include
+#include <sstream>
+
+// OpenThreads include
+
+// OSG include
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgDB/FileUtils>
 
+// osgART include
 #include <osgART/Scene>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
+#include <osgART/VideoPlane>
 
-#include <sstream>
+// local include
 
 
 std::string askForFileName(std::string defaultValue = "marker.patt") {
@@ -211,7 +219,9 @@ osg::Node* createDebugImageVisual() {
 	osg::Group* debugVisual = new osg::Group();
 
 	if (osg::Image* debugImage = debugImageField->get()) {
-		osgART::VideoGeode* vidGeode = new osgART::VideoGeode(debugImage, NULL, debugImage->s(), debugImage->t(), 20, 20, osgART::VideoGeode::USE_TEXTURE_2D);
+        osgART::VideoGeode* vidGeode = new osgART::VideoPlane(debugImage,
+                                                              osgART::VideoGeode::USE_TEXTURE_2D,
+                                                              debugImage->s(), debugImage->t(), 20, 20);
 		vidGeode->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 		debugVisual->addChild(vidGeode);
 	}

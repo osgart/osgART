@@ -16,9 +16,11 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include "osgART/VideoLayer"
-#include "osgART/Tracker"
+// std include
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Texture>
 #include <osg/Texture2D>
 #include <osg/TextureRectangle>
@@ -35,6 +37,12 @@
 #include <osg/Notify>
 #include <osg/Image>
 #include <osg/GraphicsContext>
+
+// local include
+#include "osgART/VideoLayer"
+#include "osgART/Tracker"
+
+
 
 namespace osgART {
 

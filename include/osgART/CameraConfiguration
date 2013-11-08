@@ -26,12 +26,19 @@
 #ifndef OSGART_CAMERACONFIGURATION
 #define OSGART_CAMERACONFIGURATION 1
 
-#include "osgART/Export"
-#include "osgART/VideoGeode"
+// std include
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Camera>
 #include <osg/Geometry>
 #include <osg/Vec2b>
+
+// local include
+#include "osgART/Export"
+#include "osgART/VideoGeode"
+
 
 
 namespace osgART
@@ -107,7 +114,7 @@ namespace osgART
 
 	};
 
-}
+} //namespace osgART
 
 
 #endif // OSGART_CAMERACONFIGURATION

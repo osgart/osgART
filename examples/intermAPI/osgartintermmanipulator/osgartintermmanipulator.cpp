@@ -16,11 +16,25 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+#include <iostream>
+#include <sstream>
+
+// OpenThreads include
+
+// OSG include
 #include <osg/PositionAttitudeTransform>
+
+#include <osgManipulator/Selection>
+#include <osgManipulator/CommandManager>
+#include <osgManipulator/Dragger>
+#include <osgManipulator/TabBoxDragger>
+#include <osgManipulator/TrackballDragger>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+// osgART include
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
@@ -35,17 +49,11 @@
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
-
-#include <osgManipulator/Selection>
-#include <osgManipulator/CommandManager>
-#include <osgManipulator/Dragger>
-#include <osgManipulator/TabBoxDragger>
-#include <osgManipulator/TrackballDragger>
-
-#include <iostream>
-#include <sstream>
-
 #include <osgART/VisualTracker>
+
+// local include
+
+
 
 osgManipulator::PointerInfo pointerInfo;
 osgManipulator::Dragger* activeDragger = NULL;

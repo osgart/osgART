@@ -16,22 +16,30 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+
+// local include
 #include "osgART/Scene"
 
+#include "osgART/VideoLayer"
+#include "osgART/PluginManager"
+#include "osgART/VideoGeode"
+#include "osgART/Utils"
+#include "osgART/GeometryUtils"
+#include "osgART/TrackerUtils"
+#include "osgART/VideoUtils"
 
-#include <osgART/VideoLayer>
-#include <osgART/PluginManager>
-#include <osgART/VideoGeode>
-#include <osgART/Utils>
-#include <osgART/GeometryUtils>
-#include <osgART/TrackerUtils>
-#include <osgART/VideoUtils>
+#include "osgART/TrackerCallback"
+#include "osgART/TargetCallback"
+#include "osgART/TransformFilterCallback"
+#include "osgART/VideoCallback"
+#include "osgART/VisualTracker"
 
-#include <osgART/TrackerCallback>
-#include <osgART/TargetCallback>
-#include <osgART/TransformFilterCallback>
-#include <osgART/VideoCallback>
-#include <osgART/VisualTracker>
+
 
 namespace osgART {
 
@@ -47,23 +55,6 @@ namespace osgART {
 
 	}
 
-	class VideoStartCallback : public osg::NodeCallback {
-
-		osg::observer_ptr<osgART::Video> _video;
-		bool _oneshot;
-	public:
-		VideoStartCallback(osgART::Video* Video) : _video(Video), _oneshot(false) {}
-
-		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
-		{
-
-			if (!_oneshot) _video->start();
-
-			traverse(node,nv);
-		}
-
-
-	};
 
 	void Scene::configureVideoBackground() {
 
@@ -113,7 +104,7 @@ namespace osgART {
 			return NULL;
 		}
 
-		osgART::addEventCallback(this, new VideoStartCallback(_video.get()));
+        osgART::addEventCallback(this, new osgART::VideoStartCallback(_video.get()));
 
 		configureVideoBackground();
 

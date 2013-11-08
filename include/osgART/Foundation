@@ -38,7 +38,16 @@
 #ifndef OSGART_FOUNDATION
 #define OSGART_FOUNDATION__1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+
+// local include
 #include "osgART/Export"
+
+
 
 #endif // OSGART_FOUNDATION
 

@@ -26,6 +26,17 @@
 #ifndef OSGART_EXPORTPLUGIN
 #define OSGART_EXPORTPLUGIN 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Version>
+
+// local include
+
+
+
 #if defined(_WIN32)
 	#if defined(OSGART_PLUGIN_EXPORT)
 		#define DLL_API extern "C" __declspec(dllexport)

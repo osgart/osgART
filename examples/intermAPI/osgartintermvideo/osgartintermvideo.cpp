@@ -16,26 +16,38 @@
  * OpenSceneGraph Public License for more details.
 */
 
-// A simple example to demonstrate the SSTT plugin with osgART
+// std include
+#include <iostream>
+#include <sstream>
 
-#include <osgART/Foundation>
-#include <osgART/VideoLayer>
-#include <osgART/PluginManager>
-#include <osgART/VideoGeode>
-#include <osgART/Utils>
-#include <osgART/GeometryUtils>
+// OpenThreads include
 
-#include <osgART/TargetCallback>
-#include <osgART/TransformFilterCallback>
-#include <osgART/VideoCallback>
-
-#include <osgART/VideoUtils>
+// OSG include
+#include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
-#include <iostream>
-#include <sstream>
+// osgART include
+#include <osgART/Foundation>
+#include <osgART/VideoLayer>
+#include <osgART/PluginManager>
+#include <osgART/VideoGeode>
+
+#include <osgART/Utils>
+#include <osgART/GeometryUtils>
+#include <osgART/TrackerUtils>
+#include <osgART/VideoUtils>
+
+#include <osgART/TrackerCallback>
+#include <osgART/TargetCallback>
+#include <osgART/TransformFilterCallback>
+#include <osgART/VideoCallback>
+#include <osgART/VisualTracker>
+
+// local include
+
+
 
 int main(int argc, char* argv[])  {
 

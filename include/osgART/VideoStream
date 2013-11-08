@@ -26,6 +26,10 @@
 #ifndef OSGART_VIDEOSTREAM
 #define OSGART_VIDEOSTREAM 1
 
+// std include
+
+// OpenThreads include
+
 // OSG include
 #include <osg/Version>
 #include <osg/Node>
@@ -33,8 +37,10 @@
 #include <osg/ImageStream>
 #include <osg/Stats>
 
-// Local include
+// local include
 #include "osgART/Export"
+
+
 
 namespace osgART {
 

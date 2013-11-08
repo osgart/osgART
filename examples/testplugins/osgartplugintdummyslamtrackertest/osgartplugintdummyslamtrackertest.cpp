@@ -184,7 +184,7 @@ int main(int argc, char* argv[])  {
 	osg::ref_ptr<osg::Geode> mygeode=new osg::Geode();
 		
 	//set the geometry produced in the target to our target
-	mygeode->addDrawable(target->getGeometry());
+    mygeode->addDrawable(target->getMapData()->getGeometry());
 
 	
 	//add geode produced to our transfo

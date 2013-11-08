@@ -26,7 +26,9 @@
 #ifndef OSGART_TRACKERCALLBACK
 #define OSGART_TRACKERCALLBACK 1
 
-// OpenThreads
+// std include
+
+// OpenThreads include
 #include <OpenThreads/ScopedLock>
 #include <OpenThreads/Mutex>
 
@@ -36,7 +38,7 @@
 #include <osg/ImageStream>
 #include <osg/Object>
 
-// Local include
+// local include
 #include "osgART/Export"
 #include "osgART/VideoStream"
 #include "osgART/VideoGeode"

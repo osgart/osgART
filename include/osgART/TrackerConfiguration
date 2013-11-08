@@ -26,13 +26,19 @@
 #ifndef OSGART_TRACKERCONFIGURATION
 #define OSGART_TRACKERCONFIGURATION 1
 
+// std include
+#include <string>
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Referenced>
 #include <osg/Vec2s>
 
-#include <osg/Referenced>
-
+// local include
 #include "osgART/Export"
 
-#include <string>
+
 
 namespace osgART {
 

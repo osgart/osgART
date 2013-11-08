@@ -16,16 +16,23 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include "osgART/PluginManager"
+// std include
+#include <sstream>
+#include <cstdlib>
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Version>
 #include <osg/Notify>
 
 #include <osgDB/Registry>
 #include <osgDB/FileUtils>
 
-#include <sstream>
-#include <cstdlib>
+// local include
+#include "osgART/PluginManager"
+
+
 
 #if defined(_WIN32)||(_WINDOWS)
 	#define WIN32_LEAN_AND_MEAN

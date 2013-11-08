@@ -16,14 +16,22 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Notify>
+#include <osg/ValueObject>
+#include <osg/UserDataContainer>
+
+// local include
+#include "osgART/Export"
 #include "osgART/GPSInertialTracker"
 #include "osgART/Target"
 #include "osgART/Video"
 
-#include <osg/Notify>
 
-#include <osg/ValueObject>
-#include <osg/UserDataContainer>
 
 namespace osgART {
 

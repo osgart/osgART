@@ -16,11 +16,19 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+#include <iostream>
+#include <sstream>
+
+// OpenThreads include
+
+// OSG include
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+// osgART include
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
@@ -35,9 +43,11 @@
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
+#include <osgART/VisualTracker>
 
-#include <iostream>
-#include <sstream>
+// local include
+
+
 
 int main(int argc, char* argv[])  {
 

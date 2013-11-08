@@ -19,6 +19,9 @@
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+#include <osgGA/TrackballManipulator>
+
+#include <osgART/GeometryUtils>
 
 int main(int argc, char* argv[])  {
 
@@ -38,8 +41,17 @@ int main(int argc, char* argv[])  {
 	viewer.addEventHandler(new osgViewer::WindowSizeHandler);//resize, fullscreen 'f'
 	viewer.addEventHandler(new osgViewer::ThreadingHandler);//threading mode, press 't'
 	viewer.addEventHandler(new osgViewer::HelpHandler);//help menu, press 'h'
+		
+	osgGA::TrackballManipulator* tb = new osgGA::TrackballManipulator;
+	
+	//gl style
+	tb->setHomePosition( osg::Vec3f(0,0,20), osg::Vec3f(0,0,0), osg::Vec3f(0,1,0) );
+	
+	//standard
+	//tb->setHomePosition( osg::Vec3f(0,-20,0), osg::Vec3f(0,0,0), osg::Vec3f(0,0,1) );
+	viewer.setCameraManipulator(tb);
 
-
+	viewer.setUpViewInWindow(0,0,800,600);
 	//AR INIT
 
 
@@ -50,7 +62,13 @@ int main(int argc, char* argv[])  {
 
 
 	//APPLICATION INIT
-
+	//root->addChild(osgART::createTopCube(10.));
+	//root->addChild(osgART::createTopSphere(10.));
+	//root->addChild(osgART::createCube(10.));
+	//root->addChild(osgART::createSphere(10.));
+	root->addChild(osgART::create3DAxis(10.,5.));
+	root->addChild(osgART::translateModel(osgART::create2DAxisRH(10.,5.),osg::Vec3f(0.,0.,-5.)));
+	root->addChild(osgART::createFiniteGrid());
 
 	//BOOTSTRAP INIT
 

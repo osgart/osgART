@@ -16,15 +16,22 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Version>
 #include <osg/Notify>
 
 #include <osgDB/Registry>
 #include <osgDB/FileUtils>
 
+// local include
 #include "osgART/Foundation"
 #include "osgART/PluginManager"
+
+
 
 namespace osgART {
 

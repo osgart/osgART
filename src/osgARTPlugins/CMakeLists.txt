@@ -7,6 +7,8 @@ add_subdirectory(DummyInertialSensor)
 add_subdirectory(DummyVideo)
 add_subdirectory(DummyRGBDVideo)
 
+add_subdirectory(DummyMapper)
+
 add_subdirectory(DummyTracker)
 add_subdirectory(DummyGPSInertialTracker)
 add_subdirectory(DummySLAMTracker)
@@ -21,6 +23,7 @@ add_subdirectory(PCL)
 add_subdirectory(ARToolKitPlus)
 #add_subdirectory(ARma)
 #add_subdirectory(aruco)
+#add_subdirectory(icg3dTracking)
 
 #multiplatforms sensor plugins
 

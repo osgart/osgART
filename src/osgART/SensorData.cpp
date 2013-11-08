@@ -16,9 +16,17 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/Notify>
 
+// local include
 #include "osgART/SensorData"
+
+
 
 namespace osgART {
 

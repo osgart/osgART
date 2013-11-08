@@ -28,13 +28,15 @@
 
 // std include
 
+// OpenThreads include
+
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
 #include <osg/ImageStream>
 #include <osg/Object>
 
-// Local include
+// local include
 #include "osgART/Export"
 #include "osgART/Object"
 #include "osgART/Event"
@@ -44,6 +46,8 @@
 #include "osgART/VideoConfiguration"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
+
+
 
 namespace osgART {
 	/**

@@ -16,15 +16,23 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osgDB/FileUtils>
+
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
-#include <osgDB/FileUtils>
-
+// osgART include
+#include <osgART/PluginManager>
 #include <osgART/Scene>
 #include <osgART/GeometryUtils>
 
-#include <osgART/PluginManager>
+// local include
+
 
 
 int main(int argc, char* argv[])  {
@@ -52,21 +60,11 @@ int main(int argc, char* argv[])  {
 	//create an osgART::Scene
 	osgART::Scene* scene = new osgART::Scene();
 
-	//add a video background (video plugin name, video configuration)
     scene->addVideo("osgart_video_dummyvideo","osgart_video_dummyvideo","data/dummyvideo/dummyvideo.png");
-	//add a tracker (tracker plugin name,camera configuration, tracker configuration)
+
 	scene->addVisualTracker("osgart_tracker_dummytracker","osgart_tracker_dummytracker","","mode=0;");
 
-	//add a target (target configuration) and a model
 	scene->addTrackedTransform("test.pattern;35.2;22.0;0.3")->addChild(osgART::createTopCube(20));
-	//Alternative method:
-	//for being able to further add/modify the target transformation:
-	//osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("test.pattern;35.2;22.0;0.3");
-	//mt->addChild(osgART::createTopCube(20));
-
-	//APPLICATION INIT
-
-	//BOOTSTRAP INIT
 
 	viewer.setSceneData(scene);
 

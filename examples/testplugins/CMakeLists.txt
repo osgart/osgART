@@ -28,6 +28,10 @@ add_subdirectory(osgartpluginvdsvideolibtest)
 add_subdirectory(osgartpluginvvideoinputtest)
 ENDIF()
 
+IF(LINUX)
+
+ENDIF()
+
 ## -- TRACKER PLUGINS -- 
 add_subdirectory(osgartplugintdummytrackertest)
 add_subdirectory(osgartplugintdummyslamtrackertest)
@@ -36,10 +40,10 @@ add_subdirectory(osgartplugintdummygpsinertialtrackertest)
 add_subdirectory(osgartplugintartoolkittest)
 add_subdirectory(osgartplugintartoolkitplustest)
 
-#add_subdirectory(osgartplugintopiratest)
-#add_subdirectory(osgartpluginvtsstttest)
-
 #add_subdirectory(osgartpluginticg3dtrackingtest)
 #add_subdirectory(osgartplugintvuforiatest)
 #add_subdirectory(osgartplugintsatest)
 #add_subdirectory(osgartplugintkinfutest)
+#add_subdirectory(osgartplugintkinectfusiontest)
+#add_subdirectory(osgartplugintopiratest)
+#add_subdirectory(osgartpluginvtsstttest)

@@ -16,14 +16,19 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+#include <iostream>
+#include <sstream>
+
+// OpenThreads include
+
+// OSG include
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
-#include <osgDB/ReadFile>
-#include <osgDB/FileUtils>
-
+// osgART include
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
@@ -34,18 +39,15 @@
 #include <osgART/TrackerUtils>
 #include <osgART/VideoUtils>
 
-#include <osgART/VideoCallback>
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
-
 #include <osgART/VisualTracker>
 
-#include <iostream>
-#include <sstream>
+// local include
 
-#include <osgART/VisualTracker>
+
 
 class KeyboardEventHandler : public osgGA::GUIEventHandler {
  

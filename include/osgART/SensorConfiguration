@@ -26,13 +26,20 @@
 #ifndef OSGART_SENSORCONFIGURATION
 #define OSGART_SENSORCONFIGURATION 1
 
+// std include
+#include <string>
+
+// OpenThreads include
+
+// OSG include
 #include <osg/Vec2s>
 #include <osg/Vec3f>
 #include <osg/Referenced>
 
+// local include
 #include "osgART/Export"
 
-#include <string>
+
 
 namespace osgART {
 

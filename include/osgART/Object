@@ -29,7 +29,6 @@
 
 // std include
 
-
 // OpenThreads include
 #include <OpenThreads/ScopedLock>
 #include <OpenThreads/Mutex>
@@ -41,6 +40,8 @@
 
 // local include
 #include "osgART/Event"
+
+
 
 namespace osgART {
 

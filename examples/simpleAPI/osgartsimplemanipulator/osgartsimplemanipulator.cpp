@@ -16,23 +16,33 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/MatrixTransform>
 
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
-
-#include <osgDB/ReadFile>
 #include <osgDB/FileUtils>
-
-#include <osgART/Scene>
-#include <osgART/GeometryUtils>
-#include <osgART/PluginManager>
+#include <osgDB/ReadFile>
 
 #include <osgManipulator/Selection>
 #include <osgManipulator/CommandManager>
 #include <osgManipulator/Dragger>
 #include <osgManipulator/TabBoxDragger>
 #include <osgManipulator/TrackballDragger>
+
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
+
+// osgART include
+#include <osgART/PluginManager>
+#include <osgART/Scene>
+#include <osgART/GeometryUtils>
+
+// local include
+
+
 
 osgManipulator::PointerInfo pointerInfo;
 osgManipulator::Dragger* activeDragger = NULL;

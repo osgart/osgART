@@ -21,6 +21,8 @@
  *
  */
 
+#include <cstring>
+
 #include <osg/Notify>
 #include <osgDB/FileUtils>
 #include <osgDB/ReadFile>
@@ -128,10 +130,7 @@ protected:
 	//produced by your mapping
 	osg::Vec3Array* vertices;
 	osg::Vec4Array* colors;
-	
-	//DrawElementsUInit* ;
-	
-	osg::ref_ptr<osg::ShapeDrawable> sd; 
+    osg::Geometry* _geometry;
 };
 
 
@@ -199,6 +198,11 @@ DummySLAMTarget::init(const std::string& config)
 
 	//parent class already instantiate _geometry 
 	
+    _mapData=new osgART::MapData();
+
+    _geometry=new osg::Geometry();
+    _mapData->setGeometry(_geometry);
+
 	//create content of geometry
 	vertices = new osg::Vec3Array();
 	colors = new osg::Vec4Array();
@@ -272,7 +276,7 @@ DummySLAMTarget::updateGeometry(/*pass arguments you want */)
 
 	vertices->dirty();
 	colors->dirty();
-		
+
 	_geometry->removePrimitiveSet(0,1);
 	
 	//create list of elements
@@ -294,7 +298,7 @@ DummySLAMTarget::updateGeometry(/*pass arguments you want */)
     //geometry->dirty()
     
     _geometry->dirtyBound();
-		
+
 	return true;
 }
 

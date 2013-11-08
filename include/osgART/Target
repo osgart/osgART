@@ -31,6 +31,8 @@
 #include <string>
 #include <vector>
 
+// OpenThreads include
+
 // OSG include
 #include <osg/Matrix>
 #include <osg/Vec3>
@@ -42,6 +44,8 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Field"
+#include "osgART/MapData"
+
 
 
 namespace osgART {
@@ -152,13 +156,14 @@ namespace osgART {
 	*/
 	class OSGART_EXPORT SLAMTarget : public Target {
 	public:
-		SLAMTarget(): Target() {		_geometry=new osg::Geometry();};
+        SLAMTarget(): Target() {};
 
-		osg::Geometry* getGeometry() {return _geometry;};
+        MapData* getMapData() {return _mapData;};
 	protected:
 		~SLAMTarget() {};
 
-		osg::ref_ptr<osg::Geometry> _geometry;
+        MapData* _mapData;
+
 	};
 };
 

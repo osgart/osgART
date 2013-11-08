@@ -26,14 +26,14 @@
 #ifndef OSGART_UTILS
 #define OSGART_UTILS 1
 
-// General
+// std include
 #include <iostream>
-
-// STL
 #include <string>
 #include <vector>
 
-// OpenSceneGraph
+// OpenThreads include
+
+// OSG include
 #include <osg/Notify>
 #include <osg/Matrix>
 #include <osg/Vec2>
@@ -41,7 +41,7 @@
 #include <osg/Texture2D>
 #include <osg/TextureRectangle>
 
-// OSGART
+// local include
 #include "osgART/Export"
 #include "osgART/Field"
 

@@ -28,6 +28,8 @@
 
 // std include 
 
+// OpenThreads include
+
 // OSG include
 #include <osg/Version>
 #include <osg/Node>
@@ -37,6 +39,7 @@
 // local include
 #include "osgART/Export"
 #include "osgART/Field"
+
 
 
 namespace osgART {
@@ -123,9 +126,9 @@ namespace osgART {
     public:
        GPSSensorData(): SensorData() {};
 
-       osg::Vec2f getPos() {};
+       osg::Vec2f getPos() {return _position;};
 
-       osg::Vec3f GetPosECEF() {};
+       osg::Vec3f GetECEFPos() {return _ecefPosition;};
 
     protected:
         ~GPSSensorData() {};
@@ -139,8 +142,10 @@ namespace osgART {
     public:
         InertialSensorData() : SensorData() {};
 
-        virtual osg::Quat getRot() {};
-        virtual osg::Vec3f getEulerRot() {};
+        virtual osg::Quat getRot() {return _rotation;};
+//        virtual osg::Vec3f getEulerRot() {};
+
+        osg::Quat _rotation;
     };
 }
 

@@ -26,22 +26,25 @@
 #ifndef OSGART_PLUGINMANAGER
 #define OSGART_PLUGINMANAGER 1
 
-// osg
-#include <osg/ref_ptr>
-#include <osg/Referenced>
-
-// osgDB
-#include <osgDB/DynamicLibrary>
-
-// STL
+// std include
 #include <string>
 #include <deque>
 #include <map>
 
-// Local include
+// OpenThreads include
+
+// OSG include
+#include <osg/ref_ptr>
+#include <osg/Referenced>
+
+#include <osgDB/DynamicLibrary>
+
+// local include
 #include "osgART/Export"
 #include "osgART/Video"
 #include "osgART/Tracker"
+
+
 
 namespace osgART 
 {

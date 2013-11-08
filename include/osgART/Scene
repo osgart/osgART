@@ -26,10 +26,16 @@
 #ifndef OSGART_SCENE
 #define OSGART_SCENE 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osg/Camera>
 
+// local include
 #include "osgART/Export"
 
 #include "osgART/Sensor"
@@ -40,7 +46,7 @@
 #include "osgART/VisualTracker"
 #include "osgART/GPSInertialTracker"
 
-#include "osgART/Sensor"
+#include "osgART/SensorData"
 #include "osgART/VideoStream"
 #include "osgART/Target"
 
@@ -48,6 +54,8 @@
 #include "osgART/VideoConfiguration"
 #include "osgART/CameraConfiguration"
 #include "osgART/TrackerConfiguration"
+
+
 
 namespace osgART {
 

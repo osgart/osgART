@@ -26,12 +26,18 @@
 #ifndef OSGART_VIDEOUTILS
 #define OSGART_VIDEOUTILS 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/Image>
 #include <osg/Group>
 #include <osg/Camera>
-#include <osgART/Export>
 
-#include <osgART/CameraConfiguration>
+// local include
+#include "osgART/Export"
+#include "osgART/CameraConfiguration"
 
 namespace osgART {
 

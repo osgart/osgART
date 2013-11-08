@@ -25,10 +25,18 @@
 #ifndef OSGART_BASECALLBACK
 #define OSGART_BASECALLBACK 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/NodeCallback>
 #include <osg/Timer>
 
-#include <osgART/Export>
+// local include
+#include "osgART/Export"
+
+
 
 namespace osgART
 {
@@ -44,7 +52,7 @@ namespace osgART
 
 	OSGART_EXPORT void removeEventCallback(osg::Node* node, osg::NodeCallback* cb);
 
-}
+} //namespace osgART
 
 #endif // OSGART_BASECALLBACK
 

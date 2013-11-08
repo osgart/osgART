@@ -16,17 +16,26 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/MatrixTransform>
+
+#include <osgDB/FileUtils>
+#include <osgDB/ReadFile>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
-#include <osgDB/ReadFile>
-#include <osgDB/FileUtils>
-
-#include <osgART/Scene>
+// osgART include
 #include <osgART/PluginManager>
+#include <osgART/Scene>
 #include <osgART/GeometryUtils>
+
+// local include
+
 
 
 int main(int argc, char* argv[])  {

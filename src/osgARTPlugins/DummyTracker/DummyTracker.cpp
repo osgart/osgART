@@ -21,6 +21,8 @@
  *
  */
 
+#include <cstring>
+
 #include <osg/Notify>
 
 #include "osgART/Target"

@@ -26,7 +26,14 @@
 #ifndef OSGART_EXPORT_
 #define OSGART_EXPORT_ 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/Version>
+
+// local include
 
 
 #if defined(_MSC_VER)

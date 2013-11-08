@@ -26,12 +26,17 @@
 #ifndef OSGART_TRANSFORMFILTERCALLBACK
 #define OSGART_TRANSFORMFILTERCALLBACK 1
 
-// osg include
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/NodeCallback>
 #include <osg/MatrixTransform>
 
 // local include
 #include "osgART/Export"
+
 
 
 namespace osgART {

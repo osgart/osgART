@@ -16,10 +16,20 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+
+// local include
 #include "osgART/VideoUtils"
 
 #include "osgART/VideoLayer"
 #include "osgART/VideoGeode"
+#include "osgART/VideoPlane"
+
+
 
 namespace osgART {
 
@@ -28,22 +38,25 @@ namespace osgART {
 						  bool useTextureRectangle /*= false*/)
 	{
 		osgART::VideoLayer* _layer = new osgART::VideoLayer();
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
+        osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            1, 1, 20, 20);
 		_layer->addChild(_geode);
 		return _layer;
 	}
 
 	osg::Group*
-	createUndistortVideoBackground(osg::Image* video,osgART::CameraConfiguration* config,
+    createUndistortVideoBackground(osg::Image* video,osgART::CameraConfiguration* cameraconfig,
 						  bool useTextureRectangle /*= false*/)
 	{
 		osgART::VideoLayer* _layer = new osgART::VideoLayer();
 		_layer->setType(osgART::VideoLayer::VIDEO_BACKGROUND);
 
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, config, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+        osgART::VideoGeode* _geode = new osgART::UndistortedVideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            cameraconfig,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 	
@@ -55,9 +68,10 @@ namespace osgART {
 		_layer->setType(osgART::VideoLayer::VIDEO_BACKGROUND);
 		_layer->setWindowSize(pos,size);
 
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+        osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 	
@@ -69,9 +83,10 @@ namespace osgART {
 		_layer->setType(osgART::VideoLayer::VIDEO_BACKGROUND);
 		_layer->setRelativeSize(pos,size,main);
 
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+        osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 
@@ -82,22 +97,25 @@ namespace osgART {
 		osgART::VideoLayer* _layer = new osgART::VideoLayer();
 		_layer->setType(osgART::VideoLayer::VIDEO_FOREGROUND);
 
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+        osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 
 	osg::Group*
-	createUndistortVideoForeground(osg::Image* video,osgART::CameraConfiguration* config,
+    createUndistortVideoForeground(osg::Image* video,osgART::CameraConfiguration* cameraconfig,
 						  bool useTextureRectangle /*= false*/)
 	{
 		osgART::VideoLayer* _layer = new osgART::VideoLayer();
 		_layer->setType(osgART::VideoLayer::VIDEO_FOREGROUND);
 
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, config, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+        osgART::VideoGeode* _geode = new osgART::UndistortedVideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            cameraconfig,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 	
@@ -108,9 +126,11 @@ namespace osgART {
 		osgART::VideoLayer* _layer = new osgART::VideoLayer();
 		_layer->setType(osgART::VideoLayer::VIDEO_FOREGROUND);
 		_layer->setWindowSize(pos,size);
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+
+        osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 	
@@ -121,9 +141,11 @@ namespace osgART {
 		osgART::VideoLayer* _layer = new osgART::VideoLayer();
 		_layer->setType(osgART::VideoLayer::VIDEO_FOREGROUND);
 		_layer->setRelativeSize(pos,size,main);
-		osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-			useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
-		_layer->addChild(_geode);
+
+        osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                            useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                            1, 1, 20, 20);
+        _layer->addChild(_geode);
 		return _layer;
 	}
 	

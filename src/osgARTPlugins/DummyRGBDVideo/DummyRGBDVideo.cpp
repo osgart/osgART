@@ -39,6 +39,8 @@
 *  \date 07/05/31
 **/
 
+#include <cstring>
+
 #include <OpenThreads/Thread>
 
 #include <osgDB/Registry>
@@ -315,7 +317,7 @@ bool DummyRGBDVideo::init() {
 
 	//if we have BGRA we just do a copy
 	if (img->getPixelFormat()==GL_BGRA)
-		memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
+        std::memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
 	//otherwise
 	//if we have RGB, or RGBA we convert
 	if ((img->getPixelFormat()==GL_RGB)||(img->getPixelFormat()==GL_RGBA))
@@ -383,7 +385,7 @@ bool DummyRGBDVideo::init() {
 
 	//if we have BGRA we just do a copy
 	if (imgD->getPixelFormat()==GL_BGRA)
-		memcpy(_videoStreamList[1]->data(),imgD->data(), _videoStreamList[1]->getImageSizeInBytes());
+        std::memcpy(_videoStreamList[1]->data(),imgD->data(), _videoStreamList[1]->getImageSizeInBytes());
 	//otherwise
 	//if we have RGB, or RGBA we convert
 	if ((imgD->getPixelFormat()==GL_RGB)||(imgD->getPixelFormat()==GL_RGBA))
@@ -464,12 +466,12 @@ bool DummyRGBDVideo::update(osg::NodeVisitor* nv) {
 
 	//2. you can copy here the video buffer to the main image video stream
 	//with a call like
-	//memcpy(_videoStreamList[0]->data(),newImage, _videoStreamList[0]->getImageSizeInBytes());
+    //std::memcpy(_videoStreamList[0]->data(),newImage, _videoStreamList[0]->getImageSizeInBytes());
 	// the newImage can be retrieved from another thread
 	// in this example we do nothing (already make a dummy copy in init())
 
 	//same for second stream
-	//memcpy(_videoStreamList[1]->data(),newImage, _videoStreamList[]->getImageSizeInBytes());
+    //std::memcpy(_videoStreamList[1]->data(),newImage, _videoStreamList[]->getImageSizeInBytes());
 	
 	osg::notify(osg::DEBUG_INFO)<<"osgART::DummyRGBDVideo::update() get new image.."<<std::endl;
 

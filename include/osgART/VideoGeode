@@ -29,19 +29,22 @@
 #ifndef OSGART_VIDEOGEODE
 #define OSGART_VIDEOGEODE 1
 
+// std include
 #include <deque>
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Drawable>
 #include <osg/Geode>
+#include <osg/Image>
 
-
+// local include
 #include "osgART/Export"
 
 
+
 namespace osgART {
-
-
-	class CameraConfiguration; // forward declartion for VideoMesh
 
 	class OSGART_EXPORT VideoGeode : public osg::Geode
 	{
@@ -56,42 +59,25 @@ namespace osgART {
 			USE_TEXTURE_RECTANGLE,		/**< Video is being attached to a 2D rectangle */
 		};
 
-
-		/** Constructor */
-		VideoGeode();
-		
+		/** Constructor */		
 		VideoGeode(
-				osg::Image* image,					// Image to texture
-		osgART::CameraConfiguration* cameraconfiguration,	// Camera Configuration object for undistortion calculation
-		double width,
-		double height,
-		int cols,							// Number of columns
-		int rows,							// Number of rows
-		TextureMode textureMode			// Mode to texture with
-		);
+                osg::Image* image=0L,					// Image to texture
+                TextureMode textureMode =USE_TEXTURE_2D			// Mode to texture with
+        );
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
         VideoGeode(const VideoGeode&, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Node(osgART, VideoGeode);
 		 
-		 
-		static osg::Geometry* createVideoMesh(osg::Image* image, 
-			osgART::CameraConfiguration* cameraconfiguration = NULL,
-			double width = 1.0, 
-			double height = 1.0,
-			int cols = 20, 
-			int rows = 20, 
-			TextureMode textureMode = USE_TEXTURE_2D);
-		
+
 	protected:	
 
 		virtual ~VideoGeode();		
 		
 		TextureMode _textureMode;
-
+        osg::Image* _image;
 	};
-
 }
 
 #endif // OSGART_VIDEOGEODE

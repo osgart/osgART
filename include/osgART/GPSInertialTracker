@@ -30,6 +30,8 @@
 #include <map>
 #include <iostream>
 
+// OpenThreads include
+
 // OSG include
 #include <osg/Geometry>
 #include <osg/Projection>
@@ -44,6 +46,8 @@
 
 #include "osgART/Video"
 #include "osgART/Tracker"
+
+
 
 namespace osgART {
 

@@ -29,12 +29,21 @@
 #ifndef OSGART_FIELD
 #define OSGART_FIELD 1
 
+// std include
 #include <map>
 #include <iostream>
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Referenced>
 #include <osg/ref_ptr>
 #include <osg/io_utils>
+
+// local include
+#include "osgART/Export"
+
+
 
 namespace osgART {
 
@@ -236,6 +245,6 @@ namespace osgART {
 
 	}*/
 
- };
+ }; //namespace osgART
  
  #endif  // OSGART_FIELD

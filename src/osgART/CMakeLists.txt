@@ -16,6 +16,7 @@ set(lib_srcs
 	VideoStream.cpp
 #	VideoStreamCallback.cpp
 	VideoGeode.cpp
+	VideoPlane.cpp
 	VideoLayer.cpp
 	VideoUtils.cpp
 	Tracker.cpp
@@ -31,8 +32,12 @@ set(lib_srcs
 	TransformFilterCallback.cpp
 	Sensor.cpp
 #	SensorCallback.cpp
+	SensorConfiguration.cpp
 	SensorData.cpp
-	Sensorconfiguration.cpp
+	Mapper.cpp
+#	MapperpCallback.cpp
+	MapperConfiguration.cpp
+	MapData.cpp
 	Scene.cpp
 	Utils.cpp
 )
@@ -52,6 +57,7 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoStream
 #	${CMAKE_SOURCE_DIR}/include/osgART/VideoStreamCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoGeode
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlane
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Tracker
@@ -66,8 +72,13 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/TransformFilterCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerUtils	
 	${CMAKE_SOURCE_DIR}/include/osgART/Sensor
+#	${CMAKE_SOURCE_DIR}/include/osgART/SensorCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/SensorConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/SensorData
+	${CMAKE_SOURCE_DIR}/include/osgART/Mapper
+#	${CMAKE_SOURCE_DIR}/include/osgART/MapperCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/MapperConfiguration
+	${CMAKE_SOURCE_DIR}/include/osgART/MapData
 	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Scene
 	${CMAKE_SOURCE_DIR}/include/osgART/Utils

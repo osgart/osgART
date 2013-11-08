@@ -44,17 +44,26 @@ model hiro thunderbird.lwo
 
 */
 
+// std include
 
+// OpenThreads include
 
-
-
+// OSG include
 #include <osg/ProxyNode>
 #include <osg/PositionAttitudeTransform>
 
+#include <osgDB/FileUtils>
+#include <osgDB/FileNameUtils>
+#include <osgDB/WriteFile>
+
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
+
+// osgART include
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
-#include <osgART/VideoGeode>
+#include <osgART/VideoPlane>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
@@ -65,20 +74,16 @@ model hiro thunderbird.lwo
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
 
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
-
-#include <osgDB/FileUtils>
-#include <osgDB/FileNameUtils>
-#include <osgDB/WriteFile>
+// local include
 
 #include <osgART/VisualTracker>
 
 osg::Group* createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
-	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
+    osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                        useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                        1, 1, 20, 20);
 	//addTexturedQuad(*_geode,video->s(),video->t());
 	_layer->addChild(_geode);
 	return _layer;

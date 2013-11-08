@@ -16,11 +16,19 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
+#include <iostream>
+#include <sstream>
+
+// OpenThreads include
+
+// OSG include
 #include <osg/PositionAttitudeTransform>
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
+// osgART include
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
@@ -35,11 +43,11 @@
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
 #include <osgART/VideoCallback>
-
-#include <iostream>
-#include <sstream>
-
 #include <osgART/VisualTracker>
+
+// local include
+
+
 
 class HitTargetGeode : public osg::Geode {
 
@@ -76,7 +84,8 @@ public:
 
 		switch (ea.getEventType()) {
 
-		case osgGA::GUIEventAdapter::PUSH:
+        case (osgGA::GUIEventAdapter::PUSH):
+        {
 
 			osgViewer::View* view = dynamic_cast<osgViewer::View*>(&aa);
 			osgUtil::LineSegmentIntersector::Intersections intersections;
@@ -92,14 +101,15 @@ public:
 					if (HitTargetGeode* hittarget = dynamic_cast<HitTargetGeode*>(iter->nodePath.back())) {
 						std::cout << "HIT!" << std::endl;	
 						hittarget->setSelected(true);
-						return true;
+                        return false;
 					}
 				}
 			}
-
-			break;
-		}
-		return false;
+            return false;
+        }
+        default:
+            return false;
+        }
 	}
 };
 

@@ -39,6 +39,8 @@
 *  \date 07/05/31
 **/
 
+#include <cstring>
+
 #include <OpenThreads/Thread>
 
 #include <osgDB/Registry>
@@ -297,7 +299,7 @@ bool DummyVideo::init() {
 
 	//if we have BGRA we just do a copy
 	if (img->getPixelFormat()==GL_BGRA)
-		memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
+        std::memcpy(_videoStreamList[0]->data(),img->data(), _videoStreamList[0]->getImageSizeInBytes());
 	//otherwise
 	//if we have RGB, or RGBA we convert
 	if ((img->getPixelFormat()==GL_RGB)||(img->getPixelFormat()==GL_RGBA))
@@ -370,7 +372,7 @@ bool DummyVideo::update(osg::NodeVisitor* nv) {
 
 	//2. you can copy here the video buffer to the main image video stream
 	//with a call like
-	//memcpy(_videoStreamList[0]->data(),newImage, _videoStreamList[0]->getImageSizeInBytes());
+    //std::std::memcpy(_videoStreamList[0]->data(),newImage, _videoStreamList[0]->getImageSizeInBytes());
 	// the newImage can be retrieved from another thread
 	// in this example we do nothing (already make a dummy copy in init())
 

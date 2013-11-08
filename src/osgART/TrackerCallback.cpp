@@ -16,13 +16,20 @@
  * OpenSceneGraph Public License for more details.
 */
 
+// std include
 
-#include "osgART/TrackerCallback"
+// OpenThreads include
 
+// OSG include
 #include <osg/Switch>
 #include <osg/Notify>
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
+
+// local include
+#include "osgART/TrackerCallback"
+
+
 
 namespace osgART {
 

@@ -16,11 +16,18 @@
  * OpenSceneGraph Public License for more details.
 */
 
-#include "osgART/TransformFilterCallback"
+// std include
 
+// OpenThreads include
+
+// OSG include
 #include <osg/io_utils>
 #include <osg/MatrixTransform>
 #include <osg/Matrixd>
+
+// local include
+#include "osgART/TransformFilterCallback"
+
 
 
 namespace osgART {
