@@ -25,16 +25,24 @@
 #include <windows.h>
 #endif
 
+// std include
+#include <sstream>
+
+// OpenThreads include
+
+// OSG include
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgDB/FileUtils>
 
+// osgART include
 #include <osgART/Scene>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
+#include <osgART/VideoPlane>
 
-#include <sstream>
+// local include
 
 
 std::string askForFileName(std::string defaultValue = "marker.patt") {
@@ -211,7 +219,9 @@ osg::Node* createDebugImageVisual() {
 	osg::Group* debugVisual = new osg::Group();
 
 	if (osg::Image* debugImage = debugImageField->get()) {
-		osgART::VideoGeode* vidGeode = new osgART::VideoGeode(debugImage, NULL, debugImage->s(), debugImage->t(), 20, 20, osgART::VideoGeode::USE_TEXTURE_2D);
+        osgART::VideoGeode* vidGeode = new osgART::VideoPlane(debugImage,
+                                                              osgART::VideoGeode::USE_TEXTURE_2D,
+                                                              debugImage->s(), debugImage->t(), 20, 20);
 		vidGeode->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 		debugVisual->addChild(vidGeode);
 	}
@@ -234,13 +244,13 @@ int main(int argc, char* argv[])  {
 
 	osgART::Scene* scene = new osgART::Scene();
 
-	osg::ref_ptr<osgART::Video> video = scene->addVideoBackground("osgart_video_artoolkit2");
+    osg::ref_ptr<osgART::Video> video = scene->addVideo("osgart_artoolkit","osgart_video_artoolkit");
 	if (!video.valid()) {
 		std::cout << "No video" << std::endl;
 		return -1;
 	}
 
-	osg::ref_ptr<osgART::Tracker> tracker = scene->addTracker("osgart_tracker_artoolkit2");
+	osg::ref_ptr<osgART::Tracker> tracker = scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit");
 	if (!tracker.valid()) {
 		std::cout << "No tracker" << std::endl;
 		return -1;
@@ -279,7 +289,7 @@ int main(int argc, char* argv[])  {
 	trainer->setEnabled(true);
 
 	osg::Camera* hudCamera = new osg::Camera();
-	hudCamera->setProjectionMatrixAsOrtho2D(0, video->s(), 0, video->t());
+	hudCamera->setProjectionMatrixAsOrtho2D(0, video->getStream()->s(), 0, video->getStream()->t());
 	hudCamera->setViewMatrix(osg::Matrix::identity());
 	hudCamera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
 	hudCamera->setRenderOrder(osg::Camera::POST_RENDER);

@@ -1,0 +1,140 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  VisualTracker
+ *  \brief Base class for visual tracker class
+ *
+ * A Visual Tracker generate targets and get image information.
+ */
+
+#ifndef OSGART_VISUALTRACKER
+#define OSGART_VISUALTRACKER 1
+
+// std include
+#include <map>
+#include <iostream>
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Object"
+#include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/Video"
+#include "osgART/Tracker"
+
+namespace osgART {
+
+	/* Forward declaration */
+	class VideoLayer;
+
+	/**
+	 * \class VisualTracker.
+	 *
+	 * support visual tracker
+	 */
+    class OSGART_EXPORT VisualTracker : public Tracker
+    {
+	public:
+
+        META_Object(osgART,VisualTracker)
+
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
+		VisualTracker();
+
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        VisualTracker(const VisualTracker& container, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
+
+		/** 
+		 * \brief assignemnt operator.
+		 *
+		 */
+		VisualTracker& operator = (const VisualTracker &);
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static VisualTracker* cast(osg::Referenced* instance);
+
+		/**
+		 * \brief Set the image to analyzed.
+		 *
+		 * \param video the video object to use
+		 * \param useInternalVideo internal video capture being used (image should be NULL)
+		 */
+		virtual void setImage(osg::Image* image,bool useInternalVideo = false);
+
+		/**
+		 * \brief retrieve the image used by the tracker
+		 * 
+		 * \return NULL if there is no image (sensor tracker)
+		 */
+		virtual osg::Image* getImage();
+
+		/**
+		 * Creates or gets the Camera Configuration object
+		 *
+		 * \return Camera Configuration object
+		 */
+		//virtual CameraConfiguration* getOrCreateCameraConfiguration();
+
+	protected:
+
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~VisualTracker();
+		
+		/* only videolayer and the container needs to access protected methods */
+		friend class VideoLayer;
+		friend class TrackerContainer;
+			
+		/**
+		 * Object that provides the image used for registration.
+		 */
+		osg::ref_ptr<osg::Image> _imagesource;
+
+		unsigned int _modifiedCount;
+
+		/**
+		 * Camera Configuration object that encapsulates the intrinsic camera parameters and distortion parameters.
+		 */
+		//osg::ref_ptr<CameraConfiguration> _cameraconfiguration;
+		
+	}; // class VisualTracker
+
+} // namespace osgART
+
+#endif // OSGART_VISUALTRACKER

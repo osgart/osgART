@@ -1,0 +1,104 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  GPSInertialTracker
+ *  \brief Base class for gps+inertial tracker class
+ *
+ * A GPS+Inertial Tracker generate targets and get sensor information.
+ */
+
+#ifndef OSGART_GPSINERTIALTRACKER
+#define OSGART_GPSINERTIALTRACKER 1
+
+// std include
+#include <map>
+#include <iostream>
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Object"
+#include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/Video"
+#include "osgART/Tracker"
+
+
+
+namespace osgART {
+
+	/**
+	 * \class GPSInertialTracker.
+	 *
+	 * support visual tracker
+	 */
+    class OSGART_EXPORT GPSInertialTracker : public Tracker
+    {
+	public:
+
+        META_Object(osgART,GPSInertialTracker)
+
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
+		GPSInertialTracker();
+
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        GPSInertialTracker(const GPSInertialTracker& container, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
+
+		/** 
+		 * \brief assignment operator.
+		 *
+		 */
+		GPSInertialTracker& operator = (const GPSInertialTracker &);
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static GPSInertialTracker* cast(osg::Referenced* instance);
+
+	protected:
+
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~GPSInertialTracker();
+			
+		//SensorData _gps;
+		//SensorData _inertial;
+		
+	}; // class GPSInertialTracker
+
+} // namespace osgART
+
+#endif // OSGART_GPSINERTIALTRACKER

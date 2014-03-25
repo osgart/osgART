@@ -1,0 +1,97 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  VideoStream
+ *  \brief Extension of osg::ImageStream with additional features
+ * 
+ * Extension of osg::ImageStream with additional features
+ **/
+
+#ifndef OSGART_VIDEOSTREAM
+#define OSGART_VIDEOSTREAM 1
+
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Version>
+#include <osg/Node>
+#include <osg/NodeVisitor>
+#include <osg/ImageStream>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+
+
+
+namespace osgART {
+
+	class OSGART_EXPORT VideoStream : public osg::ImageStream
+	{
+	public:
+	
+		/** Constructor */
+		VideoStream();
+		
+        /** Copy constructor using CopyOp to manage deep vs shallow copy. */
+        VideoStream(const VideoStream& image, 
+			const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
+        virtual osg::Object* cloneType() const 
+        { 
+			return new VideoStream(); 
+		}
+        
+        virtual osg::Object* clone(const osg::CopyOp& copyop) const 
+        { 
+			return new VideoStream(*this,copyop); 
+		}
+			
+        virtual bool isSameKindAs(const osg::Object* obj) const 
+        {
+			return dynamic_cast<const VideoStream*>(obj) != 0; 
+		}
+        
+        virtual const char* libraryName() const 
+        {
+			return "osgART"; 
+		}
+        
+        virtual const char* className() const 
+        {
+			return "VideoStream";
+		}			
+				
+		virtual void play();
+		
+		virtual void pause();
+		
+	protected:
+	
+		virtual ~VideoStream();
+		
+		
+	};
+	
+
+}
+
+#endif // OSGART_VIDEOSTREAM

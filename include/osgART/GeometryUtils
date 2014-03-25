@@ -1,25 +1,20 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
 /**
  *  \file  GeometrytUtils
@@ -31,6 +26,11 @@
 #ifndef OSGART_GEOMETRYUTILS
 #define OSGART_GEOMETRYUTILS 1
 
+// std include
+
+// OpenThreads include
+
+// OSG include
 #include <osg/Notify>
 #include <osg/Matrix>
 #include <osg/Texture>
@@ -40,12 +40,16 @@
 #include <osg/Geode>
 #include <osg/MatrixTransform>
 #include <osg/Shape>
+#include <osg/LineWidth>
 #include <osg/ShapeDrawable>
 
 #include <osgDB/ReadFile>
 
-#include <osgART/Utils>
-#include <osgART/VideoGeode>
+// local include
+#include "osgART/Utils"
+#include "osgART/VideoGeode"
+
+
 
 namespace osgART {
 
@@ -95,12 +99,239 @@ void addTexturedQuad(osgART::VideoGeode& geode, float width, float height)
  * \param	color	The color of the cube. Default value is white.
  * \return	The osg::Geode containing the cube shape.
  */
-osg::Geode* testCube(float size = 80.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f)) {
+osg::Geode* createTopCube(float size = 10.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f)) {
 	osg::Geode* geode = new osg::Geode();
 	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, size / 2.0f), size));
 	sd->setColor(color);
 	geode->addDrawable(sd);
 	return geode;
+}
+
+osg::Geode* createCube(float size = 10.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f)) 
+{
+	osg::Geode* geode = new osg::Geode();
+	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Box(osg::Vec3(0, 0, 0), size));
+	sd->setColor(color);
+	geode->addDrawable(sd);
+	return geode;
+}
+
+osg::Geode* createTopSphere(float size = 10.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f)) 
+{
+	osg::Geode* geode = new osg::Geode();
+	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0, 0, size / 2.0f), size));
+	sd->setColor(color);
+	geode->addDrawable(sd);
+	return geode;
+}
+
+osg::Geode* createSphere(float size = 10.0f, osg::Vec4 color = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f)) 
+{
+	osg::Geode* geode = new osg::Geode();
+	osg::ShapeDrawable* sd = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0, 0, 0), size));
+	sd->setColor(color);
+	geode->addDrawable(sd);
+	return geode;
+}
+
+osg::Geode* create3DAxis(float size=10.0f,float thickness=2.0f, osg::Vec4 colorx = osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f),osg::Vec4 colory = osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f), osg::Vec4 colorz = osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f))
+{
+	osg::Geode* geode = new osg::Geode();
+	
+	osg::Geometry* geom=new osg::Geometry();
+	geode->addDrawable(geom);
+
+	osg::Vec3Array* vcoords = new osg::Vec3Array();
+	geom->setVertexArray(vcoords);
+
+	osg::Vec4Array* ccoords = new osg::Vec4Array();
+	geom->setColorArray(ccoords);
+
+	vcoords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(size, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(0.0f, size, 0.0f));
+	vcoords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(0.0, 0.0f, size));
+	
+	ccoords->push_back(colorx);
+	ccoords->push_back(colorx);
+	ccoords->push_back(colory);
+	ccoords->push_back(colory);
+	ccoords->push_back(colorz);
+	ccoords->push_back(colorz);
+
+	geom->setColorBinding(osg::Geometry::BIND_PER_VERTEX);
+	
+	geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, vcoords->size()));
+	
+	osg::StateSet* stateset=geom->getOrCreateStateSet();
+	
+	osg::LineWidth* linewidth = new osg::LineWidth();
+	linewidth->setWidth(thickness);
+	stateset->setAttributeAndModes(linewidth,osg::StateAttribute::ON);
+	stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+	geom->setStateSet(stateset);
+
+	return geode;
+}
+
+//standard CS used in Computer Vision (e.g. OpenCV)
+//useful for debugging even though can be confusing 
+//as we recommend you to apply transformation in an openGL CS
+osg::Geode* create3DAxisRH(float size=10.0f,float thickness=3.0f, osg::Vec4 colorx = osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f),osg::Vec4 colory = osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f), osg::Vec4 colorz = osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f))
+{
+	osg::Geode* geode=create3DAxis(size,thickness,colorx,colory,colorz);
+	
+	osg::Vec3Array* vcoords=dynamic_cast<osg::Vec3Array*> (dynamic_cast<osg::Geometry*>(geode->getDrawable(0))->getVertexArray());
+	
+	(*vcoords)[3].set(osg::Vec3(0.0,-size,0.0));
+	(*vcoords)[5].set(osg::Vec3(0.0,0.0,-size));
+
+	return geode;
+}
+
+osg::Geode* create2DAxis(float size=10.0f,float thickness=2.0f, osg::Vec4 colorx = osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f),osg::Vec4 colory = osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f))
+{
+	osg::Geode* geode = new osg::Geode();
+	
+	osg::Geometry* geom=new osg::Geometry();
+	geode->addDrawable(geom);
+
+	osg::Vec3Array* vcoords = new osg::Vec3Array();
+	geom->setVertexArray(vcoords);
+
+	osg::Vec4Array* ccoords = new osg::Vec4Array();
+	geom->setColorArray(ccoords);
+
+	vcoords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(size, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+	vcoords->push_back(osg::Vec3(0.0f, size, 0.0f));
+	
+	ccoords->push_back(colorx);
+	ccoords->push_back(colorx);
+	ccoords->push_back(colory);
+	ccoords->push_back(colory);
+
+	geom->setColorBinding(osg::Geometry::BIND_PER_VERTEX);
+	
+	geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, vcoords->size()));
+	
+	osg::StateSet* stateset=geom->getOrCreateStateSet();
+	
+	osg::LineWidth* linewidth = new osg::LineWidth();
+	linewidth->setWidth(thickness);
+	stateset->setAttributeAndModes(linewidth,osg::StateAttribute::ON);
+	stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+	geom->setStateSet(stateset);
+
+	return geode;
+}
+
+osg::Geode* create2DAxisRH(float size=10.0f,float thickness=3.0f, osg::Vec4 colorx = osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f), osg::Vec4 colory = osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f))
+{	
+	osg::Geode* geode=create2DAxis(size,thickness,colorx,colory);
+	
+	osg::Vec3Array* vcoords=dynamic_cast<osg::Vec3Array*> (dynamic_cast<osg::Geometry*>(geode->getDrawable(0))->getVertexArray());
+	
+	(*vcoords)[3].set(osg::Vec3(0.0,-size,0.0));
+
+	return geode;
+}
+
+
+osg::Geode* createFiniteGrid(osg::Vec2f size =osg::Vec2f(10.,10.),float step = 1.f,float thickness = 3.0f, osg::Vec4 color = osg::Vec4f(1.,1.,1.,1.))
+{
+	
+	osg::Geode* geode = new osg::Geode();
+	
+	osg::Geometry* geom=new osg::Geometry();
+	geode->addDrawable(geom);
+
+	osg::Vec3Array* vcoords = new osg::Vec3Array();
+	geom->setVertexArray(vcoords);
+
+	osg::Vec4Array* ccoords = new osg::Vec4Array();
+	geom->setColorArray(ccoords);
+
+	for (int i=0;i<=size[0];i+=step)	
+	{
+		for (int j=0;j<=size[1];j+=step)	
+		{
+			vcoords->push_back(osg::Vec3(-size[0]/2.f,i-size[1]/2., 0.0f));
+			vcoords->push_back(osg::Vec3(size[0]/2.f, i-size[1]/2., 0.0f));
+			vcoords->push_back(osg::Vec3(j-size[0]/2.,-size[1]/2.f, 0.0f));
+			vcoords->push_back(osg::Vec3(j-size[0]/2.,size[1]/2.f, 0.0f));
+			ccoords->push_back(color);
+			ccoords->push_back(color);
+			ccoords->push_back(color);
+			ccoords->push_back(color);
+		}
+	}
+	geom->setColorBinding(osg::Geometry::BIND_PER_VERTEX);
+	
+	geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, vcoords->size()));
+	
+	osg::StateSet* stateset=geom->getOrCreateStateSet();
+	
+	osg::LineWidth* linewidth = new osg::LineWidth();
+	linewidth->setWidth(thickness);
+	stateset->setAttributeAndModes(linewidth,osg::StateAttribute::ON);
+	stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+	geom->setStateSet(stateset);
+	
+	return geode;
+}
+
+/*osg::Geode* createCameraPerspModel() {
+
+osg::Geode* createCameraPerspModel() {
+	osg::Geode* geode = new osg::Geode();
+	
+	osg::Geometry* geom=new osg::Geometry();
+	geode->addDrawable(geom);
+
+	osg::Vec3Array* vcoords = new osg::Vec3Array();
+	geom->setVertexArray(vcoords);
+
+	osg::Vec4Array* ccoords = new osg::Vec4Array();
+	geom->setColorArray(ccoords);
+
+	return geode;
+}
+*/
+
+osg::Camera* createHUDCamera(double left, double right, double bottom, double top,int renderbin=0 )
+{
+    osg::ref_ptr<osg::Camera> camera = new osg::Camera;
+    camera->setReferenceFrame( osg::Transform::ABSOLUTE_RF );
+    camera->setClearMask( GL_COLOR_BUFFER_BIT );
+    camera->setRenderOrder( osg::Camera::NESTED_RENDER );
+    camera->setAllowEventFocus( false );
+    camera->setViewMatrix(osg::Matrix::identity());
+    camera->setProjectionMatrix( osg::Matrix::ortho2D(left, right, bottom, top) );
+    camera->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
+    camera->getOrCreateStateSet()->setMode(GL_DEPTH_TEST,GL_FALSE);
+    camera->getOrCreateStateSet()->setRenderBinDetails(renderbin,"RenderBin");
+    return camera.release();
+}
+
+osg::Geode* createScreenQuad( float width, float height, float scale = 1.0f )
+{
+    osg::ref_ptr<osg::Geode> quad = new osg::Geode;
+
+    osg::Geometry* geom = osg::createTexturedQuadGeometry(
+        osg::Vec3(), osg::Vec3(width,0.0f,0.0f), osg::Vec3(0.0f,height,0.0f),
+        0.0f, 0.0f, width*scale, height*scale );
+    quad->addDrawable( geom );
+
+    //int values = osg::StateAttribute::OFF|osg::StateAttribute::PROTECTED;
+    //quad->getOrCreateStateSet()->setAttribute(
+    //    new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::FILL), values );
+    //quad->getOrCreateStateSet()->setMode( GL_LIGHTING, values );
+    
+    return quad.release();
 }
 
 osg::Node* loadModel(std::string filename) {
@@ -127,6 +358,24 @@ osg::MatrixTransform* scaleModel(osg::Node* model, float scalefactor) {
 	return scaleTransfo;
 }
 
+osg::MatrixTransform* rotateModel(osg::Node* model, osg::Quat rot) {
+	osg::MatrixTransform* translateTransfo;
+
+	translateTransfo=new osg::MatrixTransform(osg::Matrix::rotate(rot));
+	translateTransfo->addChild(model);
+
+	return translateTransfo;
+}
+
+osg::MatrixTransform* translateModel(osg::Node* model, osg::Vec3f pos) {
+	osg::MatrixTransform* translateTransfo;
+
+	translateTransfo=new osg::MatrixTransform(osg::Matrix::translate(pos));
+	translateTransfo->addChild(model);
+
+	return translateTransfo;
+}
+
 osg::MatrixTransform* translateUpModel(osg::Node* model, float z) {
 	osg::MatrixTransform* translateUpTransfo;
 
@@ -135,6 +384,7 @@ osg::MatrixTransform* translateUpModel(osg::Node* model, float z) {
 
 	return translateUpTransfo;
 }
+
 } // namespace osgART
 
 #endif  // OSGART_GEOMETRYUTILS

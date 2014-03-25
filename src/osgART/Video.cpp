@@ -1,66 +1,73 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Notify>
+
+// local include
 #include "osgART/Video"
 
-#include <osg/Notify>
+
+const int max_video_number=32;
 
 namespace osgART {
 
-	Video::Video() 
-		: osgART::Object(),
-		VideoImageStream(), 
-		FieldContainer<Video>()
-	{
+	Video::Video() :
+		osgART::Object(),
+		FieldContainer<Video>(),
+		_videoConfiguration(0L),
+		_horizontalFlip(false),
+		_verticalFlip(false)
 
-		this->setPixelBufferObject(new osg::PixelBufferObject(this));
-		
+	{
+		_stats=new osg::Stats("video");
+		_videoStreamList.reserve(max_video_number);
 	}
 
 	Video::Video(const Video& container,
 		const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) :
 		osgART::Object(),
-		VideoImageStream(container),
-		FieldContainer<Video>()
+		FieldContainer<Video>(),
+		_videoConfiguration(0L),
+		_horizontalFlip(false),
+		_verticalFlip(false)
 	{
 		
 	}
-
-	Video* Video::cast(osg::Referenced* instance)
-	{ 
-		return reinterpret_cast<Video*>(instance);
-	}
-
 	
 	Video::~Video()
 	{	    
-		this->setPixelBufferObject(NULL);
 	}
 
 	Video& 
 	Video::operator=(const Video &)
 	{
 		return *this;
+	}
+
+	// static
+	Video* Video::cast(osg::Referenced* instance)
+	{ 
+		return reinterpret_cast<Video*>(instance);
 	}
 
 	Field*
@@ -71,23 +78,39 @@ namespace osgART {
 		return (_found != _fields.end()) ? _found->second.get() : 0L;
 	}
 
-	/* virtual */
+	// virtual
 	VideoConfiguration* 
-	Video::getConfiguration()
+	Video::getOrCreateConfiguration()
 	{
-		return 0L;
+		if (!_videoConfiguration)
+		{
+			_videoConfiguration=new osgART::VideoConfiguration();
+		}
+		return _videoConfiguration;
 	}
 
+	// virtual
+	void 
+	Video::setConfiguration(VideoConfiguration* config)
+	{
+		*_videoConfiguration=*config;
+	}
+	
+	// virtual 
+	VideoStream* 
+	Video::getStream(size_t i /* =0 */) 
+	{
+		//todo check stream id exist
+		return _videoStreamList[i];
+	}
+	
 	void 
 	Video::setFlip(bool horizontal,
 		bool vertical) 
 	{
-		m_horizontal_flip = horizontal;
-		m_vertical_flip = vertical;
-
+		_horizontalFlip = horizontal;
+		_verticalFlip = vertical;
 	}
-
-	
 
 
 };

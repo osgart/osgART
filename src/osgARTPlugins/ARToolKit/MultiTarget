@@ -1,0 +1,76 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGART_MULTIMARKER
+#define OSGART_MULTIMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Target"
+
+// ARToolKit multitarget include
+#include <AR/arMulti.h>
+
+namespace osgART {
+
+	/**
+	* \class MultiTarget
+	* \brief A target consisting of many patterns which can be treated as one.
+	*/
+	class MultiTarget : public Target
+	{
+	public:       
+
+		/** 
+		* \brief default constructor.
+		*
+		*/
+		MultiTarget();
+	    
+		bool initialise(const std::string& multiFile);
+		
+		virtual void setActive(bool a);
+		
+		void update(ARMarkerInfo* targetInfo, int targetCount);
+		
+		/**
+		* \brief return the type of the maker.
+		* return if the target is a single or multi-pattern target.
+		* \return the type of the target
+		*/
+		TargetType getType() const;
+		
+	    
+	protected: 
+	
+		/**
+		* \brief destructor.
+		*/
+		virtual ~MultiTarget();
+		
+
+		ARMultiMarkerInfoT* m_multi;
+			
+	};
+};
+
+#endif

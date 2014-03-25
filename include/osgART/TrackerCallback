@@ -1,25 +1,20 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
 /**
  *  \file TrackerCallback
@@ -31,25 +26,29 @@
 #ifndef OSGART_TRACKERCALLBACK
 #define OSGART_TRACKERCALLBACK 1
 
+// std include
+
+// OpenThreads include
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
 #include <osg/ImageStream>
 #include <osg/Object>
 
-// Local include
+// local include
 #include "osgART/Export"
-#include "osgART/VideoImageStream"
+#include "osgART/VideoStream"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
-#include <osgART/Tracker>
+#include "osgART/Tracker"
+#include "osgART/BaseCallback"
 
-// OpenThreads
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
 
 namespace osgART {
-	class OSGART_EXPORT TrackerCallback : public osg::NodeCallback {
+	class OSGART_EXPORT TrackerUpdateCallback : public osg::NodeCallback {
 	public:
 
 		/**
@@ -57,14 +56,14 @@ namespace osgART {
 		 * \param node Node which will trigger an update on the attached tracker
 		 * \param tracker an instance of osgART::Tracker which is been updated
 		 */
-		static TrackerCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
+		static TrackerUpdateCallback* addOrSet(osg::Node* node, osgART::Tracker* tracker);
 
 
 
 		/**
 		 * Creates a tracker callback
 		 */
-		TrackerCallback(Tracker* tracker);
+		TrackerUpdateCallback(Tracker* tracker);
 
 	protected:
 

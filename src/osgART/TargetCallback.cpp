@@ -1,97 +1,48 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
+// std include
 
-#include "osgART/TargetCallback"
+// OpenThreads include
 
+// OSG include
 #include <osg/Switch>
 #include <osg/Notify>
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
 
+// local include
+#include "osgART/Export"
+#include "osgART/TargetCallback"
+
+
+
 namespace osgART {
 
-
-	void addEventCallback(osg::Node* node, osg::NodeCallback* cb)
-	{
-		/* paranoia check */
-		if (!node) return;
-
-		/* add initial callback */
-		if (!node->getEventCallback())
-		{
-			node->setEventCallback(cb);
-
-		} else if (cb)
-		{
-			node->getEventCallback()->addNestedCallback(cb);
-		}
-	}
-
-
-
-	void removeEventCallback(osg::Node* node, osg::NodeCallback* cb) {
-
-	   if (!node || !cb) return;    // Sanity check
-
-	   osg::NodeCallback* n = node->getEventCallback();
-	   if (!n) return;                // There is no callback list
-
-	   // Check the first callback
-	   if (n == cb) {
-		   // The first callback matches, so remove it, and reattach its child (which might be NULL)
-		   node->setEventCallback(n->getNestedCallback());
-		   return;
-	   }
-
-	   // Check nested callbacks
-	   while (n) {
-
-		   osg::NodeCallback* nested = n->getNestedCallback();
-		   if (!nested) return;        // Run out of children
-
-		   if (nested == cb) {
-			   // The callback matches, so remove it, and reattach its child (which might be NULL)
-			   n->setNestedCallback(nested->getNestedCallback());
-			   return;
-		   }
-
-		   n = nested; // Move to next callback
-
-	   }
-
-   }
-
-
-	void attachDefaultEventCallbacks(osg::Node* node, Target* target)
+	void attachDefaultTargetCallbacks(osg::Node* node, Target* target)
 	{
 		if (!node) {
-			osg::notify() << "attachDefaultEventCallbacks: Can't attach callbacks to NULL node" << std::endl;
+			osg::notify() << "attachDefaultTargetCallbacks: Can't attach callbacks to NULL node" << std::endl;
 			return;
 		}
 
 		if (!target) {
-			osg::notify() << "attachDefaultEventCallbacks: Can't attach callbacks with NULL target" << std::endl;
+			osg::notify() << "attachDefaultTargetCallbacks: Can't attach callbacks with NULL target" << std::endl;
 			return;
 		}
 
@@ -135,14 +86,14 @@ namespace osgART {
 
 			// Handler for osg::MatrixTransforms
 			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {
-				mt->setMatrix(m_target->getTransform());
+				mt->setMatrix(m_target->getMatrix());
 			}
 
 			// Handler for osg::PositionAttitudeTransforms
 			// TODO: check correct translation/rotation order
 			else if (osg::PositionAttitudeTransform* pat = dynamic_cast<osg::PositionAttitudeTransform*>(node)) {
-				pat->setPosition(m_target->getTransform().getTrans());
-				pat->setAttitude(m_target->getTransform().getRotate());
+				pat->setPosition(m_target->getMatrix().getTrans());
+				pat->setAttitude(m_target->getMatrix().getRotate());
 				pat->setScale(osg::Vec3(1.0f, 1.0f, 1.0f));
 			}
 
@@ -305,7 +256,7 @@ namespace osgART {
 				"Target: " << m_target->getName() << std::endl <<
 				"Type: " << typeid(*m_target).name() << std::endl <<
 				"Confidence: " << m_target->getConfidence() << std::endl <<
-				"Transform: " << std::endl << m_target->getTransform() << std::endl;
+				"Transform: " << std::endl << m_target->getMatrix() << std::endl;
 
 		}
 
@@ -332,8 +283,8 @@ namespace osgART {
 
 		if (bothValid) {
 
-			baseMatrix = m_targetA->getTransform();
-			paddleMatrix = m_targetB->getTransform();
+			baseMatrix = m_targetA->getMatrix();
+			paddleMatrix = m_targetB->getMatrix();
 			baseMatrix.invert(baseMatrix);
 
 			if (osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(node)) {

@@ -1,29 +1,26 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
-#include "osgART/VideoLayer"
-#include "osgART/Tracker"
+// std include
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Texture>
 #include <osg/Texture2D>
 #include <osg/TextureRectangle>
@@ -39,6 +36,12 @@
 #include <osg/BlendFunc>
 #include <osg/Notify>
 #include <osg/Image>
+#include <osg/GraphicsContext>
+
+// local include
+#include "osgART/VideoLayer"
+#include "osgART/Tracker"
+
 
 
 namespace osgART {
@@ -46,8 +49,7 @@ namespace osgART {
 
 	// VideoLayer
 	VideoLayer::VideoLayer() : osg::Camera()
-	{		
-		
+	{	
 		this->setProjectionMatrixAsOrtho2D(0.0f, 1.0f, 0.0f, 1.0f);
 		this->setViewMatrix(osg::Matrix::identity());
 		this->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
@@ -73,8 +75,37 @@ namespace osgART {
 	{	    
 	}
 	
+	void 
+	VideoLayer::setType(LayerType ltype) {		
+		if (ltype==VIDEO_BACKGROUND) {
+			this->setRenderOrder(osg::Camera::NESTED_RENDER);	
+		}
+		else
+		{
+			this->setRenderOrder(osg::Camera::POST_RENDER);			
+		}
+		
+	}
+	void VideoLayer::setWindowSize(osg::Vec2i pos, osg::Vec2i size) {
+			this->setViewport(new osg::Viewport(pos[0],pos[1],size[0],size[1]));		
+	}
 
+	void VideoLayer::setRelativeSize(osg::Vec2f pos, osg::Vec2f size, osg::Camera* main) {
 
+			this->setGraphicsContext(main->getGraphicsContext());
+
+			this->setViewport(new osg::Viewport(main->getGraphicsContext()->getTraits()->width*pos[0],
+			main->getGraphicsContext()->getTraits()->height*pos[1],
+			main->getGraphicsContext()->getTraits()->width*size[0],
+			main->getGraphicsContext()->getTraits()->height*size[1]));
+
+			this->setProjectionResizePolicy(osg::Camera::FIXED);
+	}
+
+	//void VideoLayer::setRelativeSize(osg::Vec2i pos, osg::Vec2i size) {
+			//this->setViewport(new osg::Viewport(pos[0],pos[1],size[0],size[1]));
+	//}
+	
 	VideoFlipper::VideoFlipper(bool flipH, bool flipV) : osg::MatrixTransform(),
 		_flipH(flipH),
 		_flipV(flipV)

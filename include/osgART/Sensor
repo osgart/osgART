@@ -1,0 +1,150 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  Sensor
+ *  \brief Base class for sensor class
+ *
+ * A Sensor generate sensor data 
+ */
+
+#ifndef OSGART_SENSOR
+#define OSGART_SENSOR 1
+
+// std include
+#include <map>
+#include <iostream>
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Geometry>
+#include <osg/Projection>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Object"
+#include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/SensorData"
+#include "osgART/SensorConfiguration"
+
+
+
+namespace osgART {
+
+	/**
+	 * \class Sensor.
+	 *
+	 * Base class for a sensor which in the context of AR is an entity
+	 * that connects sensor data and their representation in
+	 * the virtual environment.
+	 */
+    class OSGART_EXPORT Sensor : public osgART::Object,
+    							 public FieldContainer<Sensor>
+    {
+	public:
+
+        META_Object(osgART,Sensor)
+
+		/** 
+		 * Default constructor. Initializes also the FieldContainer 
+		 * explicitly.
+		 */
+		Sensor();
+
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        Sensor(const Sensor& container, const osg::CopyOp& co = osg::CopyOp::SHALLOW_COPY);
+
+		/** 
+		 * \brief assignemnt operator.
+		 *
+		 */
+		Sensor& operator = (const Sensor &);
+		
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted
+		 * \return 0 if can't cast otherwise correctly typed instance
+		 */
+		static Sensor* cast(osg::Referenced* instance);
+		
+		 /**
+		 * Access a field by its name. You need to cast
+		 * the field into its respective type in order
+		 * to access it.
+		 * \param name Name of the field
+		 * \return pointer to the field (0L if not found)
+		 */
+		Field* get(const std::string& name);
+				
+		/**
+		 * Get the sensor configuration struct
+		 * \return struct SensorConfiguration
+		 */
+		virtual SensorConfiguration* getOrCreateConfiguration();
+		
+		/**
+		 * Set the sensor configuration struct
+		 * \param SensorConfiguration sensor configuration
+		*/
+		virtual void setConfiguration(SensorConfiguration* config);		
+			
+		/**
+		 * \brief retrieve specific sensor.
+		 * \param sensor data identification
+		 * get a sensor data from the list of sensor managed by the sensor.
+		 */
+		virtual SensorData* getSensorData(size_t idx=0);
+
+		inline size_t
+		getSensorDataNum() const { return _sensorDataList.size(); }
+
+	protected:
+
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~Sensor();
+
+		/**
+		 * type for a vector of reference counted targets.
+		 */
+        typedef std::vector< osg::ref_ptr<SensorData> > SensorDataListType;
+
+		/**
+		 * A list of video stream associated with this video.
+		 */
+		SensorDataListType _sensorDataList;
+	
+		/**
+		 * Video Configuration object that encapsulates the initialization parameters.
+		 */
+		osg::ref_ptr<SensorConfiguration> _sensorConfiguration;
+
+	}; // class Sensor
+
+} // namespace osgART
+
+#endif // OSGART_SENSOR

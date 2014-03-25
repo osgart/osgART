@@ -1,28 +1,29 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
 #ifndef OSGART_VIDEOCALLBACK
 #define OSGART_VIDEOCALLBACK 1
+
+// std include
+
+// OpenThreads include
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
 
 // OSG include
 #include <osg/ref_ptr>
@@ -30,18 +31,97 @@
 #include <osg/ImageStream>
 #include <osg/Object>
 
-// Local include
+// local include
 #include "osgART/Export"
-#include "osgART/VideoImageStream"
-#include "osgART/VideoGeode"
 #include "osgART/Field"
+#include "osgART/Video"
+#include "osgART/VideoGeode"
+#include "osgART/BaseCallback"
 
-// OpenThreads
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
 
 namespace osgART {
 
+	class OSGART_EXPORT VideoUpdateCallback : public osg::NodeCallback {
+	public:
+
+        /**
+         * Creates a video update callback
+         */
+        VideoUpdateCallback(Video* video);
+
+        /**
+		 * Add or sets a VideoUpdateCallback to any node
+		 * \param node Node which will trigger an update on the attached video
+         * \param video an instance of osgART::Video which is been updated
+		 */
+		static VideoUpdateCallback* addOrSet(osg::Node* node, osgART::Video* video);
+
+	protected:
+
+		/**
+         * Updates the video within here.
+		 */
+		void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+	private:
+
+        osg::observer_ptr<Video> _video;
+		int _framenumber;
+	};
+
+    class OSGART_EXPORT VideoStartCallback : public osg::NodeCallback {
+
+    public:
+
+        /**
+         * Creates a video start callback
+         */
+        VideoStartCallback(osgART::Video* Video);
+
+        /**
+         * Add or sets a VideoStartCallback to any node
+         * \param node Node which will trigger a start on the attached video
+         * \param video an instance of osgART::Video which is been updated
+         */
+        static VideoStartCallback* addOrSet(osg::Node* node, osgART::Video* video);
+
+        /**
+         * Starts the video within here.
+         */
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+    private:
+        osg::observer_ptr<osgART::Video> _video;
+        bool _oneshot;
+    };
+
+
+    class OSGART_EXPORT VideoStartAndUpdateCallback : public osg::NodeCallback {
+
+    public:
+
+        /**
+         * Creates a video start and update callback
+         */
+        VideoStartAndUpdateCallback(osgART::Video* Video);
+
+        /**
+         * Add or sets a VideoStartAndUpdateCallback to any node
+         * \param node Node which will trigger a start and update on the attached video
+         * \param video an instance of osgART::Video which is been updated
+         */
+        static VideoStartAndUpdateCallback* addOrSet(osg::Node* node, osgART::Video* video);
+
+        /**
+         * Starts and updates the video within here.
+         */
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+
+     protected:
+        osg::observer_ptr<osgART::Video> _video;
+        int _framenumber;
+        bool _oneshot;
+    };
 }; // namespace osgART
 
 #endif // OSGART_VIDEOCALLBACK

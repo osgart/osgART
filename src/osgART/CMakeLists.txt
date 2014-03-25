@@ -6,27 +6,38 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(lib_srcs
 	Foundation.cpp
-    Object.cpp
-    Event.cpp	
+    	Object.cpp
+    	Event.cpp	
+	BaseCallback.cpp
 	PluginManager.cpp
 	Video.cpp
 	VideoCallback.cpp
 	VideoConfiguration.cpp
-	VideoImageStream.cpp
-#	VideoImageStreamCallback.cpp
-	ImageStreamCallback.cpp
+	VideoStream.cpp
+#	VideoStreamCallback.cpp
 	VideoGeode.cpp
+	VideoPlane.cpp
 	VideoLayer.cpp
 	VideoUtils.cpp
 	Tracker.cpp
 	TrackerCallback.cpp
 	TrackerConfiguration.cpp
-	Calibration.cpp
+	CameraConfiguration.cpp
 	TrackerTrainingSupport.cpp
 	TrackerUtils.cpp
 	Target.cpp
 	TargetCallback.cpp
+	VisualTracker.cpp
+	GPSInertialTracker.cpp
 	TransformFilterCallback.cpp
+	Sensor.cpp
+#	SensorCallback.cpp
+	SensorConfiguration.cpp
+	SensorData.cpp
+	Mapper.cpp
+#	MapperpCallback.cpp
+	MapperConfiguration.cpp
+	MapData.cpp
 	Scene.cpp
 	Utils.cpp
 )
@@ -34,29 +45,40 @@ set(lib_srcs
 set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/Foundation
 	${CMAKE_SOURCE_DIR}/include/osgART/Object
-    ${CMAKE_SOURCE_DIR}/include/osgART/Event
+    	${CMAKE_SOURCE_DIR}/include/osgART/Event
 	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Export
+	${CMAKE_SOURCE_DIR}/include/osgART/BaseCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/PluginManager
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlugin
+	${CMAKE_SOURCE_DIR}/include/osgART/ExportPlugin
 	${CMAKE_SOURCE_DIR}/include/osgART/Video
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoCallback	
-	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStream
-	${CMAKE_SOURCE_DIR}/include/osgART/ImageStreamCallback
-#	${CMAKE_SOURCE_DIR}/include/osgART/VideoImageStreamCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoStream
+#	${CMAKE_SOURCE_DIR}/include/osgART/VideoStreamCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoGeode
+	${CMAKE_SOURCE_DIR}/include/osgART/VideoPlane
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoLayer
 	${CMAKE_SOURCE_DIR}/include/osgART/VideoUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Tracker
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerConfiguration
-	${CMAKE_SOURCE_DIR}/include/osgART/Calibration
+	${CMAKE_SOURCE_DIR}/include/osgART/CameraConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerTrainingSupport
+	${CMAKE_SOURCE_DIR}/include/osgART/VisualTracker
+	${CMAKE_SOURCE_DIR}/include/osgART/GPSInertialTracker	
 	${CMAKE_SOURCE_DIR}/include/osgART/Target
 	${CMAKE_SOURCE_DIR}/include/osgART/TargetCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TransformFilterCallback
 	${CMAKE_SOURCE_DIR}/include/osgART/TrackerUtils	
+	${CMAKE_SOURCE_DIR}/include/osgART/Sensor
+#	${CMAKE_SOURCE_DIR}/include/osgART/SensorCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/SensorConfiguration
+	${CMAKE_SOURCE_DIR}/include/osgART/SensorData
+	${CMAKE_SOURCE_DIR}/include/osgART/Mapper
+#	${CMAKE_SOURCE_DIR}/include/osgART/MapperCallback
+	${CMAKE_SOURCE_DIR}/include/osgART/MapperConfiguration
+	${CMAKE_SOURCE_DIR}/include/osgART/MapData
 	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Scene
 	${CMAKE_SOURCE_DIR}/include/osgART/Utils
@@ -124,11 +146,6 @@ set_target_properties(${lib_name}
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
 
 
-add_subdirectory(Plugins)
-
-#add_subdirectory(Tracker)
-#add_subdirectory(Video)
-#add_subdirectory(Sensor)
 
 if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
         message(STATUS "x86-64 detected")
@@ -149,19 +166,29 @@ if(WIN32)
 	set(lib_libinstalldir bin)
 endif(WIN32)
 
-if (NOT OSGART_USE_FRAMEWORKS)
-	install(TARGETS ${lib_name}
+if(APPLE)
+	set(lib_libinstalldir ${CMAKE_INSTALL_PREFIX}/lib/)	
+		install(TARGETS ${lib_name} 
 			RUNTIME DESTINATION bin
 			LIBRARY DESTINATION ${lib_libinstalldir}
-			ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
-	#		FRAMEWORK DESTINATION /Library/Frameworks
+			# LIBRARY DESTINATION ${lib_libinstalldir}
+			ARCHIVE DESTINATION lib
 			)
-endif(NOT OSGART_USE_FRAMEWORKS)
+endif(APPLE)
+
+# if (NOT OSGART_USE_FRAMEWORKS)
+# 	install(TARGETS ${lib_name}
+# 			RUNTIME DESTINATION bin
+# 			LIBRARY DESTINATION ${lib_libinstalldir}
+# 			ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
+# 	#		FRAMEWORK DESTINATION /Library/Frameworks
+# 			)
+# endif(NOT OSGART_USE_FRAMEWORKS)
 
 install(FILES ${lib_hdrs}
 		DESTINATION include/${lib_name}
 		)
-
+ 
 
 #
 # Install share/
@@ -172,10 +199,10 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/share
 	)
 
 #
-# Optional SDK packaging (default is on)
+# Optional SDK packaging (default is off)
 #
 if(WIN32)
-	option(OSGART_BUILD_SDK "Build as an SDK which will copy all necessary files into the osgART folder" ON)
+	option(OSGART_BUILD_SDK "Build as an SDK which will copy all necessary files into the osgART folder (osg)" OFF)
 	if(OSGART_BUILD_SDK)
 		install(
 			DIRECTORY "${OSG_INCLUDE_DIR}/../"

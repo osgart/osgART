@@ -1,25 +1,20 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
  /**
  *  \file  Video
@@ -31,31 +26,36 @@
 #ifndef OSGART_VIDEO
 #define OSGART_VIDEO 1
 
+// std include
+
+// OpenThreads include
+
 // OSG include
 #include <osg/ref_ptr>
 #include <osg/Image>
 #include <osg/ImageStream>
 #include <osg/Object>
 
-// Local include
+// local include
 #include "osgART/Export"
 #include "osgART/Object"
-#include "osgART/VideoImageStream"
+#include "osgART/Event"
+#include "osgART/Field"
+
+#include "osgART/VideoStream"
 #include "osgART/VideoConfiguration"
 #include "osgART/VideoGeode"
 #include "osgART/Field"
 
-// OpenThreads
-#include <OpenThreads/ScopedLock>
-#include <OpenThreads/Mutex>
+
 
 namespace osgART {
 	/**
 	 * Video encapsulates different capturing devices and sources. 
 	 * 
 	 */	
-	class OSGART_EXPORT Video : public osgART::Object, public VideoImageStream,
-		public FieldContainer<Video>
+	class OSGART_EXPORT Video : public osgART::Object,
+								public FieldContainer<Video>
 	{
 	public:
 
@@ -78,17 +78,15 @@ namespace osgART {
 		 *
 		 */
 		Video& operator = (const Video &);
-	
 		
-		/** 
-		 * Get the mutex for a video object to lock against read/write operations
-		 * \return reference to the internal mutex
+		/**
+		 * Needed for plugin loaded objects which are used in other
+		 * languages which don't support dynamic casting (e.g. Python)
+		 * \param instance instance to be casted (by a tracker)
+		 * \return 0 if can't cast otherwise correctly typed instance
 		 */
-		inline OpenThreads::Mutex& getMutex()
-		{
-			return _mutex;		
-		}
-		
+		static Video* cast(osg::Referenced* instance);
+			
 		/**
 		 * Access a field by its name. You need to cast
 		 * the field into its respective type in order
@@ -98,14 +96,27 @@ namespace osgART {
 		 */
 		Field* get(const std::string& name);
 		
-		
 		/**
 		 * Get the video configuration struct
 		 * \return struct VideoConfiguration
 		 */
-		virtual VideoConfiguration* getConfiguration();
+		virtual VideoConfiguration* getOrCreateConfiguration();
 		
+		/**
+		 * Set the video configuration struct
+		 * \param VideoConfiguration video configuration
+		*/
+		virtual void setConfiguration(VideoConfiguration* config);		 
+		 
+		/**
+		 * return a video stream
+		 * \param stream identification
+		*/
+		virtual VideoStream* getStream(size_t idx=0);
 		
+		inline size_t
+		getVideoStreamtNum() const { return _videoStreamList.size(); }
+		 
 		/**
 		 * Set internal flipping. 
 		 * \param horizontal switch on and off horizontal flipping
@@ -113,37 +124,31 @@ namespace osgART {
 		 */
 		void setFlip(bool horizontal, bool vertical);
 		
-		/**
-		 * Needed for plugin loaded objects which are used in other
-		 * languages which don't support dynamic casting (e.g. Python)
-		 * \param instance instance to be casted to a tracker
-		 * \return 0 if can't cast otherwise correctly typed instance
-		 */
-		static Video* cast(osg::Referenced* instance);
-	   		
-	
-		
 	protected:
 	
-		bool m_vertical_flip;
-		bool m_horizontal_flip;
-		
 		/** 
 		 * \brief destructor.
 		 *
 		 */
 		virtual ~Video();   
-
+	
 		/**
 		 * type for a vector of reference counted targets.
 		 */
-        typedef std::vector< osg::ref_ptr<VideoImageStream> > VideoImageList;
+        typedef std::vector< osg::ref_ptr<VideoStream> > VideoStreamListType;
 
-		VideoImageList _videoImageList;
+		/**
+		 * A list of video stream associated with this video.
+		 */
+		VideoStreamListType _videoStreamList;
 
-   		// used for locking
-		OpenThreads::Mutex _mutex;
-
+		/**
+		 * Video Configuration object that encapsulates the initialization parameters.
+		 */
+		osg::ref_ptr<VideoConfiguration> _videoConfiguration;
+			
+		bool _verticalFlip;
+		bool _horizontalFlip;
 	
 	}; // class Video
 

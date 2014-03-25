@@ -1,25 +1,20 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
 /**
  *  \file  Object
@@ -32,13 +27,80 @@
 #ifndef OSGART_OBJECT
 #define OSGART_OBJECT 1
 
+// std include
+
+// OpenThreads include
+#include <OpenThreads/ScopedLock>
+#include <OpenThreads/Mutex>
+
+// OSG include
+#include <osg/Object>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+
+// local include
+#include "osgART/Event"
+
+
+
 namespace osgART {
 
-    class Object {
+	/**
+	 * \class Object
+	 *
+	 * 
+	 */
+    class Object: public osg::Object, public osgART::EventHandler {
     public:
-        Object() {}
+        Object() :  osg::Object(), osgART::EventHandler(), _modifiedCount(0xFFFFF)  {}
+        
+    	Object(const Object& container, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : osg::Object() { }
+
         virtual ~Object() {}
 
+		inline virtual bool init() {return false;};
+		inline virtual bool close(bool waitForThread=true) {return false;};
+		inline virtual bool start() {return false;};
+		inline virtual bool stop() {return false;};
+		inline virtual bool update(osg::NodeVisitor* nv = 0L) {return false;};
+	
+		/** 
+		 * Get the mutex for a video object to lock against read/write operations
+		 * \return reference to the internal mutex
+		 */
+		inline virtual OpenThreads::Mutex& getMutex()
+		{
+			return _mutex;		
+		}
+
+		 /**
+		 * Returns stats for the Object 
+		 *
+		 * \return pointer to the stats connected to the object
+		 */		 
+		inline virtual osg::Stats* getStats() { return _stats.get(); };
+		
+		/**
+		 * Set the stats for the Object 
+		 *
+		 * \param stats pointer to the object measurements
+		 */		 		
+		inline virtual void setStats(osg::Stats* stats) { _stats = stats; } ;
+		
+	protected:
+
+		std::string		_version;	//!< Store the version of this object.
+		bool			_enable;	//!< Flag to specify if the object is enable or not, if we do object update or not.
+
+		unsigned int _modifiedCount;
+
+		// used for locking
+		OpenThreads::Mutex _mutex;
+
+		// used for statistics
+		osg::ref_ptr<osg::Stats> _stats;
+
+		inline virtual void dump() {};
     };
 
 }

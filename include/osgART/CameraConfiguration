@@ -1,0 +1,120 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  CameraConfiguration
+ *  \brief Encapsulates camera CameraConfiguration information about a video source.
+ *
+ * Encapsulates camera CameraConfiguration information about a video source.
+ */
+
+#ifndef OSGART_CAMERACONFIGURATION
+#define OSGART_CAMERACONFIGURATION 1
+
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Camera>
+#include <osg/Geometry>
+#include <osg/Vec2b>
+
+// local include
+#include "osgART/Export"
+#include "osgART/VideoGeode"
+
+
+
+namespace osgART
+{
+
+	class OSGART_EXPORT CameraConfiguration : public osg::Referenced
+	{
+	public:
+
+
+		/**
+		 * Constructor for the CameraConfiguration
+		 */
+		CameraConfiguration();
+
+		/**
+		 * Set the size of the actual camera image in pixels
+		 *
+		 * \param width width of the camera image
+		 * \param height height of the camera image
+		 */
+		virtual void setSize(int width, int height);
+
+
+		/**
+		 * Set the size of the actual camera image in pixels
+		 *
+		 * \param image image to be used by the CameraConfiguration
+		 */
+		virtual void setSize(const osg::Image& image);
+
+
+		/**
+		 * Load a stored CameraConfiguration from an external file (tracker dependent)
+		 *
+		 * \param filename resource to be loaded into the CameraConfiguration
+		 * \return true if the resource could be loaded successfully
+		 */
+		virtual bool load(const std::string& filename);
+
+		/**
+		 * Use the distortion parameters to compute undistorted positions for the
+		 * specified x and y coordinates.
+		 *
+		 * \param x Input x coordinate
+		 * \param y Input y coordinate
+		 * \param u_x Output x coordinate
+		 * \param u_y Output y coordinate
+		 */
+		inline virtual
+		void undistort(double x, double y, double* u_x, double* u_y) {
+			*u_x = x;
+			*u_y = y;
+		}
+
+		static int observedToIdeal(
+			const double dist_factor[4],
+			const double ox,
+			const double oy,
+			double *ix, double *iy,
+			int loop = 3);
+
+		osg::Matrix getProjectionMatrix() {return _projection;};
+
+	protected:
+
+		virtual ~CameraConfiguration();
+
+		osg::Matrix _intrinsics;
+		osg::Vec4	_distortion;
+
+		osg::Matrix _projection;
+
+	};
+
+} //namespace osgART
+
+
+#endif // OSGART_CAMERACONFIGURATION

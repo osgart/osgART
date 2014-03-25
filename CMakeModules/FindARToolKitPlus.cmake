@@ -1,0 +1,27 @@
+# Locating ARToolKitPlus
+# 
+# (c) 2013 Raphael Grasset
+#
+# Locate ARToolKitPlus
+# This module defines
+# ARTOOLKITPLUS_LIBRARY
+# ARTOOLKITPLUS_FOUND, if false, do not try to link to DSVL
+# ARTOOLKITPLUS_INCLUDE_DIR, where to find the headers
+
+
+find_path(ARTOOLKITPLUS_INCLUDE_DIR ARToolKitPlus.h
+    PATHS
+    NO_DEFAULT_PATH
+)
+
+find_library(ARTOOLKITPLUS_LIBRARY
+    NAMES ARToolKitPlus ARToolKitPlusDll
+    PATHS
+    NO_DEFAULT_PATH
+)
+
+set(ARTOOLKITPLUS_FOUND "NO")
+if(ARTOOLKITPLUS_INCLUDE_DIR AND ARTOOLKITPLUS_LIBRARY)
+	set(ARTOOLKITPLUS_FOUND "YES")
+endif(ARTOOLKITPLUS_INCLUDE_DIR AND ARTOOLKITPLUS_LIBRARY)
+

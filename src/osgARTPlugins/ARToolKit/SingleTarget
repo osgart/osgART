@@ -1,0 +1,89 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGART_SINGLEMARKER
+#define OSGART_SINGLEMARKER 1
+
+// STL include
+#include <string>
+#include <vector>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Target"
+
+// AR ToolKit include
+#include <AR/ar.h>
+
+namespace osgART {
+
+	/**
+	* \class SingleTarget.
+	* \brief A target consisting of a single pattern.
+	*/
+	class SingleTarget : public Target
+	{
+	public:	
+		
+        virtual bool isSameKindAs(const osg::Object* obj) const {
+            return dynamic_cast<const SingleTarget*>(obj) != 0L;
+        }
+        virtual const char* className() const { return "SingleTarget"; }
+        
+    
+		/** 
+		 * \brief default constructor.
+		 *
+		 */
+		SingleTarget();
+		
+	    
+		bool initialise(const std::string& pattFile, double width, double center[2]);
+
+		virtual void setActive(bool a);
+
+		void update(ARMarkerInfo* targetInfo, bool useHistory = false);
+		
+		int getPatternID();
+		double getPatternWidth();
+		double* getPatternCenter();
+
+		
+		TargetType getType() const;
+	
+	    
+	protected:
+	
+		/**
+		 * \brief destructor.
+		 */
+		virtual ~SingleTarget();	    
+
+	    int             patt_id;
+		double          patt_width;
+		double          patt_center[2];
+		double          patt_trans[3][4];
+		
+		bool			mInitialData;
+		
+		friend class ARToolKitTracker;
+		
+	};
+};
+
+#endif

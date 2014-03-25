@@ -1,0 +1,140 @@
+/* -*-c++-*-
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  MapData
+ *  \brief Sensor Data Objects. produce sensor data (pos, rotation, multiple digital values)
+ * 
+ * 
+ **/
+
+#ifndef OSGART_MAPDATA
+#define OSGART_MAPDATA 1
+
+// std include 
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Version>
+#include <osg/Node>
+#include <osg/NodeVisitor>
+#include <osg/Stats>
+#include <osg/Geometry>
+
+// local include
+#include "osgART/Export"
+#include "osgART/Field"
+
+
+
+namespace osgART {
+
+    class Mapper;
+
+	/**
+    * \class MapData
+    * \brief A base class from which specific types of mapping data are derived.
+	*/
+    class OSGART_EXPORT MapData : public osg::Object, public FieldContainer<MapData>
+	{
+	public:
+
+        META_Object(osgART,MapData)
+		
+        enum MapDataType
+		{
+            MAPDATA_UNKNOWN = 0,/**< Unknown or unspecified target type. */
+            MAPDATA_POINTS, /** 3D position */
+            MAPDATA_MESH /** 3D orientation */
+        };
+
+		/**
+		* \brief default constructor.
+		*
+		*/
+        MapData();
+
+		/** 
+		 * Copy constructor. Needed for cloning in OSG
+		 */
+        MapData(const MapData& MapData, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+		/**
+		* Return the type of the Sensor Data.
+		* \return Type of sensor data
+		*/
+        virtual MapDataType getType() const;
+
+		/**
+		* Determine if the sensor is active.
+        * \return the validity of the sensor (true if valid).
+		*/
+		virtual bool valid() const;
+
+		/**
+        * \brief set the respective target active
+		* \param active set to TRUE if the target should be tracked
+		*/
+		virtual void setActive(bool active);
+
+		/**
+        * \brief retrieve activity status from the sensor
+        * \return true if the sensor is active
+		*/
+        virtual bool active() const;
+		
+		/**
+		 * override for usage in trackers
+		 */
+        virtual void update(Mapper& mapper) {}
+
+        inline virtual osg::Geometry* getGeometry() {return _geometry;};
+
+        inline virtual void setGeometry(osg::Geometry* geometry) { _geometry=geometry;};
+
+	protected:
+
+		/**
+		* \brief destructor.
+		*/
+        virtual ~MapData();
+
+	protected:
+
+		bool _valid;
+		bool _active;
+		std::string _name;
+
+        osg::Geometry* _geometry;
+	};
+
+    class OSGART_EXPORT PointCloudMapData : public MapData {
+
+    public:
+       PointCloudMapData(): MapData() {};
+
+
+    protected:
+        ~PointCloudMapData() {};
+
+    };
+
+}
+
+#endif // OSGART_MAPDATA

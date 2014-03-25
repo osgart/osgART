@@ -1,0 +1,77 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef OSGART_ARToolKitTrainingSupport
+#define OSGART_ARToolKitTrainingSupport 1
+
+<<<<<<< HEAD:src/osgART/Plugins/ARToolKit/ARToolKitTrainingSupport
+#include <osg/Referenced>
+=======
+// std include
+
+// OSG include
+#include <osg/Image>
+
+// Local include
+#include "osgART/Export"
+#include "osgART/TrackerTrainingSupport"
+>>>>>>> d5296e9319438be496929d0514180f27143a505d:src/osgARTPlugins/ARToolKit/ARToolKitTrainingSupport
+
+#include "osgART/TrackerTrainingSupport"
+
+#include <AR/config.h>
+#include <AR/video.h>
+#include <AR/ar.h>
+#include <AR/arGLUtils.h>
+
+namespace osgART {
+
+	class ARToolKitTracker;
+
+	/**
+	 * \class ARToolKitTrainingSupport.
+	 * 
+	 * Provides marker training support for the ARToolKit tracker.
+	 */
+	class ARToolKitTrainingSupport : public TrackerTrainingSupport
+	{
+	
+	public:        
+	
+		ARToolKitTrainingSupport(ARToolKitTracker* tracker);
+	
+		virtual std::string getName() { return "ARToolKit Training Support"; }
+	
+		virtual TrainingSet* getLatestTrainingSet();
+	
+		void processTargets(ARMarkerInfo* markers, int markerCount);
+	
+	protected:
+	
+		virtual ~ARToolKitTrainingSupport();
+		
+		ARToolKitTracker* mTracker;
+
+		osg::ref_ptr<TrainingSet> mTrainingSet;
+
+	};
+
+
+};
+
+#endif

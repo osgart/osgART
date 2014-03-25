@@ -1,0 +1,64 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  VideoStreamCallback
+ *  \brief Handling callbacks mechanism
+ *
+ * Handling callbacks mechanism.
+ * 
+ **/
+
+#ifndef OSGART_VIDEOSTREAMCALLBACK
+#define OSGART_VIDEOSTREAMCALLBACK 1
+
+// OSG include
+#include <osg/Version>
+#include <osg/Node>
+#include <osg/NodeVisitor>
+#include <osg/ImageStream>
+#include <osg/Stats>
+#include <osg/NodeCallback>
+#include <osg/ImageStream>
+#include <osg/FrameStamp>
+
+
+// Local include
+#include "osgART/Export"
+#include "osgART/VideoStream"
+
+namespace osgART {
+
+	class OSGART_EXPORT VideoStreamUpdateCallback : public osg::NodeCallback 
+	{
+	public:
+
+		VideoStreamUpdateCallback(osg::ImageStream* imagestream);
+
+		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+		
+	protected:
+	
+		int _framenumber;
+		osg::ImageStream* _imagestream;
+	
+	};
+
+}
+
+#endif // OSGART_VIDEOSTREAMCALLBACK

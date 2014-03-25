@@ -1,25 +1,20 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
 /**
  *  \file  VideoConfiguration
@@ -28,14 +23,20 @@
  * Types used in defining configuration of video data.
  */
 
-#ifndef OSGART_VIDEOCONFIG
-#define OSGART_VIDEOCONFIG 1
+#ifndef OSGART_VIDEOCONFIGURATION
+#define OSGART_VIDEOCONFIGURATION 1
 
+// std include
+#include <string>
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Referenced>
 #include <osg/Vec2s>
 
+// local include
 #include "osgART/Export"
-
-#include <string>
 
 namespace osgART {
 
@@ -44,6 +45,7 @@ namespace osgART {
 	*
 	*/
 	typedef enum {
+		VIDEOFORMAT_UNDEFINED = -1,
 		VIDEOFORMAT_ANY = 0x0,
 		VIDEOFORMAT_RGB555,
 		VIDEOFORMAT_RGB565,
@@ -91,43 +93,60 @@ namespace osgART {
 		VIDEOFRAMERATE_MAX = 0xFF // force short
 	} FrameRateType;
 	
+
+	class OSGART_EXPORT VideoConfiguration: public osg::Referenced {
+	public:
 	
-	typedef struct {
-		int id;
-		int	width, height;
-		FrameRateType framerate;
-		PixelFormatType type;
 		std::string config;
+
+		int deviceid;
+		std::string devicename;
+		
+		int	width; 
+		int height;
+		float framerate;		
+		//FrameRateType framerate;
+		PixelFormatType format;
 
 		int selectedWidth;
 		int selectedHeight;
 		float selectedFrameRate;
-
-	} VideoConfiguration;
+		PixelFormatType selectedFormat;
 	
-	class OSGART_EXPORT VideoConfig {
-	public:
-	
-		VideoConfig();
-		virtual ~VideoConfig();
+		VideoConfiguration();
+		virtual ~VideoConfiguration();
 		
 		virtual int getID() const { return _id; };	
 		virtual void setID(int id) {_id = id;};
 		
-		virtual float getFramerate() const { return _framerate;};
-		void setFrameRate(float framerate) { _framerate = framerate; };
-						
-		virtual const std::string& getDevice() const { return _device; };
-		void setDevice(const std::string& devicename) { _device = devicename; };
-		
 		virtual const osg::Vec2s& getSize() const { return _size;};
 		virtual void setSize(const osg::Vec2s& size) {_size = size;};
 		virtual void setSize(short width, short height) { _size = osg::Vec2s(width,height);};
-		
+
+		virtual float getFramerate() const { return _framerate;};
+		void setFrameRate(float framerate) { _framerate = framerate; };
+					
 		virtual void setPixelFormat(const std::string& fourcc);
+		virtual const std::string getPixelFormat() {return _pixelFormatfourcc;};
+	
+		virtual const std::string& getDevice() const { return _device; };
 		
+		void setDeviceName(const std::string& devicename) { _device = devicename; };
 		
+		void setDevice(int deviceid) { _deviceId = deviceid; };
 		
+		//void setDeviceUUID(const std::string& devicename) { _device = devicename; };
+		
+		//void setConfigXML(const std::string filename) {};
+		//void getConfigXML(const std::string filename) {};
+		
+		//void setConfigJSON(const std::string filename) {};
+		//void getConfigJSON(const std::string filename) {};
+		
+		//void setConfigYAML(const std::string filename) {};
+		//void getConfigYAML(const std::string filename) {};
+		
+				
 		virtual void showDeviceDialog();
 		virtual void showFormatDialog();
 		
@@ -139,8 +158,12 @@ namespace osgART {
 		float _framerate;
 	
 		std::string _device;
+		//std::string _devicename;
+		int _deviceId;
+		int _deviceUUID;
 		
 		// FrameRateType framerate;
+		std::string _pixelFormatfourcc;
 		PixelFormatType _pixelformat;
 		
 	};
@@ -148,4 +171,4 @@ namespace osgART {
 };
 
 
-#endif // OSGART_VIDEOCONFIG
+#endif // OSGART_VIDEOCONFIGURATION

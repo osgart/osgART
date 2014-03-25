@@ -1,28 +1,30 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
+// std include
 
+// OpenThreads include
+
+// OSG include
+
+// local include
 #include "osgART/VideoConfiguration"
+
 
 
 namespace osgART {
@@ -34,12 +36,12 @@ namespace osgART {
 		return (fourcc[3] << 24) + (fourcc[2] << 16) + (fourcc[1] << 8 ) + fourcc[0];
 	}
 
-	VideoConfig::VideoConfig() : _id(0)
+	VideoConfiguration::VideoConfiguration() : _id(-1),config(""),deviceid(-1),devicename(""),width(-1),height(-1),framerate(-1),format(VIDEOFORMAT_UNDEFINED)
 	{
 	}
 
 	/*virtual*/
-	VideoConfig::~VideoConfig() 
+	VideoConfiguration::~VideoConfiguration() 
 	{
 	}
 
@@ -67,7 +69,7 @@ namespace osgART {
 		//VIDEOFORMAT_ANY 
 
 
-	void VideoConfig::setPixelFormat(const std::string& fourcc)
+	void VideoConfiguration::setPixelFormat(const std::string& fourcc)
 	{
 		unsigned int fourcc_num = charToFourCC(fourcc.c_str());
 
@@ -105,12 +107,12 @@ namespace osgART {
 
 	/*virtual*/ 
 	void 
-	VideoConfig::showDeviceDialog()
+	VideoConfiguration::showDeviceDialog()
 	{}
 
 	/*virtual*/ 
 	void 
-	VideoConfig::showFormatDialog()
+	VideoConfiguration::showFormatDialog()
 	{}
 
 }

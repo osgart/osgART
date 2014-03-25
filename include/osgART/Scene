@@ -1,25 +1,20 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
 /**
  *  \file  Scene
@@ -31,19 +26,36 @@
 #ifndef OSGART_SCENE
 #define OSGART_SCENE 1
 
+// std include
 
-#include "osgART/Export"
+// OpenThreads include
 
-#include "osgART/Target"
-#include "osgART/Tracker"
-#include "osgART/Calibration"
-#include <osgART/VideoConfiguration>
-#include <osgART/Calibration>
-#include <osgART/TrackerConfiguration>
-
+// OSG include
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osg/Camera>
+
+// local include
+#include "osgART/Export"
+
+#include "osgART/Sensor"
+//#include "osgART/GPSSensor"
+//#include "osgART/InertialSensor"
+#include "osgART/Video"
+#include "osgART/Tracker"
+#include "osgART/VisualTracker"
+#include "osgART/GPSInertialTracker"
+
+#include "osgART/SensorData"
+#include "osgART/VideoStream"
+#include "osgART/Target"
+
+#include "osgART/SensorConfiguration"
+#include "osgART/VideoConfiguration"
+#include "osgART/CameraConfiguration"
+#include "osgART/TrackerConfiguration"
+
+
 
 namespace osgART {
 
@@ -81,9 +93,9 @@ namespace osgART {
 		 *
 		 * \code
 		 * osgART::Scene* scene = new osgART::Scene();
-		 * scene->addVideoBackground("osgart_video_artoolkit2");
-		 * scene->addTracker("osgart_tracker_artoolkit2");
-		 * scene->addTrackedTransform("single;data/patt.hiro;80;0;0")->addChild(osgART::testCube(80));
+         * scene->addVideo("osgart_artoolkit","osgart_video_artoolkit");
+		 * scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit");
+         * scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::createTopCube(80));
 		 *
 		 */
 		Scene();
@@ -97,29 +109,40 @@ namespace osgART {
 		virtual Scene* asScene() { return this; }
 		virtual const Scene* asScene() const { return this; }
 
+        Video* addVideo(const std::string& vplugin, const std::string& v, std::string videoconfigfile="");
+		Tracker* addVisualTracker(const std::string& tplugin, const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
+        //Tracker* addInertialTracker
+        //Tracker* addGPSInertialTracker
 
-
-		Video* addVideoBackground(const std::string& v, std::string videoconfigfile="");
-		Tracker* addTracker(const std::string& t, std::string calibrationconfigfile="", std::string trackerconfigfile="");
+//      Video* addVideoConfig(const std::string& vplugin, const std::string& v,VideoConfiguration& vconfig);
+//		Tracker* addVisualTrackerConfig(const std::string& tplugin, const std::string& t,CameraConfiguration& camconfig, VideoConfiguration& config);
 
 		Target* addTarget(const std::string& cfg);
-		osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
+        osg::MatrixTransform* addTrackedTransform(const std::string& cfg);
 
-		osg::MatrixTransform* addTrackedTransform(Target *target);
+        osg::MatrixTransform* addTrackedTransform(Target *target);
 
-		inline osg::Camera* getCamera() const {
-			return _camera.get();
-		}
+        inline const Target* getTarget(size_t id=0) const {
+            return _tracker->getTarget(id);
+        }
 
-		inline SceneSetting& getSetting() { return _settings; }
+        inline const VideoStream* getVideoStream() const {
+            return _video->getStream();
+        }
 
-		inline const osgART::Tracker* getTracker() const {
+        inline osg::Camera* getCamera() const {
+            return _camera.get();
+        }
+
+        inline const Tracker* getTracker() const {
 			return _tracker.get();
 		}
 
-		inline const osgART::Video* getVideo() const {
+        inline const Video* getVideo() const {
 			return _video.get();
 		}
+
+        inline SceneSetting& getSetting() { return _settings; }
 
 	protected:
 
@@ -131,7 +154,7 @@ namespace osgART {
 		osg::ref_ptr<osgART::Tracker> _tracker;
 		osg::ref_ptr<osgART::Video> _video;
 		osg::ref_ptr<osg::Camera> _camera;
-		osg::ref_ptr<osgART::Calibration> _calibration;
+		osg::ref_ptr<osgART::CameraConfiguration> _cameraconfiguration;
 
 		void configureVideoBackground();
 

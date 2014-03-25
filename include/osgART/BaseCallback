@@ -1,0 +1,58 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file BaseCallback
+ *  \brief generic function for adding callback
+ *
+ */
+
+#ifndef OSGART_BASECALLBACK
+#define OSGART_BASECALLBACK 1
+
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/NodeCallback>
+#include <osg/Timer>
+
+// local include
+#include "osgART/Export"
+
+
+
+namespace osgART
+{
+
+	/**
+	 * Appends an event callback to a node. It is a convenience wrapper around
+	 * osg::NodeCallback and its nested callbacks
+	 *
+	 * \param node Node affected by the callback
+	 * \param cb callback to be added
+	 */
+	OSGART_EXPORT void addEventCallback(osg::Node* node, osg::NodeCallback* cb);
+
+	OSGART_EXPORT void removeEventCallback(osg::Node* node, osg::NodeCallback* cb);
+
+} //namespace osgART
+
+#endif // OSGART_BASECALLBACK
+

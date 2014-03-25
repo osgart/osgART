@@ -15,7 +15,7 @@
 #include <osg/Image>
 #include <osg/NodeVisitor>
 #include <osg/Object>
-#include <osgART/Calibration>
+#include <osgART/CameraConfiguration>
 #include <osgART/VideoGeode>
 
 // Must undefine IN and OUT macros defined in Windows headers
@@ -38,8 +38,8 @@ BEGIN_OBJECT_REFLECTOR(osgART::VideoGeode)
 	I_Constructor0(____VideoGeode,
 	               "Constructor. ",
 	               "");
-	I_Constructor7(IN, osg::Image *, image, IN, osgART::Calibration *, calibration, IN, double, width, IN, double, height, IN, int, cols, IN, int, rows, IN, osgART::VideoGeode::TextureMode, textureMode,
-	               ____VideoGeode__osg_Image_P1__osgART_Calibration_P1__double__double__int__int__TextureMode,
+	I_Constructor7(IN, osg::Image *, image, IN, osgART::CameraConfiguration *, cameraconfig, IN, double, width, IN, double, height, IN, int, cols, IN, int, rows, IN, osgART::VideoGeode::TextureMode, textureMode,
+	               ____VideoGeode__osg_Image_P1__osgART_CameraConfiguration_P1__double__double__int__int__TextureMode,
 	               "",
 	               "");
 	I_ConstructorWithDefaults2(IN, const osgART::VideoGeode &, x, , IN, const osg::CopyOp &, copyop, osg::CopyOp::SHALLOW_COPY,
@@ -76,8 +76,8 @@ BEGIN_OBJECT_REFLECTOR(osgART::VideoGeode)
 	          __void__accept__osg_NodeVisitor_R1,
 	          "Visitor Pattern : calls the apply method of a NodeVisitor with this node's type. ",
 	          "");
-	I_StaticMethodWithDefaults7(osg::Geometry *, createVideoMesh, IN, osg::Image *, image, , IN, osgART::Calibration *, calibration, NULL, IN, double, width, 1.0, IN, double, height, 1.0, IN, int, cols, 20, IN, int, rows, 20, IN, osgART::VideoGeode::TextureMode, textureMode, osgART::VideoGeode::USE_TEXTURE_2D,
-	                            __osg_Geometry_P1__createVideoMesh__osg_Image_P1__osgART_Calibration_P1__double__double__int__int__TextureMode_S,
+	I_StaticMethodWithDefaults7(osg::Geometry *, createVideoMesh, IN, osg::Image *, image, , IN, osgART::CameraConfiguration *, cameraconfig, NULL, IN, double, width, 1.0, IN, double, height, 1.0, IN, int, cols, 20, IN, int, rows, 20, IN, osgART::VideoGeode::TextureMode, textureMode, osgART::VideoGeode::USE_TEXTURE_2D,
+	                            __osg_Geometry_P1__createVideoMesh__osg_Image_P1__osgART_CameraConfiguration_P1__double__double__int__int__TextureMode_S,
 	                            "",
 	                            "");
 END_REFLECTOR

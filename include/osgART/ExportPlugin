@@ -1,0 +1,74 @@
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
+ * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+/**
+ *  \file  VideoPlugin
+ *  \brief Preprocessor macros to help with correct linkage of exported symbols in plugins.
+ *
+ * Preprocessor macros to help with correct linkage of exported symbols in plugins.
+ */
+
+#ifndef OSGART_EXPORTPLUGIN
+#define OSGART_EXPORTPLUGIN 1
+
+// std include
+
+// OpenThreads include
+
+// OSG include
+#include <osg/Version>
+
+// local include
+
+
+
+#if defined(_WIN32)
+	#if defined(OSGART_PLUGIN_EXPORT)
+		#define DLL_API extern "C" __declspec(dllexport)
+	#else
+		#define DLL_API __declspec(dllimport)
+	#endif
+	#define DCALL // __stdcall
+#else
+	#define DLL_API extern "C"
+	#define DCALL
+#endif
+
+
+#if defined(_WIN32)
+#include <windows.h>
+#define OSGART_PLUGIN_ENTRY()	\
+extern "C" int __stdcall DllMain(HINSTANCE hInst,DWORD reason,LPVOID reserved) { \
+	switch (reason) {										\
+      case DLL_PROCESS_ATTACH:								\
+        break;												\
+      case DLL_PROCESS_DETACH:								\
+        break;												\
+      case DLL_THREAD_ATTACH:								\
+        break;												\
+      case DLL_THREAD_DETACH:								\
+        break;												\
+    }														\
+    return TRUE;											\
+}
+#else
+	#define OSGART_PLUGIN_ENTRY()
+#endif
+
+
+#endif // OSGART_EXPORTPLUGIN

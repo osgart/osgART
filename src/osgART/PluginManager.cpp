@@ -1,36 +1,38 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
-#include "osgART/PluginManager"
+// std include
+#include <sstream>
+#include <cstdlib>
 
+// OpenThreads include
+
+// OSG include
 #include <osg/Version>
 #include <osg/Notify>
 
 #include <osgDB/Registry>
 #include <osgDB/FileUtils>
 
-#include <sstream>
-#include <cstdlib>
+// local include
+#include "osgART/PluginManager"
+
+
 
 #if defined(_WIN32)||(_WINDOWS)
 	#define WIN32_LEAN_AND_MEAN
@@ -68,9 +70,9 @@ namespace osgART {
 		osgDB::Registry::instance()->getLibraryFilePathList().push_back(getCurrentExecutablePath()+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
 
 		// only do if environment variable exists
-		if (getenv("OSGART_ROOT"))
+		if (getenv("OSGART_DIR"))
 		{
-			osgDB::getLibraryFilePathList().push_front(std::string(getenv("OSGART_ROOT"))+SLASH+"bin"+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
+			osgDB::getLibraryFilePathList().push_front(std::string(getenv("OSGART_DIR"))+SLASH+"bin"+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
 			osg::notify() << "osgART::PluginManager::PluginManager() added osgART root path:" << osgDB::getLibraryFilePathList().front() << std::endl;
 		}
 

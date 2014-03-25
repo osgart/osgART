@@ -29,8 +29,8 @@
 # Config file
 #
 
-video artoolkit2
-tracker artoolkit2
+video artoolkit
+tracker artoolkit
 
 # hiro is an ID
 target hiro single;data/patt.hiro;80;0;0
@@ -44,17 +44,26 @@ model hiro thunderbird.lwo
 
 */
 
+// std include
 
+// OpenThreads include
 
-
-
+// OSG include
 #include <osg/ProxyNode>
 #include <osg/PositionAttitudeTransform>
 
+#include <osgDB/FileUtils>
+#include <osgDB/FileNameUtils>
+#include <osgDB/WriteFile>
+
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
+
+// osgART include
 #include <osgART/Foundation>
 #include <osgART/VideoLayer>
 #include <osgART/PluginManager>
-#include <osgART/VideoGeode>
+#include <osgART/VideoPlane>
 #include <osgART/Utils>
 #include <osgART/GeometryUtils>
 #include <osgART/TrackerUtils>
@@ -63,20 +72,18 @@ model hiro thunderbird.lwo
 #include <osgART/TrackerCallback>
 #include <osgART/TargetCallback>
 #include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
+#include <osgART/VideoCallback>
 
-#include <osgViewer/Viewer>
-#include <osgViewer/ViewerEventHandlers>
+// local include
 
-#include <osgDB/FileUtils>
-#include <osgDB/FileNameUtils>
-#include <osgDB/WriteFile>
+#include <osgART/VisualTracker>
 
 osg::Group* createBasicVideoBackground(osg::Image* video, bool useTextureRectangle = false) {
 	osgART::VideoLayer* _layer = new osgART::VideoLayer();
 	//_layer->setSize(*video);
-	osgART::VideoGeode* _geode = new osgART::VideoGeode(video, NULL, 1, 1, 20, 20,
-		useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D);
+    osgART::VideoGeode* _geode = new osgART::VideoPlane(video,
+                                                        useTextureRectangle ? osgART::VideoGeode::USE_TEXTURE_RECTANGLE : osgART::VideoGeode::USE_TEXTURE_2D,
+                                                        1, 1, 20, 20);
 	//addTexturedQuad(*_geode,video->s(),video->t());
 	_layer->addChild(_geode);
 	return _layer;
@@ -148,11 +155,13 @@ int main(int argc, char* argv[])  {
 	/* loading the config file */
 	std::ifstream file(config.c_str());
 
-	std::string _calibration_file("data/camera_para.dat");
+	std::string _cameraconfiguration_file("data/camera_para.dat");
 
 	// A video plugin.
 	osg::ref_ptr<osgART::Video> video;
-	osg::ref_ptr<osgART::Tracker> tracker;
+	//osg::ref_ptr<osgART::Tracker> tracker;
+	osg::ref_ptr<osgART::VisualTracker> tracker;
+//	osg::ref_ptr<osgART::GPSInertialTracker> tracker;
 
 	typedef std::map< std::string, std::string > StringMap;
 	typedef std::map< std::string, double > DoubleMap;
@@ -178,7 +187,7 @@ int main(int argc, char* argv[])  {
 		if (tokens[0] == "tracker" && tokens.size() == 2)
 		{
             osgART::PluginManager::instance()->load("osgart_" + tokens[1]);
-			tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
+			tracker = dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
 		}
 
 		if (tokens[0] == "video" && tokens.size() == 2)
@@ -187,9 +196,9 @@ int main(int argc, char* argv[])  {
 			video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + tokens[1]));
 		}
 
-		if (tokens[0] == "calibration" && tokens.size() == 2)
+		if (tokens[0] == "cameraconfig" && tokens.size() == 2)
 		{
-			_calibration_file = tokens[1];
+			_cameraconfiguration_file = tokens[1];
 		}
 
 		if (tokens[0] == "target" && tokens.size() == 3)
@@ -262,7 +271,7 @@ int main(int argc, char* argv[])  {
 	// Open the video. This will not yet start the video stream but will
 	// get information about the format of the video which is essential
 	// for the connected tracker
-	video->open();
+	video->init();
 
 
 	if (!tracker.valid())
@@ -272,31 +281,31 @@ int main(int argc, char* argv[])  {
 		exit(-1);
 	}
 
-	// get the tracker calibration object
-	osg::ref_ptr<osgART::Calibration> calibration = tracker->getOrCreateCalibration();
+	// get the tracker camera configuration object
+	osg::ref_ptr<osgART::CameraConfiguration> cameraconfig = tracker->getOrCreateCameraConfiguration();
 
-	// load a calibration file
-	if (!calibration->load(osgDB::findDataFile(_calibration_file)))
+	// load a camera configuration file
+	if (!cameraconfig->load(osgDB::findDataFile(_cameraconfiguration_file)))
 	{
 
-		// the calibration file was non-existing or couldnt be loaded
-		osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+		// the camera configuration file was non-existing or couldnt be loaded
+		osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 		exit(-1);
 	}
 
 	// set the image source for the tracker
-	tracker->setImage(video.get());
+	tracker->setImage(video->getStream());
 
-	osgART::addEventCallback(root.get(), new osgART::TrackerCallback(tracker.get()));
+	//add video update callback (update video + video stream)
+	osgART::VideoUpdateCallback::addOrSet(root.get(),video.get());
 
-	if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(video.get())) {
-		osgART::addEventCallback(root.get(), new osgART::ImageStreamCallback(imagestream));
-	}
+	//add tracker update callback (update tracker from video stream)
+	osgART::TrackerUpdateCallback::addOrSet(root.get(),tracker.get());
 
-	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video.get());
+	osg::ref_ptr<osg::Group> videoBackground = osgART::createBasicVideoBackground(video->getStream());
 	videoBackground->getOrCreateStateSet()->setRenderBinDetails(0, "RenderBin");
 
-	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(calibration);
+	osg::ref_ptr<osg::Camera> cam = osgART::createBasicCamera(cameraconfig);
 
 
 	cam->addChild(videoBackground.get());
@@ -320,7 +329,7 @@ int main(int argc, char* argv[])  {
 
 			osg::ref_ptr<osg::MatrixTransform> arTransform = new osg::MatrixTransform();
 
-			osgART::attachDefaultEventCallbacks(arTransform.get(),target.get());
+			osgART::attachDefaultTargetCallbacks(arTransform.get(),target.get());
 
 			arTransform->getOrCreateStateSet()->setRenderBinDetails(100, "RenderBin");
 			arTransform->getOrCreateStateSet()->setMode(GL_RESCALE_NORMAL, osg::StateAttribute::ON);
@@ -361,7 +370,7 @@ int main(int argc, char* argv[])  {
 			if (_model_map.find(iter->first) != _model_map.end())
 			{
 				if (_model_map.find(iter->first)->second == "cube") {
-					proxynode->addChild(osgART::testCube(80));
+					proxynode->addChild(osgART::createTopCube(80));
 				} else {
 					proxynode->setFileName(0,_model_map.find(iter->first)->second);
 					osg::notify() << "ProxyNode::getFileName() " << proxynode->getFileName(0) << std::endl;

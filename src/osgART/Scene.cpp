@@ -1,41 +1,44 @@
-/* -*-c++-*-
- *
- * osgART - AR for OpenSceneGraph
+/* -*-c++-*- 
+ * 
+ * osgART - Augmented Reality ToolKit for OpenSceneGraph
+ * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
- * This file is part of osgART
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the osgart.org website.
  *
- * osgART 2.0 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * osgART 2.0 is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with osgART 2.0.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+ * OpenSceneGraph Public License for more details.
+*/
 
+// std include
+
+// OpenThreads include
+
+// OSG include
+
+// local include
 #include "osgART/Scene"
 
+#include "osgART/VideoLayer"
+#include "osgART/PluginManager"
+#include "osgART/VideoGeode"
+#include "osgART/Utils"
+#include "osgART/GeometryUtils"
+#include "osgART/TrackerUtils"
+#include "osgART/VideoUtils"
 
-#include <osgART/VideoLayer>
-#include <osgART/PluginManager>
-#include <osgART/VideoGeode>
-#include <osgART/Utils>
-#include <osgART/GeometryUtils>
-#include <osgART/TrackerUtils>
-#include <osgART/VideoUtils>
+#include "osgART/TrackerCallback"
+#include "osgART/TargetCallback"
+#include "osgART/TransformFilterCallback"
+#include "osgART/VideoCallback"
+#include "osgART/VisualTracker"
 
-#include <osgART/TrackerCallback>
-#include <osgART/TargetCallback>
-#include <osgART/TransformFilterCallback>
-#include <osgART/ImageStreamCallback>
 
 
 namespace osgART {
@@ -52,23 +55,6 @@ namespace osgART {
 
 	}
 
-	class VideoStartCallback : public osg::NodeCallback {
-
-		osg::observer_ptr<osgART::Video> _video;
-		bool _oneshot;
-	public:
-		VideoStartCallback(osgART::Video* Video) : _video(Video), _oneshot(false) {}
-
-		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
-		{
-
-			if (!_oneshot) _video->start();
-
-			traverse(node,nv);
-		}
-
-
-	};
 
 	void Scene::configureVideoBackground() {
 
@@ -78,7 +64,7 @@ namespace osgART {
 		_videoBackground->removeChildren(0, _videoBackground->getNumChildren());
 
 		// Add a new background video geode using the current set of parameters
-		_videoBackground->addChild(osgART::createBasicVideoBackground(_video.get()));
+		_videoBackground->addChild(osgART::createBasicVideoBackground(_video->getStream()));
 
 		_videoBackground->getOrCreateStateSet()->setRenderBinDetails(_settings._background_renderbin, "RenderBin");
 
@@ -86,11 +72,11 @@ namespace osgART {
 
 
 
-	//"osgart_video_artoolkit2"
-	osgART::Video* Scene::addVideoBackground(  const std::string& v, std::string videoconf)
+	//"osgart_artoolkit"
+    osgART::Video* Scene::addVideo(const std::string& vplugin, const std::string& v, std::string videoconf)
 	{
 
-		osgART::PluginManager::instance()->load(v);
+		osgART::PluginManager::instance()->load(vplugin);
 
 		_video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(v));
 
@@ -103,7 +89,7 @@ namespace osgART {
 		}
 
 		// found video - configure now
-		osgART::VideoConfiguration* _configvideo = _video->getConfiguration();
+		osgART::VideoConfiguration* _configvideo = _video->getOrCreateConfiguration();
 
 		// if the configuration is existing
 		if (_configvideo)
@@ -113,37 +99,36 @@ namespace osgART {
 		}
 
 
-		if (!_video->open()) {
+		if (!_video->init()) {
 			osg::notify(osg::FATAL) << "Could not open video!" << std::endl;
 			return NULL;
 		}
 
-		osgART::addEventCallback(this, new VideoStartCallback(_video.get()));
+        osgART::addEventCallback(this, new osgART::VideoStartCallback(_video.get()));
 
 		configureVideoBackground();
 
 
+		//add video update callback (update video + video stream)
+		osgART::VideoUpdateCallback::addOrSet(this,_video.get());
 
-		if (osg::ImageStream* imagestream = dynamic_cast<osg::ImageStream*>(_video.get()))
-		{
-			osgART::addEventCallback(this, new osgART::ImageStreamCallback(imagestream));
-		}
 
 		// If tracker was added already, associate video with tracker
-		if (_tracker.valid()) {
-			_tracker->setImage(_video.get());
-		}
+		//if (_tracker.valid()) {
+		//	_tracker->setImage(_video->getStream());
+		//}
 
 		return _video.get();
 
 	}
 
-	//"osgart_tracker_artoolkit2"
+	//"osgart_tracker_artoolkit"
 
-	osgART::Tracker* Scene::addTracker( const std::string& t, std::string calibrationconfigfile,  std::string trackerconfigfile)
+	osgART::Tracker* Scene::addVisualTracker(const std::string& tplugin, const std::string& t, std::string cameraconfigurationconfigfile,  std::string trackerconfigfile)
 	{
+		if (!(osgART::PluginManager::instance()->get(tplugin)))
+			osgART::PluginManager::instance()->load(tplugin);
 
-		osgART::PluginManager::instance()->load(t);
 		_tracker = dynamic_cast<osgART::Tracker*>(osgART::PluginManager::instance()->get(t));
 
 		if (!_tracker.valid())
@@ -154,7 +139,7 @@ namespace osgART {
 		}
 
 		// found tracker - configure now
-		osgART::TrackerConfiguration* _configtracker = _tracker->getConfiguration();
+		osgART::TrackerConfiguration* _configtracker = _tracker->getOrCreateConfiguration();
 
 		// if the configuration is existing
 		if (_configtracker)
@@ -166,16 +151,16 @@ namespace osgART {
 
 		}
 
-		// get the tracker calibration object
-		_calibration = _tracker->getOrCreateCalibration();
+		// get the tracker Camera Configuration object
+		_cameraconfiguration = _tracker->getOrCreateCameraConfiguration();
 
-		// load a calibration file
-		//if (calibrationconfigfile!="")
+		// load a Camera Configuration file
+		//if (cameraconfigurationconfigfile!="")
 		//{
-			if (!_calibration->load(calibrationconfigfile))
+			if (!_cameraconfiguration->load(cameraconfigurationconfigfile))
 			{
-				// the calibration file was non-existing or couldn't be loaded
-				osg::notify(osg::FATAL) << "Non existing or incompatible calibration file" << std::endl;
+				// the Camera Configuration file was non-existing or couldn't be loaded
+				osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 				return NULL;
 			}
 		//}
@@ -183,16 +168,16 @@ namespace osgART {
 		// If video was added already, associate video with tracker
 		if (_video.valid()) {
 			// set the image source for the tracker
-			_tracker->setImage(_video.get());
+			dynamic_cast<osgART::VisualTracker*>(_tracker.get())->setImage(_video->getStream());
 
-			// Update the video background with new tracker calibration etc...
+			// Update the video background with new tracker camera configuration etc...
 			//configureVideoBackground();
 
 		}
 
-		osgART::addEventCallback(this, new osgART::TrackerCallback(_tracker.get()));
+		osgART::addEventCallback(this, new osgART::TrackerUpdateCallback(_tracker.get()));
 
-		_camera = osgART::createBasicCamera(_calibration);
+		_camera = osgART::createBasicCamera(_cameraconfiguration);
 		this->addChild(_camera.get());
 
 		return _tracker.get();
@@ -220,7 +205,7 @@ namespace osgART {
 		} else {
 
 			target->setActive(true);
-			osgART::attachDefaultEventCallbacks(arTransform, target
+			osgART::attachDefaultTargetCallbacks(arTransform, target
 				);
 
 		}
