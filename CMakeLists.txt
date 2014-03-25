@@ -112,7 +112,7 @@ if(DOXYGEN_FOUND)
 			@ONLY
 			)
 
-		add_custom_target("Build API Docs"
+		add_custom_target("docs"
 			COMMENT "Building API docs from headers"
 			COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/.doxygen/osgART.dox
 			DEPENDS osgART
@@ -121,7 +121,7 @@ if(DOXYGEN_FOUND)
 
 		install(DIRECTORY ${CMAKE_BINARY_DIR}/doc
 			DESTINATION "share/osgART"
-			COMPONENT "API Documentation" reenable when moving up to 2.6
+			COMPONENT "API Documentation"
 			)
 	endif()
 endif()
