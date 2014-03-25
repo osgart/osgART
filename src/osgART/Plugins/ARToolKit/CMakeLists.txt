@@ -3,13 +3,10 @@ set(module_name osgart_artoolkit2)
 if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 
 	find_package(ARToolKit2)
-	
-#if(ARTOOLKIT2_FOUND)
-#	add_subdirectory(ARToolKit)
-#endif()
 
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${ARTOOLKIT2_INCLUDE_DIR})
 
-
+	message(STATUS "INC: ${ARTOOLKIT2_INCLUDE_DIR}")
 
 	set(SRCS 
 		ARToolKitTracker.cpp
@@ -41,7 +38,6 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 	source_group("Source Files" FILES
 		${SRCS})	
 
-	include_directories("." ${ARTOOLKIT2_INCLUDE_DIR})
 		
 	add_library(${module_name} MODULE ${SRCS} ${HDRS})
 

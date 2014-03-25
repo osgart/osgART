@@ -24,13 +24,14 @@
 #ifndef OSGART_ARToolKitTrainingSupport
 #define OSGART_ARToolKitTrainingSupport 1
 
-#include "osgART/TrackerTrainingSupport"
 #include <osg/Referenced>
+
+#include "osgART/TrackerTrainingSupport"
 
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/ar.h>
-#include <AR/gsub_lite.h>
+#include <AR/arGLUtils.h>
 
 #include <osg/Image>
 

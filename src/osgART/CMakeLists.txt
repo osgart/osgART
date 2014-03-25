@@ -111,11 +111,14 @@ endif(APPLE)
 
 # link external libs
 target_link_libraries(${lib_name}
-	${OPENTHREADS_LIBRARY}
-	${OSG_LIBRARY}
-	${OSGDB_LIBRARY}
-	${OPENGL_LIBRARY}
+	${OPENSCENEGRAPH_LIBRARIES}
 	${addon_libs}
+	)
+
+
+set_target_properties(${lib_name}
+	PROPERTIES
+	POSITION_INDEPENDENT_CODE TRUE
 	)
 
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)

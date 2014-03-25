@@ -1,5 +1,6 @@
 set(exe_name osgartviewer)
 
+message(STATUS "M ${OPENSCENEGRAPH_LIBRARIES}")
 
 set(MISC
 	${CMAKE_SOURCE_DIR}/share/osgART/data/artoolkit2/osgartviewer.cfg
@@ -21,10 +22,7 @@ set_target_properties(${exe_name}
 
 target_link_libraries(${exe_name} 
 	osgART 
-	${OSG_LIBRARY}
-	${OSGDB_LIBRARY}
-	${OSGGA_LIBRARY}	
-	${OSGVIEWER_LIBRARY}
-)
+	${OPENSCENEGRAPH_LIBRARIES}
+	)
 
 install_osgart_example(${exe_name})

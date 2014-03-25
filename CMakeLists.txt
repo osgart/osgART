@@ -3,7 +3,7 @@
 # ==============================
 
 # CMake version
-cmake_minimum_required(VERSION 2.8.2)
+cmake_minimum_required(VERSION 2.8.9)
 
 # ==== Global Configuration ====
 
@@ -34,7 +34,7 @@ include(OSGARTUtils)
 
 # Find OpenSceneGraph + NodeKits
 #note: minimum version: 3.0.1
-find_package(OpenSceneGraph 3.0.1 REQUIRED osgUtil osgDB osgGA osgText osgViewer osgParticle osgManipulator)
+find_package(OpenSceneGraph 3.0.1 REQUIRED osg osgUtil osgDB osgGA osgText osgViewer osgParticle osgManipulator)
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)

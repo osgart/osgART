@@ -24,7 +24,7 @@
 #include "SingleTarget"
 
 #include <osgDB/FileUtils>
-#include <AR/gsub_lite.h>
+#include <AR/arGLUtils.h>
 
 
 

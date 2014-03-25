@@ -61,7 +61,7 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 #include <AR/config.h>
 //#include <AR/video.h>
 #include <AR/ar.h>
-#include <AR/gsub_lite.h>
+#include <AR/arGLUtils.h>
 
 #ifndef AR_HAVE_HEADER_VERSION_2_72
 #error ARToolKit v2.72 or later is required to build the osgART ARToolKit tracker.

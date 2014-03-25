@@ -25,7 +25,7 @@
 
 #include "MultiTarget"
 
-#include <AR/gsub_lite.h>
+#include <AR/arGLUtils.h>
 
 namespace osgART {
 
