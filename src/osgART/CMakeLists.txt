@@ -134,6 +134,7 @@ endif(APPLE)
 # link external libs
 target_link_libraries(${lib_name}
 	${OPENSCENEGRAPH_LIBRARIES}
+        ${OPENGL_LIBRARIES}
 	${addon_libs}
 	)
 
@@ -147,13 +148,13 @@ set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "O
 
 
 
-if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
-        message(STATUS "x86-64 detected")
-        set_property(TARGET ${lib_name}
-            PROPERTY
-            COMPILE_FLAGS "-fPIC"
-        )
-endif()
+#if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+#        message(STATUS "x86-64 detected")
+#        set_property(TARGET ${lib_name}
+#            PROPERTY
+#            COMPILE_FLAGS "-fPIC"
+#        )
+#endif()
 
 set_source_files_properties(${lib_hdrs}
 	PROPERTIES

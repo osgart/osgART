@@ -3,7 +3,7 @@
  * osgART - Augmented Reality ToolKit for OpenSceneGraph
  * 
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2010-2013 Raphael Grasset, Julian Looser, Hartmut Seichter
+ * Copyright (C) 2010-2014 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
  * This library is open source and may be redistributed and/or modified under
  * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or

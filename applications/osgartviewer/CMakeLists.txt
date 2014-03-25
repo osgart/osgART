@@ -1,9 +1,7 @@
 set(exe_name osgartviewer)
 
-message(STATUS "M ${OPENSCENEGRAPH_LIBRARIES}")
-
 set(MISC
-#	${CMAKE_SOURCE_DIR}/share/osgART/data/artoolkit/osgartviewer.cfg
+#        ${CMAKE_SOURCE_DIR}/share/osgART/data/artoolkit/osgartviewer.cfg
 	)
 
 set(SRCS

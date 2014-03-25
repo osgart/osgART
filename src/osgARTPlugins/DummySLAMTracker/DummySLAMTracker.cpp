@@ -2,7 +2,7 @@
  *
  * osgART - AR for OpenSceneGraph
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
- * Copyright (C) 2009-2013 osgART Development Team
+ * Copyright (C) 2009-2014 osgART Development Team
  *
  * This file is part of osgART
  *
