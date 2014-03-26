@@ -188,14 +188,13 @@ if(APPLE)
 			)
 endif(APPLE)
 
-# if (NOT OSGART_USE_FRAMEWORKS)
-# 	install(TARGETS ${lib_name}
-# 			RUNTIME DESTINATION bin
-# 			LIBRARY DESTINATION ${lib_libinstalldir}
-# 			ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
-# 	#		FRAMEWORK DESTINATION /Library/Frameworks
-# 			)
-# endif(NOT OSGART_USE_FRAMEWORKS)
+
+install(TARGETS ${lib_name}
+ 		RUNTIME DESTINATION bin
+ 		LIBRARY DESTINATION ${lib_libinstalldir}
+ 		ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
+#		FRAMEWORK DESTINATION /Library/Frameworks
+ 		)
 
 install(FILES ${lib_hdrs}
 		DESTINATION include/${lib_name}

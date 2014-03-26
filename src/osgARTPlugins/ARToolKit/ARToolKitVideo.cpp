@@ -121,9 +121,9 @@ ARToolKitVideo::init()
 
 		float fps = 0.0f;
 
-#ifdef WIN32
-		ar2VideoInqFreq(video, &fps);
-#endif
+//#ifdef WIN32
+//		ar2VideoInqFreq(video, &fps);
+//#endif
 
 		// report the actual
 		osg::notify() << std::dec << "ARToolKitVideo::open() size of video " <<

@@ -68,7 +68,7 @@ endif(APPLE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE PATH "Executables go here")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE PATH "Libraries go here")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib CACHE PATH "Libraries go here")
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/staging CACHE PATH "Installation goes here")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/staging CACHE PATH "Installation goes here" FORCE)
 
 install(FILES
 	${CMAKE_SOURCE_DIR}/AUTHORS.txt
@@ -82,22 +82,25 @@ install(FILES
 # ==== Find Optional Packages/Libs Dependencies ====
 
 ## Examples
-option(OSGART_BUILD_EXAMPLES "Build all examples" OFF)
-option(OSGART_BUILD_APPLICATIONS "Build all applications (viewer)" ON)
 
-# Sensor Plugins
-
-# ==== CMake  ====
 
 #
-# Dive into the subdirectories
+# library and plugin code here
 #
 add_subdirectory(src)
 
+#
+# Applications
+#
+option(OSGART_BUILD_APPLICATIONS "Build all applications (viewer)" ON)
 if(OSGART_BUILD_APPLICATIONS)
 	add_subdirectory(applications)
 endif()
 
+#
+# Examples
+#
+option(OSGART_BUILD_EXAMPLES "Build all examples" OFF)
 if(OSGART_BUILD_EXAMPLES)
 	add_subdirectory(examples)
 endif()
