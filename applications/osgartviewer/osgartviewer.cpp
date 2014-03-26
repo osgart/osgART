@@ -169,18 +169,49 @@ int main(int argc, char* argv[])  {
 
 		std::vector<std::string> tokens = osgART::tokenize(line, " ");
 
+        std::cout << "L='" << line << "'" << std::endl;
+
 		if (!tokens.size()) continue;
 
+        if (tokens[0].size() && tokens[0][0] == '#')
+            continue;
+
+        if (tokens[0] == "plugin" && tokens.size() == 2)
+        {
+            if (osgART::PluginManager::instance()->load("osgart_" + tokens[1])) {
+                OSG_NOTICE << "plugin " << tokens[1] << " prefetched" << std::endl;
+            } else {
+                OSG_NOTICE << "plugin " << tokens[1] << " unavailable" << std::endl;
+            }
+            continue;
+        }
+
+        // set tracker
 		if (tokens[0] == "tracker" && tokens.size() == 2)
 		{
-            osgART::PluginManager::instance()->load("osgart_" + tokens[1]);
-			tracker = dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_tracker_" + tokens[1]));
+            tracker = dynamic_cast<osgART::VisualTracker*>(osgART::PluginManager::instance()->get("osgart_" + tokens[1]));
+
+            if (tracker.valid()) {
+                OSG_NOTICE << "tracker " << tokens[1] << " assigned" << std::endl;
+            } else {
+                OSG_WARN << "tracker " << tokens[1] << " unavailable" << std::endl;
+            }
+
+            continue;
 		}
 
+        // set video
 		if (tokens[0] == "video" && tokens.size() == 2)
 		{
-            osgART::PluginManager::instance()->load("osgart_" + tokens[1]);
-			video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_video_" + tokens[1]));
+            video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get("osgart_" + tokens[1]));
+
+            if (video.valid()) {
+                OSG_NOTICE << "video " << tokens[1] << " assigned" << std::endl;
+            } else {
+                OSG_WARN << "video " << tokens[1] << " unavailable" << std::endl;
+            }
+
+            continue;
 		}
 
 		if (tokens[0] == "cameraconfig" && tokens.size() == 2)
@@ -247,6 +278,17 @@ int main(int argc, char* argv[])  {
 		std::cerr << "osgart could not find appropriate config file '" << config << "'" << std::endl;
 
 
+    // check what plugins are loaded
+    std::vector<std::string> names = osgART::PluginManager::instance()->getRegisteredInterfaces();
+
+    for (std::vector<std::string>::iterator it = names.begin();
+         it != names.end();
+         it++)
+    {
+        OSG_NOTICE << "osgART plugin: " << (*it) << std::endl;
+    }
+
+
 	// check if an instance of the video stream could be started
 	if (!video.valid())
 	{
@@ -274,7 +316,6 @@ int main(int argc, char* argv[])  {
 	// load a camera configuration file
 	if (!cameraconfig->load(osgDB::findDataFile(_cameraconfiguration_file)))
 	{
-
 		// the camera configuration file was non-existing or couldnt be loaded
 		osg::notify(osg::FATAL) << "Non existing or incompatible camera configuration file" << std::endl;
 		exit(-1);
