@@ -38,6 +38,7 @@
 #include "osgART/Video"
 #include "osgART/VisualTracker"
 
+
 #include "ARToolKitTrainingSupport"
 
 #include <string>

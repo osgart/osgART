@@ -129,6 +129,10 @@ ARToolKitVideo::init()
 		osg::notify() << std::dec << "ARToolKitVideo::open() size of video " <<
 			xsize << " x " << ysize << ", fps: " << fps << std::endl;
 
+        if (!_videoConfiguration.valid())
+            _videoConfiguration = new VideoConfiguration;
+
+
 		_videoConfiguration->selectedWidth = xsize;
 		_videoConfiguration->selectedHeight = ysize;
 		_videoConfiguration->selectedFrameRate = fps;
@@ -298,5 +302,4 @@ int ARToolKitVideo::getGLPixelFormatForARPixelFormat(const int arPixelFormat,
 
 // initializer for dynamic loading
 osgART::PluginProxy<ARToolKitVideo> g_artoolkitvideo("osgart_video_artoolkit");
-
 

@@ -1,12 +1,14 @@
-set(module_name osgart_artoolkit)
+set(module_name osgart_artoolkit2)
 
 option(OSGART_BUILD_PLUGIN_ARTOOLKIT "Build with ARToolKit 2.8.1-prehartmut" OFF)
 
 if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 
-	find_package(ARToolKit2)
+	find_package(ARToolKit2 REQUIRED)
 
-	include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${ARTOOLKIT2_INCLUDE_DIR})
+	message(STATUS "${ARTOOLKIT2_LIBRARIES}")
+
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${ARTOOLKIT2_INCLUDE_DIRS})
 
 	set(SRCS 
 		ARToolKitTracker.cpp
@@ -15,12 +17,13 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 		ARToolKitTrainingSupport.cpp
 	)
 
-	if(ARTOOLKIT_LIBARVIDEO)
-		list(APPEND SRCS ARToolKitVideo.cpp ARToolKitVideo)
+	if(ARTOOLKIT2_LIBARVIDEO)
+		list(APPEND SRCS ARToolKitVideo.cpp ${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitVideo)
 	endif()
 
 
 	set(HDRS
+		${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitGlobals
 		${CMAKE_CURRENT_SOURCE_DIR}/ARToolKitTracker
 		${CMAKE_CURRENT_SOURCE_DIR}/MultiTarget
 		${CMAKE_CURRENT_SOURCE_DIR}/SingleTarget
@@ -43,6 +46,7 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 
 	set_target_properties(${module_name}
 		PROPERTIES
+		POSITION_INDEPENDENT_CODE TRUE
 		PREFIX ""
 		PROJECT_LABEL "Plugin ${module_name}")
 
@@ -51,13 +55,6 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 		${ARTOOLKIT2_LIBRARIES}
 		osgART
 		)
-
-
-	if(ARTOOLKIT_LIBARVIDEO)
-		target_link_libraries(${module_name}
-			${ARTOOLKIT2_LIBARVIDEO}
-		)
-	endif()
 
 	install_osgart_plugin(${module_name})
 

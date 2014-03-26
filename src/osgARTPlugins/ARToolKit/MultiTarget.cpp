@@ -20,7 +20,13 @@
 
 #include "MultiTarget"
 
+
+extern "C" {
+
 #include <AR/arGLUtils.h>
+
+}
+
 
 namespace osgART {
 

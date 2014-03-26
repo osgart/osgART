@@ -16,16 +16,16 @@
  * OpenSceneGraph Public License for more details.
 */
 
+
+#include "ARToolKitGlobals"
+
+
 #include "osgART/PluginManager"
 #include "osgART/Utils"
 
 #include "ARToolKitTrainingSupport"
 #include "ARToolKitTracker"
-
-
 #include "ARToolKitVideo"
-
-
 
 #include <osg/Image>
 #include <osg/Timer>
@@ -54,10 +54,7 @@ inline std::ostream& operator << (std::ostream& output, const osg::ref_ptr<osg::
 
 
 
-#include <AR/config.h>
-//#include <AR/video.h>
-#include <AR/ar.h>
-#include <AR/arGLUtils.h>
+
 
 #ifndef AR_HAVE_HEADER_VERSION_2_72
 #error ARToolKit v2.72 or later is required to build the osgART ARToolKit tracker.
@@ -129,13 +126,22 @@ namespace osgART {
 
 			arParamChangeSize(&wparam, width, height, &cparam);
 
+
+
 	    	arInitCparam(&cparam);
 
 			arglCameraFrustumRH(&cparam, 
 				ARToolKitTracker::ARTOOLKIT_DEFAULT_NEAR_PLANE, ARToolKitTracker::ARTOOLKIT_DEFAULT_FAR_PLANE, 
 				temp );
 
-			arParamDisp(&cparam);
+
+
+            // avoid GCC linker throwing away arParamDecompMat
+            double a0[3][4],a1[3][4],a2[3][4];
+
+            arParamDecompMat(a0,a1,a2);
+
+            arParamDisp(&cparam);
 
 			_projection.set(&temp[0]);
 			_distortion.set(cparam.dist_factor[0],cparam.dist_factor[1],cparam.dist_factor[2],cparam.dist_factor[3]);
@@ -244,8 +250,8 @@ namespace osgART {
 
 		osgART::VisualTracker::setImage(image);
 
-		arFittingMode = AR_FITTING_TO_IDEAL;
-	    arImageProcMode = AR_IMAGE_PROC_IN_FULL;
+        ::arFittingMode = AR_FITTING_TO_IDEAL;
+        ::arImageProcMode = AR_IMAGE_PROC_IN_FULL;
 
 		if (image) {
 		
@@ -550,7 +556,7 @@ namespace osgART {
 			return false;
 		}
 
-		std::cout<<"target num="<<m_target_num<<std::endl;
+//		std::cout<<"target num="<<m_target_num<<std::endl;
 		if (framestamp && _stats.valid())
 		{
 			_stats->setAttribute(framestamp->getFrameNumber(),
@@ -565,18 +571,18 @@ namespace osgART {
 			mTrainer->processTargets(target_info, m_target_num);
 		}
 
-		// Debug Image
-		if (arDebug && arImage && m_debugimage.valid()) {
+        // Debug Image
+        if (arDebug && arImage && m_debugimage.valid()) {
 
-			m_debugimage->setImage(
-				_imagesource->s(), _imagesource->t(), 1, 
-				_imagesource->getInternalTextureFormat(), 
-				_imagesource->getPixelFormat(), 
-				_imagesource->getDataType(), 
-				arImage, 
-				osg::Image::NO_DELETE, 1);
+            m_debugimage->setImage(
+                _imagesource->s(), _imagesource->t(), 1,
+                _imagesource->getInternalTextureFormat(),
+                _imagesource->getPixelFormat(),
+                _imagesource->getDataType(),
+                arImage,
+                osg::Image::NO_DELETE, 1);
 
-		}
+        }
 
 		TargetListType::iterator _end = _targetList.end();
 	
@@ -776,6 +782,9 @@ namespace osgART {
 					break;
 			}
 		}
+
+//        OSG_NOTICE << "ARToolkit: " << format << std::endl;
+
 		return (format);
 	}
 

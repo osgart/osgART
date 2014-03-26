@@ -19,7 +19,8 @@
 #include "SingleTarget"
 
 #include <osgDB/FileUtils>
-#include <AR/arGLUtils.h>
+
+#include "ARToolKitGlobals"
 
 
 
