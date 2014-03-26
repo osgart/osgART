@@ -2,13 +2,13 @@
 # 
 # (c) 2008 HITLabNZ, Hartmut Seichter
 # October 20th 2013: Edited by R. Grasset
-# March 24th 2014: Seichter - add new libs
+# March 24th 2014: Hartmut Seichter, rewritten with standard way of finding things
 # 
 # Locate ARToolKit
 # This module defines
-# ARTOOLKIT2_LIBRARIES
-# ARTOOLKIT2_FOUND, if false, do not try to link to ARToolKit
-# ARTOOLKIT2_INCLUDE_DIR, where to find the headers
+# ARTOOLKIT2_FOUND - system has ARToolKit
+# ARTOOLKIT2_LIBRARIES - ARToolKit libraries
+# ARTOOLKIT2_INCLUDE_DIRS - ARToolKit header files
 
 
 find_path(ARTOOLKIT2_INCLUDE_DIR AR/config.h
@@ -38,6 +38,7 @@ find_library(ARTOOLKIT2_LIBAR
 
 # pointless if libAR couldn't be found
 if (ARTOOLKIT2_LIBAR) 
+
 	
 	find_library(ARTOOLKIT2_LIBARMULTI
 		NAMES ARMulti libARMulti
@@ -66,17 +67,19 @@ if (ARTOOLKIT2_LIBAR)
 		NO_DEFAULT_PATH
 	)
 
-	if(UNIX)
-		include(UsePkgConfig)
-		pkgconfig(gstreamer-0.10 GST_INCLUDE_DIR GST_LIB_DIR GST_LINK_FLAGS GST_C_FLAGS)			
-		set(ARTOOLKIT2_LIBARVIDEO ${ARTOOLKIT2_LIBARVIDEO} ${GST_LINK_FLAGS})
-	
-	endif(UNIX)
+#	if(UNIX)
+#		include(UsePkgConfig)
+#		pkgconfig(gstreamer-0.10 GST_INCLUDE_DIR GST_LIB_DIR GST_LINK_FLAGS GST_C_FLAGS)
+#		set(ARTOOLKIT2_LIBARVIDEO ${ARTOOLKIT2_LIBARVIDEO} ${GST_LINK_FLAGS})
+#	endif()
 
 endif()
 
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(
+set(ARTOOLKIT2_LIBRARIES ${ARTOOLKIT2_LIBAR} ${ARTOOLKIT2_LIBARMULTI} ${ARTOOLKIT2_LIBARGLUTILS} ${ARTOOLKIT2_LIBARVIDEO})
+set(ARTOOLKIT2_INCLUDE_DIRS ${ARTOOLKIT2_INCLUDE_DIR})
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(
 	ARTOOLKIT2
 	DEFAULT_MSG
 	ARTOOLKIT2_INCLUDE_DIR
@@ -85,3 +88,6 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(
 	ARTOOLKIT2_LIBARGLUTILS
 	ARTOOLKIT2_LIBARVIDEO
   	)
+
+mark_as_advanced(ARTOOLKIT2_LIBAR ARTOOLKIT2_LIBARMULTI ARTOOLKIT2_LIBARGLUTILS ARTOOLKIT2_LIBARVIDEO ARTOOLKIT2_INCLUDE_DIR)
+
