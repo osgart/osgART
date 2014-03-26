@@ -169,8 +169,6 @@ int main(int argc, char* argv[])  {
 
 		std::vector<std::string> tokens = osgART::tokenize(line, " ");
 
-        std::cout << "L='" << line << "'" << std::endl;
-
 		if (!tokens.size()) continue;
 
         if (tokens[0].size() && tokens[0][0] == '#')
