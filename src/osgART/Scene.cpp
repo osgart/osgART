@@ -73,12 +73,12 @@ namespace osgART {
 
 
 	//"osgart_artoolkit"
-    osgART::Video* Scene::addVideo(const std::string& vplugin, const std::string& v, std::string videoconf)
+    osgART::Video* Scene::addVideo(const std::string& pluginName, const std::string& videoInterfaceName, std::string videoconf)
 	{
 
-		osgART::PluginManager::instance()->load(vplugin);
+        osgART::PluginManager::instance()->load(pluginName);
 
-		_video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(v));
+        _video = dynamic_cast<osgART::Video*>(osgART::PluginManager::instance()->get(videoInterfaceName));
 
 		// check if an instance of the video stream could be started
 		if (!_video.valid())

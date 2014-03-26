@@ -109,7 +109,12 @@ namespace osgART {
 		virtual Scene* asScene() { return this; }
 		virtual const Scene* asScene() const { return this; }
 
-        Video* addVideo(const std::string& vplugin, const std::string& v, std::string videoconfigfile="");
+
+        Video* addVideo(const std::string& pluginName,
+                        const std::string& videoInterfaceName,
+                        std::string videoconfigfile="");
+
+
 		Tracker* addVisualTracker(const std::string& tplugin, const std::string& t, std::string cameracalibconfigfile="", std::string trackerconfigfile="");
         //Tracker* addInertialTracker
         //Tracker* addGPSInertialTracker

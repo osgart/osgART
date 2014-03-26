@@ -42,10 +42,19 @@ set(lib_srcs
 	Utils.cpp
 )
 
+
+set(OSGART_BINARY_DIR ${CMAKE_BINARY_DIR})
+set(OSGART_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+
+configure_file(CoreConfiguration.cmake.hpp
+	${CMAKE_BINARY_DIR}/include/osgART/CoreConfiguration
+	)
+
 set(lib_hdrs
+	${CMAKE_BINARY_DIR}/include/osgART/CoreConfiguration
 	${CMAKE_SOURCE_DIR}/include/osgART/Foundation
 	${CMAKE_SOURCE_DIR}/include/osgART/Object
-    	${CMAKE_SOURCE_DIR}/include/osgART/Event
+	${CMAKE_SOURCE_DIR}/include/osgART/Event
 	${CMAKE_SOURCE_DIR}/include/osgART/Field
 	${CMAKE_SOURCE_DIR}/include/osgART/Export
 	${CMAKE_SOURCE_DIR}/include/osgART/BaseCallback
@@ -82,7 +91,9 @@ set(lib_hdrs
 	${CMAKE_SOURCE_DIR}/include/osgART/GeometryUtils
 	${CMAKE_SOURCE_DIR}/include/osgART/Scene
 	${CMAKE_SOURCE_DIR}/include/osgART/Utils
-)
+	)
+
+
 
 # we are going to build a lib - tell the preprocessor
 add_definitions(-DOSGART_LIBRARY)

@@ -1,7 +1,7 @@
-/* -*-c++-*- 
- * 
+/* -*-c++-*-
+ *
  * osgART - Augmented Reality ToolKit for OpenSceneGraph
- * 
+ *
  * Copyright (C) 2005-2009 Human Interface Technology Laboratory New Zealand
  * Copyright (C) 2010-2014 Raphael Grasset, Julian Looser, Hartmut Seichter
  *
@@ -16,49 +16,12 @@
  * OpenSceneGraph Public License for more details.
 */
 
-// local include
-#include "osgART/Foundation"
-#include "osgART/PluginManager"
-
-// OpenThreads include
-
-// OSG include
-#include <osg/Version>
-#include <osg/Notify>
-
-#include <osgDB/Registry>
-#include <osgDB/FileUtils>
+#ifndef OSGART_CORECONFIGURATION
+#define OSGART_CORECONFIGURATION 1
 
 
-#include "osgART/CoreConfiguration"
+#define OSGART_BINARY_DIR "${OSGART_BINARY_DIR}"
+#define OSGART_SOURCE_DIR "${OSGART_SOURCE_DIR}"
 
 
-namespace osgART {
-
-	class Initializer
-	{
-	public:
-
-		Initializer()
-		{
-
-            OSG_NOTICE << "osgART::Initializer()" << std::endl;
-
-
-		}
-
-		~Initializer()
-		{
-			// Delete the Plugin Manager
-			osgART::PluginManager::instance(true);
-		}
-
-	};
-
-}
-
-/* global initializer */
-static osgART::Initializer g_Initializer;
-osgART::Initializer* p_gInitializer = &g_Initializer;
-
-
+#endif

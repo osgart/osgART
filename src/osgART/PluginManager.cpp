@@ -32,7 +32,7 @@
 // local include
 #include "osgART/PluginManager"
 
-
+#include "osgART/CoreConfiguration"
 
 #if defined(_WIN32)||(_WINDOWS)
 	#define WIN32_LEAN_AND_MEAN
@@ -66,6 +66,10 @@ namespace osgART {
 	PluginManager::PluginManager() 
 	: osg::Referenced()
 	{
+
+        osgDB::Registry::instance()->getLibraryFilePathList().push_back(OSGART_BINARY_DIR SLASH "lib");
+        osgDB::Registry::instance()->getDataFilePathList().push_back(OSGART_SOURCE_DIR SLASH "share" SLASH "osgART");
+
 		// add local executable path
 		osgDB::Registry::instance()->getLibraryFilePathList().push_back(getCurrentExecutablePath()+SLASH+"osgPlugins-" + osgGetVersion()+SLASH);
 

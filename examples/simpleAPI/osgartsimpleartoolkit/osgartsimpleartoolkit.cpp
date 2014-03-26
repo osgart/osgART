@@ -60,9 +60,9 @@ int main(int argc, char* argv[])  {
 
 	osgART::Scene* scene = new osgART::Scene();
 
-    scene->addVideo("osgart_artoolkit","osgart_video_artoolkit");
-	scene->addVisualTracker("osgart_artoolkit","osgart_tracker_artoolkit","data/artoolkit/camera_para.dat");
-	scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0")->addChild(osgART::createTopCube(80));
+    scene->addVideo("osgart_artoolkit2","osgart_video_artoolkit");
+    scene->addVisualTracker("osgart_artoolkit2","osgart_tracker_artoolkit","data/artoolkit2/camera_para.dat");
+    scene->addTrackedTransform("single;data/artoolkit2/patt.hiro;80;0;0")->addChild(osgART::createTopCube(80));
 
 	//or for being able to further add/modify the target transformation:
 	//osg::ref_ptr<osg::MatrixTransform> mt = scene->addTrackedTransform("single;data/artoolkit/patt.hiro;80;0;0");
