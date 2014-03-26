@@ -1,4 +1,4 @@
-set(module_name osgart_video_opencv)
+set(module_name osgart_opencv)
 
 option(OSGART_BUILD_PLUGIN_OPENCV "Build with OpenCV (OpenCV 2.4.6 and later)" OFF)
 

@@ -153,13 +153,8 @@ OpenCVVideo::operator=(const OpenCVVideo &)
 bool
 OpenCVVideo::init()
 {
-	//check first device name, after device id
-	//if (m_config.devicename!="")
-	//{
-	//
-	//}
-	
-	if (_videoConfiguration->deviceid!=-1)
+
+    if (_videoConfiguration.valid() && _videoConfiguration->deviceid >= 0)
 	{
 		if (m_video.open(_videoConfiguration->deviceid))
 		{
@@ -194,11 +189,9 @@ OpenCVVideo::init()
 	_datatype_GL=GL_UNSIGNED_BYTE;
 #endif
 
-
-
-//m_video.set(CV_CAP_PROP_FRAME_WIDTH,800);
-//	m_video.set(CV_CAP_PROP_FRAME_HEIGHT,600);
-	if ((_videoConfiguration->width!=-1)&&(_videoConfiguration->height!=-1))
+    if (_videoConfiguration.valid() &&
+            _videoConfiguration->width > 0 &&
+            _videoConfiguration->height > 0)
 	{
 		m_video.set(CV_CAP_PROP_FRAME_WIDTH,_videoConfiguration->width);
 		m_video.set(CV_CAP_PROP_FRAME_HEIGHT,_videoConfiguration->height);
@@ -217,15 +210,15 @@ OpenCVVideo::init()
 
 	}
 	
-	if (_videoConfiguration->framerate!=-1)
+    if (_videoConfiguration.valid() && _videoConfiguration->framerate > 0)
 	{
 		m_video.set(CV_CAP_PROP_FPS,_videoConfiguration->framerate);	
-	}
-	else
-	{
-		m_video.set(CV_CAP_PROP_FPS,30);		
-		std::cout << "OpenCVVideo::open() use default framerate " <<30<<std::endl;
-	}
+    }
+
+
+    if (!_videoConfiguration.valid()) {
+        _videoConfiguration = new osgART::VideoConfiguration();
+    }
 		
 	_videoConfiguration->selectedWidth = m_video.get(CV_CAP_PROP_FRAME_WIDTH);
 	_videoConfiguration->selectedHeight = m_video.get(CV_CAP_PROP_FRAME_HEIGHT);
