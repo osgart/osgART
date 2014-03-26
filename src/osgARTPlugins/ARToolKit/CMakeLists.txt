@@ -47,19 +47,15 @@ if(OSGART_BUILD_PLUGIN_ARTOOLKIT)
 		PROJECT_LABEL "Plugin ${module_name}")
 
 	target_link_libraries(${module_name} 
-		${OSG_LIBRARY}
-		${OSGDB_LIBRARY} 
-		${OPENTHREADS_LIBRARY} 
-		${ARTOOLKIT_LIBARGSUB_LITE}	
-		${ARTOOLKIT_LIBARMULTI} 
-		${ARTOOLKIT_LIBAR}	
+		${OPENSCENEGRAPH_LIBRARIES}
+		${ARTOOLKIT2_LIBRARIES}
 		osgART
 		)
 
 
 	if(ARTOOLKIT_LIBARVIDEO)
 		target_link_libraries(${module_name}
-			${ARTOOLKIT_LIBARVIDEO}
+			${ARTOOLKIT2_LIBARVIDEO}
 		)
 	endif()
 

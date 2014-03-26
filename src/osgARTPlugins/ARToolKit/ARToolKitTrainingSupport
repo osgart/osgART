@@ -19,9 +19,7 @@
 #ifndef OSGART_ARToolKitTrainingSupport
 #define OSGART_ARToolKitTrainingSupport 1
 
-<<<<<<< HEAD:src/osgART/Plugins/ARToolKit/ARToolKitTrainingSupport
 #include <osg/Referenced>
-=======
 // std include
 
 // OSG include
@@ -29,9 +27,6 @@
 
 // Local include
 #include "osgART/Export"
-#include "osgART/TrackerTrainingSupport"
->>>>>>> d5296e9319438be496929d0514180f27143a505d:src/osgARTPlugins/ARToolKit/ARToolKitTrainingSupport
-
 #include "osgART/TrackerTrainingSupport"
 
 #include <AR/config.h>

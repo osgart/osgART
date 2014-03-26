@@ -2,17 +2,16 @@
 # 
 # (c) 2008 HITLabNZ, Hartmut Seichter
 # October 20th 2013: Edited by R. Grasset
-#
+# March 24th 2014: Seichter - add new libs
+# 
 # Locate ARToolKit
 # This module defines
-# ARTOOLKIT_LIBRARIES
-# ARTOOLKIT_FOUND, if false, do not try to link to ARToolKit
-# ARTOOLKIT_INCLUDE_DIR, where to find the headers
+# ARTOOLKIT2_LIBRARIES
+# ARTOOLKIT2_FOUND, if false, do not try to link to ARToolKit
+# ARTOOLKIT2_INCLUDE_DIR, where to find the headers
 
 
-
-
-find_path(ARTOOLKIT_INCLUDE_DIR AR/config.h
+find_path(ARTOOLKIT2_INCLUDE_DIR AR/config.h
     PATHS
     $ENV{ARTOOLKIT_ROOT}/include
 	~/Library/Frameworks
@@ -28,42 +27,42 @@ find_path(ARTOOLKIT_INCLUDE_DIR AR/config.h
     NO_DEFAULT_PATH
 )
 
-find_library(ARTOOLKIT_LIBAR
+find_library(ARTOOLKIT2_LIBAR
     NAMES AR libAR
     PATHS	
 	$ENV{ARTOOLKIT_ROOT}/lib
 	[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
-	${ARTOOLKIT_INCLUDE_DIR}/../lib
-    NO_DEFAULT_PATH
-)
+	${ARTOOLKIT2_INCLUDE_DIR}/../lib
+    	NO_DEFAULT_PATH
+	)
 
 # pointless if libAR couldn't be found
-if (ARTOOLKIT_LIBAR) 
+if (ARTOOLKIT2_LIBAR) 
 	
-	find_library(ARTOOLKIT_LIBARMULTI
-		NAMES ARMulti ARmulti libARmulti
+	find_library(ARTOOLKIT2_LIBARMULTI
+		NAMES ARMulti libARMulti
 		PATHS	
 		$ENV{ARTOOLKIT_ROOT}/lib
 		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
-		${ARTOOLKIT_INCLUDE_DIR}/../lib
+		${ARTOOLKIT2_INCLUDE_DIR}/../lib
 		NO_DEFAULT_PATH
 	)
 	
-	find_library(ARTOOLKIT_LIBARGSUB_LITE
-		NAMES ARgsub_lite libARgsub_lite
+	find_library(ARTOOLKIT2_LIBARGLUTILS
+		NAMES ARGLUtils libARGLUtils
 		PATHS	
 		$ENV{ARTOOLKIT_ROOT}/lib
 		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
-		${ARTOOLKIT_INCLUDE_DIR}/../lib
+		${ARTOOLKIT2_INCLUDE_DIR}/../lib
 		NO_DEFAULT_PATH
 	)
 	
-	find_library(ARTOOLKIT_LIBARVIDEO
-		NAMES ARvideo libARVideo libARvideo
+	find_library(ARTOOLKIT2_LIBARVIDEO
+		NAMES ARvideo libARvideo
 		PATHS	
 		$ENV{ARTOOLKIT_ROOT}/lib
 		[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session\ Manager\\Environment;ARTOOLKIT_ROOT]/lib
-		${ARTOOLKIT_INCLUDE_DIR}/../lib
+		${ARTOOLKIT2_INCLUDE_DIR}/../lib
 		NO_DEFAULT_PATH
 	)
 
@@ -74,11 +73,15 @@ if (ARTOOLKIT_LIBAR)
 	
 	endif(UNIX)
 
-endif(ARTOOLKIT_LIBAR)
+endif()
 
-
-
-set(ARTOOLKIT_FOUND "NO")
-if(ARTOOLKIT_INCLUDE_DIR AND ARTOOLKIT_LIBAR)
-	set(ARTOOLKIT_FOUND "YES")
-endif(ARTOOLKIT_INCLUDE_DIR AND ARTOOLKIT_LIBAR)
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(
+	ARTOOLKIT2
+	DEFAULT_MSG
+	ARTOOLKIT2_INCLUDE_DIR
+	ARTOOLKIT2_LIBAR
+	ARTOOLKIT2_LIBARMULTI
+	ARTOOLKIT2_LIBARGLUTILS
+	ARTOOLKIT2_LIBARVIDEO
+  	)

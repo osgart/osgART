@@ -7,8 +7,19 @@ cmake_minimum_required(VERSION 2.8.9)
 
 # ==== Global Configuration ====
 
+
 # Project definition
 project(osgART)
+
+
+# ==== Find Packages/Libs Dependencies ====
+
+# Find OpenSceneGraph + NodeKits
+#note: minimum version: 3.2.0
+find_package(OpenSceneGraph 3.2.0 REQUIRED osg osgUtil osgDB osgGA osgText osgViewer osgParticle osgManipulator)
+
+# Find OpenGL
+find_package(OpenGL REQUIRED)
 
 # OSGART Version
 set(OSGART_VERSION_MAJOR 2)
@@ -30,14 +41,7 @@ set(OSGART_EXECUTABLE_TYPE)
 # some include
 include(OSGARTUtils)
 
-# ==== Find Packages/Libs Dependencies ====
 
-# Find OpenSceneGraph + NodeKits
-#note: minimum version: 3.2.0
-find_package(OpenSceneGraph 3.2.0 REQUIRED osg osgUtil osgDB osgGA osgText osgViewer osgParticle osgManipulator)
-
-# Find OpenGL
-find_package(OpenGL REQUIRED)
 
 # on *nix we need to make sure the local include
 # directory is first
