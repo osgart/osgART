@@ -118,6 +118,22 @@ namespace osgART {
 		return this->get(name);
 	}
 
+
+    std::vector<std::string>
+    PluginManager::getRegisteredInterfaces() const
+    {
+        std::vector<std::string> names;
+        for (PluginInterfaceMap::const_iterator it = m_plugininterfaces.begin();
+             it != m_plugininterfaces.end();
+             it++)
+        {
+            names.push_back((*it).first);
+        }
+
+        return names;
+
+    }
+
 	osg::Referenced* 
 	PluginManager::get( const std::string& name )
 	{

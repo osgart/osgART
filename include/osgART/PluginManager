@@ -100,7 +100,13 @@ namespace osgART
 		 */
 		void remove(osg::Referenced* plugin);
 
-	protected:
+        /**
+         * @brief retrieves registered osgART plugin list
+         * @return list of ids
+         */
+        std::vector<std::string> getRegisteredInterfaces() const;
+
+    protected:
 		
 		typedef std::map< std::string, osg::ref_ptr<osg::Referenced> > PluginInterfaceMap;
 		PluginInterfaceMap m_plugininterfaces;
