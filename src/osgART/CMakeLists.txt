@@ -157,43 +157,23 @@ set_target_properties(${lib_name}
 
 set(OSGART_PLUGINS_PREFIX "osgPlugins-${OPENSCENEGRAPH_VERSION}" CACHE STRING "OpenSceneGraph conform plugins folder" FORCE)
 
-
-
-#if(UNIX AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
-#        message(STATUS "x86-64 detected")
-#        set_property(TARGET ${lib_name}
-#            PROPERTY
-#            COMPILE_FLAGS "-fPIC"
-#        )
-#endif()
-
 set_source_files_properties(${lib_hdrs}
 	PROPERTIES
 	HEADER_FILE_ONLY TRUE
 	)
 
-set(lib_libinstalldir ${OSGART_LIB_PREFIX})
+set(lib_libinstalldir lib)
 
 if(WIN32)
 	set(lib_libinstalldir bin)
-endif(WIN32)
-
-if(APPLE)
+elif(APPLE)
 	set(lib_libinstalldir ${CMAKE_INSTALL_PREFIX}/lib/)	
-		install(TARGETS ${lib_name} 
-			RUNTIME DESTINATION bin
-			LIBRARY DESTINATION ${lib_libinstalldir}
-			# LIBRARY DESTINATION ${lib_libinstalldir}
-			ARCHIVE DESTINATION lib
-			)
-endif(APPLE)
-
+endif()
 
 install(TARGETS ${lib_name}
  		RUNTIME DESTINATION bin
  		LIBRARY DESTINATION ${lib_libinstalldir}
  		ARCHIVE DESTINATION ${OSGART_LIB_PREFIX}
-#		FRAMEWORK DESTINATION /Library/Frameworks
  		)
 
 install(FILES ${lib_hdrs}
